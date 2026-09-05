@@ -1,4 +1,4 @@
-﻿"""Unit tests for raw and canonical data schemas.
+"""Unit tests for raw and canonical data schemas.
 
 Milestone 1 — Dataset Selection and Data Contract.
 """

@@ -1,4 +1,4 @@
-﻿"""Script to download or verify the Retailrocket raw dataset.
+"""Script to download or verify the Retailrocket raw dataset.
 
 Milestone 1 — Dataset Selection and Data Contract.
 """
@@ -51,10 +51,7 @@ def verify_dataset(raw_dir: Path) -> bool:
             all_present = False
         else:
             info = compute_file_info(target)
-            print(
-                f"  [OK] {filename} "
-                f"({info['size_mb']} MB, {info['lines']:,} lines)"
-            )
+            print(f"  [OK] {filename} ({info['size_mb']} MB, {info['lines']:,} lines)")
 
     if all_present:
         print("\n[SUCCESS] All Retailrocket raw files are present.")
@@ -96,9 +93,7 @@ def download_via_kaggle(raw_dir: Path) -> bool:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Download or verify Retailrocket dataset."
-    )
+    parser = argparse.ArgumentParser(description="Download or verify Retailrocket dataset.")
     parser.add_argument(
         "--raw-dir",
         type=Path,

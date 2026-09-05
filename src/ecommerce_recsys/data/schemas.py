@@ -1,4 +1,4 @@
-﻿"""Data schemas for raw events and canonical recommendation interactions.
+"""Data schemas for raw events and canonical recommendation interactions.
 
 Milestone 1 — Dataset Selection and Data Contract.
 """
