@@ -4,8 +4,7 @@
 **Repository:** `ecommerce-recsys`
 **Branch:** `main`
 **Current release:** Pre-v0.1
-**Current milestone:** Milestone 0 — Project Charter and Repository Foundation
-
+**Current milestone:** Milestone 1 — Dataset Selection and Data Contract
 ---
 
 ## 1. Current Objective
@@ -238,90 +237,15 @@ Model development is intentionally blocked until the required data and evaluatio
 ---
 
 ## 7. Next Exact Tasks
+Milestone 0 — Foundation
+[x] Completed
 
-### Task 0.4
-
-Create:
-
-```text
-docs/PROJECT_STATUS.md
-```
-
-### Task 0.5
-
-Create:
-
-```text
-docs/ARCHITECTURE_CURRENT.md
-```
-
-The file must describe only what currently exists.
-
-### Task 0.6
-
-Create:
-
-```text
-docs/DECISIONS.md
-```
-
-Record initial project decisions and their rationale.
-
-### Task 0.7
-
-Establish Python project configuration.
-
-Expected work includes:
-
-* Python version decision
-* `pyproject.toml`
-* development/runtime dependency structure
-
-### Task 0.8
-
-Configure development quality tooling.
-
-Expected:
-
-* Ruff
-* pytest
-
-### Task 0.9
-
-Add a minimal initial test.
-
-Purpose:
-
-Verify that the test infrastructure is correctly configured before real application code exists.
-
-### Task 0.10
-
-Create basic GitHub Actions CI.
-
-Expected initial gate:
-
-```text
-install
-  ->
-lint
-  ->
-tests
-```
-
-### Task 0.11
-
-Validate the repository.
-
-### Task 0.12
-
-Create the first coherent foundation commit.
-
-After Milestone 0 passes its exit criteria, begin:
-
-```text
-Milestone 1 — Dataset Selection and Data Contract
-```
-
+Milestone 1 — Dataset Selection & Data Contract
+[~] In progress
+    [x] Task 1.1: DATA_CONTRACT.md
+    [ ] Task 1.2: Define Dataset Requirements
+    [ ] Task 1.3: Compare candidate datasets
+    [ ] Task 1.4: Select and freeze dataset
 ---
 
 ## 8. Files Changed in Current Milestone
