@@ -4,7 +4,7 @@
 **Repository:** `ecommerce-recsys`
 **Branch:** `main`
 **Current release:** Pre-v0.1
-**Current milestone:** Milestone 1 — Completed (Ready for Milestone 2)
+**Current milestone:** Milestone 2 — Completed (Ready for Milestone 3)
 ---
 
 ## 1. Current Objective
@@ -237,35 +237,25 @@ Model development is intentionally blocked until the required data and evaluatio
 ---
 
 ## 7. Next Exact Tasks
-Milestone 1 is complete. The project is now transitioning to:
-Milestone 2 — Data Quality, EDA, and Interaction Semantics.
+
+Milestone 2 is complete. The project is now transitioning to:
+Milestone 3 — Temporal Split and Offline Evaluation Harness.
+
 Immediate tasks:
-### Task 2.1 — Acquire and Verify Raw Dataset
-Download raw Retailrocket CSV files into data/raw/ and verify their
-presence and integrity using: python scripts/download_data.py --verify-only
 
-### Task 2.2 — Exploratory Data Analysis (EDA)
-Create notebooks/01_data_understanding.ipynb to analyze:
-* Event counts and funnel distribution (view, addtocart, transaction).
-* User activity distribution (1-event visitors vs power users).
-* Item popularity and catalog long-tail curve.
-* Repeated interactions (consecutive views within and across sessions).
+### Task 3.1 — Define Evaluation Protocol and Metrics
+Formally select offline evaluation strategy (user leave-last-out vs global temporal cutoff)
+and metric definitions (Recall@K, HitRate@K, MRR@K, NDCG@K).
 
-### Task 2.3 — Define Interaction Semantics (ADR-002 Resolution)
-Make documented decisions in docs/DECISIONS.md on:
-* Duplicate interaction policy (aggregate frequency vs retain raw).
-* Positive interaction criteria for evaluation targets.
-* Activity filtering thresholds (e.g., K-core filtering).
+### Task 3.2 — Build Temporal Split Pipeline
+Implement scripts/split_data.py to partition interactions into train, validation, and test sets
+without temporal leakage.
 
-### Task 2.4 — Build Interaction Processing Pipeline
-Implement scripts/build_interactions.py to transform raw CSVs into
-canonical Parquet artifacts:
-* data/processed/interactions.parquet
-* data/processed/items.parquet
+### Task 3.3 — Implement Recommendation Metrics Library
+Create src/ecommerce_recsys/evaluation/metrics.py and corresponding unit tests.
 
-### Task 2.5 — Document Data Quality Report
-Create docs/DATA_QUALITY_REPORT.md summarizing before/after dataset
-statistics, filtering justifications, and data invariants.
+### Task 3.4 — Verify Zero Temporal Leakage
+Write automated tests ensuring no future interactions appear in training sets.
 
 ## 8. Files Changed in Current Milestone
 
@@ -418,10 +408,15 @@ Milestone 1 — Dataset Selection & Data Contract
     [x] tests/unit/test_schemas.py (7 passed)
 
 Milestone 2 — Data Quality & EDA
-[~] Next
-
+[x] Completed
+    [x] Raw dataset verified (Task 2.1)
+    [x] notebooks/01_data_understanding.ipynb & scripts/run_eda.py (Task 2.2)
+    [x] Interaction semantics decisions (Task 2.3)
+    [x] scripts/build_interactions.py pipeline (Task 2.4)
+    [x] data/processed/interactions.parquet & items.parquet (Task 2.4)
+    [x] docs/DATA_QUALITY_REPORT.md (Task 2.5)
 Milestone 3 — Evaluation Foundation
-[ ] Not started
+[~] In progress
 
 Milestone 4+ — Recommendation Models
 [ ] Not started
