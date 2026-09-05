@@ -4,7 +4,7 @@
 **Repository:** `ecommerce-recsys`
 **Branch:** `main`
 **Current release:** Pre-v0.1
-**Current milestone:** Milestone 2 — Completed (Ready for Milestone 3)
+**Current milestone:** Milestone 3 — Completed (Ready for Milestone 4: Classical Baselines)
 ---
 
 ## 1. Current Objective
@@ -238,24 +238,25 @@ Model development is intentionally blocked until the required data and evaluatio
 
 ## 7. Next Exact Tasks
 
-Milestone 2 is complete. The project is now transitioning to:
-Milestone 3 — Temporal Split and Offline Evaluation Harness.
+Milestone 3 is complete. The project is now transitioning to:
+Milestone 4 — Non-Personalized and Classical Baselines.
 
 Immediate tasks:
 
-### Task 3.1 — Define Evaluation Protocol and Metrics
-Formally select offline evaluation strategy (user leave-last-out vs global temporal cutoff)
-and metric definitions (Recall@K, HitRate@K, MRR@K, NDCG@K).
+### Task 4.1 — Implement Random Recommender Baseline
+Create src/ecommerce_recsys/baselines/random.py to establish the theoretical lower bound.
 
-### Task 3.2 — Build Temporal Split Pipeline
-Implement scripts/split_data.py to partition interactions into train, validation, and test sets
-without temporal leakage.
+### Task 4.2 — Implement Global Popularity Baseline
+Create src/ecommerce_recsys/baselines/popularity.py to recommend most-interacted catalog items.
 
-### Task 3.3 — Implement Recommendation Metrics Library
-Create src/ecommerce_recsys/evaluation/metrics.py and corresponding unit tests.
+### Task 4.3 — Implement Recent Popularity / Trending Baseline
+Create src/ecommerce_recsys/baselines/trending.py based on recent interaction windows.
 
-### Task 3.4 — Verify Zero Temporal Leakage
-Write automated tests ensuring no future interactions appear in training sets.
+### Task 4.4 — Build Baseline Evaluation Harness
+Create scripts/evaluate_baselines.py to evaluate all baselines on test.parquet using HR@K, MRR@K, NDCG@K.
+
+### Task 4.5 — Document Initial Benchmark Results
+Create docs/BENCHMARK_RESULTS.md recording baseline floors that all future models must beat.
 
 ## 8. Files Changed in Current Milestone
 
@@ -415,11 +416,18 @@ Milestone 2 — Data Quality & EDA
     [x] scripts/build_interactions.py pipeline (Task 2.4)
     [x] data/processed/interactions.parquet & items.parquet (Task 2.4)
     [x] docs/DATA_QUALITY_REPORT.md (Task 2.5)
-Milestone 3 — Evaluation Foundation
-[~] In progress
 
-Milestone 4+ — Recommendation Models
-[ ] Not started
+Milestone 3 — Evaluation Foundation
+[x] Completed
+    [x] docs/EVALUATION_PROTOCOL.md (Protocol & metrics design)
+    [x] src/ecommerce_recsys/evaluation/metrics.py (HR@K, MRR@K, NDCG@K, Coverage)
+    [x] tests/unit/test_metrics.py (Mathematical metric unit tests)
+    [x] src/ecommerce_recsys/data/splitting.py (Vectorized Leave-Last-Out split)
+    [x] scripts/split_data.py (Train/val/test Parquet pipeline)
+    [x] tests/unit/test_temporal_split.py (Temporal leakage unit tests)
+    
+Milestone 4 — Non-Personalized & Classical Baselines
+[~] In progress
 ```
 
 ---
