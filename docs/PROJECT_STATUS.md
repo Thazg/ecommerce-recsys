@@ -4,7 +4,7 @@
 **Repository:** `ecommerce-recsys`
 **Branch:** `main`
 **Current release:** Pre-v0.1
-**Current milestone:** Milestone 1 — Dataset Selection and Data Contract
+**Current milestone:** Milestone 1 — Completed (Ready for Milestone 2)
 ---
 
 ## 1. Current Objective
@@ -237,16 +237,35 @@ Model development is intentionally blocked until the required data and evaluatio
 ---
 
 ## 7. Next Exact Tasks
-Milestone 0 — Foundation
-[x] Completed
+Milestone 1 is complete. The project is now transitioning to:
+Milestone 2 — Data Quality, EDA, and Interaction Semantics.
+Immediate tasks:
+### Task 2.1 — Acquire and Verify Raw Dataset
+Download raw Retailrocket CSV files into data/raw/ and verify their
+presence and integrity using: python scripts/download_data.py --verify-only
 
-Milestone 1 — Dataset Selection & Data Contract
-[~] In progress
-    [x] Task 1.1: DATA_CONTRACT.md
-    [ ] Task 1.2: Define Dataset Requirements
-    [ ] Task 1.3: Compare candidate datasets
-    [ ] Task 1.4: Select and freeze dataset
----
+### Task 2.2 — Exploratory Data Analysis (EDA)
+Create notebooks/01_data_understanding.ipynb to analyze:
+* Event counts and funnel distribution (view, addtocart, transaction).
+* User activity distribution (1-event visitors vs power users).
+* Item popularity and catalog long-tail curve.
+* Repeated interactions (consecutive views within and across sessions).
+
+### Task 2.3 — Define Interaction Semantics (ADR-002 Resolution)
+Make documented decisions in docs/DECISIONS.md on:
+* Duplicate interaction policy (aggregate frequency vs retain raw).
+* Positive interaction criteria for evaluation targets.
+* Activity filtering thresholds (e.g., K-core filtering).
+
+### Task 2.4 — Build Interaction Processing Pipeline
+Implement scripts/build_interactions.py to transform raw CSVs into
+canonical Parquet artifacts:
+* data/processed/interactions.parquet
+* data/processed/items.parquet
+
+### Task 2.5 — Document Data Quality Report
+Create docs/DATA_QUALITY_REPORT.md summarizing before/after dataset
+statistics, filtering justifications, and data invariants.
 
 ## 8. Files Changed in Current Milestone
 
@@ -387,29 +406,19 @@ No benchmark or model artifact is frozen yet.
 
 ```text
 Milestone 0 — Foundation
-[~] In progress
-
-    [x] Repository initialized
-    [x] Main branch established
-    [x] Base directory structure
-    [x] PROJECT_CHARTER.md
-    [x] PROJECT_STATUS.md
-    [ ] ARCHITECTURE_CURRENT.md
-    [ ] DECISIONS.md
-    [ ] Python project configuration
-    [ ] Development dependencies
-    [ ] Ruff configuration
-    [ ] pytest configuration
-    [ ] Initial tests
-    [ ] Basic CI
-    [ ] Foundation validation
-    [ ] Foundation commit
+[x] Completed
 
 Milestone 1 — Dataset Selection & Data Contract
-[ ] Not started
+[x] Completed
+    [x] docs/DATA_CONTRACT.md
+    [x] docs/DATASET_CARD.md
+    [x] data/raw/README.md & .gitignore data policy
+    [x] scripts/download_data.py
+    [x] src/ecommerce_recsys/data/schemas.py
+    [x] tests/unit/test_schemas.py (7 passed)
 
 Milestone 2 — Data Quality & EDA
-[ ] Not started
+[~] Next
 
 Milestone 3 — Evaluation Foundation
 [ ] Not started

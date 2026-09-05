@@ -9,7 +9,9 @@ name = "ecommerce-recsys"
 version = "0.0.0"
 description = "Production-oriented e-commerce recommendation system."
 requires-python = ">=3.13,<3.14"
-dependencies = []
+dependencies = [
+    "pydantic>=2.0,<3.0",
+]
 
 [project.optional-dependencies]
 dev = [
