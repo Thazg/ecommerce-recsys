@@ -38,10 +38,12 @@ def test_popularity_rejects_non_positive_k():
     with pytest.raises(ValueError, match="k must be positive"):
         recommender.recommend(0)
 
+
 def test_recommend_before_fit_raises():
     rec = PopularityRecommender()
     with pytest.raises(RuntimeError, match="fit"):
         rec.recommend(5)
+
 
 def test_popularity_requires_item_id():
     recommender = PopularityRecommender()

@@ -50,6 +50,9 @@ class RecentPopularityRecommender:
 
     def recommend(self, k: int) -> list[str]:
         """Return the top-k recently popular items."""
+        if not self._ranking:
+            raise RuntimeError("Model has not been fitted. Call fit() first.")
+
         if k <= 0:
             raise ValueError("k must be positive")
         return self._ranking[:k]

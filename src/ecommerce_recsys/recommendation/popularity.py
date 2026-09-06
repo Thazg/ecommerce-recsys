@@ -23,14 +23,14 @@ class PopularityRecommender:
             .reset_index(name="count")
             .sort_values(["count", "item_id"], ascending=[False, True])
         )
-        
+
         self._ranking = counts["item_id"].astype(str).tolist()
 
     def recommend(self, k: int) -> list[str]:
         """Return the top-k globally popular items."""
         if not self._ranking:
             raise RuntimeError("Model has not been fitted. Call fit() first.")
-    
+
         if k <= 0:
             raise ValueError("k must be positive")
 
