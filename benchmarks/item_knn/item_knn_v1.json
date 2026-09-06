@@ -1,0 +1,31 @@
+{
+  "benchmark_version": "v1",
+  "model": "item_knn",
+  "model_version": "v1",
+  "evaluation_split": "test",
+  "training_split": "train.parquet",
+  "n_neighbors": 20,
+  "min_item_interactions": 5,
+  "k_values": [
+    5,
+    10,
+    20
+  ],
+  "training_interactions": 2356045,
+  "evaluation_users": 200028,
+  "cold_start_users": 16168,
+  "items_indexed": 84077,
+  "fit_time_seconds": 85.62,
+  "predict_time_seconds": 5.88,
+  "metrics": {
+    "HR@5": 0.031271,
+    "MRR@5": 0.018406,
+    "NDCG@5": 0.021594,
+    "HR@10": 0.042774,
+    "MRR@10": 0.01993,
+    "NDCG@10": 0.025303,
+    "HR@20": 0.055662,
+    "MRR@20": 0.020825,
+    "NDCG@20": 0.028562
+  }
+}
