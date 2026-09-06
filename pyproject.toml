@@ -15,12 +15,10 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest>8.4,<9",
-    "ruff>0.16,<0.17",
+    "pytest>=8.4,<9",
+    "ruff>=0.16,<0.17",
     "pandas>=2.2,<3",
     "pyarrow>=16,<20",
-    "wheel",
-    "setuptools>=68",
 ]
 
 [tool.setuptools.packages.find]

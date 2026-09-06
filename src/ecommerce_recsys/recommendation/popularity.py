@@ -17,14 +17,20 @@ class PopularityRecommender:
         if missing_columns:
             raise ValueError(f"Missing required columns: {sorted(missing_columns)}")
 
-        counts = interactions.groupby("item_id").size()
-
-        self._ranking = (
-            counts.sort_values(ascending=False, kind="stable").index.astype(str).tolist()
+        counts = (
+            interactions.groupby("item_id")
+            .size()
+            .reset_index(name="count")
+            .sort_values(["count", "item_id"], ascending=[False, True])
         )
+        
+        self._ranking = counts["item_id"].astype(str).tolist()
 
     def recommend(self, k: int) -> list[str]:
         """Return the top-k globally popular items."""
+        if not self._ranking:
+            raise RuntimeError("Model has not been fitted. Call fit() first.")
+    
         if k <= 0:
             raise ValueError("k must be positive")
 

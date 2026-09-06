@@ -70,6 +70,10 @@ def test_fit_requires_item_id():
     with pytest.raises(ValueError, match="item_id"):
         rec.fit(pd.DataFrame({"user_id": ["u1"], "timestamp": [T]}))
 
+def test_recommend_before_fit_raises():
+    rec = RecentPopularityRecommender()
+    with pytest.raises(RuntimeError, match="fit"):
+        rec.recommend(5)
 
 def test_fit_requires_timestamp():
     rec = RecentPopularityRecommender()
