@@ -961,6 +961,146 @@ Future ChatGPT or coding-agent sessions may incorrectly assume planned component
 **Status:** Accepted  
 **Date:** 2026-09-05
 
+# ADR-022 — Select ItemKNN as the Primary Collaborative Filtering Baseline
+
+**Status:** Accepted
+
+**Date:** 2026-09-07
+
+## Context
+
+Milestone 4 evaluated several recommendation baselines under the same temporal train/test evaluation protocol.
+
+The evaluated models were:
+
+* Global Popularity
+* Recent Popularity
+* ItemKNN
+* ALS Matrix Factorization
+
+The benchmark used the training split for model fitting and the frozen test split for final evaluation.
+
+The test set contains 200,028 warm-start users, with one held-out target item per user.
+
+## Decision
+
+ItemKNN is selected as the primary collaborative-filtering baseline and current candidate-generation model for the next stage of the project.
+
+ALS will be retained as a secondary latent-factor baseline.
+
+Global Popularity will be retained as a fallback recommendation strategy.
+
+Recent Popularity will be retained as a temporal baseline for comparison, but it is not selected as the primary recommendation approach under the current benchmark configuration.
+
+## Evidence
+
+Under the current dataset, temporal split, implicit-feedback representation, and model configurations, ItemKNN achieved the strongest offline ranking performance among the evaluated baselines.
+
+At K=20:
+
+* ItemKNN HR@20: 5.57%
+* ALS HR@20: 3.06%
+* Recent Popularity HR@20: 0.98%
+* Global Popularity HR@20: 1.14%
+
+ItemKNN also achieved the strongest MRR and NDCG results.
+
+ItemKNN MRR@20 was 2.08%, compared with 1.01% for ALS.
+
+ItemKNN NDCG@20 was 2.86%, compared with 1.46% for ALS.
+
+The improvement was consistent across K=5, 10, and 20.
+
+## Catalog Coverage
+
+ItemKNN recommended 60,840 unique items from a catalog of 235,061 items, corresponding to 25.88% catalog coverage.
+
+This was substantially higher than:
+
+* ALS: 1.51%
+* Global Popularity: 0.0085%
+* Recent Popularity: 0.0085%
+
+The recommendation distribution is head-heavy but does not collapse onto a very small set of products.
+
+The top 10 items account for 3.90% of recommendation slots.
+
+The top 100 items account for 14.84%.
+
+The top 1,000 items account for 42.24%.
+
+This indicates that ItemKNN combines broad catalog coverage with a realistic popularity concentration rather than recommending only a small number of globally dominant items.
+
+## Limitations
+
+ItemKNN currently has a significant candidate-availability limitation.
+
+16,168 of 200,028 test users received no recommendations, corresponding to approximately 8.08% of evaluation users.
+
+This is not user-level cold start because all test users are present in the training data.
+
+The primary issue is sparse item history.
+
+The training data contains 228,392 unique items, of which 144,315 items have fewer than five interactions.
+
+With `min_item_interactions=5`, only 84,077 items are included in the ItemKNN index.
+
+Therefore, a substantial portion of the catalog is outside the current ItemKNN item space.
+
+Some users also have indexed history but still produce no usable candidate because their indexed history items have no positive-similarity neighbors or their available neighbors have already been seen.
+
+## Interpretation
+
+The benchmark suggests that the current dataset contains a strong item co-occurrence signal.
+
+ItemKNN directly models item-item relationships derived from user interaction history.
+
+This appears to fit the current interaction structure better than the evaluated ALS configuration.
+
+However, the result does not imply that ItemKNN is universally superior to matrix factorization.
+
+ALS was evaluated using a fixed configuration and has not yet undergone validation-based hyperparameter tuning.
+
+The current decision therefore applies only to the present benchmark, dataset, interaction representation, and configurations.
+
+## Production Implications
+
+ItemKNN should not yet be considered production-ready solely because it achieved the strongest offline benchmark result.
+
+The current system must eventually address:
+
+* empty recommendation sets
+* cold and new-item handling
+* candidate availability
+* validation-based hyperparameter tuning
+* serving latency
+* memory usage
+* fallback behavior
+* integration with future ranking components
+
+Global Popularity should remain available as a fallback when the personalized candidate generator cannot provide sufficient recommendations.
+
+## Future Reconsideration
+
+This decision may be revisited after:
+
+1. ItemKNN hyperparameter experiments are evaluated on the validation split.
+
+2. ALS is tuned using validation data.
+
+3. Additional candidate-generation approaches are implemented.
+
+4. New-item and cold-start strategies are introduced.
+
+5. Candidate Recall@N is evaluated.
+
+6. Serving performance is measured.
+
+7. A downstream ranking model is introduced.
+
+The final production recommendation architecture should be selected based on both recommendation quality and engineering constraints, rather than offline ranking metrics alone.
+
+
 ## Context
 
 The project needs measurable engineering targets before production serving is implemented.
@@ -1051,7 +1191,7 @@ even though all may appear in the long-term roadmap.
 | ADR-019 | Local Windows environment is not production contract | Accepted                  |
 | ADR-020 | Current architecture must reflect reality            | Accepted                  |
 | ADR-021 | Establish initial serving performance budgets        | Accepted                  |
-
+| ADR-022 | Select ItemKNN as primary collaborative filtering baseline | Accepted |
 ---
 
 # Future Decision Topics
