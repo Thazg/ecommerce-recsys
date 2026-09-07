@@ -1,26 +1,35 @@
 # Project Status
 
-**Last updated:** 2026-09-05
+**Last updated:** 2026-09-07
+
 **Repository:** `ecommerce-recsys`
+
 **Branch:** `main`
+
 **Current release:** Pre-v0.1
-**Current milestone:** Milestone 3 — Completed (Ready for Milestone 4: Classical Baselines)
+
+**Current milestone:** Milestone 4 — Completed (Ready for Milestone 5)
+
 ---
 
 ## 1. Current Objective
 
-Establish the project foundation before selecting a dataset or implementing recommendation models.
+Build a production-oriented e-commerce recommendation system based on implicit user behavior.
 
-The current work focuses on:
+The project follows a staged development process:
 
-* defining the project scope
-* establishing source-of-truth documentation
-* creating the initial repository structure
-* preparing a reproducible Python development environment
-* adding code-quality and test infrastructure
-* establishing the initial CI quality gate
+* establish the project and engineering foundation
+* select and document the dataset
+* build a reproducible data pipeline
+* establish temporal evaluation foundations
+* establish strong non-personalized baselines
+* develop personalized recommendation models
+* evaluate candidate-generation and ranking approaches
+* build production-oriented serving and deployment infrastructure
 
-No recommendation model should be implemented during the current stage.
+The current system has completed Milestones 0–4.
+
+Milestone 4 establishes the baseline performance floor that future personalized recommendation models must beat.
 
 ---
 
@@ -32,12 +41,18 @@ Completed:
 
 * Git repository initialized
 * default branch set to `main`
-* initial repository directory structure created
+* repository structure created
+* Python development environment established
+* development requirements configured
+* test infrastructure configured
+* lint and formatting infrastructure configured
+* initial CI quality gate established
 
 Current directory structure includes:
 
 ```text
 ecommerce-recsys/
+
 ├── .github/
 ├── artifacts/
 ├── benchmarks/
@@ -59,40 +74,37 @@ ecommerce-recsys/
 
 ### Documentation
 
-Completed:
+Completed source-of-truth documents include:
 
 * `docs/PROJECT_CHARTER.md`
+* `docs/PROJECT_STATUS.md`
+* `docs/ARCHITECTURE_CURRENT.md`
+* `docs/DECISIONS.md`
+* `docs/DATA_CONTRACT.md`
+* `docs/DATASET_CARD.md`
+* `docs/DATA_QUALITY_REPORT.md`
+* `docs/EVALUATION_PROTOCOL.md`
+* `docs/BASELINE_REPORT.md`
 
-The project charter currently defines:
-
-* project identity
-* portfolio objective
-* recommendation problem
-* planned recommendation surfaces
-* implicit-feedback scope
-* high-level recommendation architecture
-* temporal evaluation philosophy
-* model-development progression
-* production scope
-* engineering principles
-* non-goals
-* Git discipline
+These documents define the project scope, dataset contract, data-quality decisions, evaluation protocol, architecture decisions, baseline methodology, and current implementation state.
 
 ---
 
 ## 3. Current Work
 
-Current task:
+Milestones 0–4 are complete.
 
-**Create the remaining source-of-truth documents for Milestone 0.**
+The project is now ready to transition to:
 
-Documents still required:
+**Milestone 5 — Personalized Recommendation / Collaborative Filtering**
 
-1. `docs/PROJECT_STATUS.md`
-2. `docs/ARCHITECTURE_CURRENT.md`
-3. `docs/DECISIONS.md`
+The primary objective of the next stage is to determine whether user-specific interaction history can outperform the strongest established non-personalized baseline.
 
-After these documents exist, the project will move to development-environment setup.
+The current benchmark floor is:
+
+**Category Popularity — Recall@20 ≈ 8.51%**
+
+Future personalized models must be evaluated using the established evaluation contract and compared against this baseline.
 
 ---
 
@@ -112,67 +124,147 @@ Current branch:
 main
 ```
 
-### Dataset
-
-Status:
+Remote branch status:
 
 ```text
-NOT SELECTED
+main is synchronized with origin/main
 ```
 
-Dataset selection belongs to Milestone 1.
+The latest Milestone 4 changes have been committed and pushed.
 
-No dataset assumptions should be treated as frozen yet.
+### Dataset
+
+Dataset selection:
+
+```text
+COMPLETED
+```
+
+Processed interaction dataset:
+
+```text
+data/processed/interactions.parquet
+```
+
+Processed catalog metadata:
+
+```text
+data/processed/items.parquet
+```
+
+Dataset statistics:
+
+```text
+Interactions:        2,756,101
+Users:               200,028 test users
+Catalog items:       235,061
+```
+
+The dataset and data contract were established during Milestones 1–2.
 
 ### Interaction Semantics
 
-Status:
-
-```text
-NOT DEFINED
-```
-
-Potential interaction types may include:
+Interaction data contains implicit behavioral signals including:
 
 * view
-* cart / add_to_cart
+* cart / add-to-cart
 * purchase / transaction
 
-No event weights have been selected.
+The interaction representation and derived columns are documented in the project data contract.
 
-Interaction semantics must be justified after dataset inspection.
+Processed interaction records contain:
+
+```text
+user_id
+item_id
+timestamp
+event_type
+datetime
+is_view
+is_cart
+is_purchase
+transaction_id
+```
+
+### Evaluation Dataset
+
+The temporal evaluation split is completed.
+
+Generated datasets:
+
+```text
+data/processed/train.parquet
+data/processed/val.parquet
+data/processed/test.parquet
+```
+
+Current test contract:
+
+```text
+Test rows:                    200,028
+Unique test users:            200,028
+Targets per user:             1
+Warm-start users:             100%
+Duplicate test targets:       0
+```
+
+The split follows a temporal leave-last-out strategy.
+
+The test target represents a future interaction relative to the user's training history.
 
 ### Evaluation Benchmark
 
 Status:
 
 ```text
-NOT CREATED
+CREATED AND FROZEN FOR BASELINE V1
 ```
 
-The benchmark will be designed during Milestone 3.
+Benchmark artifact:
 
-No benchmark version has been frozen.
+```text
+benchmarks/baseline/baseline_v1.json
+```
+
+The benchmark evaluates recommendation quality using:
+
+* Recall@K / Hit Rate@K
+* NDCG@K
+* Coverage
+* average recommendation latency
+* P50 latency
+* P95 latency
+* P99 latency
+
+Because each test user has exactly one held-out target:
+
+```text
+Recall@K = Hit Rate@K
+```
+
+for the current benchmark contract.
+
+Coverage is measured at the maximum evaluated recommendation cutoff:
+
+```text
+Coverage@20
+```
 
 ### Models
 
-Status:
+Core Milestone 4 baselines implemented:
 
-```text
-NO MODELS IMPLEMENTED
-```
+* Random Recommender
+* Global Popularity
+* Recent Popularity
+* Category Popularity
 
-Not yet implemented:
+Extended classical references evaluated during development:
 
-* random baseline
-* popularity
 * ItemKNN
-* matrix factorization
-* BPR
-* Two-Tower
-* ANN
-* ranker
-* sequential recommender
+* ALS / Matrix Factorization
+
+ItemKNN and ALS are treated as extended references and are not part of the core Milestone 4 pass/fail definition.
 
 ### Serving
 
@@ -182,7 +274,9 @@ Status:
 NOT IMPLEMENTED
 ```
 
-No FastAPI recommendation service currently exists.
+No production recommendation API has been implemented yet.
+
+Serving is intentionally deferred until recommendation models and candidate-generation strategies are established.
 
 ### Deployment
 
@@ -192,25 +286,63 @@ Status:
 NOT IMPLEMENTED
 ```
 
-No container or cloud deployment currently exists.
+Production containerization and cloud deployment are deferred to later milestones.
 
 ---
 
 ## 5. Architecture Currently Implemented
 
-There is currently no recommendation-system runtime architecture.
+The project now contains an implemented offline recommendation and evaluation architecture.
 
-The repository currently contains only:
+Current high-level flow:
 
 ```text
-Repository
+Raw Dataset
     |
-    +-- source-of-truth documentation
+    v
+Data Processing
     |
-    +-- empty project directories
+    v
+Processed Interactions + Catalog
+    |
+    v
+Temporal Train / Validation / Test Split
+    |
+    v
+Recommendation Baselines
+    |
+    +-- Random
+    +-- Global Popularity
+    +-- Recent Popularity
+    +-- Category Popularity
+    |
+    v
+Unified Evaluation Harness
+    |
+    +-- Recall@K / Hit Rate@K
+    +-- NDCG@K
+    +-- Coverage
+    +-- Latency
+    |
+    v
+Benchmark Artifacts + Reports
 ```
 
-Planned recommendation components must not be described as implemented architecture until they actually exist.
+Current implemented recommendation components are located under:
+
+```text
+src/ecommerce_recsys/recommendation/
+```
+
+Current evaluation components are located under:
+
+```text
+src/ecommerce_recsys/evaluation/
+```
+
+The project does not yet contain a production online-serving architecture.
+
+Planned components must not be described as implemented until they actually exist.
 
 See:
 
@@ -218,11 +350,11 @@ See:
 docs/ARCHITECTURE_CURRENT.md
 ```
 
-for the authoritative implemented architecture once that document is created.
+for the authoritative architecture description.
 
 ---
 
-## 6. Known Issues / Blockers
+## 6. Known Issues / Limitations
 
 Current blockers:
 
@@ -230,44 +362,129 @@ Current blockers:
 None
 ```
 
-Dataset selection is intentionally deferred until Milestone 1.
+Known limitations:
 
-Model development is intentionally blocked until the required data and evaluation foundations are established.
+### Warm-start evaluation
+
+The current test benchmark contains 100% warm-start users.
+
+Cold-start user recommendation is not yet evaluated.
+
+### Unseen test items
+
+A small portion of test targets correspond to items not observed in training.
+
+Therefore, some collaborative-filtering models may be unable to recommend these items without additional item-side information.
+
+### Missing category metadata
+
+The catalog contains items without category metadata.
+
+Therefore, Category Popularity cannot use category-specific signals for every catalog item and relies on fallback behavior where necessary.
+
+### Offline latency
+
+Reported baseline latency measures recommendation computation at the model/harness level.
+
+It does not represent end-to-end production API latency.
 
 ---
 
 ## 7. Next Exact Tasks
 
-Milestone 3 is complete. The project is now transitioning to:
-Milestone 4 — Non-Personalized and Classical Baselines.
+Milestone 4 is complete.
 
-Immediate tasks:
+The project is now transitioning to:
 
-### Task 4.1 — Implement Random Recommender Baseline
-Create src/ecommerce_recsys/baselines/random.py to establish the theoretical lower bound.
+**Milestone 5 — Personalized Recommendation**
 
-### Task 4.2 — Implement Global Popularity Baseline
-Create src/ecommerce_recsys/baselines/popularity.py to recommend most-interacted catalog items.
+The next milestone should introduce personalized recommendation models while preserving the evaluation contract established in Milestone 3 and the baseline floor established in Milestone 4.
 
-### Task 4.3 — Implement Recent Popularity / Trending Baseline
-Create src/ecommerce_recsys/baselines/trending.py based on recent interaction windows.
+### Task 5.1 — Establish Personalized Baseline
 
-### Task 4.4 — Build Baseline Evaluation Harness
-Create scripts/evaluate_baselines.py to evaluate all baselines on test.parquet using HR@K, MRR@K, NDCG@K.
+Implement the first user-item personalized recommendation model.
 
-### Task 4.5 — Document Initial Benchmark Results
-Create docs/BENCHMARK_RESULTS.md recording baseline floors that all future models must beat.
+The model must:
+
+* train only on training data
+* generate recommendations for warm-start users
+* exclude previously interacted items where appropriate
+* use the existing recommendation interface
+* run through the same evaluation harness
+
+### Task 5.2 — Evaluate Against Baseline Floor
+
+Compare the personalized model against:
+
+```text
+Random
+Global Popularity
+Recent Popularity
+Category Popularity
+```
+
+The primary comparison target is:
+
+```text
+Category Popularity
+Recall@20 ≈ 8.51%
+```
+
+### Task 5.3 — Analyze Personalization Gain
+
+Measure whether the personalized model provides meaningful improvement in:
+
+* Recall@K
+* NDCG@K
+* Coverage
+* latency
+
+The goal is not merely to obtain a higher score, but to understand where personalization provides value.
+
+### Task 5.4 — Document the First Personalized Benchmark
+
+Create a benchmark artifact and report documenting:
+
+* model configuration
+* training protocol
+* evaluation protocol
+* quality metrics
+* coverage
+* latency
+* comparison against Milestone 4 baselines
+* limitations
+
+No personalized model should be considered successful unless its performance is evaluated against the established baseline floor.
+
+---
 
 ## 8. Files Changed in Current Milestone
 
-Currently created:
+Milestone 4 introduced or updated the following primary artifacts:
 
 ```text
-docs/PROJECT_CHARTER.md
-docs/PROJECT_STATUS.md
+benchmarks/baseline/baseline_v1.json
+
+docs/BASELINE_REPORT.md
+
+scripts/benchmark_baselines.py
+
+src/ecommerce_recsys/evaluation/benchmark.py
+
+src/ecommerce_recsys/recommendation/category_popularity.py
+
+src/ecommerce_recsys/recommendation/random_recommender.py
+
+tests/unit/test_benchmark.py
 ```
 
-Additional Milestone 0 files will be added as work progresses.
+Existing recommendation components used by the benchmark include:
+
+```text
+src/ecommerce_recsys/recommendation/popularity.py
+
+src/ecommerce_recsys/recommendation/recent_popularity.py
+```
 
 ---
 
@@ -285,22 +502,46 @@ Expected:
 main
 ```
 
-Repository structure:
+Repository status:
 
 ```powershell
-tree /F /A
+git status
 ```
 
-Inspect project charter:
+Expected:
 
-```powershell
-Get-Content docs\PROJECT_CHARTER.md -TotalCount 30
+```text
+working tree clean
 ```
 
-Inspect Git changes:
+Ruff lint:
 
 ```powershell
-git status --short
+ruff check .
+```
+
+Ruff formatting:
+
+```powershell
+ruff format --check .
+```
+
+Unit tests:
+
+```powershell
+pytest tests/unit/test_benchmark.py -q
+```
+
+Broader test suite:
+
+```powershell
+pytest tests/ -q
+```
+
+GitHub Actions:
+
+```text
+PASS
 ```
 
 ---
@@ -309,50 +550,94 @@ git status --short
 
 ### Git
 
-Expected branch:
+Status:
+
+```text
+PASS
+```
+
+Branch:
 
 ```text
 main
 ```
 
-### Tests
-
-Status:
+Remote synchronization:
 
 ```text
-NOT CONFIGURED
+PASS
 ```
+
+### Tests
+
+Milestone 4 benchmark tests:
+
+```text
+8 passed
+```
+
+The project test suite includes unit and integration test infrastructure established in previous milestones.
 
 ### Lint
 
 Status:
 
 ```text
-NOT CONFIGURED
+PASS
 ```
+
+Ruff check completes successfully.
+
+### Formatting
+
+Status:
+
+```text
+PASS
+```
+
+Ruff format validation completes successfully.
 
 ### CI
 
 Status:
 
 ```text
-NOT CONFIGURED
+PASS
 ```
+
+GitHub Actions quality gate is green.
 
 ### Dataset Benchmark
 
 Status:
 
 ```text
-NOT APPLICABLE YET
+BASELINE V1 COMPLETED
+```
+
+Benchmark artifact:
+
+```text
+benchmarks/baseline/baseline_v1.json
 ```
 
 ### Recommendation Quality
 
-Status:
+Core Milestone 4 baseline results at Recall@20:
 
 ```text
-NOT APPLICABLE YET
+Category Popularity    ≈ 8.51%
+Global Popularity      ≈ 1.14%
+Recent Popularity      ≈ 0.98%
+Random                 ≈ 0.004%
+```
+
+Extended development references:
+
+```text
+ItemKNN                 ≈ 5.57%
+ALS                     ≈ 3.06%
 ```
 
 ### API Latency
@@ -360,36 +645,44 @@ NOT APPLICABLE YET
 Status:
 
 ```text
-NOT APPLICABLE YET
+NOT IMPLEMENTED
 ```
+
+Offline baseline recommendation latency is measured, but production API latency has not yet been established.
 
 ### Memory
 
 Status:
 
 ```text
-NOT APPLICABLE YET
+NOT APPLICABLE TO CURRENT MILESTONE
 ```
+
+Production memory benchmarking will be introduced when serving infrastructure exists.
 
 ---
 
 ## 11. Do Not Change / Do Not Do Yet
 
-At the current milestone:
+Until the next model-development milestone:
 
-* do not select arbitrary interaction weights
-* do not implement recommendation models
-* do not create a neural recommender
-* do not add ANN infrastructure
+* do not change the frozen Milestone 3 evaluation contract without an explicit architecture decision
+* do not change the baseline benchmark protocol merely to improve a model's score
+* do not treat Category Popularity as a personalized model
+* do not claim ItemKNN or ALS as the official Milestone 4 core baselines
+* do not introduce neural recommendation models before establishing the required classical personalized baselines
+* do not add ANN infrastructure before there is a retrieval model that requires it
 * do not add Qdrant
 * do not add Redis
 * do not add Kafka
 * do not add Kubernetes
-* do not create a production API
+* do not create a production API prematurely
 * do not invent benchmark results
-* do not describe planned components as already implemented
+* do not mix validation/test data into model fitting
+* do not describe planned components as implemented
+* do not modify the frozen baseline artifact without explicitly creating a new benchmark version
 
-No benchmark or model artifact is frozen yet.
+The current benchmark floor should remain stable while future recommendation models are developed.
 
 ---
 
@@ -397,54 +690,90 @@ No benchmark or model artifact is frozen yet.
 
 ```text
 Milestone 0 — Foundation
+
 [x] Completed
 
 Milestone 1 — Dataset Selection & Data Contract
+
 [x] Completed
+
     [x] docs/DATA_CONTRACT.md
     [x] docs/DATASET_CARD.md
     [x] data/raw/README.md & .gitignore data policy
     [x] scripts/download_data.py
     [x] src/ecommerce_recsys/data/schemas.py
-    [x] tests/unit/test_schemas.py (7 passed)
+    [x] tests/unit/test_schemas.py
 
 Milestone 2 — Data Quality & EDA
+
 [x] Completed
-    [x] Raw dataset verified (Task 2.1)
-    [x] notebooks/01_data_understanding.ipynb & scripts/run_eda.py (Task 2.2)
-    [x] Interaction semantics decisions (Task 2.3)
-    [x] scripts/build_interactions.py pipeline (Task 2.4)
-    [x] data/processed/interactions.parquet & items.parquet (Task 2.4)
-    [x] docs/DATA_QUALITY_REPORT.md (Task 2.5)
+
+    [x] Raw dataset verified
+    [x] notebooks/01_data_understanding.ipynb
+    [x] scripts/run_eda.py
+    [x] Interaction semantics decisions
+    [x] scripts/build_interactions.py
+    [x] data/processed/interactions.parquet
+    [x] data/processed/items.parquet
+    [x] docs/DATA_QUALITY_REPORT.md
 
 Milestone 3 — Evaluation Foundation
+
 [x] Completed
-    [x] docs/EVALUATION_PROTOCOL.md (Protocol & metrics design)
-    [x] src/ecommerce_recsys/evaluation/metrics.py (HR@K, MRR@K, NDCG@K, Coverage)
-    [x] tests/unit/test_metrics.py (Mathematical metric unit tests)
-    [x] src/ecommerce_recsys/data/splitting.py (Vectorized Leave-Last-Out split)
-    [x] scripts/split_data.py (Train/val/test Parquet pipeline)
-    [x] tests/unit/test_temporal_split.py (Temporal leakage unit tests)
-    
-Milestone 4 — Non-Personalized & Classical Baselines
-[~] In progress
+
+    [x] docs/EVALUATION_PROTOCOL.md
+    [x] src/ecommerce_recsys/evaluation/metrics.py
+    [x] tests/unit/test_metrics.py
+    [x] src/ecommerce_recsys/data/splitting.py
+    [x] scripts/split_data.py
+    [x] tests/unit/test_temporal_split.py
+    [x] train.parquet / val.parquet / test.parquet
+    [x] temporal evaluation contract
+    [x] one held-out target per test user
+
+Milestone 4 — Non-Personalized Baselines
+
+[x] Completed
+
+    [x] Random Recommender
+    [x] Global Popularity
+    [x] Recent Popularity
+    [x] Category Popularity
+    [x] Unified evaluation harness
+    [x] Recall@K / NDCG@K / Coverage
+    [x] recommendation latency measurement
+    [x] benchmarks/baseline/baseline_v1.json
+    [x] docs/BASELINE_REPORT.md
+    [x] benchmark unit tests
+    [x] Ruff lint
+    [x] Ruff formatting
+    [x] GitHub Actions CI
+    [x] benchmark results committed and pushed
+
+Milestone 5 — Personalized Recommendation
+
+[ ] Not started
 ```
 
 ---
 
 ## 13. Milestone 0 Exit Criteria
 
-Milestone 0 will be considered complete only when:
+Milestone 0 is complete.
 
-* project objective is documented
-* recommendation surfaces are documented
-* repository structure exists
-* source-of-truth documents exist
-* Python environment is reproducible
-* quality tooling is configured
-* tests can execute successfully
-* initial CI quality gate exists
+The original foundation exit criteria have been satisfied:
+
+* project objective documented
+* recommendation surfaces documented
+* repository structure created
+* source-of-truth documents established
+* Python environment reproducible
+* quality tooling configured
+* tests executable
+* initial CI quality gate established
 * repository validation passes
-* initial foundation state is committed
+* foundation state committed
 
-Only then should work move to dataset selection.
+Subsequent milestones have extended this foundation with dataset selection, data processing, temporal evaluation, and recommendation baselines.
+
+The project should now proceed from baseline establishment toward personalized recommendation modeling.
