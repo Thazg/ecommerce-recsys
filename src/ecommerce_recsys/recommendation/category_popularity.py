@@ -19,24 +19,18 @@ class CategoryPopularityRecommender:
         """Fit category popularity rankings from training interactions."""
 
         required_interaction_columns = {"item_id"}
-        missing_interaction_columns = (
-            required_interaction_columns - set(interactions.columns)
-        )
+        missing_interaction_columns = required_interaction_columns - set(interactions.columns)
 
         if missing_interaction_columns:
             raise ValueError(
-                "Missing required interaction columns: "
-                f"{sorted(missing_interaction_columns)}"
+                f"Missing required interaction columns: {sorted(missing_interaction_columns)}"
             )
 
         required_item_columns = {"item_id", "category_id"}
         missing_item_columns = required_item_columns - set(items.columns)
 
         if missing_item_columns:
-            raise ValueError(
-                "Missing required item columns: "
-                f"{sorted(missing_item_columns)}"
-            )
+            raise ValueError(f"Missing required item columns: {sorted(missing_item_columns)}")
 
         item_metadata = items[["item_id", "category_id"]].copy()
         item_metadata["item_id"] = item_metadata["item_id"].astype(str)
@@ -52,11 +46,7 @@ class CategoryPopularityRecommender:
             )
         )
 
-        item_counts = (
-            interactions.groupby("item_id")
-            .size()
-            .reset_index(name="count")
-        )
+        item_counts = interactions.groupby("item_id").size().reset_index(name="count")
 
         item_counts["item_id"] = item_counts["item_id"].astype(str)
 
@@ -102,9 +92,7 @@ class CategoryPopularityRecommender:
         seen = {str(item_id) for item_id in user_history}
 
         categories = {
-            self._item_categories[item_id]
-            for item_id in seen
-            if item_id in self._item_categories
+            self._item_categories[item_id] for item_id in seen if item_id in self._item_categories
         }
 
         recommendations: list[str] = []

@@ -104,10 +104,7 @@ def main() -> None:
             "evaluation_users": len(test),
             "random_seed": RANDOM_SEED,
             "recent_popularity_window_days": RECENT_WINDOW_DAYS,
-            "latency_measurement": (
-                "per-user recommendation latency; "
-                "fit/training time excluded"
-            ),
+            "latency_measurement": ("per-user recommendation latency; fit/training time excluded"),
         },
         "models": {
             "random": {

@@ -66,9 +66,7 @@ def _recommend_for_user(
     if isinstance(recommender, MatrixFactorizationRecommender):
         return recommender.recommend(user_id, k)
 
-    raise TypeError(
-        f"Unsupported recommender type: {type(recommender).__name__}"
-    )
+    raise TypeError(f"Unsupported recommender type: {type(recommender).__name__}")
 
 
 def _build_ground_truth(
@@ -80,17 +78,12 @@ def _build_ground_truth(
     missing = required_columns - set(test.columns)
 
     if missing:
-        raise ValueError(
-            f"Missing required columns: {sorted(missing)}"
-        )
+        raise ValueError(f"Missing required columns: {sorted(missing)}")
 
     if test.empty:
         return {}
 
-    return {
-        str(row.user_id): str(row.item_id)
-        for row in test.itertuples(index=False)
-    }
+    return {str(row.user_id): str(row.item_id) for row in test.itertuples(index=False)}
 
 
 def _build_user_histories(
@@ -102,16 +95,12 @@ def _build_user_histories(
     missing = required_columns - set(train.columns)
 
     if missing:
-        raise ValueError(
-            f"Missing required columns: {sorted(missing)}"
-        )
+        raise ValueError(f"Missing required columns: {sorted(missing)}")
 
     histories: dict[str, list[str]] = {}
 
     for user_id, group in train.groupby("user_id", sort=True):
-        histories[str(user_id)] = (
-            group["item_id"].astype(str).tolist()
-        )
+        histories[str(user_id)] = group["item_id"].astype(str).tolist()
 
     return histories
 
@@ -129,10 +118,7 @@ def _calculate_latency_metrics(
             "latency_p99_ms": 0.0,
         }
 
-    latencies_ms = sorted(
-        latency * 1000.0
-        for latency in latencies_seconds
-    )
+    latencies_ms = sorted(latency * 1000.0 for latency in latencies_seconds)
 
     def percentile(
         values: list[float],
@@ -151,10 +137,7 @@ def _calculate_latency_metrics(
 
         weight = index - lower
 
-        return (
-            values[lower] * (1.0 - weight)
-            + values[upper] * weight
-        )
+        return values[lower] * (1.0 - weight) + values[upper] * weight
 
     return {
         "latency_avg_ms": round(
@@ -211,8 +194,7 @@ def evaluate_recommender(
     ):
         if items is None:
             raise ValueError(
-                "items must be provided for "
-                "CategoryPopularityRecommender or RandomRecommender."
+                "items must be provided for CategoryPopularityRecommender or RandomRecommender."
             )
 
         recommender.fit(
@@ -257,11 +239,7 @@ def evaluate_recommender(
             total_catalog_items=total_catalog_items,
         )
 
-    metrics.update(
-        _calculate_latency_metrics(
-            latencies_seconds
-        )
-    )
+    metrics.update(_calculate_latency_metrics(latencies_seconds))
 
     return metrics
 
@@ -277,9 +255,7 @@ def run_baseline_benchmark(
     """Run multiple recommenders under the same evaluation protocol."""
 
     if not recommenders:
-        raise ValueError(
-            "At least one recommender is required."
-        )
+        raise ValueError("At least one recommender is required.")
 
     results: dict[str, dict[str, float]] = {}
 
