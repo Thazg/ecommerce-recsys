@@ -111,6 +111,7 @@ def test_recommend_returns_item_ids(
     assert len(recommendations) <= 2
     assert all(item_id in recommender._item_to_index for item_id in recommendations)
 
+
 def test_recommend_filters_already_liked_items(
     interactions: pd.DataFrame,
 ) -> None:
@@ -132,6 +133,7 @@ def test_recommend_filters_already_liked_items(
     assert already_liked.isdisjoint(recommendations)
     assert len(recommendations) <= 2
     assert len(set(recommendations)) == len(recommendations)
+
 
 def test_recommend_unknown_user_returns_empty_list(
     interactions: pd.DataFrame,

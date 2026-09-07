@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from scipy.sparse import csr_matrix
-
 from implicit.als import AlternatingLeastSquares
+from scipy.sparse import csr_matrix
 
 
 class MatrixFactorizationRecommender:
@@ -77,14 +76,10 @@ class MatrixFactorizationRecommender:
 
     def recommend(self, user_id: str, k: int = 10) -> list[str]:
         if self._model is None:
-            raise RuntimeError(
-                "Model has not been fitted. Call fit() first."
-            )
+            raise RuntimeError("Model has not been fitted. Call fit() first.")
 
         if self._user_item_matrix is None:
-            raise RuntimeError(
-                "User-item matrix has not been built. Call fit() first."
-            )
+            raise RuntimeError("User-item matrix has not been built. Call fit() first.")
 
         if k <= 0:
             return []
@@ -103,7 +98,4 @@ class MatrixFactorizationRecommender:
             filter_already_liked_items=True,
         )
 
-        return [
-            self._index_to_item[item_index]
-            for item_index in item_indices
-        ]
+        return [self._index_to_item[item_index] for item_index in item_indices]
