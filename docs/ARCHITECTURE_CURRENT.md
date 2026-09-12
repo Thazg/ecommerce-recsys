@@ -1,10 +1,14 @@
-# Current Architecture
+Current Architecture
 
 **Project:** Production E-Commerce Recommendation Platform
+
 **Repository:** `ecommerce-recsys`
-**Architecture version:** `foundation-v0`
-**Last updated:** 2026-09-05
-**Current milestone:** Milestone 0 — Project Charter and Repository Foundation
+
+**Architecture version:** `offline-recsys-v1`
+
+**Last updated:** 2026-09-12
+
+**Current milestone:** Milestone 5 — Personalized Recommendation Completed
 
 ---
 
@@ -16,50 +20,83 @@ It is not the target architecture.
 
 It must not describe planned components as if they already exist.
 
-Future components such as recommendation models, retrieval systems, ranking models, APIs, caches, vector indexes, monitoring systems, and deployment infrastructure should only appear in this document after they are actually implemented and validated.
+Future components such as candidate-generation services, ranking models, APIs, caches, vector indexes, monitoring systems, and deployment infrastructure should only appear in this document after they are actually implemented and validated.
 
 The long-term project direction is defined separately in:
 
 ```text
+
 docs/PROJECT_CHARTER.md
+
 ```
 
 The current project state is tracked in:
 
 ```text
+
 docs/PROJECT_STATUS.md
+
 ```
 
 ---
 
 ## 2. Current System State
 
-At the current milestone, there is no executable recommendation system.
-
-The repository currently provides only the project foundation.
+The repository currently provides an executable offline recommendation and evaluation system.
 
 Implemented architecture:
 
 ```text
+
 ecommerce-recsys
-        |
-        +-----------------------------+
-        |                             |
-        v                             v
-Project Documentation          Project Directory Skeleton
-        |                             |
-        |                             |
-        +--> PROJECT_CHARTER.md       +--> data/
-        +--> PROJECT_STATUS.md        +--> src/
-        +--> ARCHITECTURE_CURRENT.md  +--> tests/
-                                      +--> benchmarks/
-                                      +--> configs/
-                                      +--> scripts/
-                                      +--> artifacts/
-                                      +--> deployment/
+
+    |
+
+    +-----------------------------+
+
+    |                             |
+
+    v                             v
+
+Project Documentation Offline Recommendation System
+
+                                  |
+
+                                  +--> Processed Dataset
+
+                                  +--> Temporal Evaluation Split
+
+                                  +--> Recommendation Models
+
+                                  +--> Evaluation Harness
+
+                                  +--> Benchmark Artifacts
+
+                                  +--> Analysis Scripts
+
 ```
 
-No data-processing pipeline, recommendation model, API, or deployed runtime currently exists.
+The current system supports:
+
+* processed interaction data
+
+* temporal train / validation / test splitting
+
+* recommendation baselines
+
+* personalized ItemKNN recommendation
+
+* implicit-feedback ALS / Matrix Factorization
+
+* offline recommendation evaluation
+
+* benchmark generation
+
+* recommendation coverage analysis
+
+* recommendation concentration analysis
+
+There is currently no production online-serving runtime.
 
 ---
 
@@ -68,32 +105,64 @@ No data-processing pipeline, recommendation model, API, or deployed runtime curr
 Current repository structure:
 
 ```text
+
 ecommerce-recsys/
+
 ├── .github/
+
 ├── artifacts/
+
 ├── benchmarks/
+
 ├── configs/
+
 ├── data/
-│   ├── interim/
-│   ├── processed/
-│   └── raw/
+
+│ ├── interim/
+
+│ ├── processed/
+
+│ └── raw/
+
 ├── deployment/
+
 ├── docs/
-│   ├── PROJECT_CHARTER.md
-│   ├── PROJECT_STATUS.md
-│   └── ARCHITECTURE_CURRENT.md
+
+│ ├── PROJECT_CHARTER.md
+
+│ ├── PROJECT_STATUS.md
+
+│ ├── ARCHITECTURE_CURRENT.md
+
+│ ├── DATA_CONTRACT.md
+
+│ ├── DATASET_CARD.md
+
+│ ├── DATA_QUALITY_REPORT.md
+
+│ ├── EVALUATION_PROTOCOL.md
+
+│ └── BASELINE_REPORT.md
+
 ├── notebooks/
+
 ├── requirements/
+
 ├── scripts/
+
 ├── src/
+
 └── tests/
-    ├── integration/
-    └── unit/
+
+├── integration/
+
+└── unit/
+
 ```
 
-Most directories are intentionally empty.
+The repository now contains implemented data, evaluation, recommendation, benchmark, and analysis components.
 
-They reserve logical project boundaries but do not imply that those components have already been implemented.
+Some directories remain reserved for future milestones.
 
 ---
 
@@ -108,11 +177,17 @@ Current implemented documentation:
 Defines:
 
 * project purpose
+
 * recommendation-system scope
+
 * expected recommendation surfaces
+
 * learning principles
+
 * production principles
+
 * non-goals
+
 * high-level future direction
 
 This document describes what the project intends to become.
@@ -124,10 +199,15 @@ This document describes what the project intends to become.
 Defines:
 
 * current milestone
+
 * completed work
+
 * active work
+
 * known blockers
+
 * next tasks
+
 * current validation state
 
 This document is expected to change frequently.
@@ -139,52 +219,60 @@ This document is expected to change frequently.
 Defines:
 
 * architecture that exists now
+
 * implemented system boundaries
+
 * current runtime state
+
 * explicit non-existent components
 
 This document must not contain speculative implementation claims.
 
 ---
 
-### 4.2 Data Directories
+### 4.2 Data Layer
 
-Current data structure:
+Current processed data structure:
 
 ```text
+
 data/
+
 ├── raw/
+
 ├── interim/
+
 └── processed/
+
+├── interactions.parquet
+
+├── items.parquet
+
+├── train.parquet
+
+├── val.parquet
+
+└── test.parquet
+
 ```
 
-Current status:
+The processed interaction dataset contains implicit user behavior.
 
-```text
-No dataset has been downloaded.
-No data files exist.
-No data transformation pipeline exists.
-```
+The processed catalog contains item-level metadata.
 
-Intended responsibilities:
+The temporal split produces training, validation, and test datasets used by the recommendation evaluation pipeline.
 
 #### `data/raw/`
 
-Reserved for immutable or source-level downloaded data.
-
-No raw data is currently present.
+Reserved for source-level downloaded data.
 
 #### `data/interim/`
 
 Reserved for intermediate processing artifacts.
 
-No interim artifacts currently exist.
-
 #### `data/processed/`
 
-Reserved for canonical processed datasets used by later pipelines.
-
-No processed datasets currently exist.
+Contains canonical datasets consumed by recommendation and evaluation components.
 
 ---
 
@@ -193,35 +281,54 @@ No processed datasets currently exist.
 Current source directory:
 
 ```text
-src/
+
+src/ecommerce_recsys/
+
 ```
 
-Current status:
+The source package now contains implemented data, evaluation, and recommendation components.
+
+Current logical structure:
 
 ```text
-EMPTY
+
+src/ecommerce_recsys/
+
+├── data/
+
+├── evaluation/
+
+└── recommendation/
+
 ```
 
-There is currently no production Python package or application code.
+Implemented responsibilities include:
 
-Not yet implemented:
+* data schema and processing
 
-* data ingestion
-* schema validation
-* preprocessing
-* feature engineering
-* recommendation baselines
-* collaborative filtering
-* matrix factorization
-* neural retrieval
-* candidate generation
-* ranking
-* re-ranking
-* evaluation
-* serving
-* monitoring
+* temporal data splitting
 
-Source-code subpackages will be introduced only when their corresponding milestone begins.
+* recommendation metrics
+
+* benchmark evaluation
+
+* recommendation models
+
+Current recommendation models include:
+
+* Random Recommender
+
+* Global Popularity
+
+* Recent Popularity
+
+* Category Popularity
+
+* ItemKNN
+
+* ALS / Matrix Factorization
+
+Neural retrieval, candidate generation, ranking, and re-ranking are not yet implemented.
 
 ---
 
@@ -230,83 +337,120 @@ Source-code subpackages will be introduced only when their corresponding milesto
 Current test directories:
 
 ```text
+
 tests/
+
 ├── integration/
+
 └── unit/
+
 ```
 
-Current status:
+The unit test suite validates isolated recommendation, evaluation, data, and model behavior.
+
+Current validation includes tests for:
+
+* recommendation models
+
+* recommendation metrics
+
+* temporal splitting
+
+* benchmark evaluation
+
+* ItemKNN behavior
+
+* Matrix Factorization behavior
+
+* popularity models
+
+The latest known unit-test result is:
 
 ```text
-No tests implemented.
-pytest not configured yet.
+
+56 passed, 1 warning
+
 ```
 
-The directories currently represent only intended test boundaries.
-
-### Planned responsibility
-
-`tests/unit/`
-
-Will contain isolated tests for functions and components.
-
-`tests/integration/`
-
-Will contain tests that validate interactions between multiple project components.
-
-These are planned roles, not currently implemented test suites.
+Integration-test infrastructure exists but the project is currently primarily validated through unit tests and offline benchmark execution.
 
 ---
 
 ## 7. Benchmark Architecture
 
-Current directory:
+Current benchmark structure:
 
 ```text
+
 benchmarks/
+
+├── baseline/
+
+│ └── baseline_v1.json
+
+└── ...
+
 ```
 
-Current status:
+The benchmark system evaluates recommendation models using the shared evaluation harness.
+
+Current evaluation outputs include:
+
+* Recall@K / Hit Rate@K
+
+* MRR@K
+
+* NDCG@K
+
+* Coverage
+
+* average recommendation latency
+
+* P50 latency
+
+* P95 latency
+
+* P99 latency
+
+The canonical Milestone 4 baseline artifact is:
 
 ```text
-EMPTY
+
+benchmarks/baseline/baseline_v1.json
+
 ```
 
-No benchmark has been created.
+This artifact remains frozen.
 
-No test-user split exists.
-
-No recommendation metric has been implemented.
-
-No benchmark version is frozen.
-
-A benchmark must not be claimed as authoritative until the evaluation milestone creates and validates it.
+Milestone 5 introduced separate ItemKNN experiment and benchmark artifacts without modifying the frozen baseline snapshot.
 
 ---
 
 ## 8. Artifact Architecture
 
-Current directory:
+Current artifact directory:
 
 ```text
+
 artifacts/
+
 ```
 
-Current status:
+No production model-serving artifacts are currently required.
+
+Offline benchmark and experiment outputs are stored under the benchmark structure.
+
+Current ItemKNN experiment artifacts include:
 
 ```text
-EMPTY
+
+benchmarks/item_knn_shrinkage_sweep.csv
+
+benchmarks/item_knn_final.csv
+
 ```
 
-No model artifacts exist.
-
-No embedding matrices exist.
-
-No ANN indexes exist.
-
-No model manifests exist.
-
-The directory is reserved for future versioned model and serving artifacts.
+No ANN indexes or production model registry artifacts currently exist.
 
 ---
 
@@ -315,38 +459,74 @@ The directory is reserved for future versioned model and serving artifacts.
 Current directory:
 
 ```text
+
 configs/
+
 ```
 
-Current status:
+The project currently uses model defaults and explicit experiment configuration inside the implemented recommendation components and benchmark scripts.
+
+The current ItemKNN configuration is:
 
 ```text
-EMPTY
+
+n_neighbors = 20
+
+min_item_interactions = 5
+
+shrinkage_lambda = 100
+
 ```
 
-There are currently no model, training, evaluation, or serving configurations.
+The ALS implementation currently uses:
 
-Configuration conventions will be introduced when implementation requirements become concrete.
+```text
+
+factors = 64
+
+iterations = 20
+
+regularization = 0.01
+
+```
+
+These configurations are implementation-level model settings rather than a production configuration-management system.
+
+A dedicated configuration architecture may be introduced later if model experimentation requires it.
 
 ---
 
 ## 10. Script Architecture
 
-Current directory:
+Current script directory:
 
 ```text
+
 scripts/
+
 ```
 
-Current status:
+Implemented scripts cover:
 
-```text
-EMPTY
-```
+* data processing
 
-No executable data, training, evaluation, or artifact-building scripts currently exist.
+* dataset splitting
 
-Scripts will be added as milestones require reproducible command-line workflows.
+* EDA
+
+* baseline benchmarking
+
+* ItemKNN shrinkage experiments
+
+* final ItemKNN benchmarking
+
+* ItemKNN candidate-availability analysis
+
+* recommendation concentration analysis
+
+Scripts provide reproducible command-line workflows for offline experimentation.
+
+They are not production service entrypoints.
 
 ---
 
@@ -355,20 +535,30 @@ Scripts will be added as milestones require reproducible command-line workflows.
 Current directory:
 
 ```text
+
 notebooks/
+
 ```
 
-Current status:
+Notebooks are used for exploration and analysis only.
+
+They are not the production execution path of the recommendation system.
+
+The primary production-oriented logic remains in:
 
 ```text
-EMPTY
+
+src/
+
 ```
 
-Notebooks will be used for exploration and analysis only.
+and reproducible experiment workflows remain in:
 
-They must not become the production execution path of the recommendation system.
+```text
 
-The first expected notebook is associated with data understanding and EDA after a dataset is selected.
+scripts/
+
+```
 
 ---
 
@@ -377,22 +567,28 @@ The first expected notebook is associated with data understanding and EDA after 
 Current directory:
 
 ```text
+
 deployment/
+
 ```
 
 Current status:
 
 ```text
-EMPTY
+
+NOT IMPLEMENTED
+
 ```
 
 There is currently:
 
-* no Dockerfile
-* no Docker Compose configuration
-* no cloud deployment
-* no infrastructure manifest
-* no production environment
+* no production recommendation API
+
+* no Dockerized recommendation service
+
+* no cloud recommendation deployment
+
+* no production infrastructure manifest
 
 Deployment work belongs to later milestones.
 
@@ -403,170 +599,320 @@ Deployment work belongs to later milestones.
 Current directory:
 
 ```text
+
 .github/
+
 ```
 
-Current status:
+The repository has an established CI quality gate.
+
+Current conceptual flow:
 
 ```text
-No GitHub Actions workflow exists yet.
-```
 
-The initial CI quality gate is expected to be introduced during Milestone 0.
-
-The initial expected flow is:
-
-```text
 Checkout
-   |
-   v
+
+|
+
+v
+
 Install Python
-   |
-   v
+
+|
+
+v
+
 Install Dependencies
-   |
-   v
+
+|
+
+v
+
 Lint
-   |
-   v
+
+|
+
+v
+
 Tests
+
 ```
 
-This is a planned Milestone 0 component and must not be described as active until the workflow file exists and passes.
+The CI pipeline validates repository quality and test execution.
+
+CI does not currently deploy a recommendation service.
 
 ---
 
 ## 14. Current Runtime Architecture
 
-There is currently **no runtime architecture**.
+There is currently **no online runtime architecture**.
 
 Specifically:
 
 ```text
+
 HTTP Request
-    |
-    X
+
+|
+
+X
+
 ```
 
-No service is listening for recommendation requests.
+No production service is listening for recommendation requests.
 
-No application process exists.
+No recommendation API is currently implemented.
 
-No model is loaded into memory.
+The current system is an offline ML and evaluation system.
 
-No external service is required.
+The implemented execution path is:
 
-No database is required.
+```text
 
-No vector database exists.
+Command / Script
 
-No cache exists.
+  |
+
+  v
+
+Processed Dataset
+
+  |
+
+  v
+
+Recommendation Model
+
+  |
+
+  v
+
+Top-K Recommendations
+
+  |
+
+  v
+
+Evaluation Harness
+
+  |
+
+  v
+
+Benchmark / Analysis Artifact
+
+```
 
 ---
 
 ## 15. Current Offline ML Architecture
 
-There is currently **no offline ML pipeline**.
+The project now contains a functional offline ML recommendation pipeline.
 
-Current state:
+Current flow:
 
 ```text
-Raw Dataset
+
+Processed Interactions
+
     |
-    X
+
+    v
+
+Temporal Train / Validation / Test Split
+
+    |
+
+    +----------------------------+
+
+    |                            |
+
+    v                            v
+
+Recommendation Models Evaluation Harness
+
+    |                            |
+
+    |                            v
+
+    |                     Recommendation Metrics
+
+    |                            |
+
+    +------------->--------------+
+
+                 |
+
+                 v
+
+          Benchmark Artifacts
+
 ```
 
-Missing components include:
+Current recommendation model layer:
 
 ```text
-Dataset
-   ->
-Validation
-   ->
-Cleaning
-   ->
-Canonical Interactions
-   ->
-Temporal Split
-   ->
-Model Training
-   ->
-Evaluation
-   ->
-Artifacts
+
+Recommendation Model
+
+    |
+
+    +-- Random
+
+    +-- Global Popularity
+
+    +-- Recent Popularity
+
+    +-- Category Popularity
+
+    +-- ItemKNN
+
+    +-- ALS / Matrix Factorization
+
 ```
 
-All of these are future milestones.
+The system currently supports personalized recommendation through ItemKNN and ALS.
+
+Candidate generation as a separate architectural layer has not yet been introduced.
 
 ---
 
 ## 16. Current Dependency Architecture
 
-No Python dependency contract has been frozen yet.
+The project uses a Python dependency contract defined through the repository's packaging and requirement configuration.
 
-Current state:
+Core development dependencies include:
 
-```text
-Python environment configuration: pending
-pyproject.toml: pending
-runtime dependencies: pending
-development dependencies: pending
-```
+* Python 3.13
 
-The project is currently being operated from a Conda shell, but that does not yet represent the project's official reproducible dependency specification.
+* pytest
+
+* Ruff
+
+* NumPy
+
+* pandas
+
+* SciPy
+
+* scikit-learn
+
+* implicit
+
+The implicit recommendation dependency currently provides the ALS implementation.
+
+The project does not yet require production-serving dependencies such as FastAPI, Redis, Kafka, or a vector database.
 
 ---
 
 ## 17. Current Data Flow
 
-No functional data flow exists yet.
-
-The current project flow is organizational:
+The current functional data flow is:
 
 ```text
-Master Roadmap
-      |
-      v
-PROJECT_CHARTER.md
-      |
-      v
-PROJECT_STATUS.md
-      |
-      v
-ARCHITECTURE_CURRENT.md
-      |
-      v
-Future Implementation
+
+Processed Interaction Dataset
+
+    |
+
+    v
+
+Temporal Split
+
+    |
+
+    +----------------------+
+
+    |                      |
+
+    v                      v
+
+Training Data Validation / Test
+
+    |                      |
+
+    v                      |
+
+Recommendation Model |
+
+    |                      |
+
+    +----------+-----------+
+
+               |
+
+               v
+
+         Top-K Recommendations
+
+               |
+
+               v
+
+        Evaluation Harness
+
+               |
+
+               v
+
+    Metrics + Coverage + Latency
+
+               |
+
+               v
+
+    Benchmark / Analysis Artifacts
+
 ```
 
-No user interaction data currently enters the system.
+The current pipeline is offline.
 
-No recommendation output is currently produced.
+No real-time user request currently enters the recommendation system.
 
 ---
 
 ## 18. Current External Dependencies
 
-Runtime external dependencies:
+Current ML dependencies include:
 
 ```text
-None
+
+NumPy
+
+pandas
+
+SciPy
+
+scikit-learn
+
+implicit
+
 ```
 
-The repository does not currently require:
+The current offline recommendation system does not require:
 
 * Qdrant
+
 * PostgreSQL
+
 * Redis
+
 * Kafka
+
 * MLflow
+
 * FastAPI
+
 * PyTorch
+
 * LightGBM
+
 * Docker
+
 * cloud services
 
-Some of these may be introduced in future milestones if justified.
+Some of these may be introduced in future milestones if justified by the architecture.
 
 ---
 
@@ -574,78 +920,85 @@ Some of these may be introduced in future milestones if justified.
 
 The following components are part of the long-term roadmap but do not currently exist.
 
-### Data
-
-* dataset downloader
-* canonical event schema
-* item schema
-* cleaning pipeline
-* interaction dataset
-* temporal split
-
-### Baselines
-
-* random recommender
-* global popularity
-* recent popularity
-* category popularity
-
-### Collaborative Recommendation
-
-* ItemKNN
-* UserKNN
-* matrix factorization
-* BPR
-
-### Retrieval
+### Retrieval Architecture
 
 * candidate-generator abstraction
-* matrix-factorization retrieval
+
 * hybrid candidate generation
+
 * Two-Tower model
+
 * ANN index
+
 * FAISS
+
 * Qdrant
 
 ### Ranking
 
 * ranking dataset
+
 * ranking features
+
 * LightGBM ranker
+
 * XGBoost ranker
+
+* learned re-ranking
 
 ### Advanced Modeling
 
+* BPR production model
+
+* neural retrieval
+
 * sequential recommender
+
 * GRU recommender
+
 * SASRec
+
 * diversity re-ranker
+
 * novelty re-ranker
 
 ### Serving
 
 * FastAPI
+
 * RecommendationService
+
 * recommendation endpoints
+
 * item-similarity endpoint
+
 * health endpoint
+
 * readiness endpoint
 
 ### Reliability
 
-* fallback implementation
+* production fallback architecture
+
 * cache
-* monitoring
+
+* online monitoring
+
 * Prometheus
+
 * Grafana
-* structured logging
+
+* structured production logging
 
 ### Infrastructure
 
 * Docker
+
 * Docker Compose
-* GitHub Actions
+
 * production deployment
+
+* cloud infrastructure
 
 These components must not be assumed to exist by future contributors or AI assistants.
 
@@ -656,15 +1009,21 @@ These components must not be assumed to exist by future contributors or AI assis
 The project intentionally distinguishes between:
 
 ```text
+
 PROJECT_CHARTER
+
 "What do we eventually want to build?"
+
 ```
 
 and:
 
 ```text
+
 ARCHITECTURE_CURRENT
+
 "What actually exists right now?"
+
 ```
 
 For example:
@@ -672,19 +1031,49 @@ For example:
 The project charter may describe:
 
 ```text
+
 Candidate Generation
-    ->
+
+->
+
 Ranking
-    ->
+
+->
+
 Re-ranking
+
 ```
 
 but the current architecture correctly reports:
 
 ```text
+
 Candidate Generation: NOT IMPLEMENTED
+
 Ranking: NOT IMPLEMENTED
+
 Re-ranking: NOT IMPLEMENTED
+
+```
+
+The current architecture instead contains:
+
+```text
+
+Temporal Evaluation
+
+->
+
+Recommendation Models
+
+->
+
+Top-K Recommendations
+
+->
+
+Offline Evaluation
+
 ```
 
 This distinction must be maintained throughout the project.
@@ -700,11 +1089,17 @@ Examples:
 After data foundation:
 
 ```text
+
 Raw Dataset
-    ->
+
+->
+
 Validation
-    ->
+
+->
+
 Canonical Interactions
+
 ```
 
 may become part of the current architecture.
@@ -712,11 +1107,17 @@ may become part of the current architecture.
 After evaluation foundation:
 
 ```text
+
 Canonical Interactions
-    ->
+
+->
+
 Temporal Split
-    ->
+
+->
+
 Evaluator
+
 ```
 
 may be added.
@@ -724,14 +1125,42 @@ may be added.
 After recommendation models:
 
 ```text
+
 User History
-    ->
-Candidate Generator
-    ->
-Top-N Candidates
+
+->
+
+Personalized Recommender
+
+->
+
+Top-N Recommendations
+
 ```
 
-may become real architecture.
+may become part of the current architecture.
+
+After candidate generation is implemented:
+
+```text
+
+User History
+
+->
+
+Candidate Generators
+
+->
+
+Candidate Set
+
+->
+
+Ranking
+
+```
+
+may become part of the current architecture.
 
 Only validated components should be promoted into this document.
 
@@ -739,46 +1168,113 @@ Only validated components should be promoted into this document.
 
 ## 22. Current Architecture Summary
 
-As of 2026-09-05:
+As of 2026-09-12:
 
 ```text
+
 Production E-Commerce Recommendation Platform
 
 IMPLEMENTED
+
 --------------------------------
 
-Git Repository
-      |
-      +--> Base Directory Structure
-      |
-      +--> Project Documentation
-             |
-             +--> PROJECT_CHARTER.md
-             +--> PROJECT_STATUS.md
-             +--> ARCHITECTURE_CURRENT.md
+Repository Foundation
+
+    |
+
+    +--> Project Documentation
+
+    |
+
+    +--> Data Processing
+
+    |
+
+    +--> Temporal Evaluation Split
+
+    |
+
+    +--> Recommendation Models
+
+    |       |
+
+    |       +--> Random
+
+    |       +--> Global Popularity
+
+    |       +--> Recent Popularity
+
+    |       +--> Category Popularity
+
+    |       +--> ItemKNN
+
+    |       +--> ALS / Matrix Factorization
+
+    |
+
+    +--> Unified Evaluation Harness
+
+    |
+
+    +--> Benchmark Artifacts
+
+    |
+
+    +--> Offline Model Analysis
+
+
 
 
 NOT YET IMPLEMENTED
+
 --------------------------------
 
-Data Pipeline
-Evaluation
-Baselines
-Collaborative Filtering
-Matrix Factorization
-Candidate Generation
-Two-Tower
+Candidate Generation Architecture
+
+Hybrid Retrieval
+
+Two-Tower Retrieval
+
 ANN
+
 Ranking
+
 Re-ranking
+
 Sequential Recommendation
-FastAPI
-Monitoring
-Docker
-CI
+
+Online Recommendation API
+
+Caching
+
+Online Monitoring
+
+Production Infrastructure
+
 Cloud Deployment
+
 ```
 
-The system is currently in the **project-foundation stage**.
+The system is currently in the **offline personalized recommendation stage**.
 
-No recommendation behavior exists yet.
+The project has progressed beyond the initial foundation and baseline stages.
+
+Milestones 0–5 have established:
+
+* a reproducible data foundation
+
+* temporal evaluation
+
+* non-personalized baselines
+
+* personalized ItemKNN recommendation
+
+* implicit-feedback ALS / Matrix Factorization
+
+* model-level benchmarking
+
+* recommendation coverage and concentration analysis
+
+The next architectural step is to deepen matrix-factorization modeling and then introduce an explicit candidate-generation layer.
+
+Production serving architecture should remain deferred until the retrieval and ranking strategy has been established and validated.
