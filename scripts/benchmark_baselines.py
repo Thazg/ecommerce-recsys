@@ -56,9 +56,15 @@ def main() -> None:
             window_days=RECENT_WINDOW_DAYS,
         ),
         "category_popularity": CategoryPopularityRecommender(),
-        "item_knn": ItemKNNRecommender(
+        "item_knn_v1": ItemKNNRecommender(
             n_neighbors=20,
             min_item_interactions=5,
+            shrinkage_lambda=0.0,
+        ),
+        "item_knn_v2": ItemKNNRecommender(
+            n_neighbors=20,
+            min_item_interactions=5,
+            shrinkage_lambda=100.0,
         ),
         "als": MatrixFactorizationRecommender(
             factors=64,
@@ -125,11 +131,19 @@ def main() -> None:
                 "model_version": "v1",
                 "metrics": results["category_popularity"],
             },
-            "item_knn": {
+            "item_knn_v1": {
                 "model_version": "v1",
                 "n_neighbors": 20,
                 "min_item_interactions": 5,
-                "metrics": results["item_knn"],
+                "shrinkage_lambda": 0.0,
+                "metrics": results["item_knn_v1"],
+            },
+            "item_knn_v2": {
+                "model_version": "v2",
+                "n_neighbors": 20,
+                "min_item_interactions": 5,
+                "shrinkage_lambda": 10.0,
+                "metrics": results["item_knn_v2"],
             },
             "als": {
                 "model_version": "v1",
