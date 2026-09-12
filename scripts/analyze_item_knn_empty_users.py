@@ -20,9 +20,7 @@ def main() -> None:
     recommender.fit(train)
 
     user_histories = (
-        train.groupby("user_id")["item_id"]
-        .apply(lambda x: x.astype(str).tolist())
-        .to_dict()
+        train.groupby("user_id")["item_id"].apply(lambda x: x.astype(str).tolist()).to_dict()
     )
 
     total_users = 0
@@ -34,9 +32,7 @@ def main() -> None:
     for user_id in test["user_id"].astype(str):
         history = user_histories.get(user_id, [])
 
-        indexed_history = [
-            item for item in history if item in recommender._item_neighbors
-        ]
+        indexed_history = [item for item in history if item in recommender._item_neighbors]
 
         has_positive_neighbor = False
 
