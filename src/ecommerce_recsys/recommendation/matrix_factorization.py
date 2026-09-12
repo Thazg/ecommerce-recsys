@@ -5,6 +5,8 @@ import pandas as pd
 from implicit.als import AlternatingLeastSquares
 from scipy.sparse import csr_matrix
 
+from ecommerce_recsys.recommendation.popularity import PopularityRecommender
+
 
 class MatrixFactorizationRecommender:
     def __init__(
@@ -12,12 +14,15 @@ class MatrixFactorizationRecommender:
         factors: int = 64,
         iterations: int = 20,
         regularization: float = 0.01,
+        random_state: int = 42,
     ) -> None:
         self.factors = factors
         self.iterations = iterations
         self.regularization = regularization
+        self.random_state = random_state
 
         self._model = None
+        self._fallback_recommender: PopularityRecommender | None = None
         self._user_item_matrix: csr_matrix | None = None
 
         self._user_to_index: dict[str, int] = {}
@@ -30,7 +35,6 @@ class MatrixFactorizationRecommender:
         items = sorted(interactions["item_id"].unique())
 
         self._user_to_index = {user_id: index for index, user_id in enumerate(users)}
-
         self._item_to_index = {item_id: index for index, item_id in enumerate(items)}
 
         self._index_to_user = users
@@ -69,26 +73,35 @@ class MatrixFactorizationRecommender:
             factors=self.factors,
             iterations=self.iterations,
             regularization=self.regularization,
-            random_state=42,
+            random_state=self.random_state,
         )
 
         self._model.fit(self._user_item_matrix)
 
-    def recommend(self, user_id: str, k: int = 10) -> list[str]:
+        self._fallback_recommender = PopularityRecommender()
+        self._fallback_recommender.fit(interactions)
+
+    def recommend(
+        self,
+        user_id: str,
+        k: int = 10,
+    ) -> list[str]:
         if self._model is None:
             raise RuntimeError("Model has not been fitted. Call fit() first.")
 
         if self._user_item_matrix is None:
             raise RuntimeError("User-item matrix has not been built. Call fit() first.")
 
+        if self._fallback_recommender is None:
+            raise RuntimeError("Fallback recommender has not been fitted. Call fit() first.")
+
         if k <= 0:
             return []
 
         if user_id not in self._user_to_index:
-            return []
+            return self._fallback_recommender.recommend(k)
 
         user_index = self._user_to_index[user_id]
-
         k = min(k, len(self._index_to_item))
 
         item_indices, _ = self._model.recommend(

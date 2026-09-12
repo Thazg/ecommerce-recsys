@@ -135,7 +135,7 @@ def test_recommend_filters_already_liked_items(
     assert len(set(recommendations)) == len(recommendations)
 
 
-def test_recommend_unknown_user_returns_empty_list(
+def test_recommend_unknown_user_uses_popularity_fallback(
     interactions: pd.DataFrame,
 ) -> None:
     recommender = MatrixFactorizationRecommender(
@@ -143,15 +143,14 @@ def test_recommend_unknown_user_returns_empty_list(
         iterations=5,
         regularization=0.01,
     )
-
     recommender.fit(interactions)
 
     recommendations = recommender.recommend(
         "unknown_user",
-        k=10,
+        k=2,
     )
 
-    assert recommendations == []
+    assert recommendations == ["item_2", "item_3"]
 
 
 def test_recommend_before_fit_raises() -> None:
