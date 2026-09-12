@@ -66,6 +66,21 @@ def test_recommend_invalid_k(interactions):
         rec.recommend(user_history=["A"], k=0)
 
 
+def test_set_shrinkage_lambda_updates_value():
+    rec = ItemKNNRecommender(shrinkage_lambda=0.0)
+
+    rec.set_shrinkage_lambda(100.0)
+
+    assert rec._shrinkage_lambda == 100.0
+
+
+def test_set_shrinkage_lambda_rejects_negative_value():
+    rec = ItemKNNRecommender()
+
+    with pytest.raises(ValueError, match="shrinkage_lambda"):
+        rec.set_shrinkage_lambda(-1.0)
+
+
 def test_fit_requires_user_id():
     rec = ItemKNNRecommender(min_item_interactions=1)
     with pytest.raises(ValueError, match="user_id"):
@@ -93,10 +108,10 @@ def test_similarity_based_ranking(interactions):
     assert "C" not in result  # C đã seen
 
 
-def test_unknown_history_item_returns_empty(interactions):
-    """Item không có trong training space → không có neighbors → trả về []."""
+def test_unknown_history_item_uses_popularity_fallback(interactions):
+    """Item không có trong training space → không có neighbors → trả về popularity fallback."""
     rec = ItemKNNRecommender(n_neighbors=3, min_item_interactions=1)
     rec.fit(interactions)
 
     result = rec.recommend(user_history=["UNKNOWN_ITEM"], k=5)
-    assert result == []
+    assert result == ["A", "B", "C"]

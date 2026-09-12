@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 import pandas as pd
 import pytest
 
@@ -122,10 +124,13 @@ def test_evaluate_item_knn(
         min_item_interactions=1,
     )
 
+    recommender.fit(train)
+
     metrics = evaluate_recommender(
         recommender=recommender,
         train=train,
         test=test,
+        fit=False,
         k_values=(1, 2),
         total_catalog_items=3,
     )
@@ -134,6 +139,31 @@ def test_evaluate_item_knn(
     assert "MRR@2" in metrics
     assert "NDCG@2" in metrics
     assert "coverage" in metrics
+
+
+def test_evaluate_recommender_fit_false_does_not_refit(
+    train: pd.DataFrame,
+    test: pd.DataFrame,
+) -> None:
+    recommender = ItemKNNRecommender(
+        n_neighbors=2,
+        min_item_interactions=1,
+    )
+    recommender.fit(train)
+
+    recommender.fit = Mock(side_effect=AssertionError("fit() should not be called"))
+
+    metrics = evaluate_recommender(
+        recommender=recommender,
+        train=train,
+        test=test,
+        fit=False,
+        k_values=(1, 2),
+        total_catalog_items=3,
+    )
+
+    assert "HR@1" in metrics
+    recommender.fit.assert_not_called()
 
 
 def test_evaluate_als(
