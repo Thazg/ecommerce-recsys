@@ -177,6 +177,8 @@ Category Popularity	3.5890%	5.6902%	8.5063%	3.6614%
 ItemKNN	3.5735%	4.8078%	5.8972%	3.1628%
 ALS	1.5223%	2.1807%	3.0636%	1.4577%
 
+Source note: the table above is the frozen M4 baseline (`benchmarks/baseline/baseline_v1.json`, ALS factors 64). ItemKNN λ=100 numbers come from `benchmarks/item_knn_final.csv`. The M6 validation-selected ALS final (128/20/0.01, HR@20 ≈ 4.24%) lives separately in `benchmarks/mf/als_final_v1.json` and `docs/MF_EXPERIMENT_REPORT.md`.
+
 At Recall@20, the current ranking is:
 
 Category Popularity: 8.5063%

@@ -561,32 +561,14 @@ Will document and eventually freeze the offline evaluation methodology.
 
 ## 19. Current Project State
 
-Current milestone:
+This charter is timeless and does not track implementation progress.
 
-**Milestone 0 — Project Charter and Repository Foundation**
+For the current milestone, completed work, and validation state, see:
 
-Currently completed:
-
-* Git repository initialized
-* default branch configured as `main`
-* initial directory structure created
-
-Not yet completed:
-
-* project source-of-truth documents
-* Python project configuration
-* development dependencies
-* linting
-* tests
-* CI
-* dataset selection
-* recommendation models
-
-No recommendation model has been implemented.
-
-No dataset has been selected.
-
-No benchmark has been frozen.
+```text
+docs/PROJECT_STATUS.md
+docs/ARCHITECTURE_CURRENT.md
+```
 
 ---
 

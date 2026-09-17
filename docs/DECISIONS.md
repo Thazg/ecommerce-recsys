@@ -1136,9 +1136,9 @@ Recommendation Concentration
 M5 analysis found:
 
 200,028 evaluation users
-195,237 users receiving recommendations
+183,860 users receiving recommendations (200,028 - 16,168 with no candidates)
 60,840 unique recommended items
-3,573,113 recommendation slots
+3,573,113 recommendation slots (average below 20 per receiving user after seen-filtering)
 Top 10 items: approximately 3.72% of slots
 Top 100 items: approximately 18.83% of slots
 Top 1,000 items: approximately 45.75% of slots

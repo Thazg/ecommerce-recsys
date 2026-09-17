@@ -482,13 +482,15 @@ The ALS implementation currently uses:
 
 ```text
 
-factors = 64
+factors = 128
 
 iterations = 20
 
 regularization = 0.01
 
 ```
+
+This is the M6 validation-selected final configuration (see `benchmarks/mf/als_final_v1.json` and `docs/MF_EXPERIMENT_REPORT.md`). The code default in `MatrixFactorizationRecommender` remains `64/20/0.01` for backward-compatible baselines; M4 baseline numbers in `benchmarks/baseline/baseline_v1.json` use factors 64.
 
 These configurations are implementation-level model settings rather than a production configuration-management system.
 

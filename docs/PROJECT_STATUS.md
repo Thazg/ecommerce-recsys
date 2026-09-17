@@ -1,6 +1,6 @@
 Project Status
 
-**Last updated:** 2026-09-12
+**Last updated:** 2026-09-17
 
 **Repository:** `ecommerce-recsys`
 
@@ -8,7 +8,7 @@ Project Status
 
 **Current release:** Pre-v0.1
 
-**Current milestone:** Milestone 6 — Ready to Start
+**Current milestone:** Milestone 6 — Completed (ready for Milestone 7)
 
 ---
 
@@ -34,11 +34,13 @@ The project follows a staged development process:
 
 * build production-oriented serving and deployment infrastructure
 
-The current system has completed Milestones 0–5.
+The current system has completed Milestones 0–6.
 
 Milestone 4 established the non-personalized baseline performance floor.
 
 Milestone 5 introduced personalized collaborative filtering through ItemKNN and investigated support-aware similarity shrinkage.
+
+Milestone 6 completed matrix-factorization modeling (educational MF/BPR plus production ALS validation-based selection, final ALS 128/20/0.01). See `docs/MF_EXPERIMENT_REPORT.md` and `benchmarks/mf/als_final_v1.json`.
 
 The current baseline floor remains:
 
@@ -1046,15 +1048,23 @@ Random ≈ 0.004%
 
 ```
 
-Extended personalized references:
+Extended personalized references (M4 baseline config):
 
 ```text
 
-ALS ≈ 3.06%
+ALS (64/20/0.01) ≈ 3.06%
 
 ItemKNN v1 ≈ 5.57%
 
 ItemKNN λ=100 ≈ 5.90%
+
+```
+
+M6 ALS final selection (validation-based, test evaluated once):
+
+```text
+
+ALS (128/20/0.01) HR@20 ≈ 4.24% — see benchmarks/mf/als_final_v1.json
 
 ```
 
@@ -1322,21 +1332,21 @@ Milestone 5 — Personalized Recommendation
 
 Milestone 6 — Matrix Factorization for Implicit Feedback
 
-[ ] Ready to Start
+[x] Completed
 
-[ ] Educational Matrix Factorization
+[x] Educational Matrix Factorization
 
-[ ] Implicit-feedback modeling analysis
+[x] Implicit-feedback modeling analysis
 
-[ ] BPR / pairwise learning study
+[x] BPR / pairwise learning study
 
-[ ] Existing ALS evaluation
+[x] Existing ALS evaluation
 
-[ ] Matrix-factorization experiments
+[x] Matrix-factorization experiments
 
-[ ] Personalized model comparison
+[x] Personalized model comparison
 
-[ ] MF experiment report
+[x] MF experiment report
 
 ```
 
