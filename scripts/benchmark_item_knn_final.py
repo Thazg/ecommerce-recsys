@@ -39,7 +39,7 @@ def main() -> None:
             test=test,
             items=items,
             k_values=(5, 10, 20),
-            total_catalog_items=len(items),
+            total_catalog_items=items["item_id"].nunique(),
             fit=False,
         )
 
