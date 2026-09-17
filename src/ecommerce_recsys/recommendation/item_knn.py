@@ -11,22 +11,14 @@ from ecommerce_recsys.recommendation.popularity import (
 
 
 class ItemKNNRecommender:
-    """Item-based collaborative filtering using cosine similarity.
+    """Item-based collaborative filtering with cosine similarity.
 
-    For each item, stores top-n_neighbors most similar items based on
-    cosine similarity of their user interaction vectors.
+    Stores top-N neighbors per item from binary user-item vectors,
+    scores candidates by summing shrinkage-adjusted similarities
+    over the user's history.
 
-    At inference time, scores candidate items by summing their
-    shrinkage-adjusted similarity to all items in the user's history.
-
-    Similarity is stored together with pairwise support so that different
-    shrinkage values can be evaluated without rebuilding the item-item
-    similarity structure.
-
-    If none of the user's history items are in the trained item space,
-    falls back to popularity-based recommendations.
-
-    Tie-breaking: score DESC, item_id ASC -> deterministic ranking.
+    Empty history returns []. Unknown history falls back to popularity.
+    Tie-breaking: score DESC, item_id ASC.
     """
 
     def __init__(
@@ -82,12 +74,15 @@ class ItemKNNRecommender:
         eligible_items = item_counts[item_counts >= self._min_item_interactions].index
 
         df = interactions[interactions["item_id"].isin(eligible_items)].copy()
+        df = df.drop_duplicates(subset=["user_id", "item_id"]).copy()
+        df["user_id"] = df["user_id"].astype(str)
+        df["item_id"] = df["item_id"].astype(str)
 
         if df.empty:
             self._item_neighbors = {}
             return
 
-        users = df["user_id"].unique()
+        users = sorted(df["user_id"].astype(str).unique())
 
         items = sorted(df["item_id"].astype(str).unique())
 
@@ -95,7 +90,7 @@ class ItemKNNRecommender:
 
         item_to_idx = {item_id: index for index, item_id in enumerate(items)}
 
-        rows = df["user_id"].map(user_to_idx).values
+        rows = df["user_id"].astype(str).map(user_to_idx).values
 
         cols = df["item_id"].astype(str).map(item_to_idx).values
 
@@ -202,12 +197,12 @@ class ItemKNNRecommender:
 
         seen = {str(item_id) for item_id in user_history}
 
-        known_history = [
-            str(item_id) for item_id in user_history if str(item_id) in self._item_neighbors
-        ]
+        known_history = list(
+            dict.fromkeys(str(i) for i in user_history if str(i) in self._item_neighbors)
+        )
 
         if not known_history:
-            fallback_recommendations = self._fallback_recommender.recommend(k)
+            fallback_recommendations = self._fallback_recommender.recommend(k + len(seen))
 
             return [item_id for item_id in fallback_recommendations if item_id not in seen][:k]
 

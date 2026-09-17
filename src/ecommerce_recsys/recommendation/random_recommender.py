@@ -66,6 +66,11 @@ class RandomRecommender:
         recommendations: list[str] = []
         recommended = set()
 
+        available = len(self._catalog) - len(seen)
+        k = min(k, available)
+        if k == 0:
+            return []
+
         while len(recommendations) < k:
             item_id = rng.choice(self._catalog)
 

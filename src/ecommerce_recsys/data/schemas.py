@@ -80,7 +80,7 @@ class CanonicalInteraction(BaseModel):
         gt=0,
         description="Monotonically comparable Unix timestamp in milliseconds",
     )
-    event_type: str = Field(
+    event_type: EventType = Field(
         ...,
         min_length=1,
         description="Funnel event type: view, addtocart, or transaction",
@@ -106,7 +106,7 @@ class CanonicalInteraction(BaseModel):
             user_id=str(raw.visitorid),
             item_id=str(raw.itemid),
             timestamp=raw.timestamp,
-            event_type=raw.event.value,
+            event_type=raw.event,
             event_weight=event_weight,
         )
 

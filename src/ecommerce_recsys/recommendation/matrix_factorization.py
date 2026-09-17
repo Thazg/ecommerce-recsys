@@ -31,14 +31,14 @@ class MatrixFactorizationRecommender:
         self._index_to_item: list[str] = []
 
     def _build_mappings(self, interactions: pd.DataFrame) -> None:
-        users = sorted(interactions["user_id"].unique())
-        items = sorted(interactions["item_id"].unique())
+        users = sorted(interactions["user_id"].astype(str).unique())
+        items = sorted(interactions["item_id"].astype(str).unique())
 
         self._user_to_index = {user_id: index for index, user_id in enumerate(users)}
         self._item_to_index = {item_id: index for index, item_id in enumerate(items)}
 
-        self._index_to_user = users
-        self._index_to_item = items
+        self._index_to_user = [str(u) for u in users]
+        self._index_to_item = [str(i) for i in items]
 
     def fit(self, interactions: pd.DataFrame) -> None:
         required_columns = {"user_id", "item_id"}
@@ -52,8 +52,8 @@ class MatrixFactorizationRecommender:
 
         self._build_mappings(interactions)
 
-        user_indices = interactions["user_id"].map(self._user_to_index)
-        item_indices = interactions["item_id"].map(self._item_to_index)
+        user_indices = interactions["user_id"].astype(str).map(self._user_to_index)
+        item_indices = interactions["item_id"].astype(str).map(self._item_to_index)
 
         self._user_item_matrix = csr_matrix(
             (
@@ -86,6 +86,7 @@ class MatrixFactorizationRecommender:
         user_id: str,
         k: int = 10,
     ) -> list[str]:
+        user_id = str(user_id)
         if self._model is None:
             raise RuntimeError("Model has not been fitted. Call fit() first.")
 
