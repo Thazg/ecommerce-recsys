@@ -28,17 +28,17 @@ class RecentPopularityRecommender:
         if missing:
             raise ValueError(f"Missing required columns: {sorted(missing)}")
 
-        # ① Tìm cutoff = thời điểm cuối cùng trong train
+        # 1. Cutoff = latest timestamp in train
         cutoff = interactions["timestamp"].max()
 
-        # ② Tính window theo milliseconds
+        # 2. Window size in milliseconds
         window_ms = self._window_days * MS_PER_DAY
 
-        # ③ Filter chỉ giữ lại interactions trong window
+        # 3. Keep interactions inside window
         mask = interactions["timestamp"] >= cutoff - window_ms
         recent = interactions.loc[mask]
 
-        # ④ Count + sort (tie-break: item_id ASC)
+        # 4. Count + sort (tie-break: item_id ASC)
         counts = (
             recent.groupby("item_id")
             .size()

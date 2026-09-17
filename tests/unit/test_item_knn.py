@@ -7,15 +7,15 @@ from ecommerce_recsys.recommendation.item_knn import ItemKNNRecommender
 @pytest.fixture()
 def interactions():
     """
-    3 users, 4 items, min_item_interactions=1 để test dễ hơn.
+    3 users, 4 items, min_item_interactions=1 for simpler testing.
 
     User u1: A, B, C
     User u2: A, B
     User u3: A, C
 
-    → A và B cùng xuất hiện ở u1, u2   → sim(A,B) cao
-    → A và C cùng xuất hiện ở u1, u3   → sim(A,C) cao
-    → B và C chỉ cùng xuất hiện ở u1   → sim(B,C) thấp hơn
+    -> A and B co-occur in u1, u2 -> high sim(A,B)
+    -> A and C co-occur in u1, u3 -> high sim(A,C)
+    -> B and C co-occur only in u1 -> lower sim(B,C)
     """
     return pd.DataFrame(
         {
@@ -29,7 +29,7 @@ def test_recommend_excludes_seen(interactions):
     rec = ItemKNNRecommender(n_neighbors=3, min_item_interactions=1)
     rec.fit(interactions)
 
-    # User đã thấy A → A không được xuất hiện trong kết quả
+    # Seen item A must not appear in results
     result = rec.recommend(user_history=["A"], k=5)
     assert "A" not in result
 
@@ -96,20 +96,20 @@ def test_fit_requires_item_id():
 def test_similarity_based_ranking(interactions):
     """
     User history = [C].
-    C cùng user với A (u1, u3) và B (chỉ u1).
-    → A phải ranked cao hơn B vì sim(C,A) > sim(C,B).
+    C co-occurs with A (u1, u3) and B (only u1).
+    -> A must rank above B because sim(C,A) > sim(C,B).
     """
     rec = ItemKNNRecommender(n_neighbors=3, min_item_interactions=1)
     rec.fit(interactions)
 
     result = rec.recommend(user_history=["C"], k=2)
 
-    assert result[0] == "A"  # A similar hơn B với C
-    assert "C" not in result  # C đã seen
+    assert result[0] == "A"  # A is more similar to C than B
+    assert "C" not in result  # C already seen
 
 
 def test_unknown_history_item_uses_popularity_fallback(interactions):
-    """Item không có trong training space → không có neighbors → trả về popularity fallback."""
+    """Items outside the training space have no neighbors, so fall back to popularity."""
     rec = ItemKNNRecommender(n_neighbors=3, min_item_interactions=1)
     rec.fit(interactions)
 
