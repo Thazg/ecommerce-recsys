@@ -51,10 +51,7 @@ def main() -> None:
     print("\n=== Score ===")
     print(f"manual dot product: {manual_score:.12f}")
     print(f"matrix multiplication: {implicit_score:.12f}")
-    print(
-        f"absolute difference: "
-        f"{abs(manual_score - implicit_score):.12e}"
-    )
+    print(f"absolute difference: {abs(manual_score - implicit_score):.12e}")
 
 
 if __name__ == "__main__":

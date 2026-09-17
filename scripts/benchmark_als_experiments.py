@@ -80,10 +80,9 @@ def run_experiment(
         "metrics": metrics,
     }
 
+
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Run controlled ALS validation experiments."
-    )
+    parser = argparse.ArgumentParser(description="Run controlled ALS validation experiments.")
     parser.add_argument(
         "--smoke-test",
         action="store_true",
@@ -97,9 +96,10 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
+
 def main() -> None:
     args = parse_args()
-    
+
     train_path = DATA_DIR / "train.parquet"
     validation_path = DATA_DIR / "val.parquet"
     items_path = DATA_DIR / "items.parquet"
@@ -176,7 +176,7 @@ def main() -> None:
                     catalog_size=catalog_size,
                 )
             )
-            
+
     if args.experiment == "candidate_128_40" and not args.smoke_test:
         experiments.append(
             run_experiment(
@@ -202,10 +202,7 @@ def main() -> None:
             "training_interactions": len(train),
             "evaluation_users": len(validation),
             "random_seed": RANDOM_SEED,
-            "latency_measurement": (
-                "per-user recommendation latency; "
-                "fit/training time excluded"
-            ),
+            "latency_measurement": ("per-user recommendation latency; fit/training time excluded"),
         },
         "baseline_config": {
             "factors": BASELINE_FACTORS,

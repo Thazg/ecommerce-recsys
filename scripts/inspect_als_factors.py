@@ -32,35 +32,19 @@ def main() -> None:
     print(f"item_factors.shape: {item_factors.shape}")
 
     print("\n=== Factor Statistics ===")
-    print(
-        f"user factor mean: {user_factors.mean():.6f}"
-    )
-    print(
-        f"user factor std:  {user_factors.std():.6f}"
-    )
-    print(
-        f"item factor mean: {item_factors.mean():.6f}"
-    )
-    print(
-        f"item factor std:  {item_factors.std():.6f}"
-    )
+    print(f"user factor mean: {user_factors.mean():.6f}")
+    print(f"user factor std:  {user_factors.std():.6f}")
+    print(f"item factor mean: {item_factors.mean():.6f}")
+    print(f"item factor std:  {item_factors.std():.6f}")
 
     user_norms = np.linalg.norm(user_factors, axis=1)
     item_norms = np.linalg.norm(item_factors, axis=1)
 
     print("\n=== Embedding Norms ===")
-    print(
-        f"user norm mean: {user_norms.mean():.6f}"
-    )
-    print(
-        f"user norm p95:  {np.percentile(user_norms, 95):.6f}"
-    )
-    print(
-        f"item norm mean: {item_norms.mean():.6f}"
-    )
-    print(
-        f"item norm p95:  {np.percentile(item_norms, 95):.6f}"
-    )
+    print(f"user norm mean: {user_norms.mean():.6f}")
+    print(f"user norm p95:  {np.percentile(user_norms, 95):.6f}")
+    print(f"item norm mean: {item_norms.mean():.6f}")
+    print(f"item norm p95:  {np.percentile(item_norms, 95):.6f}")
 
     user_id = model._index_to_user[0]
     user_index = model._user_to_index[user_id]

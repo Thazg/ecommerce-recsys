@@ -76,10 +76,7 @@ def main() -> None:
             "training_interactions": len(train),
             "evaluation_users": len(test),
             "random_seed": RANDOM_SEED,
-            "latency_measurement": (
-                "per-user recommendation latency; "
-                "fit/training time excluded"
-            ),
+            "latency_measurement": ("per-user recommendation latency; fit/training time excluded"),
         },
         "config": {
             "factors": FINAL_FACTORS,
