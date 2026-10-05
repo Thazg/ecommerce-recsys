@@ -2,9 +2,14 @@ from __future__ import annotations
 
 import time
 from collections.abc import Callable
+from typing import Literal
 
 import pandas as pd
 
+from ecommerce_recsys.data.splitting import (
+    verify_global_train_before_target,
+    verify_unseen_targets,
+)
 from ecommerce_recsys.evaluation.metrics import (
     catalog_coverage,
     evaluate_predictions,
@@ -42,6 +47,8 @@ RecommendFunction = Callable[
     list[str],
 ]
 
+SplitProtocol = Literal["rolling_temporal", "legacy_leave_last_out"]
+
 
 def _recommend_for_user(
     recommender: Recommender,
@@ -54,13 +61,15 @@ def _recommend_for_user(
         recommender,
         PopularityRecommender,
     ):
-        return recommender.recommend(k)
+        seen = set(user_history)
+        return [item for item in recommender.recommend(k + len(seen)) if item not in seen][:k]
 
     if isinstance(
         recommender,
         RecentPopularityRecommender,
     ):
-        return recommender.recommend(k)
+        seen = set(user_history)
+        return [item for item in recommender.recommend(k + len(seen)) if item not in seen][:k]
 
     if isinstance(
         recommender,
@@ -119,11 +128,15 @@ def _build_ground_truth(
     if test.empty:
         return {}
 
+    if test["user_id"].duplicated().any():
+        raise ValueError("Evaluation requires exactly one target per user.")
+
     return {str(row.user_id): str(row.item_id) for row in test.itertuples(index=False)}
 
 
 def _build_user_histories(
     train: pd.DataFrame,
+    user_ids: set[str] | None = None,
 ) -> dict[str, list[str]]:
     """Build training interaction history for each user."""
     required_columns = {
@@ -140,6 +153,9 @@ def _build_user_histories(
         str,
         list[str],
     ] = {}
+
+    if user_ids is not None:
+        train = train.loc[train["user_id"].astype(str).isin(user_ids)]
 
     for user_id, group in train.groupby(
         "user_id",
@@ -221,6 +237,7 @@ def evaluate_recommender(
     k_values: tuple[int, ...] = (5, 10, 20),
     total_catalog_items: int | None = None,
     fit: bool = True,
+    split_protocol: SplitProtocol = "rolling_temporal",
 ) -> dict[str, float]:
     """Fit one recommender and evaluate it under a shared protocol.
 
@@ -229,6 +246,10 @@ def evaluate_recommender(
     When fit=False, the recommender is assumed to have already been
     fitted. This is useful for experiments that change inference-time
     parameters without rebuilding the model.
+
+    The default protocol enforces globally earlier training data and novel
+    targets. The explicit legacy mode only supports historical per-user
+    leave-last-out scripts; its scores are not comparable with rolling scores.
     """
     if train.empty:
         raise ValueError("Train interactions must not be empty.")
@@ -238,13 +259,19 @@ def evaluate_recommender(
 
     if any(k <= 0 for k in k_values):
         raise ValueError("All k_values must be positive.")
+    if split_protocol not in ("rolling_temporal", "legacy_leave_last_out"):
+        raise ValueError("Unknown split protocol.")
 
     ground_truth = _build_ground_truth(test)
 
     if not ground_truth:
         return {}
 
-    user_histories = _build_user_histories(train)
+    if split_protocol == "rolling_temporal":
+        verify_global_train_before_target(train, test)
+        verify_unseen_targets(train, test)
+
+    user_histories = _build_user_histories(train, set(ground_truth))
 
     if fit:
         if isinstance(
@@ -321,6 +348,7 @@ def run_baseline_benchmark(
     items: pd.DataFrame | None = None,
     k_values: tuple[int, ...] = (5, 10, 20),
     total_catalog_items: int | None = None,
+    split_protocol: SplitProtocol = "rolling_temporal",
 ) -> dict[str, dict[str, float]]:
     """Run multiple recommenders under the same evaluation protocol."""
     if not recommenders:
@@ -341,6 +369,7 @@ def run_baseline_benchmark(
             items=items,
             k_values=k_values,
             total_catalog_items=(total_catalog_items),
+            split_protocol=split_protocol,
         )
 
     return results

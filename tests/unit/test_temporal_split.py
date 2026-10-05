@@ -1,4 +1,4 @@
-"""Unit tests for temporal leave-last-out splitting and zero data leakage.
+"""Unit tests for historical per-user leave-last-out splitting.
 
 Milestone 3 — Temporal Split and Offline Evaluation Harness.
 """
@@ -48,13 +48,13 @@ def test_temporal_split_sizes(sample_interactions_df):
     assert len(train) + len(val) + len(test) == len(sample_interactions_df)
 
 
-def test_zero_temporal_leakage(sample_interactions_df):
+def test_legacy_split_preserves_within_user_order(sample_interactions_df):
     train, val, test = temporal_leave_last_out_split(
         sample_interactions_df,
         min_user_interactions=3,
     )
 
-    # Invariants should pass without error
+    # This does not prove global train-before-target causality.
     verify_temporal_invariants(train, val, test)
 
 

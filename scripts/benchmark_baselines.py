@@ -23,7 +23,7 @@ from ecommerce_recsys.recommendation.recent_popularity import (
 
 DATA_DIR = Path("data/processed")
 BENCHMARK_DIR = Path("benchmarks/baseline")
-OUTPUT_PATH = BENCHMARK_DIR / "baseline_v2.json"
+OUTPUT_PATH = BENCHMARK_DIR / "baseline_legacy.json"
 
 K_VALUES = (5, 10, 20)
 RANDOM_SEED = 42
@@ -61,7 +61,7 @@ def main() -> None:
             min_item_interactions=5,
             shrinkage_lambda=0.0,
         ),
-        "item_knn_v2": ItemKNNRecommender(
+        "item_knn_shrinkage": ItemKNNRecommender(
             n_neighbors=20,
             min_item_interactions=5,
             shrinkage_lambda=100.0,
@@ -98,10 +98,11 @@ def main() -> None:
         items=items,
         k_values=K_VALUES,
         total_catalog_items=catalog_size,
+        split_protocol="legacy_leave_last_out",
     )
 
     artifact = {
-        "benchmark_version": "v2",
+        "benchmark_version": "legacy_leave_last_out",
         "evaluation_protocol": {
             "training_split": "train.parquet",
             "evaluation_split": "test.parquet",
@@ -139,12 +140,12 @@ def main() -> None:
                 "shrinkage_lambda": 0.0,
                 "metrics": results["item_knn_v1"],
             },
-            "item_knn_v2": {
-                "model_version": "v2",
+            "item_knn_shrinkage": {
+                "model_version": "shrinkage",
                 "n_neighbors": 20,
                 "min_item_interactions": 5,
                 "shrinkage_lambda": 100.0,
-                "metrics": results["item_knn_v2"],
+                "metrics": results["item_knn_shrinkage"],
             },
             "als": {
                 "model_version": "v1",

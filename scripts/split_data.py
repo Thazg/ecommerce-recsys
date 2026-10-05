@@ -1,7 +1,4 @@
-"""Split processed interactions into train, validation, and test Parquet sets.
-
-Milestone 3 — Temporal Split and Offline Evaluation Harness.
-"""
+"""Reproduce the historical per-user leave-last-out split (not globally causal)."""
 
 from __future__ import annotations
 
@@ -18,7 +15,7 @@ from ecommerce_recsys.data.splitting import (
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Split interactions into train/val/test.")
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--input-path",
         type=Path,
@@ -52,11 +49,12 @@ def main() -> int:
     print("\n[2/3] Performing User Leave-Last-Out temporal split ...")
     df_train, df_val, df_test = temporal_leave_last_out_split(df, args.min_interactions)
 
-    print("      Verifying zero temporal data leakage ...")
+    print("      Checking within-user time order only (historical protocol) ...")
     verify_temporal_invariants(df_train, df_val, df_test)
-    print("      [PASSED] Invariant verified: max(train_ts) < val_ts < test_ts.")
+    print("      [PASSED] Within-user ordering; global leakage is possible.")
 
     print("\n[3/3] Saving split Parquet files ...")
+    args.output_dir.mkdir(parents=True, exist_ok=True)
     train_path = args.output_dir / "train.parquet"
     val_path = args.output_dir / "val.parquet"
     test_path = args.output_dir / "test.parquet"

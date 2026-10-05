@@ -41,6 +41,7 @@ def main() -> None:
             k_values=(5, 10, 20),
             total_catalog_items=items["item_id"].nunique(),
             fit=False,
+            split_protocol="legacy_leave_last_out",
         )
 
         row = {

@@ -55,6 +55,7 @@ def main() -> None:
         k_values=K_VALUES,
         total_catalog_items=catalog_size,
         fit=False,
+        split_protocol="legacy_leave_last_out",
     )
 
     artifact = {

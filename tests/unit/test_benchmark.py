@@ -6,6 +6,7 @@ import pytest
 from ecommerce_recsys.evaluation.benchmark import (
     _build_ground_truth,
     _build_user_histories,
+    _recommend_for_user,
     evaluate_recommender,
     run_baseline_benchmark,
 )
@@ -78,6 +79,8 @@ def test_build_user_histories(train: pd.DataFrame) -> None:
         "u2": ["A", "C"],
         "u3": ["B", "C"],
     }
+
+    assert _build_user_histories(train, {"u2"}) == {"u2": ["A", "C"]}
 
 
 def test_evaluate_popularity(train: pd.DataFrame, test: pd.DataFrame) -> None:
@@ -262,3 +265,55 @@ def test_empty_test_returns_empty_metrics(
     )
 
     assert metrics == {}
+
+
+def test_global_popularity_filters_each_users_training_history(train: pd.DataFrame) -> None:
+    recommender = PopularityRecommender()
+    recommender.fit(train)
+
+    recommendations = _recommend_for_user(recommender, "u1", ["A", "B"], 2)
+
+    assert recommendations == ["C"]
+
+
+def test_benchmark_rejects_cross_user_future_training(
+    train: pd.DataFrame, test: pd.DataFrame
+) -> None:
+    train = train.copy()
+    train.loc[0, "timestamp"] = 4
+    with pytest.raises(ValueError, match="Temporal leakage"):
+        evaluate_recommender(PopularityRecommender(), train, test)
+
+
+def test_legacy_split_requires_explicit_protocol(train: pd.DataFrame, test: pd.DataFrame):
+    train = train.copy()
+    train.loc[0, "timestamp"] = 4
+    test = test.copy()
+    test.loc[0, "item_id"] = "A"
+
+    with pytest.raises(ValueError, match="Temporal leakage"):
+        evaluate_recommender(PopularityRecommender(), train, test)
+
+    metrics = evaluate_recommender(
+        PopularityRecommender(), train, test, split_protocol="legacy_leave_last_out"
+    )
+    assert "HR@20" in metrics
+
+
+def test_rolling_protocol_rejects_seen_target(train: pd.DataFrame, test: pd.DataFrame):
+    test = test.copy()
+    test.loc[0, "item_id"] = "A"
+    with pytest.raises(ValueError, match="already seen"):
+        evaluate_recommender(PopularityRecommender(), train, test)
+
+
+def test_legacy_baseline_runner_forwards_explicit_protocol(train: pd.DataFrame, test: pd.DataFrame):
+    train = train.copy()
+    train.loc[0, "timestamp"] = 4
+    results = run_baseline_benchmark(
+        train,
+        test,
+        {"popularity": PopularityRecommender()},
+        split_protocol="legacy_leave_last_out",
+    )
+    assert "HR@20" in results["popularity"]
