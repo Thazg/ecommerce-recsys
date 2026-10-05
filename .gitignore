@@ -16,6 +16,9 @@ htmlcov/
 # Ruff
 .ruff_cache/
 
+# Local working notes
+.local/
+
 # Build artifacts
 build/
 dist/

@@ -8,7 +8,7 @@
 
 M0–M3 provide ingestion, interaction processing, split logic, and offline ranking metrics. M4 includes Random, Global Popularity, Recent Popularity, and Category Popularity. M5 includes ItemKNN. M6 includes educational MF/BPR and implicit ALS. There is no M7 candidate generator or online service yet.
 
-The current repair fixes ItemKNN's tied self-neighbor defect and sparse similarity calculation, RandomRecommender's unknown/dense-history behavior, benchmark leakage checks, and cold-runner interruption/empty-fold handling. It introduces rolling global time cutoffs, train-time item/category catalogs, a single shared target cohort for M4–M6, and content fingerprints for raw properties and generated folds. The old 200,028-user leave-last-out results remain historical. The discarded 3,590-user single-cutoff benchmark has been removed.
+The implementation includes ItemKNN's sparse similarity calculation, deterministic tie handling, RandomRecommender's unknown/dense-history behavior, causal evaluation guards, and resumable cold-start evaluation. Rolling global time cutoffs, train-time item/category catalogs, a shared target cohort for M4–M6, and content fingerprints for source and fold files support reproducible comparisons. The old 200,028-user leave-last-out results remain historical. The discarded 3,590-user single-cutoff benchmark has been removed.
 
 ## Current benchmark
 
@@ -22,6 +22,6 @@ For first-time users, Global Popularity achieves HR@20 0.011394 and Recent Popul
 
 ## Validation and next step
 
-The reference benchmark reran successfully after both sweeps completed and retained all 54 fold-model results. A detailed [repository audit](REPO_AUDIT_2026-10-05.md) verified all nine saved folds against the source data. A second rebuild from raw properties reproduced all 27 fold Parquet files byte for byte; the manifest and result artifacts now bind to those file hashes. The current worktree passed 132 tests in the `ecommerce-recsys` Python 3.13 Conda environment, Ruff lint and formatting checks, and `git diff --check`. The sandbox requires a test temporary-directory permission workaround; production code needs no such workaround. Use the post-selection findings for M7 candidate-source planning, while retaining the non-blind disclosure.
+The reference benchmark retained all 54 fold-model results after both sweeps completed. Rebuilding from the raw item properties reproduced all 27 fold Parquet files byte for byte; the manifest and result artifacts bind to their content hashes. CI runs the Python test suite, Ruff lint and formatting checks. The next milestone is M7 candidate generation, using the post-selection findings with the non-blind disclosure above.
 
 Detailed historical M4–M6 reports remain in [BASELINE_REPORT.md](BASELINE_REPORT.md), [MF_EXPERIMENT_REPORT.md](MF_EXPERIMENT_REPORT.md), and [history](history/). Their per-user leave-last-out metrics are not comparable with the rolling benchmark.

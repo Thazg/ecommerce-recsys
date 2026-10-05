@@ -188,36 +188,6 @@ Milestone 6 should deepen the understanding of matrix-factorization methods and 
 
 ## 4. Validated Facts
 
-### Repository
-
-Repository:
-
-```text
-
-E:\ecommerce-recsys
-
-```
-
-Current branch:
-
-```text
-
-main
-
-```
-
-Remote branch status:
-
-```text
-
-local main contains completed Milestone 5 changes pending push
-
-```
-
-The Milestone 5 implementation and benchmark changes have been committed locally.
-
-Documentation updates are being finalized before synchronizing the milestone with the remote repository.
-
 ### Dataset
 
 Dataset selection:

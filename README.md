@@ -12,9 +12,9 @@ The nine-fold reference results were inspected before the rolling sweeps were lo
 
 ## Reproduce
 
-Activate the existing `ecommerce-recsys` Conda environment, then run from the repository root:
+Use Python 3.13 and run these commands from the repository root:
 
-```powershell
+```sh
 python -m pip install -e ".[dev]"
 python scripts/build_interactions.py
 python scripts/prepare_rolling_data.py
