@@ -47,5 +47,6 @@ testpaths = [
 ]
 pythonpath = [
     "src",
+    ".",
 ]
 addopts = "-ra"
