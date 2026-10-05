@@ -43,8 +43,8 @@ class EducationalMatrixFactorization:
         self._seen_items_by_user: dict[object, set[object]] = {}
 
     def _build_mappings(self, interactions: pd.DataFrame) -> None:
-        users = sorted(interactions["user_id"].unique())
-        items = sorted(interactions["item_id"].unique())
+        users = sorted(interactions["user_id"].astype(str).unique())
+        items = sorted(interactions["item_id"].astype(str).unique())
 
         self._index_to_user = list(users)
         self._index_to_item = list(items)
@@ -80,6 +80,10 @@ class EducationalMatrixFactorization:
     ) -> pd.DataFrame:
         if negative_samples <= 0:
             raise ValueError("negative_samples must be positive")
+
+        interactions = interactions.copy()
+        interactions["user_id"] = interactions["user_id"].astype(str)
+        interactions["item_id"] = interactions["item_id"].astype(str)
 
         rng = np.random.default_rng(self.random_state)
 
@@ -124,6 +128,10 @@ class EducationalMatrixFactorization:
 
         if interactions.empty:
             raise ValueError("Interactions must not be empty.")
+
+        interactions = interactions.copy()
+        interactions["user_id"] = interactions["user_id"].astype(str)
+        interactions["item_id"] = interactions["item_id"].astype(str)
 
         self._build_mappings(interactions)
 
@@ -209,6 +217,8 @@ class EducationalMatrixFactorization:
         return float(mean_squared_error + regularization_loss)
 
     def predict(self, user_id: object, item_id: object) -> float:
+        user_id = str(user_id)
+        item_id = str(item_id)
         if self._user_factors is None or self._item_factors is None:
             raise RuntimeError("Model has not been fitted.")
 
@@ -229,6 +239,7 @@ class EducationalMatrixFactorization:
         )
 
     def recommend(self, user_id: object, k: int) -> list[object]:
+        user_id = str(user_id)
         if self._user_factors is None or self._item_factors is None:
             raise RuntimeError("Model has not been fitted.")
 
@@ -251,6 +262,6 @@ class EducationalMatrixFactorization:
             if item_id not in seen_items
         ]
 
-        candidates.sort(key=lambda pair: pair[1], reverse=True)
+        candidates.sort(key=lambda pair: (-pair[1], str(pair[0])))
 
         return [item_id for item_id, _ in candidates[:k]]

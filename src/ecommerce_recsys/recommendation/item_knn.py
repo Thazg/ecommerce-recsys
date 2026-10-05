@@ -3,7 +3,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 from scipy.sparse import csr_matrix
-from sklearn.neighbors import NearestNeighbors
 
 from ecommerce_recsys.recommendation.popularity import (
     PopularityRecommender,
@@ -111,43 +110,28 @@ class ItemKNNRecommender:
         )
 
         item_matrix = X.T.tocsr()
-
-        n_neighbors = min(
-            self._n_neighbors + 1,
-            len(items),
-        )
-
-        nn = NearestNeighbors(
-            n_neighbors=n_neighbors,
-            metric="cosine",
-            algorithm="brute",
-        )
-
-        nn.fit(item_matrix)
-
-        distances, indices = nn.kneighbors(item_matrix)
-
-        similarities = 1.0 - distances
+        item_support = np.asarray(X.sum(axis=0), dtype=np.float64).ravel()
+        cooccurrence = (item_matrix @ X).tocsr()
 
         self._item_neighbors = {}
 
         for i, item_id in enumerate(items):
             neighbors: list[tuple[str, float, int]] = []
 
-            for rank in range(
-                1,
-                len(indices[i]),
+            start, end = cooccurrence.indptr[i : i + 2]
+            for neighbor_index, support_value in zip(
+                cooccurrence.indices[start:end],
+                cooccurrence.data[start:end],
+                strict=True,
             ):
-                similarity = float(similarities[i][rank])
-
-                if similarity <= 0.0:
+                if neighbor_index == i:
                     continue
 
-                neighbor_index = indices[i][rank]
-
                 neighbor_id = items[neighbor_index]
-
-                support = int(item_matrix[i].dot(item_matrix[neighbor_index].T)[0, 0])
+                support = int(support_value)
+                similarity = support / float(
+                    np.sqrt(item_support[i] * item_support[neighbor_index])
+                )
 
                 neighbors.append(
                     (
@@ -157,7 +141,8 @@ class ItemKNNRecommender:
                     )
                 )
 
-            self._item_neighbors[item_id] = neighbors
+            neighbors.sort(key=lambda entry: (-entry[1], entry[0]))
+            self._item_neighbors[item_id] = neighbors[: self._n_neighbors]
 
     def set_shrinkage_lambda(
         self,

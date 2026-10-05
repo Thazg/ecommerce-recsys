@@ -7,6 +7,16 @@ from ecommerce_recsys.recommendation.bpr_educational import (
 )
 
 
+def test_mixed_id_types_and_equal_scores_are_deterministic():
+    interactions = pd.DataFrame({"user_id": [1, "2", 3], "item_id": [1, "2", 3]})
+    model = EducationalBPR(factors=2, epochs=1)
+    model.fit(interactions)
+    model._user_factors[:] = 0.0
+    model._item_factors[:] = 0.0
+
+    assert model.recommend(1, k=2) == ["2", "3"]
+
+
 def test_constructor_rejects_invalid_factors():
     with pytest.raises(ValueError, match="factors must be positive"):
         EducationalBPR(factors=0)

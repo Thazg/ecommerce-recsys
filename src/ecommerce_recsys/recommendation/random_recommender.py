@@ -12,6 +12,7 @@ class RandomRecommender:
     def __init__(self, seed: int = 42) -> None:
         self._seed = seed
         self._catalog: list[str] = []
+        self._catalog_set: set[str] = set()
 
     def fit(
         self,
@@ -37,6 +38,7 @@ class RandomRecommender:
         self._catalog = (
             items["item_id"].dropna().astype(str).drop_duplicates().sort_values().tolist()
         )
+        self._catalog_set = set(self._catalog)
 
         if not self._catalog:
             raise ValueError("Catalog must contain at least one item.")
@@ -55,7 +57,7 @@ class RandomRecommender:
         if k <= 0:
             raise ValueError("k must be positive.")
 
-        seen = {str(item_id) for item_id in user_history}
+        seen = {str(item_id) for item_id in user_history if str(item_id) in self._catalog_set}
 
         if len(seen) >= len(self._catalog):
             return []
@@ -70,6 +72,10 @@ class RandomRecommender:
         k = min(k, available)
         if k == 0:
             return []
+
+        if available <= 4 * k:
+            eligible = [item_id for item_id in self._catalog if item_id not in seen]
+            return rng.sample(eligible, k)
 
         while len(recommendations) < k:
             item_id = rng.choice(self._catalog)

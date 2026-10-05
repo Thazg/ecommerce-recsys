@@ -46,8 +46,8 @@ class EducationalBPR:
         self,
         interactions: pd.DataFrame,
     ) -> None:
-        users = sorted(interactions["user_id"].unique())
-        items = sorted(interactions["item_id"].unique())
+        users = sorted(interactions["user_id"].astype(str).unique())
+        items = sorted(interactions["item_id"].astype(str).unique())
 
         self._index_to_user = list(users)
         self._index_to_item = list(items)
@@ -83,6 +83,10 @@ class EducationalBPR:
     ) -> pd.DataFrame:
         if negative_samples <= 0:
             raise ValueError("negative_samples must be positive")
+
+        interactions = interactions.copy()
+        interactions["user_id"] = interactions["user_id"].astype(str)
+        interactions["item_id"] = interactions["item_id"].astype(str)
 
         all_items = list(self._item_to_index.keys())
 
@@ -129,6 +133,10 @@ class EducationalBPR:
         if interactions.empty:
             raise ValueError("interactions must not be empty")
 
+        interactions = interactions.copy()
+        interactions["user_id"] = interactions["user_id"].astype(str)
+        interactions["item_id"] = interactions["item_id"].astype(str)
+
         self._build_mappings(interactions)
 
         self._seen_items_by_user = interactions.groupby("user_id")["item_id"].apply(set).to_dict()
@@ -161,6 +169,9 @@ class EducationalBPR:
         positive_item_id: object,
         negative_item_id: object,
     ) -> None:
+        user_id = str(user_id)
+        positive_item_id = str(positive_item_id)
+        negative_item_id = str(negative_item_id)
         user_index = self._user_to_index[user_id]
         positive_index = self._item_to_index[positive_item_id]
         negative_index = self._item_to_index[negative_item_id]
@@ -202,9 +213,9 @@ class EducationalBPR:
         total_loss = 0.0
 
         for row in triplets.itertuples(index=False):
-            user_index = self._user_to_index[row.user_id]
-            positive_index = self._item_to_index[row.positive_item_id]
-            negative_index = self._item_to_index[row.negative_item_id]
+            user_index = self._user_to_index[str(row.user_id)]
+            positive_index = self._item_to_index[str(row.positive_item_id)]
+            negative_index = self._item_to_index[str(row.negative_item_id)]
 
             user_vector = self._user_factors[user_index]
             positive_vector = self._item_factors[positive_index]
@@ -233,6 +244,8 @@ class EducationalBPR:
         user_id: object,
         item_id: object,
     ) -> float:
+        user_id = str(user_id)
+        item_id = str(item_id)
         if not self._fitted:
             raise RuntimeError("Model has not been fitted")
 
@@ -255,6 +268,7 @@ class EducationalBPR:
         user_id: object,
         k: int,
     ) -> list[object]:
+        user_id = str(user_id)
         if not self._fitted:
             raise RuntimeError("Model has not been fitted")
 
@@ -272,7 +286,7 @@ class EducationalBPR:
 
         seen_items = set(self._seen_items_by_user.get(user_id, set()))
 
-        ranked_indices = np.argsort(-scores)
+        ranked_indices = np.lexsort((np.asarray(self._index_to_item, dtype=str), -scores))
 
         recommendations = []
 
