@@ -1,11 +1,10 @@
-﻿# E-Commerce Recommendation Data Contract
+# E-Commerce Recommendation Data Contract
 
 **Project:** Production E-Commerce Recommendation Platform
 **Repository:** `ecommerce-recsys`
 **Contract Version:** `v0.1.0`
-**Status:** Proposed
-**Last Updated:** 2026-09-05
-**Current Milestone:** Milestone 1 — Dataset Selection and Data Contract
+**Status:** Accepted logical data contract
+**Last Updated:** 2026-10-05
 
 ---
 
@@ -18,9 +17,9 @@ In alignment with ADR-003, this contract specifies the minimum required
 properties and semantics that any candidate dataset must fulfill.
 
 It serves as:
-1. The acceptance criteria for evaluating public datasets (Task 1.2 & 1.3).
-2. The architectural baseline for schemas (`src/data/schemas.py`).
-3. The guardrail preventing premature data manipulation.
+1. Acceptance criteria for the selected dataset and future data sources.
+2. The logical baseline for schemas in `src/ecommerce_recsys/data/schemas.py`.
+3. The contract for processing interactions without silent data loss.
 
 ---
 
@@ -66,9 +65,9 @@ Represents an atomic behavioral event between User and Item.
 ## 3. Mandatory Behavioral Invariants
 
 ### 3.1 Strict Temporal Ordering (Required)
-* Follows ADR-004 (Temporal Evaluation).
+* Follows [ADR-023](DECISIONS.md) for global temporal evaluation.
 * Every interaction must contain a recoverable, monotonically comparable timestamp.
-* Required to construct leak-free train/val/test splits and model recency.
+* Required to construct globally ordered evaluation folds and model recency.
 
 ### 3.2 Preservation of Raw Repeated Interactions (Required)
 * Raw ingestion must NOT deduplicate repeated interactions prior to EDA.
@@ -100,7 +99,7 @@ Represents an atomic behavioral event between User and Item.
   - Entity: Interaction
   - Requirement: REQUIRED
   - Purpose: Temporal evaluation split & chronological ordering.
-  - Missing Impact: Causes future-data leakage; violates ADR-004.
+  - Missing Impact: Prevents causal temporal evaluation under ADR-023.
 
 * `event_type`:
   - Entity: Interaction

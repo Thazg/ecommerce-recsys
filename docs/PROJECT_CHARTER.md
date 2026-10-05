@@ -7,13 +7,13 @@
 **Repository:** `ecommerce-recsys`
 
 **Primary Goal:**
-Build a production-oriented recommendation system for an e-commerce environment that learns from implicit user behavior and serves personalized Top-K product recommendations through an API and recruiter-facing demo interface.
+Build a recommendation system for e-commerce interactions that learns from implicit user behavior and ultimately serves personalized Top-K product recommendations through an API and public demo.
 
 The project is intended to demonstrate both recommendation-system knowledge and production ML engineering skills.
 
 ---
 
-## 2. Portfolio Objective
+## 2. Technical objectives
 
 The finished project should demonstrate understanding of:
 
@@ -38,7 +38,7 @@ The finished project should demonstrate understanding of:
 * performance testing
 * production deployment
 
-The project should be understandable and defensible during an AI/ML Engineer interview.
+The implementation and evaluation should make each model and engineering decision inspectable and reproducible.
 
 Every significant model or infrastructure decision should have either:
 
@@ -368,7 +368,7 @@ A model that cannot outperform or justify a trade-off against a simple popularit
 
 ## 12. Dataset Scope
 
-The initial project will use one public e-commerce interaction dataset.
+The project uses the public [Retailrocket interaction dataset](DATASET_CARD.md). Its timestamped views, cart additions, purchases, and item properties support temporal recommendation experiments.
 
 Preferred dataset properties:
 
@@ -377,19 +377,15 @@ Preferred dataset properties:
 * timestamped interactions
 * realistic implicit-feedback events
 * enough interactions to demonstrate collaborative recommendation
-* publicly usable for a portfolio project
+* publicly accessible for reproducible research
 
-Candidate datasets will be evaluated during Milestone 1.
-
-The selected dataset must be frozen by provenance and checksum so experiments remain reproducible.
-
-No dataset has been selected at the current milestone.
+The selected dataset is documented in the dataset card. Source and derived benchmark inputs are identified by SHA-256 hashes so experiments remain reproducible.
 
 ---
 
 ## 13. Production Scope
 
-The project aims for **production-oriented engineering at portfolio scale**, not internet-scale infrastructure.
+The target system uses infrastructure only where the data volume and measured requirements justify it. The [current architecture](ARCHITECTURE_CURRENT.md) distinguishes implemented components from planned serving work.
 
 The final system should eventually include:
 
@@ -405,7 +401,7 @@ The final system should eventually include:
 * metrics and structured logging
 * performance benchmarks
 * cloud deployment
-* recruiter-facing demo
+* public demo
 
 Infrastructure should only be introduced when it solves an actual project requirement.
 
@@ -529,33 +525,33 @@ Benchmark modifications and large refactors should not be mixed in the same chan
 
 ## 18. Source-of-Truth Documents
 
-As the project grows, the following files will serve different purposes:
+The repository keeps project scope, implementation state, and experiment evidence in separate documents:
 
-### `docs/PROJECT_CHARTER.md`
+### [Project charter](PROJECT_CHARTER.md)
 
 Defines what the project is trying to build and what principles it follows.
 
-### `docs/PROJECT_STATUS.md`
+### [Project status](PROJECT_STATUS.md)
 
 Tracks the project's current state, completed work, active milestone, blockers, and next tasks.
 
-### `docs/ARCHITECTURE_CURRENT.md`
+### [Current architecture](ARCHITECTURE_CURRENT.md)
 
 Describes only the architecture that currently exists.
 
 It must not describe planned components as if they were already implemented.
 
-### `docs/DECISIONS.md`
+### [Engineering decisions](DECISIONS.md)
 
 Records important architecture and engineering decisions along with alternatives and rationale.
 
-### `docs/DATASET_CARD.md`
+### [Dataset card](DATASET_CARD.md)
 
-Will document dataset provenance, schemas, filtering rules, and statistics.
+Documents dataset provenance, schemas, filtering rules, and statistics.
 
-### `docs/EVALUATION_PROTOCOL.md`
+### [Rolling evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md)
 
-Will document and eventually freeze the offline evaluation methodology.
+Defines the current temporal benchmark, cohorts, metrics, and validity limits.
 
 ---
 
@@ -563,18 +559,13 @@ Will document and eventually freeze the offline evaluation methodology.
 
 This charter is timeless and does not track implementation progress.
 
-For the current milestone, completed work, and validation state, see:
-
-```text
-docs/PROJECT_STATUS.md
-docs/ARCHITECTURE_CURRENT.md
-```
+For implemented work and the next milestone, see [project status](PROJECT_STATUS.md) and [current architecture](ARCHITECTURE_CURRENT.md).
 
 ---
 
-## 20. Milestone 0 Exit Criteria
+## 20. Initial project foundation
 
-Milestone 0 is complete when:
+The initial foundation established:
 
 * project objective is unambiguous
 * recommendation surfaces are defined
@@ -587,7 +578,7 @@ Milestone 0 is complete when:
 * basic CI quality gate exists
 * initial repository state is committed
 
-Model training must not begin before the evaluation approach has at least been planned.
+Model training follows an explicit evaluation design; the current protocol is documented in the [rolling evaluation specification](ROLLING_EVALUATION_PROTOCOL.md).
 
 ---
 
@@ -627,4 +618,4 @@ Performance Validation
 Production Deployment
 ```
 
-The final portfolio should make both the machine-learning decisions and production-engineering trade-offs understandable to an AI/ML Engineer interviewer.
+The final system documentation should explain the machine-learning decisions and production-engineering trade-offs with measured evidence.

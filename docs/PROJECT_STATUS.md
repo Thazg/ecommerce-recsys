@@ -2,26 +2,40 @@
 
 **Updated:** 2026-10-05
 
-**Milestone:** M6 implemented and rolling M4–M6 evaluation complete; M7 has not started.
+**Stage:** Offline evaluation through implicit ALS is complete. Candidate generation and online serving are planned.
 
-## Implementation
+## Implemented
 
-M0–M3 provide ingestion, interaction processing, split logic, and offline ranking metrics. M4 includes Random, Global Popularity, Recent Popularity, and Category Popularity. M5 includes ItemKNN. M6 includes educational MF/BPR and implicit ALS. There is no M7 candidate generator or online service yet.
+| Area | Current implementation |
+| :--- | :--- |
+| Data | Retailrocket ingestion, interaction processing, train-time item and category catalogs |
+| Evaluation | Nine rolling time folds, shared warm targets, separate cold-user cohort, causal checks, HR/MRR/NDCG and coverage |
+| Models | Random, global/recent/category popularity, ItemKNN, implicit ALS, educational MF/BPR |
+| Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
-The implementation includes ItemKNN's sparse similarity calculation, deterministic tie handling, RandomRecommender's unknown/dense-history behavior, causal evaluation guards, and resumable cold-start evaluation. Rolling global time cutoffs, train-time item/category catalogs, a shared target cohort for M4–M6, and content fingerprints for source and fold files support reproducible comparisons. The old 200,028-user leave-last-out results remain historical. The discarded 3,590-user single-cutoff benchmark has been removed.
+The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
 
-## Current benchmark
+## Measured results
 
-The [rolling protocol](ROLLING_EVALUATION_PROTOCOL.md) has nine folds with 90,107 warm user-window targets from 71,982 distinct people. A separate 1,262,289 first-time users are measured as a cold cohort. Across the nine folds, 11.10% of warm targets are items absent from the corresponding training catalog, so no train-only recommender can retrieve them.
+The rolling benchmark includes **90,107 warm user-window targets from 71,982 distinct users** across nine folds. A separate **1,262,289 first-time users** form the cold cohort. In the warm cohort, 11.10% of targets are absent from their fold's training catalog and cannot be retrieved by train-only models.
 
-The nine-fold reference run on the same warm targets gives HR@20: Random 0.000044, Global Popularity 0.007558, Recent Popularity 0.008101, Category Popularity 0.041950, ItemKNN with historical lambda 100 at 0.045391, and ALS with historical 128 factors/20 iterations at 0.029887. **Diagnostic, configs transferred:** folds 5–9 were visible in this run before the rolling sweeps were locked. The post-selection comparison uses folds 5–9, but it is not a blind holdout. See the [report](ROLLING_BENCHMARK_REPORT.md) for the disclosure.
+ItemKNN and ALS were selected on folds 1–4. Their configurations and the four fixed baselines were measured on the same **59,323 warm targets** in folds 5–9:
 
-ItemKNN's eight-value shrinkage sweep selected lambda 100 on folds 1–4 (pooled HR@20 0.052138). On folds 5–9 it obtains HR@20 0.041889 over 59,323 user-window targets from 50,630 people. Category Popularity obtains 0.041518 on those same targets. The small difference does not yet establish a robust winner. ALS's eight-configuration sweep selected 128 factors, 40 iterations, and regularization 0.01 on folds 1–4 (HR@20 0.035440); it obtains HR@20 0.027291 on folds 5–9. Its selection advantage over 20 iterations on folds 1–4 was about one hit, and the extra fitting cost merits review before using it as an M7 candidate source.
+| Model | HR@20 | MRR@20 | NDCG@20 |
+| :--- | ---: | ---: | ---: |
+| Random | 0.000034 | 0.000004 | 0.000010 |
+| Global Popularity | 0.007855 | 0.001671 | 0.002986 |
+| Recent Popularity | 0.008209 | 0.002424 | 0.003693 |
+| Category Popularity | 0.041518 | 0.011722 | 0.018217 |
+| ItemKNN (shrinkage 100) | 0.041889 | 0.018687 | 0.023962 |
+| Implicit ALS (128 factors, 40 iterations, regularization 0.01) | 0.027291 | 0.009456 | 0.013385 |
 
-For first-time users, Global Popularity achieves HR@20 0.011394 and Recent Popularity 0.011649 across all nine folds. These are separate cold-start fallback results, not entries in the warm model ranking.
+The ItemKNN–Category HR@20 gap is 0.000371, and their fold-level ordering changes. No robust winner is claimed. For first-time users, global and recent popularity achieve HR@20 of 0.011394 and 0.011649 respectively; those scores are not pooled with warm results.
 
-## Validation and next step
+**Validity limit:** Reference scores for folds 5–9 were inspected before the sweep configurations were locked. These are post-selection diagnostic results, not a blind holdout. See the [benchmark report](ROLLING_BENCHMARK_REPORT.md) and [result artifacts](../benchmarks/rolling/) for per-fold metrics, coverage, and latency.
 
-The reference benchmark retained all 54 fold-model results after both sweeps completed. Rebuilding from the raw item properties reproduced all 27 fold Parquet files byte for byte; the manifest and result artifacts bind to their content hashes. CI runs the Python test suite, Ruff lint and formatting checks. The next milestone is M7 candidate generation, using the post-selection findings with the non-blind disclosure above.
+## Next milestone
 
-Detailed historical M4–M6 reports remain in [BASELINE_REPORT.md](BASELINE_REPORT.md), [MF_EXPERIMENT_REPORT.md](MF_EXPERIMENT_REPORT.md), and [history](history/). Their per-user leave-last-out metrics are not comparable with the rolling benchmark.
+Candidate generation should measure Recall@N, candidate availability, serving cost, and fallback behavior on a shared temporal cohort. The current offline latency figures exclude training and API overhead. A new untouched time period is needed for independent model-selection confirmation.
+
+The [baseline](BASELINE_REPORT.md) and [MF](MF_EXPERIMENT_REPORT.md) reports document earlier per-user leave-last-out experiments. Their metrics are retained for provenance but are not directly comparable with rolling results.

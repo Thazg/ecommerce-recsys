@@ -1,4 +1,4 @@
-﻿# Dataset Card — Retailrocket E-Commerce Dataset
+# Dataset Card — Retailrocket E-Commerce Dataset
 
 **Project:** Production E-Commerce Recommendation Platform
 **Repository:** `ecommerce-recsys`
@@ -55,7 +55,7 @@ The raw dataset contains the following files:
   - Mapped to: `timestamp`
   - Status: Satisfies REQUIRED
   - Characteristics: Monotonically comparable Unix milliseconds.
-  - Supports leak-free temporal splitting (ADR-004).
+  - Supports global temporal folds under [ADR-023](DECISIONS.md).
 
 * `event_type`:
   - Mapped to: `event`
@@ -86,14 +86,13 @@ The raw dataset contains the following files:
 
 1. Hashed / Obfuscated Identifiers:
    - Product titles, brands, and category names are hashed or numeric.
-   - Trade-off: Ideal for collaborative filtering, neural embeddings,
-     and sequential modeling; unsuitable for pure NLP/text descriptions.
+   - Trade-off: Supports collaborative and sequential models but does not provide readable text for NLP-based item features.
 
 2. Extreme Sparsity & Cold Start:
    - High proportion of users with only 1 interaction.
    - Trade-off: Highlights real-world e-commerce challenges (cold-start,
      popularity fallback, and K-core filtering requirements).
 
-3. Fast Iteration Feasibility:
-   - File size (~80 MB compressed, ~200 MB uncompressed) fits easily in RAM.
-   - Allows rapid model iteration, fast automated testing, and CI validation.
+3. Reproduction cost:
+   - The interaction log is manageable locally, while the item-property CSVs and nine-fold model sweeps require substantially more storage and computation.
+   - CI covers unit tests and static checks; the full benchmark uses separately obtained raw data and saved, content-hashed artifacts.

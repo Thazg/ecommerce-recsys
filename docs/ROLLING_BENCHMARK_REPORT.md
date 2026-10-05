@@ -29,7 +29,7 @@ In the historical split, 86,949 of 200,028 test targets were already present in 
 
 ## Nine-fold reference run
 
-**Diagnostic, configs transferred.** The table uses fixed historical configurations for ItemKNN and ALS and includes the four folds later used for model selection. HR/NDCG for folds 5–9 was visible in this run before the rolling sweeps were locked. Therefore the later five-fold table is not a blind holdout, even though the sweep script selects from folds 1–4 only.
+This reference table uses fixed earlier configurations for ItemKNN and ALS. It describes all nine folds; scores from folds 5–9 were visible before the later sweep configurations were locked. Consequently, the post-selection table below is exploratory rather than a blind test.
 
 | Model | HR@20 | MRR@20 | NDCG@20 |
 | :--- | ---: | ---: | ---: |
@@ -48,9 +48,9 @@ As one illustration on fold 9, ItemKNN covers 19.34% of the training catalog wit
 
 ItemKNN evaluated shrinkage values 0, 5, 10, 20, 50, 100, 200, and 500 on folds 1–4. Lambda 100 won on pooled HR@20 (0.052138), using NDCG@20 to break its tie with 200 and 500. On folds 5–9, it achieved HR@20 **0.041889**, MRR@20 **0.018687**, and NDCG@20 **0.023962**. [Full ItemKNN sweep](../benchmarks/rolling/item_knn_sweep.json).
 
-The ALS sweep covers eight distinct configurations along the historical factors, regularization, and iterations axes. The predeclared pooled HR@20 rule selects 128 factors, 40 iterations, and regularization 0.01 on folds 1–4: HR@20 **0.035440**, versus **0.035408** for 128 factors and 20 iterations. That margin corresponds to about one additional hit among 30,784 targets, so it is too small by itself to justify twice as many training iterations. Its selected configuration scores HR@20 **0.027291**, MRR@20 **0.009456**, and NDCG@20 **0.013385** on folds 5–9. The historical 128-factor/20-iteration reference configuration scores HR@20 0.027021 on those folds; the small gain does not by itself justify the extra fitting cost. [Full ALS sweep](../benchmarks/rolling/als_sweep.json).
+The ALS sweep covers eight distinct configurations along the factors, regularization, and iterations axes. The documented pooled HR@20 rule selects 128 factors, 40 iterations, and regularization 0.01 on folds 1–4: HR@20 **0.035440**, versus **0.035408** for 128 factors and 20 iterations. That margin corresponds to about one additional hit among 30,784 targets, so it is too small by itself to justify twice as many training iterations. Its selected configuration scores HR@20 **0.027291**, MRR@20 **0.009456**, and NDCG@20 **0.013385** on folds 5–9. The earlier 128-factor/20-iteration reference configuration scores HR@20 0.027021 on those folds; the small gain does not by itself justify the extra fitting cost. [Full ALS sweep](../benchmarks/rolling/als_sweep.json).
 
-The post-selection comparison below uses the same 59,323 warm user-window targets in folds 5–9. The four fixed M4 models come from the reference run; ItemKNN and ALS use configurations selected on folds 1–4. **This table is not a blind holdout:** reference HR/NDCG from folds 5–9 had already been viewed before the sweeps were locked.
+The post-selection comparison below uses the same 59,323 warm user-window targets in folds 5–9. The four fixed baselines come from the reference run; ItemKNN and ALS use configurations selected on folds 1–4. The validity limit described above applies to this table.
 
 | Model | HR@20 | MRR@20 | NDCG@20 |
 | :--- | ---: | ---: | ---: |
@@ -69,4 +69,4 @@ For 1,262,289 first-time users, Global Popularity gives HR@20 **0.011394** and R
 
 ## Reproduction and limits
 
-Run `prepare_rolling_data.py`, `sweep_rolling.py --model item_knn`, `sweep_rolling.py --model als`, `benchmark_rolling.py`, and `benchmark_rolling_cold.py` in the `ecommerce-recsys` environment. See the README for commands and data paths. The manifest records hashes of the processed interactions, both raw property CSVs, and all generated fold files; the result artifacts bind to that full manifest fingerprint. A fresh rebuild from the current raw files matched all 27 original fold Parquet files byte for byte. Metrics use user-window weighting, so repeated users across folds contribute more than once. The sweep selection is restricted to folds 1–4; the selected configurations are measured on folds 5–9 with the holdout disclosure above. Historical v1 results and the discarded single-cutoff evaluation are excluded from every table here.
+Run `prepare_rolling_data.py`, `sweep_rolling.py --model item_knn`, `sweep_rolling.py --model als`, `benchmark_rolling.py`, and `benchmark_rolling_cold.py` with Python 3.13. See the [README](../README.md) for commands and data paths. The manifest records hashes of the processed interactions, both raw property CSVs, and all generated fold files; the result artifacts bind to that full manifest fingerprint. A fresh rebuild from the source files matched all 27 fold Parquet files byte for byte. Metrics use user-window weighting, so repeated users across folds contribute more than once. Earlier leave-last-out scores are excluded from these tables because they use a different evaluation task.
