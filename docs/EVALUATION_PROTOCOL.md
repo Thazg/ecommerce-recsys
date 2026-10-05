@@ -1,6 +1,6 @@
-﻿# Offline Evaluation Protocol
+# Offline Evaluation Protocol
 
-> Historical M3 protocol, superseded by [ROLLING_EVALUATION_PROTOCOL.md](ROLLING_EVALUATION_PROTOCOL.md) for current M4–M6 comparisons. Per-user leave-last-out did not enforce a global training cutoff and allowed other users' future events into the shared training set. The 200,028-user figures here remain historical.
+> Archived per-user leave-last-out protocol. It checks ordering within each user but does not enforce a global training cutoff. Use the [rolling evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) for current model comparisons.
 
 **Project:** Production E-Commerce Recommendation Platform
 **Repository:** `ecommerce-recsys`
@@ -62,12 +62,14 @@ Measures the diversity of recommendations across the entire catalog:
 
 ---
 
-## 4. Leakage Prevention Invariants
+## 4. Within-user checks and limitations
 
-To guarantee valid offline evaluation:
+The historical implementation checks:
 1. Strict Timestamp Separation:
    max(train_timestamp) < val_timestamp < test_timestamp for each user.
 2. Candidate Independence:
    Test items must never be used to construct user histories during inference.
-3. Automated Leakage Tests:
-   Unit tests must assert that no validation or test timestamps overlap into training.
+3. Automated ordering tests:
+   Unit tests check the per-user timestamp relationship.
+
+These checks do not prevent the shared training set from containing other users' future events relative to a held-out target. They also do not require the held-out item to be unseen by that user. The rolling protocol adds a global cutoff and unseen-target rule.

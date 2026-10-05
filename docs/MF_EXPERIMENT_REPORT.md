@@ -1,6 +1,6 @@
 # Matrix Factorization Experiment Report
 
-> Historical M6 report. Its leave-last-out ALS figures use the superseded M3 protocol; see [ROLLING_EVALUATION_PROTOCOL.md](ROLLING_EVALUATION_PROTOCOL.md) for current ALS comparisons and sweep results.
+> Historical M6 report. Its per-user leave-last-out split lacks a global training cutoff and may include already-seen targets. Use the [rolling benchmark report](ROLLING_BENCHMARK_REPORT.md) for current ALS comparisons and sweep results.
 
 ## 1. Objective
 
@@ -22,7 +22,7 @@ The final model selection is performed using the validation split. The test spli
 
 The recommendation system uses implicit e-commerce interactions containing events such as views, cart additions, and transactions.
 
-The temporal evaluation protocol separates historical interactions used for training from later interactions used for validation and testing.
+The archived evaluation protocol orders interactions within each user, but the shared training set is not globally earlier than every validation or test target. These results document the original experiment rather than prospective ranking performance.
 
 ### Dataset statistics
 

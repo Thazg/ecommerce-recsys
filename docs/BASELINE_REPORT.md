@@ -1,29 +1,31 @@
-Baseline Benchmark Report
+# Historical baseline benchmark (per-user leave-last-out)
 
-Historical M4 report. Its 200,028-user leave-last-out results use the superseded M3 protocol; see ROLLING_EVALUATION_PROTOCOL.md and the rolling M4–M6 results for current model comparisons.
-1. Overview
+> This report documents the original M4–M5 evaluation. Its per-user split does not enforce a global training cutoff. Use the [rolling benchmark](ROLLING_BENCHMARK_REPORT.md) for current cross-model comparisons.
+
+## 1. Overview
 
 This report evaluates the baseline recommendation models for the Production E-Commerce Recommendation Platform.
 
-The purpose of the baseline benchmark is to establish simple and reproducible reference points that future personalized recommendation models must outperform.
+The report preserves the original baseline comparison and its model trade-offs. Model selection for subsequent work uses the rolling temporal benchmark.
 
 The benchmark evaluates six recommendation approaches:
 
-Random
-Global Popularity
-Recent Popularity
-Category Popularity
-ItemKNN
-Alternating Least Squares (ALS)
+- Random
+- Global Popularity
+- Recent Popularity
+- Category Popularity
+- ItemKNN
+- Alternating Least Squares (ALS)
 
 The first four models constitute the core simple baselines defined for Task 4. ItemKNN and ALS are included as additional collaborative-filtering reference models to understand how more complex approaches compare against the simple baselines.
 
 All models are evaluated under the same evaluation harness and the same temporal train/test split.
 
-The original Task 4 baseline snapshot is preserved separately as benchmarks/baseline/baseline_v1.json. This report reflects the current baseline model configurations, including the support-aware ItemKNN configuration selected during Milestone 5.
+The original M4 snapshot is preserved in [`baseline_v1.json`](../benchmarks/baseline/baseline_v1.json). This report also includes the support-aware ItemKNN configuration evaluated during M5.
 
-2. Evaluation Protocol
-2.1 Dataset
+## 2. Evaluation Protocol
+
+### 2.1 Dataset
 
 The benchmark uses the following processed datasets:
 
@@ -33,21 +35,22 @@ Catalog metadata: data/processed/items.parquet
 
 Dataset statistics:
 
-Property	Value
-Total interactions	2,756,101
-Training interactions	2,356,045
-Evaluation users	200,028
-Catalog items	235,061
-Evaluation targets	200,028
-K values	5, 10, 20
+| Property | Value |
+| :--- | ---: |
+| Total interactions | 2,756,101 |
+| Training interactions | 2,356,045 |
+| Evaluation users | 200,028 |
+| Catalog items | 235,061 |
+| Evaluation targets | 200,028 |
+| K values | 5, 10, 20 |
 
 Each evaluation user has exactly one held-out target item.
 
 The evaluation users are warm-start users at the user level: all evaluation users have historical interactions in the training split.
 
-The split is temporal, with the held-out evaluation interaction occurring after the interactions used for model fitting. This prevents future interactions from being used to construct the training-time recommendation models.
+The held-out interaction follows that user's earlier interactions. The shared model-training set is not globally earlier than every target, so this split cannot estimate future-facing performance without cross-user temporal leakage.
 
-2.2 Metrics
+### 2.2 Metrics
 
 The benchmark evaluates:
 
@@ -75,7 +78,8 @@ Average latency
 P50 latency
 P95 latency
 P99 latency
-2.3 Reproducibility
+
+### 2.3 Reproducibility
 
 The benchmark uses:
 
@@ -91,8 +95,9 @@ benchmarks/baseline/baseline_v1.json
 
 Milestone 5 ItemKNN experiments additionally use a fixed 20,000-user subset with random_state=42 for shrinkage hyperparameter comparison before running the selected configuration on the full evaluation set.
 
-3. Models
-3.1 Random
+## 3. Models
+
+### 3.1 Random
 
 The Random recommender samples items from the catalog while maintaining reproducibility through a fixed random seed.
 
@@ -100,7 +105,7 @@ Previously seen items are excluded from the recommendation list.
 
 The purpose of this model is to establish a lower-bound reference for recommendation quality.
 
-3.2 Global Popularity
+### 3.2 Global Popularity
 
 The Global Popularity recommender ranks items by their total number of training interactions and recommends the globally most popular items.
 
@@ -108,13 +113,13 @@ This is a non-personalized baseline.
 
 Its main purpose is to determine how much predictive performance can be obtained without modeling individual user preferences.
 
-3.3 Recent Popularity
+### 3.3 Recent Popularity
 
 The Recent Popularity recommender ranks items using interactions occurring within the most recent 30-day window of the training data.
 
 This baseline tests whether recent user activity provides a stronger signal than overall historical popularity.
 
-3.4 Category Popularity
+### 3.4 Category Popularity
 
 The Category Popularity recommender uses the categories of items in the user's interaction history.
 
@@ -122,7 +127,7 @@ It recommends popular items within the user's observed categories and falls back
 
 This provides a lightweight form of personalization without requiring collaborative filtering or latent-factor models.
 
-3.5 ItemKNN
+### 3.5 ItemKNN
 
 ItemKNN is an item-based collaborative filtering model.
 
@@ -152,7 +157,7 @@ Lambda 100 was selected as the representative final configuration because it pro
 
 ItemKNN is included as an additional collaborative-filtering reference and is also an important candidate for future candidate-generation experiments because of its substantially broader catalog coverage.
 
-3.6 ALS
+### 3.6 ALS
 
 ALS is a latent-factor collaborative filtering model implemented using the implicit library.
 
@@ -166,22 +171,24 @@ ALS is included to provide a latent-factor reference point for comparison with t
 
 The current implementation also uses a popularity fallback for unknown users.
 
-4. Benchmark Results
-4.1 Ranking Metrics
+## 4. Benchmark Results
 
-The current benchmark results are:
+### 4.1 Ranking Metrics
 
-Model	Recall@5	Recall@10	Recall@20	NDCG@20
-Random	0.0010%	0.0020%	0.0035%	0.0011%
-Global Popularity	0.3035%	0.6354%	1.1438%	0.4223%
-Recent Popularity	0.3265%	0.6349%	0.9799%	0.3804%
-Category Popularity	3.5890%	5.6902%	8.5063%	3.6614%
-ItemKNN	3.5735%	4.8078%	5.8972%	3.1628%
-ALS	1.5223%	2.1807%	3.0636%	1.4577%
+The historical evaluation results are:
 
-Source note: the table above is the frozen M4 baseline (`benchmarks/baseline/baseline_v1.json`, ALS factors 64). ItemKNN λ=100 numbers come from `benchmarks/item_knn_final.csv`. The M6 validation-selected ALS final (128/20/0.01, HR@20 ≈ 4.24%) lives separately in `benchmarks/mf/als_final_v1.json` and `docs/MF_EXPERIMENT_REPORT.md`.
+| Model | Recall@5 | Recall@10 | Recall@20 | NDCG@20 |
+| :--- | ---: | ---: | ---: | ---: |
+| Random | 0.0010% | 0.0020% | 0.0035% | 0.0011% |
+| Global Popularity | 0.3035% | 0.6354% | 1.1438% | 0.4223% |
+| Recent Popularity | 0.3265% | 0.6349% | 0.9799% | 0.3804% |
+| Category Popularity | 3.5890% | 5.6902% | 8.5063% | 3.6614% |
+| ItemKNN | 3.5735% | 4.8078% | 5.8972% | 3.1628% |
+| ALS | 1.5223% | 2.1807% | 3.0636% | 1.4577% |
 
-At Recall@20, the current ranking is:
+The fixed M4 baseline is in [`baseline_v1.json`](../benchmarks/baseline/baseline_v1.json) (ALS with 64 factors). ItemKNN λ=100 values were produced by `scripts/benchmark_item_knn_final.py`; its CSV output is generated locally. The later M6 ALS result is in [`als_final_v1.json`](../benchmarks/mf/als_final_v1.json) and the [MF experiment report](MF_EXPERIMENT_REPORT.md).
+
+At Recall@20, these historical results rank as follows:
 
 Category Popularity: 8.5063%
 ItemKNN: 5.8972%
@@ -190,25 +197,26 @@ Global Popularity: 1.1438%
 Recent Popularity: 0.9799%
 Random: 0.0035%
 
-Category Popularity remains the strongest model in terms of Recall@20 under the current benchmark configuration.
+Category Popularity had the highest Recall@20 in this historical comparison.
 
 ItemKNN improved over its raw cosine configuration after introducing support-aware similarity shrinkage.
 
-4.2 ItemKNN Shrinkage Experiment
+### 4.2 ItemKNN Shrinkage Experiment
 
 Milestone 5 evaluated support-aware similarity shrinkage on a fixed 20,000-user evaluation subset.
 
 The main Recall@20 results were:
 
-Lambda	Recall@5	Recall@10	Recall@20
-0	3.3100%	4.3650%	5.5400%
-5	3.5200%	4.6700%	5.7400%
-10	3.5550%	4.7250%	5.7800%
-20	3.6200%	4.7700%	5.8450%
-50	3.6650%	4.8150%	5.8900%
-100	3.7100%	4.8600%	5.9050%
-200	3.7050%	4.8600%	5.9150%
-500	3.7050%	4.8600%	5.9200%
+| Lambda | Recall@5 | Recall@10 | Recall@20 |
+| :--- | ---: | ---: | ---: |
+| 0 | 3.3100% | 4.3650% | 5.5400% |
+| 5 | 3.5200% | 4.6700% | 5.7400% |
+| 10 | 3.5550% | 4.7250% | 5.7800% |
+| 20 | 3.6200% | 4.7700% | 5.8450% |
+| 50 | 3.6650% | 4.8150% | 5.8900% |
+| 100 | 3.7100% | 4.8600% | 5.9050% |
+| 200 | 3.7050% | 4.8600% | 5.9150% |
+| 500 | 3.7050% | 4.8600% | 5.9200% |
 
 The sweep indicates that support-aware shrinkage consistently improves the raw similarity configuration.
 
@@ -224,33 +232,35 @@ The final full evaluation confirms the same direction of improvement.
 
 The full evaluation comparison between lambda 0 and lambda 100 is:
 
-Metric	Lambda 0	Lambda 100
-Recall@5	3.1296%	3.5735%
-Recall@10	4.2799%	4.8078%
-Recall@20	5.5712%	5.8972%
-MRR@5	1.8422%	2.1286%
-MRR@10	1.9947%	2.2939%
-MRR@20	2.0843%	2.3698%
-NDCG@5	2.1612%	2.4873%
-NDCG@10	2.5321%	2.8870%
-NDCG@20	2.8586%	3.1628%
-Coverage@20	25.8826%	25.6333%
+| Metric | Lambda 0 | Lambda 100 |
+| :--- | ---: | ---: |
+| Recall@5 | 3.1296% | 3.5735% |
+| Recall@10 | 4.2799% | 4.8078% |
+| Recall@20 | 5.5712% | 5.8972% |
+| MRR@5 | 1.8422% | 2.1286% |
+| MRR@10 | 1.9947% | 2.2939% |
+| MRR@20 | 2.0843% | 2.3698% |
+| NDCG@5 | 2.1612% | 2.4873% |
+| NDCG@10 | 2.5321% | 2.8870% |
+| NDCG@20 | 2.8586% | 3.1628% |
+| Coverage@20 | 25.8826% | 25.6333% |
 
 The selected configuration therefore improves ranking quality while maintaining broadly similar catalog coverage.
 
 The small coverage decrease is treated as an acceptable trade-off because the primary objective of the shrinkage experiment was to improve ranking quality rather than maximize exploration.
 
-5. Coverage Results
+## 5. Coverage Results
 
 The current Coverage@20 results are:
 
-Model	Coverage@20
-Random	100.0000%
-ItemKNN	25.6333%
-Category Popularity	8.6173%
-ALS	1.5119%
-Global Popularity	0.0085%
-Recent Popularity	0.0085%
+| Model | Coverage@20 |
+| :--- | ---: |
+| Random | 100.0000% |
+| ItemKNN | 25.6333% |
+| Category Popularity | 8.6173% |
+| ALS | 1.5119% |
+| Global Popularity | 0.0085% |
+| Recent Popularity | 0.0085% |
 
 Random achieves the highest coverage because it explores the catalog broadly, but its recommendation quality is effectively negligible.
 
@@ -262,19 +272,20 @@ This coverage is calculated against the complete catalog of 235,061 items. ItemK
 
 Category Popularity provides a different accuracy/coverage trade-off: it achieves the highest Recall@20 while covering approximately 8.6% of the catalog.
 
-6. Latency Results
+## 6. Latency Results
 
 Recommendation latency was measured per user, excluding model fitting/training time.
 
-The current benchmark reports:
+The historical benchmark reports:
 
-Model	Avg (ms)	P50 (ms)	P95 (ms)	P99 (ms)
-Global Popularity	0.000374	0.0003	0.0004	0.0012
-Recent Popularity	0.000514	0.0004	0.0007	0.0018
-Category Popularity	0.010005	0.0075	0.0139	0.0271
-ItemKNN	0.044495	0.0211	0.1272	0.306973
-Random	0.028585	0.0247	0.0384	0.0657
-ALS	3.077617	3.0086	3.6234	4.1909
+| Model | Avg (ms) | P50 (ms) | P95 (ms) | P99 (ms) |
+| :--- | ---: | ---: | ---: | ---: |
+| Global Popularity | 0.000374 | 0.0003 | 0.0004 | 0.0012 |
+| Recent Popularity | 0.000514 | 0.0004 | 0.0007 | 0.0018 |
+| Category Popularity | 0.010005 | 0.0075 | 0.0139 | 0.0271 |
+| ItemKNN | 0.044495 | 0.0211 | 0.1272 | 0.306973 |
+| Random | 0.028585 | 0.0247 | 0.0384 | 0.0657 |
+| ALS | 3.077617 | 3.0086 | 3.6234 | 4.1909 |
 
 Category Popularity remains extremely inexpensive at inference time despite providing substantially stronger recommendation quality than the non-personalized popularity baselines.
 
@@ -286,8 +297,9 @@ These latency measurements represent offline recommendation computation only. Th
 
 The ItemKNN latency differences between shrinkage configurations are small relative to the overall benchmark and should not be interpreted as a meaningful production latency comparison.
 
-7. Key Findings
-7.1 Category information is a strong signal
+## 7. Key Findings
+
+### 7.1 Category information is a strong signal
 
 The most important finding is that Category Popularity substantially outperforms the non-personalized baselines.
 
@@ -302,7 +314,7 @@ This indicates that the user's observed product categories contain a strong pred
 
 The result is particularly valuable because Category Popularity is substantially simpler than collaborative filtering or latent-factor models.
 
-7.2 Recent popularity does not outperform global popularity
+### 7.2 Recent popularity does not outperform global popularity
 
 The 30-day Recent Popularity baseline achieves Recall@20 of 0.9799%, compared with 1.1438% for Global Popularity.
 
@@ -310,7 +322,7 @@ Therefore, the selected 30-day recency window does not improve performance over 
 
 This should not be interpreted as evidence that recency is universally ineffective. It only shows that the current 30-day configuration does not outperform the global popularity baseline under this evaluation protocol.
 
-7.3 Support-aware shrinkage improves ItemKNN
+### 7.3 Support-aware shrinkage improves ItemKNN
 
 Milestone 5 demonstrated that raw cosine similarity can be improved by accounting for the amount of evidence supporting each item-item relationship.
 
@@ -334,7 +346,7 @@ Support-aware similarity shrinkage was therefore retained as the final ItemKNN c
 
 Lambda 100 was selected as a representative configuration because performance had already entered a plateau region around larger values. The decision is not based on lambda 100 uniquely maximizing every metric.
 
-7.4 A simple personalized heuristic still beats the collaborative-filtering references
+### 7.4 A simple personalized heuristic still beats the collaborative-filtering references
 
 Category Popularity achieves:
 
@@ -352,7 +364,7 @@ This demonstrates the importance of establishing strong baselines before introdu
 
 At the same time, ItemKNN and ALS provide useful reference points for future candidate-generation experiments. Their value should therefore not be judged only by whether they beat the strongest simple baseline on a single ranking metric.
 
-7.5 ItemKNN provides substantially higher catalog coverage
+### 7.5 ItemKNN provides substantially higher catalog coverage
 
 Although ItemKNN does not achieve the highest Recall@20, it reaches 25.6333% Coverage@20.
 
@@ -362,7 +374,7 @@ Therefore, ItemKNN provides a different accuracy/coverage trade-off and may be u
 
 Its broad recommendation coverage is particularly relevant when future system stages require multiple candidate sources rather than a single final recommender.
 
-7.6 ALS is not competitive under the current configuration
+### 7.6 ALS is not competitive under the current configuration
 
 ALS achieves Recall@20 of 3.0636%, which is below both Category Popularity and ItemKNN.
 
@@ -376,7 +388,7 @@ It means that the current configuration does not provide a favorable accuracy/la
 
 ALS remains valuable as a latent-factor reference and as a model from which future candidate-generation experiments can be designed.
 
-7.7 Recommendation concentration is an important consideration
+### 7.7 Recommendation concentration is an important consideration
 
 The M5 analysis also examined how ItemKNN recommendations are distributed across the catalog.
 
@@ -393,7 +405,7 @@ This shows that ItemKNN provides substantially broader catalog exposure than pop
 
 This concentration should be monitored in future candidate-generation and re-ranking stages rather than assuming that high catalog coverage automatically implies uniform item exposure.
 
-8. Baseline Ranking
+## 8. Baseline Ranking
 
 Using Recall@20 as the primary ranking metric, the current models rank as follows:
 
@@ -415,7 +427,7 @@ Category Popularity is therefore the strongest simple baseline that future perso
 
 ItemKNN should be treated separately as a collaborative-filtering candidate-generation reference rather than simply as a replacement for Category Popularity.
 
-9. Interpretation for Future Models
+## 9. Interpretation for Future Models
 
 The benchmark establishes an important performance floor for future recommendation models.
 
@@ -451,9 +463,11 @@ Operational complexity
 
 The benchmark should therefore be treated as a multi-dimensional reference point rather than as a single leaderboard.
 
-10. Limitations
+## 10. Limitations
 
-Several limitations should be considered when interpreting these results.
+These historical results have important limits:
+
+The split checks ordering within each user but does not impose a global training cutoff. Events from other users can occur after a target, and 86,949 of the 200,028 targets were already in their users' training histories. The [rolling benchmark](ROLLING_BENCHMARK_REPORT.md) addresses both issues; its scores must not be compared numerically with this table.
 
 First, the evaluation uses one held-out target item per user. This makes Recall@K equivalent to Hit Rate@K, but it does not capture the full ranking quality that would be observed with multiple positive and negative evaluation items.
 
@@ -461,7 +475,7 @@ Second, the benchmark evaluates offline recommendation computation rather than c
 
 Third, the current Category Popularity model depends on category metadata. Approximately 21.2% of catalog items do not have category metadata, so category-aware recommendation cannot directly use category information for those items.
 
-Fourth, the current benchmark uses a single Recent Popularity window of 30 days. Other temporal windows may produce different results.
+Fourth, this evaluation used a single Recent Popularity window of 30 days. Other temporal windows may produce different results.
 
 Fifth, ItemKNN and ALS are evaluated with fixed configurations rather than an exhaustive hyperparameter search. Their results should therefore be interpreted as reference configurations rather than globally optimized model performance.
 
@@ -471,7 +485,7 @@ Seventh, recommendation concentration remains present in ItemKNN. High catalog c
 
 Finally, offline latency numbers should not be treated as production service latency. A production recommendation API would include additional overhead from request handling, serialization, model loading, data access, networking, caching, and other infrastructure components.
 
-11. Reproducibility
+## 11. Reproducibility
 
 The baseline benchmark can be reproduced using the benchmark runner:
 
@@ -511,13 +525,13 @@ scripts/analyze_item_knn_empty_users.py
 scripts/analyze_recommendation_concentration.py
 scripts/analyze_recommendation_distribution.py
 
-The benchmark artifact stores the evaluation protocol, model configurations, and resulting metrics so that future experiments can be compared against the same reference point.
+The benchmark artifact records the original protocol, model configurations, and metrics for provenance.
 
-The frozen baseline_v1.json artifact should remain unchanged as the historical Task 4 benchmark snapshot. Current M5 results are documented separately through the current model configuration and experiment artifacts.
+The original `baseline_v1.json` artifact remains unchanged. M5 ItemKNN results are documented in the tables above and can be reproduced with the listed scripts.
 
-12. Conclusion
+## 12. Conclusion
 
-The baseline benchmark establishes reproducible reference points for the recommendation system and provides a performance floor for future model development.
+This report records the original model comparison and the ItemKNN shrinkage study. It is not a performance floor for the current rolling task.
 
 The most important result is that Category Popularity remains the strongest simple baseline, achieving 8.5063% Recall@20 while maintaining very low recommendation latency.
 
@@ -525,7 +539,7 @@ The benchmark also demonstrates that increasing model complexity does not automa
 
 However, ItemKNN provides a substantially broader recommendation distribution and demonstrates a useful accuracy/coverage trade-off. Milestone 5 further improved ItemKNN through support-aware similarity shrinkage, with lambda 100 selected as the final representative configuration after a reproducible sweep.
 
-The current baseline landscape can therefore be summarized as:
+The historical model trade-offs can be summarized as:
 
 Category Popularity: strongest simple accuracy baseline.
 ItemKNN: strongest current collaborative-filtering reference in coverage and ranking quality among the CF models.
@@ -534,8 +548,4 @@ Global Popularity: strong simplicity baseline but extremely concentrated.
 Recent Popularity: useful recency reference but not stronger than global popularity under the current 30-day configuration.
 Random: lower-bound sanity-check baseline.
 
-Future recommendation models should be evaluated against Category Popularity rather than only against Random or Global Popularity.
-
-Future candidate-generation work should also consider ItemKNN and ALS as candidate sources rather than requiring every individual model to outperform Category Popularity as a final recommender.
-
-Task 4 baseline benchmarking and Milestone 5 ItemKNN experimentation are considered complete once the current benchmark report, experiment artifacts, and reproducibility results are frozen together.
+Current model comparisons use the shared rolling cohort in the [rolling benchmark report](ROLLING_BENCHMARK_REPORT.md). The historical accuracy and coverage patterns here motivate candidate-source experiments, but they do not establish a winner under the current protocol.

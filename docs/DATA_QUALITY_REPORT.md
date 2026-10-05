@@ -1,4 +1,4 @@
-﻿# Data Quality and Exploratory Analysis Report
+# Data Quality and Exploratory Analysis Report
 
 **Project:** Production E-Commerce Recommendation Platform
 **Repository:** `ecommerce-recsys`
@@ -7,7 +7,7 @@
 **Date:** 2026-09-05
 **Milestone:** Milestone 2 — Data Quality, EDA, and Interaction Semantics
 
-**Historical note (2026-10-05):** The `>= 3 events` implication below belongs to the original per-user leave-last-out design. The current rolling M4–M6 benchmark evaluates warm users with at least one earlier interaction and reports first-time users separately; see [ROLLING_EVALUATION_PROTOCOL.md](ROLLING_EVALUATION_PROTOCOL.md).
+**Evaluation scope:** The activity distribution below describes the raw dataset. The [rolling benchmark](ROLLING_EVALUATION_PROTOCOL.md) evaluates returning users with at least one earlier interaction and reports first-time users separately.
 
 ---
 
@@ -73,12 +73,8 @@ Activity Percentiles:
 * p95: 5.0 events
 * p99: 13.0 events
 
-Architectural Implication:
-Users with only 1 interaction cannot support temporal personalized evaluation
-(train on past, evaluate on future). The serving architecture must employ a
-two-tier strategy:
-1. Personalized Collaborative Filtering for users with history (>= 3 events).
-2. Popularity / Trending Fallback for anonymous or 1-event cold-start visitors.
+Evaluation implication:
+Users with only one event cannot supply both a past interaction and a future target. The rolling benchmark therefore separates returning users from first-time users; popularity-based recommendations provide the measured cold-user fallback. A returning user's eligibility depends on history available at the fold cutoff, not a lifetime threshold of three events.
 
 ---
 
@@ -100,7 +96,7 @@ two-tier strategy:
 1. Zero Silent Deletion:
    No rows are discarded during the processing stage.
 2. Chronological Ordering:
-   Interactions are sorted strictly by `timestamp` ascending.
+   Interactions are sorted by `timestamp` in nondecreasing order; events can share a timestamp.
 3. Repeat Interaction Preservation:
    Consecutive views are retained to preserve session frequency signals.
 4. Output Artifacts:
