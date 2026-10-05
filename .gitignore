@@ -9,6 +9,7 @@ venv/
 
 # Test / coverage
 .pytest_cache/
+.pytest_tmp*/
 .coverage
 htmlcov/
 
@@ -35,6 +36,7 @@ data/interim/*
 data/processed/*
 !data/processed/README.md
 *.csv
+!benchmarks/**/*.csv
 *.parquet
 *.zip
 *.tar.gz

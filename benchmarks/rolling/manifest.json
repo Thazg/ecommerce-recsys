@@ -1,0 +1,177 @@
+{
+  "protocol_version": "rolling-temporal",
+  "source": "interactions.parquet",
+  "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "raw_property_sha256": {
+    "item_properties_part1.csv": "30aad5aeca58b2dc27dcc73e1708565f5818e45adb3eb57401f91e87355b0b81",
+    "item_properties_part2.csv": "d5e7d1a91dc40f522aeb596b267e6c87d8aed689a7192d12369cfb165eb987e5"
+  },
+  "n_windows": 10,
+  "min_train_interactions": 1,
+  "target_rule": "first item in window unseen in that user's training history",
+  "cold_target_rule": "first event in window for a user absent from training",
+  "folds": [
+    {
+      "fold_index": 1,
+      "train_cutoff": 1431821354421,
+      "evaluation_cutoff": 1432923676688,
+      "training_interactions": 275608,
+      "training_users": 145291,
+      "evaluation_window_interactions": 275592,
+      "evaluation_window_users": 148611,
+      "warm_target_users": 5346,
+      "cold_target_users": 141440,
+      "train_catalog_items": 75003,
+      "warm_target_new_item_rate": 0.263562,
+      "files_sha256": {
+        "warm_targets.parquet": "9e3e5774b545394f46832ccbe34c47ca744cbddb9a01edb0f374596d096f0cf3",
+        "cold_targets.parquet": "febfeafae7857a840112f88b8b1ad731f9ea08de4b6491380779e2c2f5d2289f",
+        "items_train.parquet": "185988f50d54ab120f25a3c46d4f55abb9d08a72858ac5e30b7e551f140e39c2"
+      }
+    },
+    {
+      "fold_index": 2,
+      "train_cutoff": 1432923676688,
+      "evaluation_cutoff": 1434067768840,
+      "training_interactions": 551200,
+      "training_users": 286731,
+      "evaluation_window_interactions": 275635,
+      "evaluation_window_users": 147891,
+      "warm_target_users": 7201,
+      "cold_target_users": 138635,
+      "train_catalog_items": 110887,
+      "warm_target_new_item_rate": 0.172476,
+      "files_sha256": {
+        "warm_targets.parquet": "db09f2fe6e263eaa8eaefd9f7a2a03e8b97798bbc458aea3556afac63e3a3005",
+        "cold_targets.parquet": "b77bde5e8c1bbc7715a730ff0f9207700208ed909ad4228eab138daa87c03f99",
+        "items_train.parquet": "f4943b9206e1f6a92f299ea2c57931b0e140da7f18e3e4d76266281823835082"
+      }
+    },
+    {
+      "fold_index": 3,
+      "train_cutoff": 1434067768840,
+      "evaluation_cutoff": 1435272269349,
+      "training_interactions": 826835,
+      "training_users": 425366,
+      "evaluation_window_interactions": 275661,
+      "evaluation_window_users": 143382,
+      "warm_target_users": 8602,
+      "cold_target_users": 132648,
+      "train_catalog_items": 136425,
+      "warm_target_new_item_rate": 0.143571,
+      "files_sha256": {
+        "warm_targets.parquet": "6b07afb75b10033b95a9309680cf67c2d27130bdfba2e79b55b6b50b5354df0b",
+        "cold_targets.parquet": "5450ff4a3815c1d585cae1c57ecd264bb7007528b5b7595955bb734967cb9de1",
+        "items_train.parquet": "d5c181196b3fba80fa8ca3fbea6f8b7a7551eb265b86055df1e49fec26acb597"
+      }
+    },
+    {
+      "fold_index": 4,
+      "train_cutoff": 1435272269349,
+      "evaluation_cutoff": 1436453300061,
+      "training_interactions": 1102496,
+      "training_users": 558014,
+      "evaluation_window_interactions": 275643,
+      "evaluation_window_users": 146245,
+      "warm_target_users": 9635,
+      "cold_target_users": 134235,
+      "train_catalog_items": 156293,
+      "warm_target_new_item_rate": 0.12465,
+      "files_sha256": {
+        "warm_targets.parquet": "08cf034e72f8948bed52aa125fa025536d76831cdf79dddf0a18c61dda737fa2",
+        "cold_targets.parquet": "a01550aa720bbbc8732936a788db89552a83234bb4fed0fe43826e91090820e2",
+        "items_train.parquet": "b20b8e5b3e79721eaf344ba28eaca067f279f66ea8440afc7efa956b654396f2"
+      }
+    },
+    {
+      "fold_index": 5,
+      "train_cutoff": 1436453300061,
+      "evaluation_cutoff": 1437511095957,
+      "training_interactions": 1378139,
+      "training_users": 692249,
+      "evaluation_window_interactions": 275657,
+      "evaluation_window_users": 160561,
+      "warm_target_users": 10349,
+      "cold_target_users": 147821,
+      "train_catalog_items": 174078,
+      "warm_target_new_item_rate": 0.102522,
+      "files_sha256": {
+        "warm_targets.parquet": "cf30f35fa1573beda88b55747226a2f59ff0dbd6b937751bb5cb4f2e200ec4a7",
+        "cold_targets.parquet": "84b7e304b28f01fc438b9efd4dbcf7292572988b9957af75afa324e93f51e100",
+        "items_train.parquet": "ffe6c88700541422477885e30d5eb37d8aaacd152c3f5bc464540266e591555d"
+      }
+    },
+    {
+      "fold_index": 6,
+      "train_cutoff": 1437511095957,
+      "evaluation_cutoff": 1438559104466,
+      "training_interactions": 1653796,
+      "training_users": 840070,
+      "evaluation_window_interactions": 275692,
+      "evaluation_window_users": 152008,
+      "warm_target_users": 10720,
+      "cold_target_users": 138959,
+      "train_catalog_items": 188921,
+      "warm_target_new_item_rate": 0.095522,
+      "files_sha256": {
+        "warm_targets.parquet": "0b32c3036b32435032c1f984aba3722a071171e8911b6663dfafa7fe077bb188",
+        "cold_targets.parquet": "a9f93f3ea10a5e24e456f655972f3ce0406bb3e9139f30c2f03fdbc313b40696",
+        "items_train.parquet": "0ba8cd57fccaedfc418f281974a7a69b81036c1191d1eb8ceeae330519626558"
+      }
+    },
+    {
+      "fold_index": 7,
+      "train_cutoff": 1438559104466,
+      "evaluation_cutoff": 1439872535442,
+      "training_interactions": 1929488,
+      "training_users": 979029,
+      "evaluation_window_interactions": 275626,
+      "evaluation_window_users": 159213,
+      "warm_target_users": 11950,
+      "cold_target_users": 144861,
+      "train_catalog_items": 200983,
+      "warm_target_new_item_rate": 0.077155,
+      "files_sha256": {
+        "warm_targets.parquet": "19620cf2a0d92d3b57e0c9abf6529c720d1ad795e4bff97b285929f4f9dc1dba",
+        "cold_targets.parquet": "f4325a572fe31b37e1e0103b5badba4fc0f155e1a589e8ac11068be90a42a529",
+        "items_train.parquet": "baa801084915eb9565403ce6623d7899cc9898cbadbc22d6377105d881605b7d"
+      }
+    },
+    {
+      "fold_index": 8,
+      "train_cutoff": 1439872535442,
+      "evaluation_cutoff": 1441216678608,
+      "training_interactions": 2205114,
+      "training_users": 1123890,
+      "evaluation_window_interactions": 275524,
+      "evaluation_window_users": 156911,
+      "warm_target_users": 12765,
+      "cold_target_users": 141666,
+      "train_catalog_items": 212923,
+      "warm_target_new_item_rate": 0.072777,
+      "files_sha256": {
+        "warm_targets.parquet": "aaa47134b19f3c5bbc2d63a9dc1ebd4e9eda9d597ae666cafcaa977f33c159d0",
+        "cold_targets.parquet": "4242fa1dfcfb112fae3c0e2f793d6818f214aea832b6b0e6c2222e42f4aed231",
+        "items_train.parquet": "961bd1c85bd11feda5e35c259ae64eb57aaed56b5f93207e42fe8c4ab629bc70"
+      }
+    },
+    {
+      "fold_index": 9,
+      "train_cutoff": 1441216678608,
+      "evaluation_cutoff": 1442545187788,
+      "training_interactions": 2480638,
+      "training_users": 1265556,
+      "evaluation_window_interactions": 275463,
+      "evaluation_window_users": 157932,
+      "warm_target_users": 13539,
+      "cold_target_users": 142024,
+      "train_catalog_items": 224190,
+      "warm_target_new_item_rate": 0.072014,
+      "files_sha256": {
+        "warm_targets.parquet": "537bbfb2aa934befa99c1715a9922a5307dc844df9d33a14b6f516d350f39711",
+        "cold_targets.parquet": "611c364f4890864b14abdb7a6304c73d378e65a227aee431d2a8ea263ab12843",
+        "items_train.parquet": "6bc5ff0302bacd0c1b61eaecd0389fe489d27e23f631a72b3ec9e36dfcb00311"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1080 @@
+{
+  "protocol_version": "rolling-temporal",
+  "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "model": "als",
+  "selection_folds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "final_folds": [
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "selection_metric": "pooled warm-user HR@20; NDCG@20 tie-break",
+  "results": [
+    {
+      "fold_index": 1,
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "metrics": {
+        "HR@5": 0.015526,
+        "MRR@5": 0.010248,
+        "NDCG@5": 0.011559,
+        "HR@10": 0.020576,
+        "MRR@10": 0.010869,
+        "NDCG@10": 0.013138,
+        "HR@20": 0.026001,
+        "MRR@20": 0.01125,
+        "NDCG@20": 0.014514,
+        "coverage": 0.015239,
+        "latency_avg_ms": 0.867741,
+        "latency_p50_ms": 0.79665,
+        "latency_p95_ms": 1.2918,
+        "latency_p99_ms": 1.75776
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "metrics": {
+        "HR@5": 0.021137,
+        "MRR@5": 0.014506,
+        "NDCG@5": 0.016157,
+        "HR@10": 0.026936,
+        "MRR@10": 0.015272,
+        "NDCG@10": 0.018025,
+        "HR@20": 0.033483,
+        "MRR@20": 0.015698,
+        "NDCG@20": 0.019645,
+        "coverage": 0.024039,
+        "latency_avg_ms": 1.734513,
+        "latency_p50_ms": 1.56165,
+        "latency_p95_ms": 2.895875,
+        "latency_p99_ms": 3.82391
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "metrics": {
+        "HR@5": 0.027497,
+        "MRR@5": 0.017268,
+        "NDCG@5": 0.019789,
+        "HR@10": 0.036289,
+        "MRR@10": 0.018438,
+        "NDCG@10": 0.022629,
+        "HR@20": 0.043958,
+        "MRR@20": 0.018941,
+        "NDCG@20": 0.02453,
+        "coverage": 0.037625,
+        "latency_avg_ms": 3.81631,
+        "latency_p50_ms": 3.5098,
+        "latency_p95_ms": 6.08695,
+        "latency_p99_ms": 8.753855
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "evaluation_users": 5346,
+      "metrics": {
+        "HR@5": 0.021137,
+        "MRR@5": 0.014491,
+        "NDCG@5": 0.016144,
+        "HR@10": 0.027123,
+        "MRR@10": 0.01528,
+        "NDCG@10": 0.018071,
+        "HR@20": 0.033483,
+        "MRR@20": 0.015692,
+        "NDCG@20": 0.019642,
+        "coverage": 0.024066,
+        "latency_avg_ms": 2.210452,
+        "latency_p50_ms": 1.9479,
+        "latency_p95_ms": 3.7845,
+        "latency_p99_ms": 5.5327
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "evaluation_users": 5346,
+      "metrics": {
+        "HR@5": 0.021324,
+        "MRR@5": 0.014559,
+        "NDCG@5": 0.016243,
+        "HR@10": 0.027123,
+        "MRR@10": 0.015319,
+        "NDCG@10": 0.018105,
+        "HR@20": 0.03367,
+        "MRR@20": 0.015746,
+        "NDCG@20": 0.019725,
+        "coverage": 0.024039,
+        "latency_avg_ms": 1.752412,
+        "latency_p50_ms": 1.5806,
+        "latency_p95_ms": 2.90845,
+        "latency_p99_ms": 3.795575
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "metrics": {
+        "HR@5": 0.021137,
+        "MRR@5": 0.014472,
+        "NDCG@5": 0.016128,
+        "HR@10": 0.026188,
+        "MRR@10": 0.015168,
+        "NDCG@10": 0.017784,
+        "HR@20": 0.032174,
+        "MRR@20": 0.015583,
+        "NDCG@20": 0.019296,
+        "coverage": 0.023959,
+        "latency_avg_ms": 1.546218,
+        "latency_p50_ms": 1.4001,
+        "latency_p95_ms": 2.3261,
+        "latency_p99_ms": 3.00591
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "metrics": {
+        "HR@5": 0.020576,
+        "MRR@5": 0.014618,
+        "NDCG@5": 0.016106,
+        "HR@10": 0.026936,
+        "MRR@10": 0.015485,
+        "NDCG@10": 0.01818,
+        "HR@20": 0.033296,
+        "MRR@20": 0.015921,
+        "NDCG@20": 0.019781,
+        "coverage": 0.023866,
+        "latency_avg_ms": 1.540372,
+        "latency_p50_ms": 1.39785,
+        "latency_p95_ms": 2.278875,
+        "latency_p99_ms": 2.791615
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "metrics": {
+        "HR@5": 0.02731,
+        "MRR@5": 0.016844,
+        "NDCG@5": 0.019418,
+        "HR@10": 0.036102,
+        "MRR@10": 0.018017,
+        "NDCG@10": 0.022261,
+        "HR@20": 0.044332,
+        "MRR@20": 0.018573,
+        "NDCG@20": 0.024321,
+        "coverage": 0.037612,
+        "latency_avg_ms": 3.161477,
+        "latency_p50_ms": 2.91485,
+        "latency_p95_ms": 4.911225,
+        "latency_p99_ms": 6.331485
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 2,
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "metrics": {
+        "HR@5": 0.009582,
+        "MRR@5": 0.005643,
+        "NDCG@5": 0.006618,
+        "HR@10": 0.013748,
+        "MRR@10": 0.006205,
+        "NDCG@10": 0.007971,
+        "HR@20": 0.019719,
+        "MRR@20": 0.00663,
+        "NDCG@20": 0.009494,
+        "coverage": 0.011778,
+        "latency_avg_ms": 1.421013,
+        "latency_p50_ms": 1.2251,
+        "latency_p95_ms": 2.4493,
+        "latency_p99_ms": 3.6578
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "metrics": {
+        "HR@5": 0.015137,
+        "MRR@5": 0.008374,
+        "NDCG@5": 0.010036,
+        "HR@10": 0.02083,
+        "MRR@10": 0.009093,
+        "NDCG@10": 0.011837,
+        "HR@20": 0.029718,
+        "MRR@20": 0.009689,
+        "NDCG@20": 0.014058,
+        "coverage": 0.019092,
+        "latency_avg_ms": 2.123678,
+        "latency_p50_ms": 1.9555,
+        "latency_p95_ms": 2.9331,
+        "latency_p99_ms": 3.6626
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 2,
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "metrics": {
+        "HR@5": 0.018609,
+        "MRR@5": 0.00945,
+        "NDCG@5": 0.011701,
+        "HR@10": 0.026941,
+        "MRR@10": 0.010556,
+        "NDCG@10": 0.01439,
+        "HR@20": 0.037217,
+        "MRR@20": 0.011273,
+        "NDCG@20": 0.016994,
+        "coverage": 0.028597,
+        "latency_avg_ms": 3.815226,
+        "latency_p50_ms": 3.5623,
+        "latency_p95_ms": 5.43,
+        "latency_p99_ms": 6.755
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "evaluation_users": 7201,
+      "metrics": {
+        "HR@5": 0.014998,
+        "MRR@5": 0.008344,
+        "NDCG@5": 0.009979,
+        "HR@10": 0.02083,
+        "MRR@10": 0.009087,
+        "NDCG@10": 0.01183,
+        "HR@20": 0.029579,
+        "MRR@20": 0.009676,
+        "NDCG@20": 0.01402,
+        "coverage": 0.019101,
+        "latency_avg_ms": 1.973778,
+        "latency_p50_ms": 1.7732,
+        "latency_p95_ms": 2.991,
+        "latency_p99_ms": 3.924
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "evaluation_users": 7201,
+      "metrics": {
+        "HR@5": 0.014998,
+        "MRR@5": 0.008286,
+        "NDCG@5": 0.009937,
+        "HR@10": 0.020692,
+        "MRR@10": 0.009006,
+        "NDCG@10": 0.011739,
+        "HR@20": 0.029024,
+        "MRR@20": 0.009575,
+        "NDCG@20": 0.013834,
+        "coverage": 0.01901,
+        "latency_avg_ms": 1.938991,
+        "latency_p50_ms": 1.749,
+        "latency_p95_ms": 2.8551,
+        "latency_p99_ms": 3.5077
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "metrics": {
+        "HR@5": 0.014442,
+        "MRR@5": 0.008332,
+        "NDCG@5": 0.009838,
+        "HR@10": 0.020275,
+        "MRR@10": 0.009088,
+        "NDCG@10": 0.011703,
+        "HR@20": 0.030135,
+        "MRR@20": 0.009745,
+        "NDCG@20": 0.014162,
+        "coverage": 0.019218,
+        "latency_avg_ms": 2.078205,
+        "latency_p50_ms": 1.8884,
+        "latency_p95_ms": 3.2104,
+        "latency_p99_ms": 4.1067
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "metrics": {
+        "HR@5": 0.014304,
+        "MRR@5": 0.007983,
+        "NDCG@5": 0.009542,
+        "HR@10": 0.02083,
+        "MRR@10": 0.008834,
+        "NDCG@10": 0.011633,
+        "HR@20": 0.029024,
+        "MRR@20": 0.009374,
+        "NDCG@20": 0.013667,
+        "coverage": 0.018875,
+        "latency_avg_ms": 2.113962,
+        "latency_p50_ms": 1.833,
+        "latency_p95_ms": 3.4993,
+        "latency_p99_ms": 4.6269
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 2,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "metrics": {
+        "HR@5": 0.017914,
+        "MRR@5": 0.008952,
+        "NDCG@5": 0.011157,
+        "HR@10": 0.027774,
+        "MRR@10": 0.010257,
+        "NDCG@10": 0.014335,
+        "HR@20": 0.038467,
+        "MRR@20": 0.010996,
+        "NDCG@20": 0.017035,
+        "coverage": 0.028588,
+        "latency_avg_ms": 3.698328,
+        "latency_p50_ms": 3.4432,
+        "latency_p95_ms": 5.1885,
+        "latency_p99_ms": 6.5572
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 3,
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "metrics": {
+        "HR@5": 0.010579,
+        "MRR@5": 0.005431,
+        "NDCG@5": 0.006706,
+        "HR@10": 0.014066,
+        "MRR@10": 0.00592,
+        "NDCG@10": 0.007857,
+        "HR@20": 0.019647,
+        "MRR@20": 0.006298,
+        "NDCG@20": 0.009256,
+        "coverage": 0.009309,
+        "latency_avg_ms": 1.404653,
+        "latency_p50_ms": 1.2721,
+        "latency_p95_ms": 2.08465,
+        "latency_p99_ms": 2.679592
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "metrics": {
+        "HR@5": 0.013601,
+        "MRR@5": 0.007134,
+        "NDCG@5": 0.008734,
+        "HR@10": 0.017787,
+        "MRR@10": 0.007718,
+        "NDCG@10": 0.010112,
+        "HR@20": 0.025575,
+        "MRR@20": 0.008236,
+        "NDCG@20": 0.012054,
+        "coverage": 0.015159,
+        "latency_avg_ms": 2.18392,
+        "latency_p50_ms": 2.0321,
+        "latency_p95_ms": 3.000395,
+        "latency_p99_ms": 3.718438
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 3,
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "metrics": {
+        "HR@5": 0.016392,
+        "MRR@5": 0.008711,
+        "NDCG@5": 0.010613,
+        "HR@10": 0.021855,
+        "MRR@10": 0.009445,
+        "NDCG@10": 0.012384,
+        "HR@20": 0.030923,
+        "MRR@20": 0.010084,
+        "NDCG@20": 0.014688,
+        "coverage": 0.023163,
+        "latency_avg_ms": 4.582318,
+        "latency_p50_ms": 4.31275,
+        "latency_p95_ms": 6.345945,
+        "latency_p99_ms": 7.826607
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "evaluation_users": 8602,
+      "metrics": {
+        "HR@5": 0.013485,
+        "MRR@5": 0.00707,
+        "NDCG@5": 0.008655,
+        "HR@10": 0.01767,
+        "MRR@10": 0.007656,
+        "NDCG@10": 0.010036,
+        "HR@20": 0.025575,
+        "MRR@20": 0.008181,
+        "NDCG@20": 0.012005,
+        "coverage": 0.015129,
+        "latency_avg_ms": 2.486262,
+        "latency_p50_ms": 2.2759,
+        "latency_p95_ms": 3.724065,
+        "latency_p99_ms": 4.604283
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "evaluation_users": 8602,
+      "metrics": {
+        "HR@5": 0.013601,
+        "MRR@5": 0.007101,
+        "NDCG@5": 0.008705,
+        "HR@10": 0.018019,
+        "MRR@10": 0.007698,
+        "NDCG@10": 0.010142,
+        "HR@20": 0.025924,
+        "MRR@20": 0.008213,
+        "NDCG@20": 0.012098,
+        "coverage": 0.015071,
+        "latency_avg_ms": 2.396906,
+        "latency_p50_ms": 2.1855,
+        "latency_p95_ms": 3.52328,
+        "latency_p99_ms": 4.317807
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "metrics": {
+        "HR@5": 0.013601,
+        "MRR@5": 0.007087,
+        "NDCG@5": 0.0087,
+        "HR@10": 0.018019,
+        "MRR@10": 0.007684,
+        "NDCG@10": 0.010135,
+        "HR@20": 0.02511,
+        "MRR@20": 0.00816,
+        "NDCG@20": 0.011908,
+        "coverage": 0.01532,
+        "latency_avg_ms": 2.319592,
+        "latency_p50_ms": 2.0888,
+        "latency_p95_ms": 3.376675,
+        "latency_p99_ms": 4.376254
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "metrics": {
+        "HR@5": 0.01395,
+        "MRR@5": 0.007179,
+        "NDCG@5": 0.008849,
+        "HR@10": 0.018252,
+        "MRR@10": 0.007769,
+        "NDCG@10": 0.010257,
+        "HR@20": 0.026738,
+        "MRR@20": 0.008314,
+        "NDCG@20": 0.012348,
+        "coverage": 0.014821,
+        "latency_avg_ms": 2.40126,
+        "latency_p50_ms": 2.1659,
+        "latency_p95_ms": 3.51407,
+        "latency_p99_ms": 4.497125
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 3,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "metrics": {
+        "HR@5": 0.016275,
+        "MRR@5": 0.008694,
+        "NDCG@5": 0.010566,
+        "HR@10": 0.021739,
+        "MRR@10": 0.009429,
+        "NDCG@10": 0.01234,
+        "HR@20": 0.030458,
+        "MRR@20": 0.010052,
+        "NDCG@20": 0.014567,
+        "coverage": 0.022914,
+        "latency_avg_ms": 4.809324,
+        "latency_p50_ms": 4.403,
+        "latency_p95_ms": 7.13888,
+        "latency_p99_ms": 9.112047
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 4,
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "metrics": {
+        "HR@5": 0.009341,
+        "MRR@5": 0.005274,
+        "NDCG@5": 0.006281,
+        "HR@10": 0.013285,
+        "MRR@10": 0.005799,
+        "NDCG@10": 0.007555,
+        "HR@20": 0.018578,
+        "MRR@20": 0.006173,
+        "NDCG@20": 0.008901,
+        "coverage": 0.008119,
+        "latency_avg_ms": 1.731654,
+        "latency_p50_ms": 1.5927,
+        "latency_p95_ms": 2.67537,
+        "latency_p99_ms": 3.543678
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "metrics": {
+        "HR@5": 0.012766,
+        "MRR@5": 0.007646,
+        "NDCG@5": 0.008913,
+        "HR@10": 0.017436,
+        "MRR@10": 0.008295,
+        "NDCG@10": 0.010449,
+        "HR@20": 0.023456,
+        "MRR@20": 0.008723,
+        "NDCG@20": 0.011982,
+        "coverage": 0.013487,
+        "latency_avg_ms": 2.890758,
+        "latency_p50_ms": 2.5456,
+        "latency_p95_ms": 4.64871,
+        "latency_p99_ms": 6.151438
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 4,
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "metrics": {
+        "HR@5": 0.015983,
+        "MRR@5": 0.009609,
+        "NDCG@5": 0.011203,
+        "HR@10": 0.023352,
+        "MRR@10": 0.010596,
+        "NDCG@10": 0.013589,
+        "HR@20": 0.033316,
+        "MRR@20": 0.011296,
+        "NDCG@20": 0.016121,
+        "coverage": 0.021018,
+        "latency_avg_ms": 5.13923,
+        "latency_p50_ms": 4.8739,
+        "latency_p95_ms": 6.96729,
+        "latency_p99_ms": 8.593518
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "evaluation_users": 9635,
+      "metrics": {
+        "HR@5": 0.012766,
+        "MRR@5": 0.007646,
+        "NDCG@5": 0.008913,
+        "HR@10": 0.017436,
+        "MRR@10": 0.008295,
+        "NDCG@10": 0.010449,
+        "HR@20": 0.023352,
+        "MRR@20": 0.008719,
+        "NDCG@20": 0.01196,
+        "coverage": 0.0135,
+        "latency_avg_ms": 2.767071,
+        "latency_p50_ms": 2.5305,
+        "latency_p95_ms": 4.01968,
+        "latency_p99_ms": 5.208524
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "evaluation_users": 9635,
+      "metrics": {
+        "HR@5": 0.01287,
+        "MRR@5": 0.007658,
+        "NDCG@5": 0.008946,
+        "HR@10": 0.017644,
+        "MRR@10": 0.008322,
+        "NDCG@10": 0.010516,
+        "HR@20": 0.023664,
+        "MRR@20": 0.008749,
+        "NDCG@20": 0.01205,
+        "coverage": 0.0135,
+        "latency_avg_ms": 2.686326,
+        "latency_p50_ms": 2.4544,
+        "latency_p95_ms": 3.8763,
+        "latency_p99_ms": 4.908896
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "metrics": {
+        "HR@5": 0.013285,
+        "MRR@5": 0.007774,
+        "NDCG@5": 0.00913,
+        "HR@10": 0.018059,
+        "MRR@10": 0.008395,
+        "NDCG@10": 0.010658,
+        "HR@20": 0.023871,
+        "MRR@20": 0.008797,
+        "NDCG@20": 0.012124,
+        "coverage": 0.013596,
+        "latency_avg_ms": 2.819317,
+        "latency_p50_ms": 2.5918,
+        "latency_p95_ms": 4.17956,
+        "latency_p99_ms": 5.195722
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "metrics": {
+        "HR@5": 0.012247,
+        "MRR@5": 0.007519,
+        "NDCG@5": 0.008693,
+        "HR@10": 0.017748,
+        "MRR@10": 0.008254,
+        "NDCG@10": 0.010472,
+        "HR@20": 0.024183,
+        "MRR@20": 0.0087,
+        "NDCG@20": 0.012096,
+        "coverage": 0.01343,
+        "latency_avg_ms": 2.750109,
+        "latency_p50_ms": 2.5025,
+        "latency_p95_ms": 4.0343,
+        "latency_p99_ms": 5.2914
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 4,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "metrics": {
+        "HR@5": 0.016191,
+        "MRR@5": 0.009433,
+        "NDCG@5": 0.011121,
+        "HR@10": 0.022937,
+        "MRR@10": 0.010336,
+        "NDCG@10": 0.013305,
+        "HR@20": 0.032693,
+        "MRR@20": 0.011035,
+        "NDCG@20": 0.0158,
+        "coverage": 0.021197,
+        "latency_avg_ms": 5.069214,
+        "latency_p50_ms": 4.8079,
+        "latency_p95_ms": 6.87534,
+        "latency_p99_ms": 8.588072
+      },
+      "phase": "selection"
+    },
+    {
+      "fold_index": 5,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 10349,
+      "metrics": {
+        "HR@5": 0.01633,
+        "MRR@5": 0.008798,
+        "NDCG@5": 0.010661,
+        "HR@10": 0.021934,
+        "MRR@10": 0.009543,
+        "NDCG@10": 0.01247,
+        "HR@20": 0.030148,
+        "MRR@20": 0.010096,
+        "NDCG@20": 0.014525,
+        "coverage": 0.019836,
+        "latency_avg_ms": 5.479827,
+        "latency_p50_ms": 5.2906,
+        "latency_p95_ms": 6.96488,
+        "latency_p99_ms": 8.15536
+      },
+      "phase": "final"
+    },
+    {
+      "fold_index": 6,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 10720,
+      "metrics": {
+        "HR@5": 0.014646,
+        "MRR@5": 0.008694,
+        "NDCG@5": 0.010159,
+        "HR@10": 0.022015,
+        "MRR@10": 0.009656,
+        "NDCG@10": 0.012521,
+        "HR@20": 0.029384,
+        "MRR@20": 0.010172,
+        "NDCG@20": 0.01439,
+        "coverage": 0.01859,
+        "latency_avg_ms": 6.338353,
+        "latency_p50_ms": 6.0816,
+        "latency_p95_ms": 8.338925,
+        "latency_p99_ms": 10.150816
+      },
+      "phase": "final"
+    },
+    {
+      "fold_index": 7,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 11950,
+      "metrics": {
+        "HR@5": 0.015063,
+        "MRR@5": 0.009184,
+        "NDCG@5": 0.010644,
+        "HR@10": 0.022008,
+        "MRR@10": 0.010106,
+        "NDCG@10": 0.012886,
+        "HR@20": 0.027615,
+        "MRR@20": 0.0105,
+        "NDCG@20": 0.014308,
+        "coverage": 0.017395,
+        "latency_avg_ms": 5.554475,
+        "latency_p50_ms": 5.4849,
+        "latency_p95_ms": 6.39139,
+        "latency_p99_ms": 7.554738
+      },
+      "phase": "final"
+    },
+    {
+      "fold_index": 8,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 12765,
+      "metrics": {
+        "HR@5": 0.013474,
+        "MRR@5": 0.007562,
+        "NDCG@5": 0.00903,
+        "HR@10": 0.019506,
+        "MRR@10": 0.008376,
+        "NDCG@10": 0.010989,
+        "HR@20": 0.026165,
+        "MRR@20": 0.00883,
+        "NDCG@20": 0.012662,
+        "coverage": 0.015686,
+        "latency_avg_ms": 6.060199,
+        "latency_p50_ms": 5.97,
+        "latency_p95_ms": 7.01678,
+        "latency_p99_ms": 8.664376
+      },
+      "phase": "final"
+    },
+    {
+      "fold_index": 9,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 13539,
+      "metrics": {
+        "HR@5": 0.011375,
+        "MRR@5": 0.006821,
+        "NDCG@5": 0.007945,
+        "HR@10": 0.016988,
+        "MRR@10": 0.00758,
+        "NDCG@10": 0.00977,
+        "HR@20": 0.024226,
+        "MRR@20": 0.00807,
+        "NDCG@20": 0.011584,
+        "coverage": 0.015206,
+        "latency_avg_ms": 6.446519,
+        "latency_p50_ms": 6.3257,
+        "latency_p95_ms": 7.65258,
+        "latency_p99_ms": 9.133802
+      },
+      "phase": "final"
+    }
+  ],
+  "selected_config": {
+    "factors": 128,
+    "iterations": 40,
+    "regularization": 0.01
+  },
+  "selection_ranking": [
+    {
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "pooled_HR@20": 0.03544,
+      "pooled_NDCG@20": 0.017224
+    },
+    {
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "pooled_HR@20": 0.035408,
+      "pooled_NDCG@20": 0.017385
+    },
+    {
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "pooled_HR@20": 0.027612,
+      "pooled_NDCG@20": 0.013868
+    },
+    {
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "pooled_HR@20": 0.027287,
+      "pooled_NDCG@20": 0.013814
+    },
+    {
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "pooled_HR@20": 0.027254,
+      "pooled_NDCG@20": 0.013819
+    },
+    {
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "pooled_HR@20": 0.027189,
+      "pooled_NDCG@20": 0.013789
+    },
+    {
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "pooled_HR@20": 0.027124,
+      "pooled_NDCG@20": 0.013786
+    },
+    {
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "pooled_HR@20": 0.020433,
+      "pooled_NDCG@20": 0.010114
+    }
+  ],
+  "blind_holdout": false,
+  "holdout_disclosure": "Reference HR/NDCG on folds 5-9 was viewed before this rolling sweep was locked; folds 5-9 are post-selection diagnostics, not a blind test.",
+  "final_summary": {
+    "user_window_targets": 59323,
+    "pooled_metrics": {
+      "HR@5": 0.014025,
+      "MRR@5": 0.00814,
+      "NDCG@5": 0.009596,
+      "HR@10": 0.020312,
+      "MRR@10": 0.008978,
+      "NDCG@10": 0.011628,
+      "HR@20": 0.027291,
+      "MRR@20": 0.009456,
+      "NDCG@20": 0.013385
+    }
+  },
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "numeric_threads": 1
+}
