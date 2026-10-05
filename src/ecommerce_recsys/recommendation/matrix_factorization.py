@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from implicit.als import AlternatingLeastSquares
 from scipy.sparse import csr_matrix
+from threadpoolctl import threadpool_limits
 
 from ecommerce_recsys.recommendation.popularity import PopularityRecommender
 
@@ -69,14 +69,17 @@ class MatrixFactorizationRecommender:
             ),
         )
 
-        self._model = AlternatingLeastSquares(
-            factors=self.factors,
-            iterations=self.iterations,
-            regularization=self.regularization,
-            random_state=self.random_state,
-        )
+        from implicit.als import AlternatingLeastSquares
 
-        self._model.fit(self._user_item_matrix)
+        with threadpool_limits(limits=1):
+            self._model = AlternatingLeastSquares(
+                factors=self.factors,
+                iterations=self.iterations,
+                regularization=self.regularization,
+                random_state=self.random_state,
+                num_threads=1,
+            )
+            self._model.fit(self._user_item_matrix)
 
         self._fallback_recommender = PopularityRecommender()
         self._fallback_recommender.fit(interactions)
