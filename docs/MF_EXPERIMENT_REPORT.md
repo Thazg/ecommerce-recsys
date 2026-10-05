@@ -1,5 +1,7 @@
 # Matrix Factorization Experiment Report
 
+> Historical M6 report. Its leave-last-out ALS figures use the superseded M3 protocol; see [ROLLING_EVALUATION_PROTOCOL.md](ROLLING_EVALUATION_PROTOCOL.md) for current ALS comparisons and sweep results.
+
 ## 1. Objective
 
 This milestone evaluates matrix factorization methods for implicit-feedback recommendation and establishes whether a latent-factor model is useful for the production-oriented e-commerce recommendation system.

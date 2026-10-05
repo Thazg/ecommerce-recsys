@@ -4,7 +4,7 @@ Project: Production E-Commerce Recommendation Platform
 
 Repository: ecommerce-recsys
 
-Last updated: 2026-09-12
+Last updated: 2026-10-04
 
 1. Purpose
 
@@ -203,7 +203,7 @@ Future dataset changes should be treated as explicit decisions because they can 
 
 ADR-004 — Use Temporal Evaluation Rather Than Random Interaction Splitting
 
-Status: Accepted
+Status: Superseded by ADR-023 for current M4–M6 comparisons
 
 Date: 2026-09-05
 
@@ -1003,7 +1003,7 @@ These targets are engineering budgets, not current benchmark results.
 
 ADR-022 — Select ItemKNN as the Primary Collaborative Filtering Reference
 
-Status: Accepted
+Status: Historical selection; re-evaluated under ADR-023 before M7
 
 Date: 2026-09-07
 
@@ -1193,12 +1193,30 @@ A downstream ranking model is introduced.
 
 The final recommendation architecture should be selected based on both recommendation quality and engineering constraints rather than offline ranking metrics alone.
 
+ADR-023 — Rolling Temporal Benchmark for M4–M6
+
+Status: Accepted
+
+Date: 2026-10-04
+
+Context
+
+ADR-004 checked time order within each user, but the shared training set contained events from other users after many held-out targets. The 200,028-user cohort also included already-seen target items. A later single-cutoff evaluation covered only 3,590 returning warm users and was too narrow for cross-model selection.
+
+Decision
+
+Use nine globally ordered rolling folds. For each fold, all M4–M6 recommenders train only on earlier events and use the same train-time candidate catalog and first unseen-item target per returning warm user. A user needs at least one earlier interaction. Count cold users separately. Tune ItemKNN and ALS on folds 1–4, select by pooled HR@20 with NDCG@20 as tie-break, and compare selected configurations on folds 5–9. The nine-fold reference results exposed folds 5–9 before the sweep was locked, so the later comparison is not a blind holdout. Retain v1 artifacts as history; remove the single-cutoff benchmark. Full rules and limitations are in ROLLING_EVALUATION_PROTOCOL.md.
+
+Consequences
+
+The warm cohort is smaller than the historical 200,028-user cohort because the task and time constraint differ. Report unique users and user-window counts, and never place v1 and rolling metrics in the same performance ranking. Prior M7 model choices must be reconsidered using the rolling results.
+
 Decision Log Summary
 ADR	Decision	Status
 ADR-001	Implicit-feedback recommendation	Accepted
 ADR-002	Avoid arbitrary interaction weighting	Accepted
 ADR-003	Dataset selection follows project definition	Accepted
-ADR-004	Temporal leave-last-out evaluation	Accepted
+ADR-004	Temporal leave-last-out evaluation	Superseded by ADR-023
 ADR-005	Evaluation before sophisticated models	Accepted
 ADR-006	Popularity baseline first	Accepted
 ADR-007	Incremental model complexity	Accepted
@@ -1216,7 +1234,8 @@ ADR-018	Small coherent Git commits	Accepted
 ADR-019	Local Windows environment is not production contract	Accepted
 ADR-020	Current architecture must reflect reality	Accepted
 ADR-021	Establish initial serving performance budgets	Accepted
-ADR-022	ItemKNN as primary collaborative-filtering reference	Accepted
+ADR-022	ItemKNN as primary collaborative-filtering reference	Historical; under re-evaluation
+ADR-023	Rolling temporal benchmark for M4–M6	Accepted
 Future Decision Topics
 
 The following topics remain intentionally unresolved because the relevant implementation or evidence does not yet exist.

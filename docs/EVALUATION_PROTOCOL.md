@@ -1,9 +1,11 @@
 ﻿# Offline Evaluation Protocol
 
+> Historical M3 protocol, superseded by [ROLLING_EVALUATION_PROTOCOL.md](ROLLING_EVALUATION_PROTOCOL.md) for current M4–M6 comparisons. Per-user leave-last-out did not enforce a global training cutoff and allowed other users' future events into the shared training set. The 200,028-user figures here remain historical.
+
 **Project:** Production E-Commerce Recommendation Platform
 **Repository:** `ecommerce-recsys`
 **Document Version:** `v1.0.0`
-**Status:** Accepted
+**Status:** Superseded by the rolling temporal protocol
 **Date:** 2026-09-05
 **Milestone:** Milestone 3 — Temporal Split and Offline Evaluation Harness
 

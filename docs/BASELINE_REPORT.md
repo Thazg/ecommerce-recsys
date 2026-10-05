@@ -1,4 +1,6 @@
 Baseline Benchmark Report
+
+Historical M4 report. Its 200,028-user leave-last-out results use the superseded M3 protocol; see ROLLING_EVALUATION_PROTOCOL.md and the rolling M4–M6 results for current model comparisons.
 1. Overview
 
 This report evaluates the baseline recommendation models for the Production E-Commerce Recommendation Platform.

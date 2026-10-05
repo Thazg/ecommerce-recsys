@@ -7,6 +7,8 @@
 **Date:** 2026-09-05
 **Milestone:** Milestone 2 — Data Quality, EDA, and Interaction Semantics
 
+**Historical note (2026-10-05):** The `>= 3 events` implication below belongs to the original per-user leave-last-out design. The current rolling M4–M6 benchmark evaluates warm users with at least one earlier interaction and reports first-time users separately; see [ROLLING_EVALUATION_PROTOCOL.md](ROLLING_EVALUATION_PROTOCOL.md).
+
 ---
 
 ## 1. Executive Summary
