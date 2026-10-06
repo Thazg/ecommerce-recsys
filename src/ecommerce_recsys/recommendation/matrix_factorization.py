@@ -116,3 +116,55 @@ class MatrixFactorizationRecommender:
         )
 
         return [self._index_to_item[item_index] for item_index in item_indices]
+
+    @property
+    def factor_memory_bytes(self) -> int:
+        """Loaded factor-array bytes, excluding process and sparse-matrix memory."""
+        if self._model is None:
+            raise RuntimeError("Model has not been fitted. Call fit() first.")
+        return self._model.user_factors.nbytes + self._model.item_factors.nbytes
+
+    @property
+    def item_ids(self) -> tuple[str, ...]:
+        """Item mapping for validating retrieval catalog compatibility."""
+        if self._model is None:
+            raise RuntimeError("Model has not been fitted. Call fit() first.")
+        return tuple(self._index_to_item)
+
+    def score_candidates(
+        self,
+        user_id: str | None,
+        k: int,
+        user_history: tuple[str, ...] = (),
+    ) -> list[tuple[str, float]]:
+        """Exact dot-product top-k with deterministic ties and no hidden fallback.
+
+        Exclude stored training positives as well as additional request history.
+        Unknown users have no learned vector and therefore return an empty pool.
+        """
+        if self._model is None or self._user_item_matrix is None:
+            raise RuntimeError("Model has not been fitted. Call fit() first.")
+        if isinstance(k, bool) or not isinstance(k, int) or k <= 0:
+            raise ValueError("k must be a positive integer")
+        if user_id is None or str(user_id) not in self._user_to_index:
+            return []
+        index = self._user_to_index[str(user_id)]
+        scores = self._model.item_factors @ self._model.user_factors[index]
+        if not np.isfinite(scores).all():
+            raise ValueError("ALS produced nonfinite candidate scores.")
+        scores[self._user_item_matrix[index].indices] = -np.inf
+        for item in user_history:
+            item_index = self._item_to_index.get(str(item))
+            if item_index is not None:
+                scores[item_index] = -np.inf
+        eligible = np.flatnonzero(np.isfinite(scores))
+        count = min(k, len(eligible))
+        if not count:
+            return []
+        if len(eligible) > count:
+            threshold = np.partition(scores[eligible], -count)[-count]
+            above = eligible[scores[eligible] > threshold]
+            ties = eligible[scores[eligible] == threshold]
+            eligible = np.concatenate((above, ties[: count - len(above)]))
+        ordered = eligible[np.lexsort((eligible, -scores[eligible]))]
+        return [(self._index_to_item[i], float(scores[i])) for i in ordered]

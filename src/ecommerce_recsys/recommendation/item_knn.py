@@ -191,6 +191,14 @@ class ItemKNNRecommender:
 
             return [item_id for item_id in fallback_recommendations if item_id not in seen][:k]
 
+        return [item_id for item_id, _ in self.score_candidates(user_history)[:k]]
+
+    def score_candidates(self, user_history: list[str]) -> list[tuple[str, float]]:
+        """Return scored collaborative candidates without popularity fallback."""
+        if self._fallback_recommender is None:
+            raise RuntimeError("Model has not been fitted. Call fit() first.")
+        seen = {str(item_id) for item_id in user_history}
+        known_history = sorted(seen.intersection(self._item_neighbors))
         scores: dict[
             str,
             float,
@@ -226,4 +234,4 @@ class ItemKNNRecommender:
             ),
         )
 
-        return [item_id for item_id, _ in ranked[:k]]
+        return ranked
