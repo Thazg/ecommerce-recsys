@@ -14,9 +14,48 @@ The **cold user** cohort has no training interaction. Its target is that user's 
 
 The candidate catalog contains item IDs observed in training. Category metadata is the latest known `categoryid` at or before the train cutoff from raw property events. Every M4–M6 model uses the same catalog, training interactions, warm targets, and K values within a fold. Models return only items that the user has not seen in training. Random, global popularity, recent popularity (30 days), and category popularity use fixed settings. ItemKNN and implicit ALS first ran historical reference configurations over all nine folds for descriptive comparison. Their sweeps use only folds 1–4; the winning configuration is frozen and then evaluated on folds 5–9. Selection uses pooled HR@20, with pooled NDCG@20 as the tie-break. The candidate sets and rule are fixed in `scripts/sweep_rolling.py`.
 
-Metrics are HR, MRR, and NDCG at K = 5, 10, 20, plus catalog coverage and inference latency by fold. Pooled HR/MRR/NDCG weight each fold by its target count, so the unit is a **user-window**, not a unique person. A person can affect pooled metrics more than once. Coverage and latency are reported by fold rather than naively pooled.
+Metrics are HR, MRR, and NDCG at K = 5, 10, 20, plus catalog coverage and inference latency by fold. Pooled HR/MRR/NDCG weight each fold by its target count, so the unit is a **user-window**, not a distinct user ID. A user ID can contribute to pooled metrics in multiple windows. Coverage and latency are reported by fold rather than naively pooled.
 
 **Validity of the reported comparison:** Reference HR/NDCG for folds 5–9 was inspected before sweep configurations were locked. The sweeps select using folds 1–4 only, but their five-fold results are exploratory post-selection diagnostics, not an independent blind test. Confirming a model choice requires a later time period whose outcomes have not been inspected.
+
+## Why four development folds and five later folds?
+
+The 4:5 allocation counts **evaluation periods for configuration selection and
+later measurement**. Every fold has its own expanding training snapshot. With
+windows numbered W0–W9:
+
+```text
+Fold 1: train W0           -> evaluate W1  [development]
+Fold 4: train W0–W3        -> evaluate W4  [development]
+Fold 5: train W0–W4        -> evaluate W5  [locked configuration]
+Fold 9: train W0–W8        -> evaluate W9  [locked configuration]
+```
+
+This is a pragmatic allocation of nine periods, retaining slightly more periods
+for measuring locked configurations. The small ItemKNN and ALS grids each contain
+eight distinct configurations. Four earlier snapshots supply development evidence
+across different training sizes, while five later snapshots supply a larger future
+diagnostic sample. The ratio was not optimized by testing alternative allocations,
+and it does not guarantee stable selection or statistical significance.
+
+| Phase | Folds | Warm user-window targets | Share of warm targets |
+| :--- | :--- | ---: | ---: |
+| Development | 1–4 | 30,784 | 34.16% |
+| Post-selection diagnostics | 5–9 | 59,323 | 65.84% |
+
+Fold counts are not equivalent to user, event or elapsed-time proportions. User IDs
+may appear in both phases. During folds 5–9, model hyperparameters stay fixed while
+models refit on newly available past interactions at each cutoff; future data is
+never used for an earlier request.
+
+An allocation such as 6:3 would give 51,853 selection targets and 38,254 later
+targets, trading a larger development sample for a smaller later comparison.
+Neither allocation has been demonstrated to be optimal. A different allocation
+must be declared for a separate prospective experiment, rather than selected
+after looking for a favorable model score. Because the current later periods were
+already inspected, changing this ratio would still yield exploratory diagnostics.
+The observed one-hit ALS selection advantage is a concrete reminder that the
+current split does not establish a robust configuration winner.
 
 ## Reproduction and provenance
 

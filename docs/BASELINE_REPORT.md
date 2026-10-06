@@ -2,6 +2,10 @@
 
 > This report documents the original M4–M5 evaluation. Its per-user split does not enforce a global training cutoff. Use the [rolling benchmark](ROLLING_BENCHMARK_REPORT.md) for current cross-model comparisons.
 
+**Metric units:** Accuracy and coverage are fractions in `[0, 1]`. Historical
+leave-last-out scores are not comparable with rolling scores. See
+[metrics, protocols and model references](METRICS_AND_PROTOCOLS.md).
+
 ## 1. Overview
 
 This report evaluates the baseline recommendation models for the Production E-Commerce Recommendation Platform.
@@ -19,7 +23,8 @@ The benchmark evaluates six recommendation approaches:
 
 The first four models constitute the core simple baselines defined for Task 4. ItemKNN and ALS are included as additional collaborative-filtering reference models to understand how more complex approaches compare against the simple baselines.
 
-All models are evaluated under the same evaluation harness and the same temporal train/test split.
+Models in this historical comparison share the per-user leave-last-out split.
+Rolling and M7 retrieval use separate protocols and are excluded from this table.
 
 The original M4 snapshot is preserved in [`baseline_v1.json`](../benchmarks/baseline/baseline_v1.json). This report also includes the support-aware ItemKNN configuration evaluated during M5.
 
@@ -29,9 +34,9 @@ The original M4 snapshot is preserved in [`baseline_v1.json`](../benchmarks/base
 
 The benchmark uses the following processed datasets:
 
-Training split: data/processed/train.parquet
-Evaluation split: data/processed/test.parquet
-Catalog metadata: data/processed/items.parquet
+- Training split: data/processed/train.parquet
+- Evaluation split: data/processed/test.parquet
+- Catalog metadata: data/processed/items.parquet
 
 Dataset statistics:
 
@@ -54,11 +59,11 @@ The held-out interaction follows that user's earlier interactions. The shared mo
 
 The benchmark evaluates:
 
-Recall@K
-MRR@K
-NDCG@K
-Catalog Coverage
-Recommendation latency
+- Recall@K
+- MRR@K
+- NDCG@K
+- Catalog Coverage
+- Recommendation latency
 
 The implementation currently reports the Recall@K-equivalent metric as HR@K.
 
@@ -74,20 +79,20 @@ Latency measures per-user recommendation/inference time only. Model fitting and 
 
 The benchmark records:
 
-Average latency
-P50 latency
-P95 latency
-P99 latency
+- Average latency
+- P50 latency
+- P95 latency
+- P99 latency
 
 ### 2.3 Reproducibility
 
 The benchmark uses:
 
-Random seed: 42
-Recent popularity window: 30 days
-Fixed train/test splits
-Fixed model hyperparameters
-Shared evaluation harness
+- Random seed: 42
+- Recent popularity window: 30 days
+- Fixed train/test splits
+- Fixed model hyperparameters
+- Shared evaluation harness
 
 The frozen Task 4 benchmark artifact is stored at:
 
@@ -123,7 +128,9 @@ This baseline tests whether recent user activity provides a stronger signal than
 
 The Category Popularity recommender uses the categories of items in the user's interaction history.
 
-It recommends popular items within the user's observed categories and falls back to global popularity when necessary.
+The standalone M4 Category recommender traverses the history categories and
+backfills from global popularity. The M7 Category source pools category counts
+and returns no global backfill; its behavior is documented separately.
 
 This provides a lightweight form of personalization without requiring collaborative filtering or latent-factor models.
 
@@ -131,7 +138,7 @@ This provides a lightweight form of personalization without requiring collaborat
 
 ItemKNN is an item-based collaborative filtering model.
 
-The current configuration uses:
+The historical M5 configuration shown here uses:
 
 n_neighbors = 20
 min_item_interactions = 5
@@ -169,7 +176,9 @@ Regularization: 0.01
 
 ALS is included to provide a latent-factor reference point for comparison with the simpler baselines and ItemKNN.
 
-The current implementation also uses a popularity fallback for unknown users.
+The standalone ALS recommender uses a popularity fallback for unknown users.
+The M7 direct ALS source returns an empty list for unknown users; the hybrid
+attributes fallback products to explicit popularity sources.
 
 ## 4. Benchmark Results
 
@@ -179,23 +188,23 @@ The historical evaluation results are:
 
 | Model | Recall@5 | Recall@10 | Recall@20 | NDCG@20 |
 | :--- | ---: | ---: | ---: | ---: |
-| Random | 0.0010% | 0.0020% | 0.0035% | 0.0011% |
-| Global Popularity | 0.3035% | 0.6354% | 1.1438% | 0.4223% |
-| Recent Popularity | 0.3265% | 0.6349% | 0.9799% | 0.3804% |
-| Category Popularity | 3.5890% | 5.6902% | 8.5063% | 3.6614% |
-| ItemKNN | 3.5735% | 4.8078% | 5.8972% | 3.1628% |
-| ALS | 1.5223% | 2.1807% | 3.0636% | 1.4577% |
+| Random | 0.000010 | 0.000020 | 0.000035 | 0.000011 |
+| Global Popularity | 0.003035 | 0.006354 | 0.011438 | 0.004223 |
+| Recent Popularity | 0.003265 | 0.006349 | 0.009799 | 0.003804 |
+| Category Popularity | 0.035890 | 0.056902 | 0.085063 | 0.036614 |
+| ItemKNN | 0.035735 | 0.048078 | 0.058972 | 0.031628 |
+| ALS | 0.015223 | 0.021807 | 0.030636 | 0.014577 |
 
 The fixed M4 baseline is in [`baseline_v1.json`](../benchmarks/baseline/baseline_v1.json) (ALS with 64 factors). ItemKNN λ=100 values were produced by `scripts/benchmark_item_knn_final.py`; its CSV output is generated locally. The later M6 ALS result is in [`als_final_v1.json`](../benchmarks/mf/als_final_v1.json) and the [MF experiment report](MF_EXPERIMENT_REPORT.md).
 
 At Recall@20, these historical results rank as follows:
 
-Category Popularity: 8.5063%
-ItemKNN: 5.8972%
-ALS: 3.0636%
-Global Popularity: 1.1438%
-Recent Popularity: 0.9799%
-Random: 0.0035%
+Category Popularity: 0.085063
+ItemKNN: 0.058972
+ALS: 0.030636
+Global Popularity: 0.011438
+Recent Popularity: 0.009799
+Random: 0.000035
 
 Category Popularity had the highest Recall@20 in this historical comparison.
 
@@ -209,24 +218,24 @@ The main Recall@20 results were:
 
 | Lambda | Recall@5 | Recall@10 | Recall@20 |
 | :--- | ---: | ---: | ---: |
-| 0 | 3.3100% | 4.3650% | 5.5400% |
-| 5 | 3.5200% | 4.6700% | 5.7400% |
-| 10 | 3.5550% | 4.7250% | 5.7800% |
-| 20 | 3.6200% | 4.7700% | 5.8450% |
-| 50 | 3.6650% | 4.8150% | 5.8900% |
-| 100 | 3.7100% | 4.8600% | 5.9050% |
-| 200 | 3.7050% | 4.8600% | 5.9150% |
-| 500 | 3.7050% | 4.8600% | 5.9200% |
+| 0 | 0.033100 | 0.043650 | 0.055400 |
+| 5 | 0.035200 | 0.046700 | 0.057400 |
+| 10 | 0.035550 | 0.047250 | 0.057800 |
+| 20 | 0.036200 | 0.047700 | 0.058450 |
+| 50 | 0.036650 | 0.048150 | 0.058900 |
+| 100 | 0.037100 | 0.048600 | 0.059050 |
+| 200 | 0.037050 | 0.048600 | 0.059150 |
+| 500 | 0.037050 | 0.048600 | 0.059200 |
 
 The sweep indicates that support-aware shrinkage consistently improves the raw similarity configuration.
 
 The largest practical gains occur before the higher lambda values reach a plateau.
 
-On the fixed subset, lambda 100 improved the raw configuration by approximately:
+On the fixed subset, lambda 100 has the following approximate relative changes:
 
-+11.3% Recall@10
-+16.8% MRR@10
-+14.7% NDCG@10
+- +11.3% Recall@10
+- +16.8% MRR@10
+- +14.7% NDCG@10
 
 The final full evaluation confirms the same direction of improvement.
 
@@ -234,16 +243,16 @@ The full evaluation comparison between lambda 0 and lambda 100 is:
 
 | Metric | Lambda 0 | Lambda 100 |
 | :--- | ---: | ---: |
-| Recall@5 | 3.1296% | 3.5735% |
-| Recall@10 | 4.2799% | 4.8078% |
-| Recall@20 | 5.5712% | 5.8972% |
-| MRR@5 | 1.8422% | 2.1286% |
-| MRR@10 | 1.9947% | 2.2939% |
-| MRR@20 | 2.0843% | 2.3698% |
-| NDCG@5 | 2.1612% | 2.4873% |
-| NDCG@10 | 2.5321% | 2.8870% |
-| NDCG@20 | 2.8586% | 3.1628% |
-| Coverage@20 | 25.8826% | 25.6333% |
+| Recall@5 | 0.031296 | 0.035735 |
+| Recall@10 | 0.042799 | 0.048078 |
+| Recall@20 | 0.055712 | 0.058972 |
+| MRR@5 | 0.018422 | 0.021286 |
+| MRR@10 | 0.019947 | 0.022939 |
+| MRR@20 | 0.020843 | 0.023698 |
+| NDCG@5 | 0.021612 | 0.024873 |
+| NDCG@10 | 0.025321 | 0.028870 |
+| NDCG@20 | 0.028586 | 0.031628 |
+| Coverage@20 | 0.258826 | 0.256333 |
 
 The selected configuration therefore improves ranking quality while maintaining broadly similar catalog coverage.
 
@@ -251,26 +260,26 @@ The small coverage decrease is treated as an acceptable trade-off because the pr
 
 ## 5. Coverage Results
 
-The current Coverage@20 results are:
+The historical Coverage@20 results are:
 
 | Model | Coverage@20 |
 | :--- | ---: |
-| Random | 100.0000% |
-| ItemKNN | 25.6333% |
-| Category Popularity | 8.6173% |
-| ALS | 1.5119% |
-| Global Popularity | 0.0085% |
-| Recent Popularity | 0.0085% |
+| Random | 1.000000 |
+| ItemKNN | 0.256333 |
+| Category Popularity | 0.086173 |
+| ALS | 0.015119 |
+| Global Popularity | 0.000085 |
+| Recent Popularity | 0.000085 |
 
 Random achieves the highest coverage because it explores the catalog broadly, but its recommendation quality is effectively negligible.
 
 Global and Recent Popularity have extremely low coverage because they recommend the same small set of popular items to many users.
 
-ItemKNN provides a substantially broader recommendation set, covering approximately 25.6% of the full catalog.
+ItemKNN provides a substantially broader recommendation set, covering approximately 0.256000 of the full catalog.
 
-This coverage is calculated against the complete catalog of 235,061 items. ItemKNN indexes 84,077 items during fitting, so its 25.6% recommendation coverage should not be interpreted as coverage of the indexed subset alone.
+This coverage is calculated against the complete catalog of 235,061 items. ItemKNN indexes 84,077 items during fitting, so its 0.256000 recommendation coverage should not be interpreted as coverage of the indexed subset alone.
 
-Category Popularity provides a different accuracy/coverage trade-off: it achieves the highest Recall@20 while covering approximately 8.6% of the catalog.
+Category Popularity provides a different accuracy/coverage trade-off: it achieves the highest Recall@20 while covering approximately 0.086000 of the catalog.
 
 ## 6. Latency Results
 
@@ -305,8 +314,8 @@ The most important finding is that Category Popularity substantially outperforms
 
 At Recall@20:
 
-Global Popularity: 1.1438%
-Category Popularity: 8.5063%
+Global Popularity: 0.011438
+Category Popularity: 0.085063
 
 Category Popularity therefore achieves approximately 7.4x the Recall@20 of Global Popularity.
 
@@ -316,11 +325,11 @@ The result is particularly valuable because Category Popularity is substantially
 
 ### 7.2 Recent popularity does not outperform global popularity
 
-The 30-day Recent Popularity baseline achieves Recall@20 of 0.9799%, compared with 1.1438% for Global Popularity.
+The 30-day Recent Popularity baseline achieves Recall@20 of 0.009799, compared with 0.011438 for Global Popularity.
 
-Therefore, the selected 30-day recency window does not improve performance over global popularity on the current evaluation split.
+Therefore, the selected 30-day recency window does not improve performance over global popularity on this historical evaluation split.
 
-This should not be interpreted as evidence that recency is universally ineffective. It only shows that the current 30-day configuration does not outperform the global popularity baseline under this evaluation protocol.
+This should not be interpreted as evidence that recency is universally ineffective. It only shows that this historical 30-day configuration does not outperform the global popularity baseline under this evaluation protocol.
 
 ### 7.3 Support-aware shrinkage improves ItemKNN
 
@@ -330,17 +339,17 @@ The shrinkage experiment showed consistent improvements in Recall, MRR, and NDCG
 
 The final lambda 100 configuration achieved:
 
-Recall@5: 3.5735%
-Recall@10: 4.8078%
-Recall@20: 5.8972%
-NDCG@20: 3.1628%
+Recall@5: 0.035735
+Recall@10: 0.048078
+Recall@20: 0.058972
+NDCG@20: 0.031628
 
 compared with the raw lambda 0 configuration:
 
-Recall@5: 3.1296%
-Recall@10: 4.2799%
-Recall@20: 5.5712%
-NDCG@20: 2.8586%
+Recall@5: 0.031296
+Recall@10: 0.042799
+Recall@20: 0.055712
+NDCG@20: 0.028586
 
 Support-aware similarity shrinkage was therefore retained as the final ItemKNN configuration.
 
@@ -350,15 +359,15 @@ Lambda 100 was selected as a representative configuration because performance ha
 
 Category Popularity achieves:
 
-Recall@20 = 8.5063%
+Recall@20 = 0.085063
 
 compared with:
 
-ItemKNN = 5.8972%
+ItemKNN = 0.058972
 
-ALS = 3.0636%
+ALS = 0.030636
 
-Therefore, neither of the evaluated collaborative-filtering references outperforms the lightweight category-based heuristic under the current configuration and evaluation split.
+Therefore, neither of the evaluated collaborative-filtering references outperforms the lightweight category-based heuristic under these historical configurations and this evaluation split.
 
 This demonstrates the importance of establishing strong baselines before introducing more complex recommendation models.
 
@@ -366,17 +375,17 @@ At the same time, ItemKNN and ALS provide useful reference points for future can
 
 ### 7.5 ItemKNN provides substantially higher catalog coverage
 
-Although ItemKNN does not achieve the highest Recall@20, it reaches 25.6333% Coverage@20.
+Although ItemKNN does not achieve the highest Recall@20, it reaches 0.256333 Coverage@20.
 
-This is substantially higher than Category Popularity's 8.6173%.
+This is substantially higher than Category Popularity's 0.086173.
 
 Therefore, ItemKNN provides a different accuracy/coverage trade-off and may be useful in a future candidate-generation or hybrid recommendation architecture.
 
 Its broad recommendation coverage is particularly relevant when future system stages require multiple candidate sources rather than a single final recommender.
 
-### 7.6 ALS is not competitive under the current configuration
+### 7.6 ALS trade-offs in the historical baseline
 
-ALS achieves Recall@20 of 3.0636%, which is below both Category Popularity and ItemKNN.
+ALS achieves Recall@20 of 0.030636, which is below both Category Popularity and ItemKNN.
 
 It also has the highest recommendation latency:
 
@@ -384,7 +393,7 @@ P95 = 3.6234 ms
 
 This does not mean ALS is intrinsically unsuitable for recommendation systems.
 
-It means that the current configuration does not provide a favorable accuracy/latency trade-off compared with the stronger baselines on this dataset.
+It means that this historical configuration does not provide a favorable accuracy/latency trade-off compared with the stronger baselines on this dataset.
 
 ALS remains valuable as a latent-factor reference and as a model from which future candidate-generation experiments can be designed.
 
@@ -392,11 +401,12 @@ ALS remains valuable as a latent-factor reference and as a model from which futu
 
 The M5 analysis also examined how ItemKNN recommendations are distributed across the catalog.
 
-Among 200,028 evaluation users:
-
-195,237 users received recommendations.
-16,168 users had no candidates from the ItemKNN recommendation path.
-60,840 unique items appeared in recommendation lists.
+The historical raw-neighbor distribution analysis (lambda 0) reported 195,237
+nonempty recommendation requests among 200,028 users and 60,840 unique output
+items, corresponding to Coverage@20 of 0.258826. This is distinct from the
+selected lambda-100 coverage above. The archived ItemKNN artifact separately
+records 16,168 `cold_start_users`; this diagnostic field is not an empty-output
+count, because standalone popularity fallback can supply recommendations.
 The top 10 items accounted for approximately 3.72% of all recommendation slots.
 The top 100 items accounted for approximately 18.83% of recommendation slots.
 The top 1,000 items accounted for approximately 45.75% of recommendation slots.
@@ -405,63 +415,35 @@ This shows that ItemKNN provides substantially broader catalog exposure than pop
 
 This concentration should be monitored in future candidate-generation and re-ranking stages rather than assuming that high catalog coverage automatically implies uniform item exposure.
 
-## 8. Baseline Ranking
+## 8. Historical model ranking
 
-Using Recall@20 as the primary ranking metric, the current models rank as follows:
+The table uses Recall@20 under the archived leave-last-out protocol. ItemKNN
+uses the M5 shrinkage configuration; ALS is the M4 baseline with 64 factors and
+20 iterations.
 
-Category Popularity — 8.5063%
-ItemKNN — 5.8972%
-ALS — 3.0636%
-Global Popularity — 1.1438%
-Recent Popularity — 0.9799%
-Random — 0.0035%
+| Model | Historical Recall@20 |
+| :--- | ---: |
+| Category Popularity | 0.085063 |
+| ItemKNN | 0.058972 |
+| ALS | 0.030636 |
+| Global Popularity | 0.011438 |
+| Recent Popularity | 0.009799 |
+| Random | 0.000035 |
 
-For the core Task 4 baselines specifically:
+## 9. Interpretation
 
-Category Popularity
-Global Popularity
-Recent Popularity
-Random
+Category Popularity provides a strong accuracy reference within this historical
+comparison. Its score does not set a performance threshold for the rolling task,
+which has different targets, eligibility rules and training boundaries.
 
-Category Popularity is therefore the strongest simple baseline that future personalized models should be expected to beat.
+ItemKNN's broader recommendation distribution motivates measuring it as a
+candidate source. Historical Top-20 metrics alone do not establish Candidate
+Recall@100/500/1000; that stage is measured in the
+[candidate retrieval report](CANDIDATE_RETRIEVAL_REPORT.md).
 
-ItemKNN should be treated separately as a collaborative-filtering candidate-generation reference rather than simply as a replacement for Category Popularity.
-
-## 9. Interpretation for Future Models
-
-The benchmark establishes an important performance floor for future recommendation models.
-
-A future model should not be considered successful merely because it improves over Random or Global Popularity.
-
-In particular, a personalized model should demonstrate improvement over Category Popularity, which currently achieves:
-
-Recall@5 = 3.5890%
-
-Recall@10 = 5.6902%
-
-Recall@20 = 8.5063%
-
-NDCG@20 = 3.6614%
-
-and Coverage@20 = 8.6173%.
-
-This baseline is computationally inexpensive and therefore represents a strong practical reference point.
-
-At the same time, future candidate-generation systems should not optimize solely for Recall@K. ItemKNN demonstrates that a model can provide a substantially broader candidate distribution even when its top-K ranking metrics are below Category Popularity.
-
-Future collaborative filtering, neural retrieval, learning-to-rank, or sequential recommendation models should therefore be evaluated using the same evaluation harness and temporal evaluation protocol.
-
-Any increase in recommendation quality should also be considered together with:
-
-Ranking quality
-Catalog coverage
-Recommendation concentration
-Cold-start behavior
-Inference latency
-Model fitting cost
-Operational complexity
-
-The benchmark should therefore be treated as a multi-dimensional reference point rather than as a single leaderboard.
+Model comparisons require a shared protocol and should consider ranking quality,
+catalog coverage, recommendation concentration, cold-start behavior, inference
+latency, fitting cost and operational complexity together.
 
 ## 10. Limitations
 
@@ -533,19 +515,19 @@ The original `baseline_v1.json` artifact remains unchanged. M5 ItemKNN results a
 
 This report records the original model comparison and the ItemKNN shrinkage study. It is not a performance floor for the current rolling task.
 
-The most important result is that Category Popularity remains the strongest simple baseline, achieving 8.5063% Recall@20 while maintaining very low recommendation latency.
+In this historical comparison, Category Popularity is the strongest simple baseline, achieving 0.085063 Recall@20 while maintaining very low recommendation latency.
 
-The benchmark also demonstrates that increasing model complexity does not automatically produce better recommendation quality. Under the current configurations, both ItemKNN and ALS are outperformed by the simpler category-aware heuristic in Recall@20.
+The benchmark also demonstrates that increasing model complexity does not automatically produce better recommendation quality. Under these historical configurations, both ItemKNN and ALS are outperformed by the simpler category-aware heuristic in Recall@20.
 
 However, ItemKNN provides a substantially broader recommendation distribution and demonstrates a useful accuracy/coverage trade-off. Milestone 5 further improved ItemKNN through support-aware similarity shrinkage, with lambda 100 selected as the final representative configuration after a reproducible sweep.
 
 The historical model trade-offs can be summarized as:
 
 Category Popularity: strongest simple accuracy baseline.
-ItemKNN: strongest current collaborative-filtering reference in coverage and ranking quality among the CF models.
-ALS: latent-factor reference with higher inference cost and weaker current ranking performance.
+ItemKNN: broader coverage and stronger ranking quality than ALS in this historical comparison.
+ALS: historical latent-factor reference with higher inference cost and weaker ranking performance.
 Global Popularity: strong simplicity baseline but extremely concentrated.
-Recent Popularity: useful recency reference but not stronger than global popularity under the current 30-day configuration.
+Recent Popularity: useful recency reference but not stronger than global popularity under this historical 30-day configuration.
 Random: lower-bound sanity-check baseline.
 
 Current model comparisons use the shared rolling cohort in the [rolling benchmark report](ROLLING_BENCHMARK_REPORT.md). The historical accuracy and coverage patterns here motivate candidate-source experiments, but they do not establish a winner under the current protocol.

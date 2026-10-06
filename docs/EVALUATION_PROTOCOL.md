@@ -13,7 +13,7 @@
 
 ## 1. Core Philosophy: Evaluation First
 
-In accordance with ADR-004 and ADR-005, the evaluation benchmark is established
+In accordance with ADR-08 and ADR-09, the evaluation benchmark is established
 before training any recommendation models.
 
 Recommendation systems require temporal evaluation:

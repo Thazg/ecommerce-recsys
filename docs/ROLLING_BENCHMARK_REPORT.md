@@ -6,6 +6,12 @@
 
 **Protocol:** [Rolling evaluation](ROLLING_EVALUATION_PROTOCOL.md)
 
+**Units and comparison:** Accuracy and coverage use fractions in `[0, 1]`.
+Compare models within the same table; nine-fold and five-fold tables have
+different populations. Historical leave-last-out scores are excluded. ALS
+configuration labels and latency workloads are defined in the
+[metric and protocol glossary](METRICS_AND_PROTOCOLS.md).
+
 ## Cohort and fold boundaries
 
 Each fold trains on all earlier interactions and evaluates the next window. Boundaries below are UTC dates; exact millisecond timestamps are in [manifest.json](../benchmarks/rolling/manifest.json).
@@ -23,7 +29,16 @@ Each fold trains on all earlier interactions and evaluates the next window. Boun
 | 9 | 2015-09-02 | 2015-09-18 | 13,539 | 142,024 |
 | **All** | | | **90,107** | **1,262,289** |
 
-The warm targets represent 71,982 distinct people across all nine folds. Selection folds 1–4 have 30,784 targets from 26,597 people; post-selection folds 5–9 have 59,323 targets from 50,630 people. Some people occur in both phases. Cold users appear only once, in the fold when they first interact. 11.10% of warm targets are not in their fold's training catalog and are unreachable by all train-only models. The unseen-item warm cohort is conditional and is not equivalent to the historical 200,028-user leave-last-out cohort.
+The warm targets represent 71,982 distinct user IDs across all nine folds. Selection folds 1–4 have 30,784 targets from 26,597 user IDs; post-selection folds 5–9 have 59,323 targets from 50,630 user IDs. Some user IDs occur in both phases. Cold users appear only once, in the fold when they first interact. 11.10% of warm targets are not in their fold's training catalog and are unreachable by all train-only models. The unseen-item warm cohort is conditional and is not equivalent to the historical 200,028-user leave-last-out cohort.
+
+The 4/5 phase allocation is a pragmatic choice over nine evaluation periods:
+four development snapshots for the small eight-configuration grids and five later
+snapshots for locked-configuration measurement. Warm target shares are 34.16%
+and 65.84%, and training
+expands at every cutoff. No experiment established this ratio as optimal. See
+[the protocol rationale](ROLLING_EVALUATION_PROTOCOL.md#why-four-development-folds-and-five-later-folds)
+for alternatives and the distinction between configuration selection and model
+refitting. The previously inspected later periods remain diagnostic.
 
 In the historical split, 86,949 of 200,028 test targets were already present in their own user's training history, while ItemKNN and ALS exclude seen items. Its shared training set also extends past the earliest test timestamp (2015-09-18 versus 2015-05-03, UTC). Those two differences, plus the rolling warm-history requirement, explain why the historical cohort cannot be preserved as the main causal discovery benchmark.
 
@@ -42,13 +57,28 @@ This reference table uses fixed earlier configurations for ItemKNN and ALS. It d
 
 Per-fold metrics, coverage, and inference latency are in [results.json](../benchmarks/rolling/results.json).
 
-As one illustration on fold 9, ItemKNN covers 19.34% of the training catalog with p95 recommendation-call latency 0.138 ms; ALS covers 1.53% with p95 10.280 ms. These are local inference calls after fitting, not end-to-end serving measurements or pooled latency percentiles.
+On fold 9 of the reference run, ItemKNN has Coverage@20 of 0.1934 with p95
+recommendation-call latency 0.138 ms; reference ALS has Coverage@20 of 0.0153
+with p95 10.280 ms. These are Top-20 call timings within this reference run.
+Candidate-retrieval timings at N=1,000 and repeated cold-call timings have
+different workloads and are excluded from latency comparisons with this table.
 
 ## Configuration selection and final folds
 
 ItemKNN evaluated shrinkage values 0, 5, 10, 20, 50, 100, 200, and 500 on folds 1–4. Lambda 100 won on pooled HR@20 (0.052138), using NDCG@20 to break its tie with 200 and 500. On folds 5–9, it achieved HR@20 **0.041889**, MRR@20 **0.018687**, and NDCG@20 **0.023962**. [Full ItemKNN sweep](../benchmarks/rolling/item_knn_sweep.json).
 
-The ALS sweep covers eight distinct configurations along the factors, regularization, and iterations axes. The documented pooled HR@20 rule selects 128 factors, 40 iterations, and regularization 0.01 on folds 1–4: HR@20 **0.035440**, versus **0.035408** for 128 factors and 20 iterations. That margin corresponds to about one additional hit among 30,784 targets, so it is too small by itself to justify twice as many training iterations. Its selected configuration scores HR@20 **0.027291**, MRR@20 **0.009456**, and NDCG@20 **0.013385** on folds 5–9. The earlier 128-factor/20-iteration reference configuration scores HR@20 0.027021 on those folds; the small gain does not by itself justify the extra fitting cost. [Full ALS sweep](../benchmarks/rolling/als_sweep.json).
+The ALS sweep covers eight distinct configurations along the factors,
+regularization and iterations axes. The declared pooled HR@20 rule selects
+128 factors, 40 iterations and regularization 0.01 on folds 1–4: HR@20
+**0.035440**, versus **0.035408** at 20 iterations. That margin corresponds to
+roughly one additional hit among 30,784 targets. The configuration is retained
+because it follows the locked HR/NDCG selection rule; the margin alone does not
+justify doubling iterations. It remains an experimental reference.
+
+Rolling selected ALS scores HR@20 **0.027291**, MRR@20 **0.009456** and NDCG@20
+**0.013385** on folds 5–9. Rolling reference ALS (128 factors, 20 iterations)
+scores HR@20 0.027021 on the same periods. See the
+[full ALS sweep](../benchmarks/rolling/als_sweep.json).
 
 The post-selection comparison below uses the same 59,323 warm user-window targets in folds 5–9. The four fixed baselines come from the reference run; ItemKNN and ALS use configurations selected on folds 1–4. The validity limit described above applies to this table.
 
@@ -69,4 +99,13 @@ For 1,262,289 first-time users, Global Popularity gives HR@20 **0.011394** and R
 
 ## Reproduction and limits
 
-Run `prepare_rolling_data.py`, `sweep_rolling.py --model item_knn`, `sweep_rolling.py --model als`, `benchmark_rolling.py`, and `benchmark_rolling_cold.py` with Python 3.13. See the [README](../README.md) for commands and data paths. The manifest records hashes of the processed interactions, both raw property CSVs, and all generated fold files; the result artifacts bind to that full manifest fingerprint. A fresh rebuild from the source files matched all 27 fold Parquet files byte for byte. Metrics use user-window weighting, so repeated users across folds contribute more than once. Earlier leave-last-out scores are excluded from these tables because they use a different evaluation task.
+Run `prepare_rolling_data.py`, `sweep_rolling.py --model item_knn`,
+`sweep_rolling.py --model als`, `benchmark_rolling.py` and
+`benchmark_rolling_cold.py` with Python 3.13. See the [README](../README.md) for
+commands and data paths. The manifest records hashes of the processed
+interactions, both raw property CSVs and all generated fold files; result artifacts
+bind to that full manifest fingerprint. Input identities are listed in the
+[dataset card](DATASET_CARD.md#6-benchmark-input-provenance).
+
+Metrics use user-window weighting, so repeated users across folds contribute
+more than once. Earlier leave-last-out scores use a different evaluation task.

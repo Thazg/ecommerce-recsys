@@ -2,6 +2,10 @@
 
 > Historical M6 report. Its per-user leave-last-out split lacks a global training cutoff and may include already-seen targets. Use the [rolling benchmark report](ROLLING_BENCHMARK_REPORT.md) for current ALS comparisons and sweep results.
 
+**Metric units:** Accuracy and coverage are fractions in `[0, 1]`; factor
+arrays are measured in MiB. Configuration labels and protocol boundaries are
+listed in [metrics and model references](METRICS_AND_PROTOCOLS.md).
+
 ## 1. Objective
 
 This milestone evaluates matrix factorization methods for implicit-feedback recommendation and establishes whether a latent-factor model is useful for the production-oriented e-commerce recommendation system.
@@ -12,9 +16,11 @@ The milestone has three complementary objectives:
 2. Compare pointwise matrix factorization with pairwise Bayesian Personalized Ranking (BPR).
 3. Evaluate the existing production-oriented implicit ALS implementation on the project's temporal validation and test splits.
 
-The project deliberately separates educational implementations from the production recommender. The educational models prioritize readability and understanding, while the ALS implementation uses the `implicit` library for scalable model training.
+The project deliberately separates educational implementations from the library-backed recommender. The educational models prioritize readability and understanding, while the ALS implementation uses the `implicit` library for scalable model training.
 
-The final model selection is performed using the validation split. The test split is used only once for final held-out evaluation after the configuration has been selected.
+This historical M6 selection uses the validation split, followed by a run of
+the selected model on the historical test split. Earlier baseline experiments
+had already used that test population; it is not an untouched confirmation set.
 
 ---
 
@@ -94,7 +100,7 @@ explicit negative feedback
 
 This distinction is fundamental to the matrix-factorization experiments.
 
-For the current production ALS implementation, every observed interaction is encoded with value `1.0` in the sparse user-item matrix:
+For the current library-backed ALS implementation, every observed interaction is encoded with value `1.0` in the sparse user-item matrix:
 
 ```text
 view        → 1.0
@@ -176,7 +182,7 @@ The educational implementation uses small datasets in unit tests. It is not inte
 
 ### 4.4 Role in the Project
 
-Educational MF is intentionally separate from the production ALS implementation.
+Educational MF is intentionally separate from the library-backed ALS implementation.
 
 Its primary value is understanding:
 
@@ -481,7 +487,7 @@ A future experiment could evaluate event-specific weighting, but no event-weight
 
 ### 6.7 Cold-Start Behavior
 
-For an unknown user, the production ALS recommender falls back to a popularity-based recommender.
+For an unknown user, the standalone ALS recommender falls back to a popularity-based recommender.
 
 This prevents the system from failing when a user has no learned latent representation.
 
@@ -510,17 +516,20 @@ The learned matrices contained:
 The approximate combined memory footprint of the float32 user and item factor matrices was about:
 
 ```text
-418 MB
+399.41 MiB
 ```
 
 Increasing the factor dimension from 64 to 128 approximately doubles latent-factor storage:
 
 ```text
-64 factors  → approximately 418 MB
-128 factors → approximately 836 MB
+64 factors  → approximately 399.41 MiB
+128 factors → approximately 798.81 MiB
 ```
 
-This illustrates an important production trade-off.
+These values follow `(user_count + item_count) * factors * 4 / 2^20` for
+float32 arrays. They exclude sparse matrices and full process memory.
+
+This illustrates a model-storage trade-off.
 
 Increasing latent dimension can improve model capacity, but it also increases memory requirements and recommendation computation.
 
@@ -875,7 +884,7 @@ The final ALS configuration achieved:
 Coverage = 0.024313
 ```
 
-This means the recommendations cover approximately 2.43% of the catalog under the project's coverage definition and evaluation population.
+This means the recommendations cover a fraction 0.024313 of the catalog under the project's coverage definition and evaluation population.
 
 Higher factor dimensions increased coverage in the controlled factor experiment.
 
@@ -913,13 +922,13 @@ A production choice must consider ranking quality, coverage, latency, memory, re
 
 ## 13. Limitations
 
-### 13.1 Single temporal split
+### 13.1 Single per-user chronological split
 
-The current experiments use one temporal train/validation/test split.
+The historical experiments use one per-user chronological train/validation/test split, without a global training cutoff.
 
 Results may vary across different time periods or traffic distributions.
 
-Repeated temporal evaluation or rolling-window validation could provide stronger evidence for generalization.
+The [rolling benchmark](ROLLING_BENCHMARK_REPORT.md) uses global time boundaries and repeated future windows; its inspected periods still have a diagnostic validity limit.
 
 ### 13.2 Limited hyperparameter search
 
@@ -952,23 +961,12 @@ The current ALS implementation maps all observed event types to the same raw val
 
 The dataset contains different behavioral strengths such as views, cart additions, and transactions, but these are not distinguished by the current ALS configuration.
 
-### 13.5 Candidate-generation evaluation is not complete
+### 13.5 Top-K scope
 
-The current M6 evaluation measures recommendation quality directly.
-
-It does not yet evaluate ALS as one stage inside a multi-stage recommendation system with:
-
-```text
-candidate generation
-        ↓
-ranking
-        ↓
-re-ranking
-        ↓
-final Top-K
-```
-
-A future retrieval-stage experiment should evaluate candidate recall and downstream ranking quality.
+The historical M6 experiment evaluates final Top-K recommendations. It does not
+measure candidate availability for a downstream ranker. The
+[candidate retrieval report](CANDIDATE_RETRIEVAL_REPORT.md) measures that separate
+stage using the rolling targets and catalog.
 
 ### 13.6 Cold-start item handling remains limited
 
@@ -982,11 +980,11 @@ A production system would require a strategy for item onboarding and model refre
 
 ## 14. Final Decision
 
-The production-oriented ALS implementation remains the primary matrix-factorization model for this milestone.
+The library-backed ALS implementation is the matrix-factorization reference in this historical M6 experiment.
 
 The educational MF and BPR implementations are retained as learning-oriented implementations because they expose the mechanics of latent-factor learning, negative sampling, SGD, pairwise ranking, and regularization.
 
-The selected ALS reference configuration is:
+The selected historical ALS reference configuration is:
 
 ```text
 factors = 128
@@ -995,7 +993,7 @@ regularization = 0.01
 random_seed = 42
 ```
 
-The selection was made using validation data, followed by one held-out test evaluation.
+Selection used the historical validation split, followed by one historical test evaluation. Earlier baseline experiments had already used that test population.
 
 The final test result is:
 
@@ -1014,9 +1012,9 @@ p95 recommendation latency     = 10.192 ms
 
 The main experimental conclusion is that latent factor dimension had the clearest observed impact among the tested ALS hyperparameters, while regularization was relatively insensitive and additional iterations showed diminishing returns.
 
-The model is therefore suitable to remain as the project's current production-oriented matrix-factorization reference.
+These measurements retain ALS as a historical matrix-factorization reference; the rolling-selected configuration is recorded separately in the [configuration mapping](METRICS_AND_PROTOCOLS.md#als-configuration-mapping).
 
-However, this result does not establish ALS as the final recommendation architecture by itself. The next architectural question is whether ALS provides sufficient value as a candidate-generation/retrieval component when compared with the project's existing popularity and ItemKNN approaches and, eventually, a downstream ranking stage.
+Historical Top-20 results do not establish candidate-retrieval quality or a production architecture choice. The [candidate retrieval report](CANDIDATE_RETRIEVAL_REPORT.md) measures that separate task under the rolling protocol.
 
 ---
 

@@ -1,10 +1,10 @@
 # Dataset Card — Retailrocket E-Commerce Dataset
 
-**Project:** Production E-Commerce Recommendation Platform
+**Project:** Offline E-Commerce Recommendation System
 **Repository:** `ecommerce-recsys`
-**Document Version:** `v0.1.0`
+**Document Version:** `v0.2.1`
 **Status:** Accepted Primary Dataset
-**Date:** 2026-09-05
+**Last Updated:** 2026-10-06
 **Milestone:** Milestone 1 — Dataset Selection and Data Contract
 
 ---
@@ -55,7 +55,7 @@ The raw dataset contains the following files:
   - Mapped to: `timestamp`
   - Status: Satisfies REQUIRED
   - Characteristics: Monotonically comparable Unix milliseconds.
-  - Supports global temporal folds under [ADR-023](DECISIONS.md).
+  - Supports global temporal folds under [ADR-11](DECISIONS.md).
 
 * `event_type`:
   - Mapped to: `event`
@@ -96,3 +96,24 @@ The raw dataset contains the following files:
 3. Reproduction cost:
    - The interaction log is manageable locally, while the item-property CSVs and nine-fold model sweeps require substantially more storage and computation.
    - CI covers unit tests and static checks; the full benchmark uses separately obtained raw data and saved, content-hashed artifacts.
+
+## 6. Benchmark input provenance
+
+The [rolling manifest](../benchmarks/rolling/manifest.json) records the input
+identities, exact millisecond cutoffs, cohort counts and SHA-256 of every fold
+file. The canonical manifest fingerprint is
+`5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3`.
+
+| Input | Recorded SHA-256 |
+| :--- | :--- |
+| Processed `interactions.parquet` | `5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e` |
+| Raw `item_properties_part1.csv` | `30aad5aeca58b2dc27dcc73e1708565f5818e45adb3eb57401f91e87355b0b81` |
+| Raw `item_properties_part2.csv` | `d5e7d1a91dc40f522aeb596b267e6c87d8aed689a7192d12369cfb165eb987e5` |
+
+Returning-user targets and first-time-user targets use distinct denominators.
+Historical leave-last-out and rolling results use different eligibility rules;
+their scores are not interchangeable. See the
+[protocol and metric glossary](METRICS_AND_PROTOCOLS.md).
+
+Document revision 0.2.1 clarifies the benchmark provenance and comparison
+boundaries. The logical schema is specified by [data contract 0.2.1](DATA_CONTRACT.md).

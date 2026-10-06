@@ -17,9 +17,9 @@ This report documents the empirical properties, distributions, and semantic
 decisions derived from the raw Retailrocket e-commerce interaction dataset.
 
 Key conclusions:
-1. Zero data loss: All 2,756,101 raw interactions are preserved.
+1. Row-count preservation: Raw and processed interaction counts are both 2,756,101.
 2. High cold-start sparsity: 71.15% of visitors have only 1 interaction.
-3. Steep behavioral funnel: Conversion from view to purchase is 0.83%.
+3. User-count ratio: Transaction-user count / view-user count is 0.83%.
 4. Repeated interactions: 15.52% of user-item pairs exhibit repeat behavior.
 5. Canonical artifacts generated: `interactions.parquet` and `items.parquet`.
 
@@ -47,12 +47,19 @@ Event counts and proportions:
 * `addtocart`: 69,332 events (2.52%)
 * `transaction`: 22,457 events (0.81%)
 
-User-level funnel progression:
+User-level behavior counts (over the entire observation period, without enforcing
+event order or attributing a purchase to a particular earlier view):
 * 1,404,179 unique users viewed at least one item.
-* 37,722 unique users added at least one item to cart (2.69% of viewers).
-* 11,719 unique users completed a purchase (0.83% of viewers, 31.07% of carters).
+* 37,722 unique users have an `addtocart` event (ratio to view-user count: 2.69%).
+* 11,719 unique users have a transaction (ratio to view-user count: 0.83%).
 
-Empirical Rationale (ADR-002):
+The ratios 11,719 / 1,404,179 = 0.83% and 11,719 / 37,722 = 31.07% compare
+whole-period user counts. They are not conditional view-to-purchase or
+cart-to-purchase conversion rates: the numerators are not restricted to users
+with a corresponding earlier view/cart event. The 0.81% transaction-event share
+above has a different denominator: 22,457 / 2,756,101 interaction events.
+
+Empirical Rationale (ADR-07):
 A purchase event is approximately 120 times rarer than a view event.
 Assigning arbitrary static weights (e.g. view=1, purchase=5) fails to reflect
 this empirical rarity. Raw event types are therefore preserved unweighted.
@@ -93,12 +100,12 @@ Users with only one event cannot supply both a past interaction and a future tar
 
 ## 6. Interaction Semantics and Processing Policy
 
-1. Zero Silent Deletion:
-   No rows are discarded during the processing stage.
+1. Row-count Preservation:
+   Raw and processed interactions both contain 2,756,101 rows.
 2. Chronological Ordering:
    Interactions are sorted by `timestamp` in nondecreasing order; events can share a timestamp.
 3. Repeat Interaction Preservation:
    Consecutive views are retained to preserve session frequency signals.
 4. Output Artifacts:
-   - `data/processed/interactions.parquet` (53.84 MB)
-   - `data/processed/items.parquet` (5.49 MB)
+   - `data/processed/interactions.parquet` (56,456,419 bytes; 53.84 MiB)
+   - `data/processed/items.parquet` (5,755,039 bytes; 5.49 MiB)

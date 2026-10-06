@@ -1,19 +1,19 @@
 # E-Commerce Recommendation Data Contract
 
-**Project:** Production E-Commerce Recommendation Platform
+**Project:** Offline E-Commerce Recommendation System
 **Repository:** `ecommerce-recsys`
-**Contract Version:** `v0.1.0`
+**Contract Version:** `v0.2.1`
 **Status:** Accepted logical data contract
-**Last Updated:** 2026-10-05
+**Last Updated:** 2026-10-06
 
 ---
 
 ## 1. Purpose of This Contract
 
-This document defines the canonical logical data contract for the
-production e-commerce recommendation system.
+This document defines the canonical logical data contract for the offline
+recommendation experiments in this repository.
 
-In alignment with ADR-003, this contract specifies the minimum required
+In alignment with ADR-06, this contract specifies the minimum required
 properties and semantics that any candidate dataset must fulfill.
 
 It serves as:
@@ -58,24 +58,30 @@ Represents an atomic behavioral event between User and Item.
   - `item_id`: Reference to item.
   - `timestamp`: Precise temporal marker (ISO 8601 or Unix epoch).
 * Conditionally Required:
-  - `event_type`: Required if source logs multiple types (view, cart, purchase).
+  - `event_type`: Required for multiple logged event types; canonical values are
+    `view`, `addtocart` and `transaction` (view, cart addition and purchase).
 
 ---
 
 ## 3. Mandatory Behavioral Invariants
 
 ### 3.1 Strict Temporal Ordering (Required)
-* Follows [ADR-023](DECISIONS.md) for global temporal evaluation.
+* Follows [ADR-11](DECISIONS.md) for global temporal evaluation.
 * Every interaction must contain a recoverable, monotonically comparable timestamp.
 * Required to construct globally ordered evaluation folds and model recency.
+* Training events satisfy `timestamp <= cutoff`; evaluation targets satisfy
+  `timestamp > cutoff`. Recency windows and metadata snapshots use that declared
+  cutoff, including gaps after the final observed training event.
+* Candidate item IDs must be observed in the training snapshot. Category values
+  must come from property events at or before the same cutoff.
 
 ### 3.2 Preservation of Raw Repeated Interactions (Required)
 * Raw ingestion must NOT deduplicate repeated interactions prior to EDA.
 * Repeated events carry frequency signals or tracking artifacts that
-  require empirical analysis before filtering or merging (ADR-002).
+  require empirical analysis before filtering or merging (ADR-07).
 
 ### 3.3 Implicit-Feedback Interpretation
-* Follows ADR-001.
+* Follows ADR-01.
 * Interactions represent observed positive interest/engagement.
 * Absence of interaction does NOT indicate negative preference.
 
@@ -99,7 +105,7 @@ Represents an atomic behavioral event between User and Item.
   - Entity: Interaction
   - Requirement: REQUIRED
   - Purpose: Temporal evaluation split & chronological ordering.
-  - Missing Impact: Prevents causal temporal evaluation under ADR-023.
+  - Missing Impact: Prevents causal temporal evaluation under ADR-11.
 
 * `event_type`:
   - Entity: Interaction
@@ -125,7 +131,7 @@ Represents an atomic behavioral event between User and Item.
 
 ## 5. Deliberately Unresolved Semantics
 
-To maintain architectural discipline (ADR-002, ADR-012), the following
+To maintain architectural discipline (ADR-07, ADR-03), the following
 are intentionally left UNRESOLVED in this contract:
 
 1. Event Weighting Ratios (e.g. view=1, purchase=5).

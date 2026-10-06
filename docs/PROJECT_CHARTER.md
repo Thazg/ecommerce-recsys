@@ -138,17 +138,18 @@ The exact fallback strategy will be defined after the dataset has been analyzed.
 
 The project focuses on **implicit feedback** rather than explicit ratings.
 
-Candidate interaction types include:
+The selected Retailrocket dataset uses these canonical event codes:
 
 * `view`
-* `cart` / `add_to_cart`
-* `purchase` / `transaction`
+* `addtocart` (cart addition)
+* `transaction` (purchase)
 
-The exact interpretation and weighting of these events are intentionally **not frozen yet**.
+These event types are retained as implicit positive signals. The current
+benchmarks treat each event as one interaction and do not apply event-specific
+weights.
 
-Event semantics will be determined during the data-understanding milestone after inspecting the selected dataset.
-
-The project must not assign arbitrary interaction weights before this analysis.
+This records the dataset mapping and current benchmark behavior; future weighted
+models require a separately evaluated event-weighting decision.
 
 ---
 
@@ -310,19 +311,21 @@ Therefore, the project must avoid leaking future interactions into training data
 
 Random interaction-level train/test splitting must not be used without explicit justification.
 
-The initial expected approach is based on temporal user histories, such as:
+Evaluation uses globally ordered training snapshots and subsequent target
+windows. The temporal requirement is:
 
 ```text
-Earlier interactions -> training
-
-Second-to-last relevant interaction -> validation
-
-Last relevant interaction -> test
+All events at or before a global cutoff -> training snapshot
+Events strictly after that cutoff      -> evaluation window
 ```
 
-A different temporal protocol may be chosen if the selected dataset provides a better justification.
+Candidate catalogs and time-varying metadata use the same declared cutoff.
+Configuration selection precedes evaluation on later periods. Returning-user
+discovery targets and first-time-user targets are reported separately.
 
-The final evaluation protocol must be documented and frozen before sophisticated model comparisons begin.
+The [rolling protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the exact targets,
+phase allocation and validity limits. Historical per-user experiments remain
+archived under their own protocol.
 
 ---
 
