@@ -154,7 +154,10 @@ def main() -> None:
             if targets.empty:
                 metrics = _metrics(targets["item_id"], [])
             else:
-                model.fit(train)
+                if isinstance(model, RecentPopularityRecommender):
+                    model.fit(train, cutoff=fold["train_cutoff"])
+                else:
+                    model.fit(train)
                 metrics = _metrics(targets["item_id"], model.recommend(20))
             rows.append(
                 {

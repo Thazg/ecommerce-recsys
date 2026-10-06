@@ -10,6 +10,7 @@ from ecommerce_recsys.data.splitting import (
     verify_global_train_before_target,
     verify_unseen_targets,
 )
+from ecommerce_recsys.evaluation.latency import latency_metrics
 from ecommerce_recsys.evaluation.metrics import (
     catalog_coverage,
     evaluate_predictions,
@@ -169,63 +170,11 @@ def _build_user_histories(
 def _calculate_latency_metrics(
     latencies_seconds: list[float],
 ) -> dict[str, float]:
-    """Calculate recommendation latency statistics."""
-    if not latencies_seconds:
-        return {
-            "latency_avg_ms": 0.0,
-            "latency_p50_ms": 0.0,
-            "latency_p95_ms": 0.0,
-            "latency_p99_ms": 0.0,
-        }
-
-    latencies_ms = sorted(latency * 1000.0 for latency in latencies_seconds)
-
-    def percentile(
-        values: list[float],
-        percentile_value: float,
-    ) -> float:
-        index = (len(values) - 1) * percentile_value
-
-        lower = int(index)
-
-        upper = min(
-            lower + 1,
-            len(values) - 1,
-        )
-
-        if lower == upper:
-            return values[lower]
-
-        weight = index - lower
-
-        return values[lower] * (1.0 - weight) + values[upper] * weight
-
+    """Use shared linear percentiles; retain historical six-decimal output."""
     return {
-        "latency_avg_ms": round(
-            sum(latencies_ms) / len(latencies_ms),
-            6,
-        ),
-        "latency_p50_ms": round(
-            percentile(
-                latencies_ms,
-                0.50,
-            ),
-            6,
-        ),
-        "latency_p95_ms": round(
-            percentile(
-                latencies_ms,
-                0.95,
-            ),
-            6,
-        ),
-        "latency_p99_ms": round(
-            percentile(
-                latencies_ms,
-                0.99,
-            ),
-            6,
-        ),
+        key: round(value, 6)
+        for key, value in latency_metrics(latencies_seconds).items()
+        if key != "latency_samples"
     }
 
 
@@ -238,6 +187,7 @@ def evaluate_recommender(
     total_catalog_items: int | None = None,
     fit: bool = True,
     split_protocol: SplitProtocol = "rolling_temporal",
+    train_cutoff: int | None = None,
 ) -> dict[str, float]:
     """Fit one recommender and evaluate it under a shared protocol.
 
@@ -267,6 +217,12 @@ def evaluate_recommender(
     if not ground_truth:
         return {}
 
+    if train_cutoff is not None:
+        if train["timestamp"].max() > train_cutoff:
+            raise ValueError("Training interactions follow the declared cutoff.")
+        if test["timestamp"].min() <= train_cutoff:
+            raise ValueError("Evaluation targets must follow the declared cutoff.")
+
     if split_protocol == "rolling_temporal":
         verify_global_train_before_target(train, test)
         verify_unseen_targets(train, test)
@@ -292,7 +248,10 @@ def evaluate_recommender(
             )
 
         else:
-            recommender.fit(train)
+            if isinstance(recommender, RecentPopularityRecommender):
+                recommender.fit(train, cutoff=train_cutoff)
+            else:
+                recommender.fit(train)
 
     predictions: dict[
         str,

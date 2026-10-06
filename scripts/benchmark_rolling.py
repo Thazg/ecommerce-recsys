@@ -152,6 +152,7 @@ def main() -> None:
                 items=catalog,
                 k_values=K_VALUES,
                 total_catalog_items=len(catalog),
+                train_cutoff=fold["train_cutoff"],
             )
             row = {
                 "fold_index": fold_index,

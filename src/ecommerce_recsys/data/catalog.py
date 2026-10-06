@@ -7,7 +7,9 @@ from pathlib import Path
 import pandas as pd
 
 
-def build_train_catalog(train: pd.DataFrame, raw_dir: Path) -> pd.DataFrame:
+def build_train_catalog(
+    train: pd.DataFrame, raw_dir: Path, *, cutoff: int | None = None
+) -> pd.DataFrame:
     """Build the known catalog and latest category snapshot at the train cutoff."""
     property_paths = [raw_dir / f"item_properties_part{part}.csv" for part in (1, 2)]
     missing = [str(path) for path in property_paths if not path.exists()]
@@ -16,7 +18,10 @@ def build_train_catalog(train: pd.DataFrame, raw_dir: Path) -> pd.DataFrame:
 
     item_ids = set(train["item_id"].astype(str))
     categories: dict[str, tuple[int, str]] = {}
-    cutoff = train["timestamp"].max()
+    if cutoff is None:
+        cutoff = train["timestamp"].max()
+    if (train["timestamp"] > cutoff).any():
+        raise ValueError("Training interactions follow the supplied catalog cutoff.")
     for path in property_paths:
         for chunk in pd.read_csv(
             path,

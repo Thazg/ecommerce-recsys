@@ -85,7 +85,7 @@ def main() -> None:
         )
         if warm_targets.empty:
             raise ValueError(f"Fold {fold_index} has no warm-user targets.")
-        catalog = build_train_catalog(train, args.raw_dir)
+        catalog = build_train_catalog(train, args.raw_dir, cutoff=cutoffs[fold_index - 1])
         fold_dir.mkdir(parents=True, exist_ok=True)
         for name, frame in (
             ("warm_targets.parquet", warm_targets),

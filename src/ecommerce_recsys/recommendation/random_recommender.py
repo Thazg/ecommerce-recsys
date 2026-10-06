@@ -73,9 +73,12 @@ class RandomRecommender:
         if k == 0:
             return []
 
-        if available <= 4 * k:
+        # Choose by history density, never by requested k, so every request is
+        # a prefix of the same per-user random ordering for this history.
+        if available <= len(self._catalog) // 4:
             eligible = [item_id for item_id in self._catalog if item_id not in seen]
-            return rng.sample(eligible, k)
+            rng.shuffle(eligible)
+            return eligible[:k]
 
         while len(recommendations) < k:
             item_id = rng.choice(self._catalog)

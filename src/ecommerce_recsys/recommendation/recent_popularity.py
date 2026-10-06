@@ -6,11 +6,28 @@ SECONDS_PER_DAY = 24 * 60 * 60
 MS_PER_DAY = SECONDS_PER_DAY * 1000
 
 
+def recent_interactions(
+    interactions: pd.DataFrame, window_days: int, *, cutoff: int | None = None
+) -> pd.DataFrame:
+    """Select a closed recency window ending at the declared snapshot cutoff."""
+    missing = {"item_id", "timestamp"} - set(interactions.columns)
+    if missing:
+        raise ValueError(f"Missing required columns: {sorted(missing)}")
+    if window_days <= 0:
+        raise ValueError("window_days must be positive")
+    if cutoff is None:
+        cutoff = interactions["timestamp"].max()
+    if (interactions["timestamp"] > cutoff).any():
+        raise ValueError("Interactions follow the supplied cutoff.")
+    return interactions.loc[interactions["timestamp"] >= cutoff - window_days * MS_PER_DAY]
+
+
 class RecentPopularityRecommender:
     """Recommend items popular within a recent time window.
 
     Scores items by interaction count within the last `window_days` days
-    of the training data (relative to the latest timestamp in train).
+    ending at an explicit snapshot cutoff. Historical callers may omit the
+    cutoff to use the latest training timestamp.
 
     Tie-breaking: count DESC, item_id ASC → deterministic ranking.
     """
@@ -20,23 +37,12 @@ class RecentPopularityRecommender:
             raise ValueError("window_days must be positive")
         self._window_days = window_days
         self._ranking: list[str] = []
+        self._fitted = False
 
-    def fit(self, interactions: pd.DataFrame) -> None:
+    def fit(self, interactions: pd.DataFrame, *, cutoff: int | None = None) -> None:
         """Fit recent popularity ranking from interaction rows."""
-        required_columns = {"item_id", "timestamp"}
-        missing = required_columns - set(interactions.columns)
-        if missing:
-            raise ValueError(f"Missing required columns: {sorted(missing)}")
-
-        # 1. Cutoff = latest timestamp in train
-        cutoff = interactions["timestamp"].max()
-
-        # 2. Window size in milliseconds
-        window_ms = self._window_days * MS_PER_DAY
-
-        # 3. Keep interactions inside window
-        mask = interactions["timestamp"] >= cutoff - window_ms
-        recent = interactions.loc[mask]
+        recent = recent_interactions(interactions, self._window_days, cutoff=cutoff)
+        recent = recent.assign(item_id=recent["item_id"].astype(str))
 
         # 4. Count + sort (tie-break: item_id ASC)
         counts = (
@@ -47,10 +53,11 @@ class RecentPopularityRecommender:
         )
 
         self._ranking = counts["item_id"].astype(str).tolist()
+        self._fitted = True
 
     def recommend(self, k: int) -> list[str]:
         """Return the top-k recently popular items."""
-        if not self._ranking:
+        if not self._fitted:
             raise RuntimeError("Model has not been fitted. Call fit() first.")
 
         if k <= 0:

@@ -170,6 +170,7 @@ def main() -> None:
                 k_values=K_VALUES,
                 total_catalog_items=catalog_size,
                 fit=fit,
+                train_cutoff=fold["train_cutoff"],
             )
             artifact["results"].append(
                 {
@@ -221,6 +222,7 @@ def main() -> None:
             targets,
             k_values=K_VALUES,
             total_catalog_items=catalog_size,
+            train_cutoff=fold["train_cutoff"],
         )
         artifact["results"].append(
             {
