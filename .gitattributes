@@ -1,0 +1,4 @@
+# Keep implementation fingerprints stable across Windows and Linux checkouts.
+*.py text eol=lf
+# Verification records hash the exact published result bytes.
+benchmarks/retrieval/*.json -text

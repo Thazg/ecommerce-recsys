@@ -1,0 +1,177 @@
+{
+  "captured_at_utc": "2026-10-06T10:59:02.957707+00:00",
+  "base_git_commit": "48a5d4869192b0b4e122f208d346e7488c062f05",
+  "source_snapshot": {
+    "normalization": "LF line endings",
+    "files_sha256": {
+      ".gitattributes": "6bd6ac9025a366c1ebf0401a8cb5e71ded1c1fceddbe808f4a0b70378f55e56e",
+      "pyproject.toml": "dd8c77933c6fc54e94a32951eb77f83e8938f873a0a1a4dcb156f1481e5ca7d9",
+      "scripts/analyze_item_knn_empty_users.py": "7d8b33be8dd9d2b5c3be3aeb75a6aee6e28a3cc5793f594db63fe4bbe75e9f20",
+      "scripts/analyze_recommendation_concentration.py": "e4bede927f8df5d79a19fa7e976f815717a953116b8b1afad523919ee7dc888c",
+      "scripts/analyze_recommendation_distribution.py": "0a5359b4b6262bda8e7349961c9dc4d323ac342d71b4bd2d2dc3e11182b6b00f",
+      "scripts/benchmark_als_experiments.py": "a8d075ef6aaac60d83794671f30e39ac970c4c23eea9fc27e07a1a42b4bac351",
+      "scripts/benchmark_als_final.py": "ec0f6220c0c50f371b4590b445c6b63e7cfe451a052c6150d32830b881f177f3",
+      "scripts/benchmark_baselines.py": "09330cb73e7b4c08996adf6eac1cd99e8456029d835871663e35d742fde03687",
+      "scripts/benchmark_candidates.py": "7d6952b0fc5e3010b00774cf3688d399c49f29fe5f2f94e3c490404b7c76cef5",
+      "scripts/benchmark_item_knn_final.py": "57615a5f3544e8fca7fa8c19879a8409d78ebcf7bad3a45994edd9f0221eea99",
+      "scripts/benchmark_item_knn_shrinkage.py": "8d1d3e3280cddeab128e9977855fe8200e8635d99da9f3343150884de345c8b1",
+      "scripts/benchmark_rolling.py": "83e1b9e2d4f16686308b87380656c8f66a53d7bc2009c1b1d060c327e7446bb9",
+      "scripts/benchmark_rolling_cold.py": "81bd4c7127de3f14b0dac39abc1d14b965f79af7274dce1610c9e6cafcba343f",
+      "scripts/build_interactions.py": "5b4307b1ba655f80700574e3760eede613405a63a418c6fc26dd1d3aa582aadc",
+      "scripts/check_popularity.py": "7cb40e7b3d22c5b010d1807ce2699891d00c45c74daf55a0c179b5f60ab48c0a",
+      "scripts/download_data.py": "0752043352948c6b5a9e3129b0b8baf50e313ed0ccb278bc67a7df89839388db",
+      "scripts/evaluate_item_knn.py": "a0f890d581030afb93aea0d8251e73e6c8b29d43068d2a8f3bb763fddcd45179",
+      "scripts/evaluate_popularity.py": "4b77dab8d521f351feb595afbd1835bb4819c9d2af33d7d4babf8c3a54fa0858",
+      "scripts/evaluate_recent_popularity.py": "ad6d2d753b7f1574b405a9db0e194af0387be4706fdede9422f226415ffd28c0",
+      "scripts/inspect_als_factors.py": "69cf2852bd0e17c40dbf3cf7b16874ad0641590abe064787fe1aee4301320858",
+      "scripts/inspect_als_score.py": "f2603477d63c198c802a7cabda3344bcd3cc34d9b9fda9f55cc195ba49df82ca",
+      "scripts/prepare_rolling_data.py": "78b4f1668179966bd587fd46fce07f8638a854ec9b051227c566d361bfa15921",
+      "scripts/run_eda.py": "a6ef4133ae3a18ac6756632bbf3cfcd17a802ca7ae168a0f1a5d2566388db7d1",
+      "scripts/split_data.py": "2d151660b13ba19c1f8472a1c49defb5b7e8b0b24fa4daf57d5f4161cbaf4a87",
+      "scripts/sweep_rolling.py": "de6c59665cf9ea1e35be915423a4807b441d1f10ff11843f83d56786f5263d0f",
+      "scripts/verify_candidate_artifact.py": "eeeae5e9add08ee23adc4567b2d12802a5a3224af600e472601d06956057893c",
+      "src/ecommerce_recsys/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ecommerce_recsys/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ecommerce_recsys/data/catalog.py": "7530cec7e7808f6d3c0aa0991839ff36ddaccf9aef45b98f17a035effb7caf4a",
+      "src/ecommerce_recsys/data/rolling_provenance.py": "dc2404d9917cac2c0dff1aacfb27317d08ddb66528c86423583fc95b3ee9a67f",
+      "src/ecommerce_recsys/data/schemas.py": "9a70fe83dff70eb4d031df6cc1c6d0ed8b7924ea069bdefdd6504c13021cf672",
+      "src/ecommerce_recsys/data/splitting.py": "89cae14feabfdb64466a640e0b30dd514d649469c3883e13dbc03a646285f117",
+      "src/ecommerce_recsys/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ecommerce_recsys/evaluation/benchmark.py": "683f70cc987c60914cad11e126ebf350c7af2bf30aa7b646b8df30f69f3fadfe",
+      "src/ecommerce_recsys/evaluation/candidates.py": "c61d7d2ee292e2d0d7aaaa55798a70f1e2d0c076f7de0be3c65f194fec69d82a",
+      "src/ecommerce_recsys/evaluation/latency.py": "b06b540285a936f7abaddafea8c385d041204eed6eb56c1ff0df3b88695fe1d0",
+      "src/ecommerce_recsys/evaluation/metrics.py": "862c6a1ef14b93581f7649ff167f5755fe6d0380017ae5ca0a45fdeabd4ed669",
+      "src/ecommerce_recsys/evaluation/numeric_threads.py": "f00e0000c83f1576a282c8b4f99a14491816991c2609b338f9105f468ecbac47",
+      "src/ecommerce_recsys/evaluation/rolling_artifacts.py": "487adbf01bad394c675a96dad8292f0f33a6d5971f0a301d57d2fb6a413cfcbc",
+      "src/ecommerce_recsys/recommendation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ecommerce_recsys/recommendation/bpr_educational.py": "c9c87d45ccf5035ef6bf7ec386053ae2c77c0b511b817f1b8a7e6007bb5aec59",
+      "src/ecommerce_recsys/recommendation/category_popularity.py": "eec13cbf9e56bca5ba58c8b6d047088b306b11f61d3c364ab08ded47a4fbc4dc",
+      "src/ecommerce_recsys/recommendation/item_knn.py": "6cc01b9fe5b3ee6443cf61cfe85d3c26249e05341fe9794e5714f20a68413a91",
+      "src/ecommerce_recsys/recommendation/matrix_factorization.py": "d82d8f36eeceee3c1d81c01328d8d26769707a394d52d14b711bb8e4fe5de8d1",
+      "src/ecommerce_recsys/recommendation/matrix_factorization_educational.py": "090b0d0862eafd7f1fb956dff44bafbaf8701b1f230c96cb6b880c5ebc024f30",
+      "src/ecommerce_recsys/recommendation/popularity.py": "6bd7f4d5abf8121ee55def0065fb7db650405706299ee4bd0fac846e9a300fe1",
+      "src/ecommerce_recsys/recommendation/random_recommender.py": "0b23b145380294f39f9bde71b56ba29e594994deaf262f3ea3ff794b58573890",
+      "src/ecommerce_recsys/recommendation/recent_popularity.py": "4eee6adb64144e6e50ba3d76f905cabd11eca8c5714964aac7be9e25a59d260a",
+      "src/ecommerce_recsys/retrieval/__init__.py": "07c74e9c41248afdb6f58ce44d1208f8314a040d266890761f3746f657f81883",
+      "src/ecommerce_recsys/retrieval/base.py": "6690f61d0eda723e4c293b5cda1677613cfec54c7fbfbae8e935bbf5e4f2de1e",
+      "src/ecommerce_recsys/retrieval/category_retriever.py": "04d9ab4107281c00945498901cf46f9fffd43206fb25145fb84ce8ad6cffd053",
+      "src/ecommerce_recsys/retrieval/hybrid_candidates.py": "175677f6dc5cd303efc4e149d687eda412acea9aa75fa6663abde6798fc770b8",
+      "src/ecommerce_recsys/retrieval/item_knn_retriever.py": "51c3fcc408e017f2d5502cf2d10c40fd4733d9dd7341d7c4181f8e24b00bf7e8",
+      "src/ecommerce_recsys/retrieval/mf_retriever.py": "499912136931211e0fed759caacf12e303b02aa155ce7b373dfa0a250e250b80",
+      "src/ecommerce_recsys/retrieval/popularity_retriever.py": "d0f54a90dbc4bc301fd811debf3169baec20de304949e6532dc8f1ec34e804fa",
+      "tests/unit/test_benchmark.py": "65487d753dbb837d31f93e23f614dc44f8fa35877989925f5daaf0a4ef0f2c8a",
+      "tests/unit/test_bpr_educational.py": "721d5fa7d3acc82f4ba0c0ea296c4f8cfd0c3eaec08db7bfc9d55dc64ef7e16a",
+      "tests/unit/test_candidate_benchmark.py": "e7afad6b843bd512030f6363918d5dc5966050c692cf7da2b6dc2bafe0aec4d4",
+      "tests/unit/test_candidate_evaluation.py": "5b37a511af55c1d62e2fb57f3266bf5859287df460f1ab8c9b69c3332a3deb00",
+      "tests/unit/test_candidate_retrieval.py": "c0f19b27526b4c30c1919fdf0096496fbfa2067ee23d198bd87c46e16eb51c42",
+      "tests/unit/test_item_knn.py": "3c5e11d08a452b5f285d50d2dbac44e20bda8802f5f4cd95f8c06ad61ded5ade",
+      "tests/unit/test_matrix_factorization.py": "64b5cfe766d1d3dd11196bd50fe31beb96a8b8d25024eccaaf98384e13774006",
+      "tests/unit/test_matrix_factorization_educational.py": "904b9959db1596b7449a367a95e503a73270823d6e267bf7bfb3e82c09d1a175",
+      "tests/unit/test_metrics.py": "8a5c2174bc596177a200755fe44b6ab6d0ec53a55dbe118c89aa8ff8781683ee",
+      "tests/unit/test_package.py": "051c0a25080cb2e265247e90feedcf5703b9f16a155f9d0c5a5b708558e14338",
+      "tests/unit/test_popularity.py": "abe22d8fdd47fb175da4ba951340d47eb505ecc902cda2295952d514f479de78",
+      "tests/unit/test_prepare_rolling.py": "232a199232e7419f8ec163237fd775302248a28b02c07b39ce0caaf7e4be59bb",
+      "tests/unit/test_random_recommender.py": "7b7bb94d61099660a782fa556bb6c3f7520edeba41038d984cc74b045d606a56",
+      "tests/unit/test_recent_popularity.py": "46ca476407ffd21547bdc2e8b7a66182714c8a810fe7cda9ea0a003c01a63c08",
+      "tests/unit/test_rolling_benchmark.py": "81e505c9b83604069fe49d5e81cef25390de58bdeefcf17a334173462dc2f4a8",
+      "tests/unit/test_rolling_split.py": "cdffac1d53a13c80a4060badce49053c0c05e77050e1880d51620c12141d94e9",
+      "tests/unit/test_schemas.py": "5fe86c0f0ff4088db60030f9555eed7fe4124f76764980a8a25e4b42c633c54e",
+      "tests/unit/test_snapshot_policy.py": "65dd50e78b036d7b9dfa358c37b1ddb9301bd751301d63d7e5fe463f5e18ccb2",
+      "tests/unit/test_split_data.py": "c4be8cfd31780ad9322bbc1673e0b52beff4a05e8db665d3a81810a8a03b9001",
+      "tests/unit/test_temporal_split.py": "a61b390850c0908d9fa5d06c7723e78dc408733d6f70c68bfe2b8904493c6f6d"
+    },
+    "sha256": "27157b84ccf98306b23eb77d0526c09a1ea05c6da60e7468b0f4091f847b4cbe"
+  },
+  "implementation_sha256": "d6e2c716cbf035586612e47dd8be45e674d6ed65e0c17892f6b91d8f9b117218",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "implicit": "0.7.3",
+    "pytest": "8.4.2",
+    "ruff": "0.16.6"
+  },
+  "inputs": {
+    "manifest_file_sha256": "027518447e32c067781b9524bc657174e8e793bf7d97c25a9ddd083aae951982",
+    "manifest_canonical_lf_sha256": "aee5de70ba0cf41a4edf33d7f2f2cd360829940ce576f6d371e351844ca95fd3",
+    "manifest_fingerprint": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+    "interactions_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+    "sweep_sha256": {
+      "item_knn": "3f20dff5d461a8bb5177ed6e248ee1d2aea5de07c5dd710ec80201690f79992d",
+      "als": "fa429d070367ebc71c0449d3175613550acf53762b06a4b17480fac7e8a7a865"
+    },
+    "sweep_canonical_lf_sha256": {
+      "item_knn": "985337dd7033f5f72e5fdbe1d6a3e09b137555da1c1f0ac873dd8544ff3e1888",
+      "als": "235982300c552ec08913bd8afe3bcee384568d397b4b5017a3df7c469732116f"
+    }
+  },
+  "result": {
+    "path": "benchmarks/retrieval/candidates.json",
+    "file_sha256": "c9a78776f3ffebb99dfcdb9f48ca217b66391be2673f44575471cdeee49437de",
+    "payload_sha256": "d33b1a8336bda9fc80386d2445b070be0e673bbde24ea3f695c33d01d6ab6c21",
+    "comparison_rows": 126
+  },
+  "checks": {
+    "tests": {
+      "command": "pytest -q --basetemp=.local/pytest_m7_final",
+      "passed": 177,
+      "elapsed_seconds": 3.41,
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "ruff check .",
+      "exit_code": 0
+    },
+    "format": {
+      "command": "ruff format --check .",
+      "exit_code": 0
+    },
+    "artifact": {
+      "command": "python -m scripts.verify_candidate_artifact",
+      "comparison_rows": 126,
+      "folds": 9,
+      "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+      "implementation_sha256": "d6e2c716cbf035586612e47dd8be45e674d6ed65e0c17892f6b91d8f9b117218"
+    },
+    "resume": {
+      "reproduction_command": "python scripts/benchmark_candidates.py",
+      "before_sha256": "4e3137837462ce8bb2beb636c85ec231ff1f33e80c120aa9a5123f84b5f9c17c",
+      "after_sha256": "4e3137837462ce8bb2beb636c85ec231ff1f33e80c120aa9a5123f84b5f9c17c",
+      "unchanged": true,
+      "elapsed_seconds": 3.164099699999497
+    },
+    "lf_checkout": {
+      "command": "python -m scripts.verify_candidate_artifact",
+      "exit_code": 0,
+      "native_fingerprint_changed": true,
+      "canonical_source_verified": true,
+      "comparison_rows": 126
+    },
+    "source_fingerprint_review": {
+      "dependency_sha256": "d6e2c716cbf035586612e47dd8be45e674d6ed65e0c17892f6b91d8f9b117218",
+      "scope": "all ecommerce_recsys package Python modules, rolling preparation, candidate benchmark, and pyproject.toml",
+      "candidate_metric_logic_changed": true,
+      "candidate_metrics_recomputed": false,
+      "note": "Warm history grouping now uses normalized string user IDs. The manifest-bound interactions Parquet has the same SHA-256 and all 2,756,101 user_id/item_id values are strings, so the published candidate metrics are unchanged for this canonical input."
+    },
+    "audit_review": {
+      "ruff_check": "passed",
+      "ruff_format_check": "passed",
+      "pytest": "180 tests passed on 2026-10-06 in ecommerce-recsys (Python 3.13.15, implicit 0.7.3).",
+      "focused_test": "The full suite includes the mixed-type normalized-user history regression test.",
+      "candidate_input_identity": {
+        "interactions_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+        "rows": 2756101,
+        "user_id_types": {
+          "str": 2756101
+        },
+        "item_id_types": {
+          "str": 2756101
+        },
+        "candidate_metrics_recomputed": false
+      }
+    }
+  },
+  "source_snapshot_captured_at_utc": "2026-10-06T10:59:02.957707+00:00"
+}
