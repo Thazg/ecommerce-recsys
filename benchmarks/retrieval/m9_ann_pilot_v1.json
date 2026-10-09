@@ -1,0 +1,329 @@
+{
+  "protocol_version": "m9-ann-fold1-pilot-v1",
+  "phase": "development-fold-1-pilot",
+  "blind_holdout": false,
+  "policy": {
+    "protocol": "m9-ann-fold1-pilot-v1",
+    "fold": 1,
+    "cohort": "warm",
+    "library": "faiss-cpu HNSW inner product",
+    "model_config": {
+      "dimension": 128,
+      "max_history": 50
+    },
+    "training": {
+      "epochs": 3,
+      "negatives": 5,
+      "batch_size": 1024,
+      "seed": 42
+    },
+    "configs": [
+      {
+        "graph_degree": 16,
+        "ef_construction": 200,
+        "ef_search": 2000
+      },
+      {
+        "graph_degree": 16,
+        "ef_construction": 200,
+        "ef_search": 4000
+      },
+      {
+        "graph_degree": 32,
+        "ef_construction": 200,
+        "ef_search": 2000
+      },
+      {
+        "graph_degree": 32,
+        "ef_construction": 200,
+        "ef_search": 4000
+      }
+    ],
+    "limit": 1000,
+    "budgets": [
+      100,
+      500,
+      1000
+    ],
+    "sample_size": 1000,
+    "sampling": "profile_m9_exact history-length quartiles, seed 42+fold",
+    "repetitions": 3,
+    "warmup": "one paired call per selected context before timing",
+    "timing_order": "seeded request permutation and seeded exact/ANN call order per repeat",
+    "speed_gate": "ANN p95 <= 0.5 * paired exact p95 on every development fold",
+    "early_stop": "if all four configurations fail fold 1, none can pass the all-fold speed gate",
+    "threads": 1
+  },
+  "policy_sha256": "7f0bc72e22eb80784c7331c6b352d7f3b735b7f09aadef3db921b1e7d9e04837",
+  "runner_sha256": "5d8f2f6371366e6b99e00e7a92fca6438e3873f0450507ca727649961ac3645c",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "input_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "m8_lock_sha256": "0f851bde574ece8d3e762a4f9d21a4297868ca1af1bf775b193163ee19de97db",
+  "m8_development_sha256": "20800873e0e484db4b3f3022058ab5063dd1f69e69ca702682e596ccb806c801",
+  "profile_sha256": "e60e3f0cad0fdb63b3020a8781e9fb1883602226d2be47e4f76371d7885fbc1e",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.1+cpu",
+    "faiss": "1.15.1"
+  },
+  "results": [
+    {
+      "fold_index": 1,
+      "config": {
+        "graph_degree": 16,
+        "ef_construction": 200,
+        "ef_search": 2000
+      },
+      "sample_sha256": "ef2d568f6471ed42c230fdc9266c63b1a9117825418603e7b01bc06bfba14c14",
+      "item_vector_sha256": "b589dce8f2d7342227597ac3471ef8dbb72f92d8812fa1c8a0b8f561ac4c1ec3",
+      "catalog_items": 75003,
+      "model_fit_seconds": 89.39925489999996,
+      "index_build_seconds": 25.232453100000384,
+      "serialized_index_bytes": 49224510,
+      "index_search_calls": 4000,
+      "max_effective_ef_search": 2000,
+      "timing_scope": "paired warm direct-source generate(context, limit=1000) after warmup",
+      "sample_targets": 1000,
+      "exact_sample_recall": {
+        "Recall@100": 0.028,
+        "Recall@500": 0.047,
+        "Recall@1000": 0.064
+      },
+      "ann_sample_recall": {
+        "Recall@100": 0.028,
+        "Recall@500": 0.046,
+        "Recall@1000": 0.065
+      },
+      "exact_hits": {
+        "100": 28,
+        "500": 47,
+        "1000": 64
+      },
+      "ann_hits": {
+        "100": 28,
+        "500": 46,
+        "1000": 65
+      },
+      "exact_only_hits": {
+        "100": 2,
+        "500": 4,
+        "1000": 6
+      },
+      "ann_only_hits": {
+        "100": 2,
+        "500": 3,
+        "1000": 7
+      },
+      "exact_latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 7.487498466673666,
+        "latency_p50_ms": 6.602200000088487,
+        "latency_p95_ms": 9.310535000304291,
+        "latency_p99_ms": 14.028796000002275
+      },
+      "ann_latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 12.722980966661453,
+        "latency_p50_ms": 12.07950000002711,
+        "latency_p95_ms": 14.843725000105222,
+        "latency_p99_ms": 19.389177000043567
+      },
+      "passes_speed_gate": false
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "graph_degree": 16,
+        "ef_construction": 200,
+        "ef_search": 4000
+      },
+      "sample_sha256": "ef2d568f6471ed42c230fdc9266c63b1a9117825418603e7b01bc06bfba14c14",
+      "item_vector_sha256": "b589dce8f2d7342227597ac3471ef8dbb72f92d8812fa1c8a0b8f561ac4c1ec3",
+      "catalog_items": 75003,
+      "model_fit_seconds": 89.39925489999996,
+      "index_build_seconds": 22.8183911000001,
+      "serialized_index_bytes": 49224510,
+      "index_search_calls": 4000,
+      "max_effective_ef_search": 4000,
+      "timing_scope": "paired warm direct-source generate(context, limit=1000) after warmup",
+      "sample_targets": 1000,
+      "exact_sample_recall": {
+        "Recall@100": 0.028,
+        "Recall@500": 0.047,
+        "Recall@1000": 0.064
+      },
+      "ann_sample_recall": {
+        "Recall@100": 0.028,
+        "Recall@500": 0.046,
+        "Recall@1000": 0.065
+      },
+      "exact_hits": {
+        "100": 28,
+        "500": 47,
+        "1000": 64
+      },
+      "ann_hits": {
+        "100": 28,
+        "500": 46,
+        "1000": 65
+      },
+      "exact_only_hits": {
+        "100": 2,
+        "500": 3,
+        "1000": 4
+      },
+      "ann_only_hits": {
+        "100": 2,
+        "500": 2,
+        "1000": 5
+      },
+      "exact_latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 7.416252466664749,
+        "latency_p50_ms": 6.478249999872787,
+        "latency_p95_ms": 9.65938999995614,
+        "latency_p99_ms": 14.657165999697082
+      },
+      "ann_latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 28.499268900001578,
+        "latency_p50_ms": 27.087749999736843,
+        "latency_p95_ms": 35.41109500010862,
+        "latency_p99_ms": 46.55482699984529
+      },
+      "passes_speed_gate": false
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "graph_degree": 32,
+        "ef_construction": 200,
+        "ef_search": 2000
+      },
+      "sample_sha256": "ef2d568f6471ed42c230fdc9266c63b1a9117825418603e7b01bc06bfba14c14",
+      "item_vector_sha256": "b589dce8f2d7342227597ac3471ef8dbb72f92d8812fa1c8a0b8f561ac4c1ec3",
+      "catalog_items": 75003,
+      "model_fit_seconds": 89.39925489999996,
+      "index_build_seconds": 37.455631899999844,
+      "serialized_index_bytes": 58815526,
+      "index_search_calls": 4000,
+      "max_effective_ef_search": 2000,
+      "timing_scope": "paired warm direct-source generate(context, limit=1000) after warmup",
+      "sample_targets": 1000,
+      "exact_sample_recall": {
+        "Recall@100": 0.028,
+        "Recall@500": 0.047,
+        "Recall@1000": 0.064
+      },
+      "ann_sample_recall": {
+        "Recall@100": 0.028,
+        "Recall@500": 0.044,
+        "Recall@1000": 0.062
+      },
+      "exact_hits": {
+        "100": 28,
+        "500": 47,
+        "1000": 64
+      },
+      "ann_hits": {
+        "100": 28,
+        "500": 44,
+        "1000": 62
+      },
+      "exact_only_hits": {
+        "100": 3,
+        "500": 5,
+        "1000": 8
+      },
+      "ann_only_hits": {
+        "100": 3,
+        "500": 2,
+        "1000": 6
+      },
+      "exact_latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 8.0627212666656,
+        "latency_p50_ms": 6.852649999927962,
+        "latency_p95_ms": 10.697649999860912,
+        "latency_p99_ms": 19.701341999707424
+      },
+      "ann_latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 13.649953099997523,
+        "latency_p50_ms": 12.778000000025713,
+        "latency_p95_ms": 17.95418499991683,
+        "latency_p99_ms": 25.98994299987221
+      },
+      "passes_speed_gate": false
+    },
+    {
+      "fold_index": 1,
+      "config": {
+        "graph_degree": 32,
+        "ef_construction": 200,
+        "ef_search": 4000
+      },
+      "sample_sha256": "ef2d568f6471ed42c230fdc9266c63b1a9117825418603e7b01bc06bfba14c14",
+      "item_vector_sha256": "b589dce8f2d7342227597ac3471ef8dbb72f92d8812fa1c8a0b8f561ac4c1ec3",
+      "catalog_items": 75003,
+      "model_fit_seconds": 89.39925489999996,
+      "index_build_seconds": 29.984849999999824,
+      "serialized_index_bytes": 58815526,
+      "index_search_calls": 4000,
+      "max_effective_ef_search": 4000,
+      "timing_scope": "paired warm direct-source generate(context, limit=1000) after warmup",
+      "sample_targets": 1000,
+      "exact_sample_recall": {
+        "Recall@100": 0.028,
+        "Recall@500": 0.047,
+        "Recall@1000": 0.064
+      },
+      "ann_sample_recall": {
+        "Recall@100": 0.029,
+        "Recall@500": 0.046,
+        "Recall@1000": 0.066
+      },
+      "exact_hits": {
+        "100": 28,
+        "500": 47,
+        "1000": 64
+      },
+      "ann_hits": {
+        "100": 29,
+        "500": 46,
+        "1000": 66
+      },
+      "exact_only_hits": {
+        "100": 1,
+        "500": 2,
+        "1000": 3
+      },
+      "ann_only_hits": {
+        "100": 2,
+        "500": 1,
+        "1000": 5
+      },
+      "exact_latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 7.556902800000444,
+        "latency_p50_ms": 6.748700000116514,
+        "latency_p95_ms": 9.377845000017258,
+        "latency_p99_ms": 13.974391000110687
+      },
+      "ann_latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 29.576750733327874,
+        "latency_p50_ms": 28.49459999993087,
+        "latency_p95_ms": 34.27780000017719,
+        "latency_p99_ms": 42.29781399975303
+      },
+      "passes_speed_gate": false
+    }
+  ],
+  "complete": true,
+  "decision": "no-go: all configs fail fold-1 paired p95 gate",
+  "results_sha256": "3cfae6cef3ce1438ea409f54f76bba18be9c9c09ed8c1ef2300a4fd19dfcb6c5"
+}

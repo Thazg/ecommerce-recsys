@@ -1,0 +1,141 @@
+{
+  "protocol_version": "m9-exact-cost-profile-v1",
+  "phase": "development-exact-cost",
+  "blind_holdout": false,
+  "expected_folds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "policy": {
+    "protocol": "m9-exact-cost-profile-v1",
+    "folds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "cohort": "warm",
+    "model": "selected-m8-two-tower",
+    "model_config": {
+      "dimension": 128,
+      "max_history": 50
+    },
+    "training": {
+      "epochs": 3,
+      "negatives": 5,
+      "batch_size": 1024,
+      "seed": 42
+    },
+    "limit": 1000,
+    "sample_size_per_fold": 1000,
+    "strata": "four contiguous quartiles after sorting by full seen-history length and user ID",
+    "seed": 42,
+    "repetitions": 3,
+    "gate_exact_p95_ms": 10.0,
+    "percentile": "linear interpolation over all 3000 measured calls per fold",
+    "warmup": "one call for each selected request before timing",
+    "threads": 1
+  },
+  "policy_sha256": "b9e9c8c500661fb532dca7371333cd9daee9da44bde66eb236855794fc9f529e",
+  "runner_sha256": "7b69d5767049c9f22cf07bfe3c40ce75cc9c3cf2bfe99faa16c656b002d078a4",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "input_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "m8_lock_sha256": "0f851bde574ece8d3e762a4f9d21a4297868ca1af1bf775b193163ee19de97db",
+  "m8_development_sha256": "20800873e0e484db4b3f3022058ab5063dd1f69e69ca702682e596ccb806c801",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.1+cpu"
+  },
+  "results": [
+    {
+      "fold_index": 1,
+      "train_cutoff": 1431821354421,
+      "evaluation_users": 5346,
+      "catalog_items": 75003,
+      "sample_size": 1000,
+      "sample_sha256": "ef2d568f6471ed42c230fdc9266c63b1a9117825418603e7b01bc06bfba14c14",
+      "fit_seconds": 84.16652430000005,
+      "item_vector_bytes": 38401536,
+      "latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 7.123081766666151,
+        "latency_p50_ms": 6.379999999978736,
+        "latency_p95_ms": 8.425779999987524,
+        "latency_p99_ms": 11.39041199996479
+      },
+      "latency_scope": "one warm exact Two-Tower generate(context, limit=1000) call after warmup",
+      "torch_threads": 1
+    },
+    {
+      "fold_index": 2,
+      "train_cutoff": 1432923676688,
+      "evaluation_users": 7201,
+      "catalog_items": 110887,
+      "sample_size": 1000,
+      "sample_sha256": "285899c949ddccf7961a338b25907c98427f2eeb52d96379958a29e48f6a8cce",
+      "fit_seconds": 180.46248790000004,
+      "item_vector_bytes": 56774144,
+      "latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 9.853919366666142,
+        "latency_p50_ms": 9.01774999999816,
+        "latency_p95_ms": 13.806269999957967,
+        "latency_p99_ms": 18.90217599999682
+      },
+      "latency_scope": "one warm exact Two-Tower generate(context, limit=1000) call after warmup",
+      "torch_threads": 1
+    },
+    {
+      "fold_index": 3,
+      "train_cutoff": 1434067768840,
+      "evaluation_users": 8602,
+      "catalog_items": 136425,
+      "sample_size": 1000,
+      "sample_sha256": "397808777fbfcad019c0ea6be3d7b9f77437a087b68b9dacb238abd752ebf4f5",
+      "fit_seconds": 264.8147673000001,
+      "item_vector_bytes": 69849600,
+      "latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 10.03619579999948,
+        "latency_p50_ms": 9.413149999943471,
+        "latency_p95_ms": 12.082505000034862,
+        "latency_p99_ms": 16.643785999918915
+      },
+      "latency_scope": "one warm exact Two-Tower generate(context, limit=1000) call after warmup",
+      "torch_threads": 1
+    },
+    {
+      "fold_index": 4,
+      "train_cutoff": 1435272269349,
+      "evaluation_users": 9635,
+      "catalog_items": 156293,
+      "sample_size": 1000,
+      "sample_sha256": "c4efb56da777faca52c8694a8074213c219a9b84b599a3ca45a050771e012b70",
+      "fit_seconds": 360.1118227999999,
+      "item_vector_bytes": 80022016,
+      "latency": {
+        "latency_samples": 3000,
+        "latency_avg_ms": 10.84653330000151,
+        "latency_p50_ms": 10.082399999987501,
+        "latency_p95_ms": 13.550309999970976,
+        "latency_p99_ms": 17.450367999942923
+      },
+      "latency_scope": "one warm exact Two-Tower generate(context, limit=1000) call after warmup",
+      "torch_threads": 1
+    }
+  ],
+  "completed_folds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "complete": true,
+  "decision": "proceed to ANN compatibility pilot",
+  "results_sha256": "6e34580bca99f08225f7a8113f438628ad27ab2344a3c6e5b81f1eb3bdb13184"
+}
