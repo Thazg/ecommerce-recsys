@@ -1,0 +1,574 @@
+{
+  "model": "two_tower",
+  "phase": "diagnostic",
+  "blind_holdout": false,
+  "result_validity": "post-selection diagnostic",
+  "configurations": [
+    {
+      "dimension": 128,
+      "max_history": 50
+    }
+  ],
+  "expected_folds": [
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "policy": {
+    "protocol": "rolling-temporal",
+    "cohort": "warm",
+    "budgets": [
+      100,
+      500,
+      1000
+    ],
+    "selection": "pooled Recall@1000, then Recall@100, then lower parameter count",
+    "training_examples": "first occurrence of each item after strictly earlier user history",
+    "same_timestamp": "exclude timestamp peers from history and from negative candidates",
+    "history_semantics": "latest occurrence per item, preserving recency, truncated to max_history",
+    "negative_sampling": "independent uniform draws with replacement from train-catalog items first seen strictly before the positive timestamp; exclude full prior user history and every same-timestamp item; skip examples with no eligible negative",
+    "seed": 42,
+    "threads": 1,
+    "epochs": 3,
+    "negatives": 5,
+    "training_logit_scale": 20.0,
+    "batch_size": 1024,
+    "optimizer": "Adam lr=0.003 for MLPs, SparseAdam lr=0.003 for embedding tables",
+    "device": "cpu, one torch thread, deterministic algorithms enabled",
+    "history_tower": "mean of shared item-id embeddings over recent distinct items, then MLP",
+    "item_tower": "item-id and as-of-cutoff category embeddings concatenated, then MLP",
+    "scoring": "L2-normalized user/item vectors with dot product",
+    "event_weighting": "equal across interaction types"
+  },
+  "policy_sha256": "6cdff58c9c4df8ab47bb986f6fb8b6908b8f40593775f6b455c7aefea6067cd6",
+  "input_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "runner_sha256": "7528b0b7fea1d2bbc53db4a417d11e94fceaca023966cee86eea4f2579b64dda",
+  "selection_lock_sha256": "0f851bde574ece8d3e762a4f9d21a4297868ca1af1bf775b193163ee19de97db",
+  "development_artifact_sha256": "20800873e0e484db4b3f3022058ab5063dd1f69e69ca702682e596ccb806c801",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.1+cpu"
+  },
+  "results": [
+    {
+      "phase": "diagnostic",
+      "fold_index": 5,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 10349,
+      "reachable_targets": 9288,
+      "metrics": {
+        "Recall@100": 0.04531838825007247,
+        "reachable_recall@100": 0.05049526270456503,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.22979928537781913,
+        "Recall@500": 0.0946951396270171,
+        "reachable_recall@500": 0.10551248923341947,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.4737186778340744,
+        "Recall@1000": 0.12658227848101267,
+        "reachable_recall@1000": 0.14104220499569337,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5944002113994876
+      },
+      "totals": {
+        "100": {
+          "hits": 469,
+          "candidate_count": 1034900,
+          "empty_requests": 0,
+          "full_requests": 10349,
+          "unique_items": 40003,
+          "source_candidate_count": {
+            "two_tower": 1034900
+          },
+          "source_target_hits": {
+            "two_tower": 469
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 469
+          }
+        },
+        "500": {
+          "hits": 980,
+          "candidate_count": 5174500,
+          "empty_requests": 0,
+          "full_requests": 10349,
+          "unique_items": 82464,
+          "source_candidate_count": {
+            "two_tower": 5174500
+          },
+          "source_target_hits": {
+            "two_tower": 980
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 980
+          }
+        },
+        "1000": {
+          "hits": 1310,
+          "candidate_count": 10349000,
+          "empty_requests": 0,
+          "full_requests": 10349,
+          "unique_items": 103472,
+          "source_candidate_count": {
+            "two_tower": 10349000
+          },
+          "source_target_hits": {
+            "two_tower": 1310
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1310
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 10.53930000125547,
+        "latency_p95_ms": 15.159219999623021,
+        "latency_p99_ms": 24.47572400109496
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 419.82930320000014,
+        "training_seconds": 165.5042695000011,
+        "parameter_bytes": 89994752,
+        "item_vector_bytes": 89127936,
+        "estimated_resident_model_bytes": 179122688,
+        "train_examples": 369962,
+        "generated_examples": 369962,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 174078,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "diagnostic",
+      "fold_index": 6,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 10720,
+      "reachable_targets": 9696,
+      "metrics": {
+        "Recall@100": 0.04542910447761194,
+        "reachable_recall@100": 0.05022689768976898,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.1801970135665172,
+        "Recall@500": 0.0976679104477612,
+        "reachable_recall@500": 0.10798267326732673,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.40020431820708124,
+        "Recall@1000": 0.12826492537313433,
+        "reachable_recall@1000": 0.14181105610561057,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5163904489178016
+      },
+      "totals": {
+        "100": {
+          "hits": 487,
+          "candidate_count": 1072000,
+          "empty_requests": 0,
+          "full_requests": 10720,
+          "unique_items": 34043,
+          "source_candidate_count": {
+            "two_tower": 1072000
+          },
+          "source_target_hits": {
+            "two_tower": 487
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 487
+          }
+        },
+        "500": {
+          "hits": 1047,
+          "candidate_count": 5360000,
+          "empty_requests": 0,
+          "full_requests": 10720,
+          "unique_items": 75607,
+          "source_candidate_count": {
+            "two_tower": 5360000
+          },
+          "source_target_hits": {
+            "two_tower": 1047
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1047
+          }
+        },
+        "1000": {
+          "hits": 1375,
+          "candidate_count": 10720000,
+          "empty_requests": 0,
+          "full_requests": 10720,
+          "unique_items": 97557,
+          "source_candidate_count": {
+            "two_tower": 10720000
+          },
+          "source_target_hits": {
+            "two_tower": 1375
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1375
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 11.106800000561634,
+        "latency_p95_ms": 14.352734998465163,
+        "latency_p99_ms": 20.89531600144255
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 510.1367192999969,
+        "training_seconds": 193.51599319999877,
+        "parameter_bytes": 97601024,
+        "item_vector_bytes": 96727552,
+        "estimated_resident_model_bytes": 194328576,
+        "train_examples": 440347,
+        "generated_examples": 440347,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 188921,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "diagnostic",
+      "fold_index": 7,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 11950,
+      "reachable_targets": 11028,
+      "metrics": {
+        "Recall@100": 0.04410041841004184,
+        "reachable_recall@100": 0.047787450126949585,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.18909061960464318,
+        "Recall@500": 0.09539748953974896,
+        "reachable_recall@500": 0.10337323177366703,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.42102068334137716,
+        "Recall@1000": 0.12569037656903767,
+        "reachable_recall@1000": 0.1361987667754806,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5463148624510531
+      },
+      "totals": {
+        "100": {
+          "hits": 527,
+          "candidate_count": 1195000,
+          "empty_requests": 0,
+          "full_requests": 11950,
+          "unique_items": 38004,
+          "source_candidate_count": {
+            "two_tower": 1195000
+          },
+          "source_target_hits": {
+            "two_tower": 527
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 527
+          }
+        },
+        "500": {
+          "hits": 1140,
+          "candidate_count": 5975000,
+          "empty_requests": 0,
+          "full_requests": 11950,
+          "unique_items": 84618,
+          "source_candidate_count": {
+            "two_tower": 5975000
+          },
+          "source_target_hits": {
+            "two_tower": 1140
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1140
+          }
+        },
+        "1000": {
+          "hits": 1502,
+          "candidate_count": 11950000,
+          "empty_requests": 0,
+          "full_requests": 11950,
+          "unique_items": 109800,
+          "source_candidate_count": {
+            "two_tower": 11950000
+          },
+          "source_target_hits": {
+            "two_tower": 1502
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1502
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 11.29285000024538,
+        "latency_p95_ms": 15.42462000306841,
+        "latency_p99_ms": 24.559217999449178
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 586.9193650999987,
+        "training_seconds": 224.44129610000164,
+        "parameter_bytes": 103777792,
+        "item_vector_bytes": 102903296,
+        "estimated_resident_model_bytes": 206681088,
+        "train_examples": 517668,
+        "generated_examples": 517668,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 200983,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "diagnostic",
+      "fold_index": 8,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 12765,
+      "reachable_targets": 11836,
+      "metrics": {
+        "Recall@100": 0.04488836662749706,
+        "reachable_recall@100": 0.04841162554917202,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.17362145000774928,
+        "Recall@500": 0.09839404622013317,
+        "reachable_recall@500": 0.1061169313957418,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.3743794705128145,
+        "Recall@1000": 0.13153153153153152,
+        "reachable_recall@1000": 0.1418553565393714,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.48981556712990143
+      },
+      "totals": {
+        "100": {
+          "hits": 573,
+          "candidate_count": 1276500,
+          "empty_requests": 0,
+          "full_requests": 12765,
+          "unique_items": 36968,
+          "source_candidate_count": {
+            "two_tower": 1276500
+          },
+          "source_target_hits": {
+            "two_tower": 573
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 573
+          }
+        },
+        "500": {
+          "hits": 1256,
+          "candidate_count": 6382500,
+          "empty_requests": 0,
+          "full_requests": 12765,
+          "unique_items": 79714,
+          "source_candidate_count": {
+            "two_tower": 6382500
+          },
+          "source_target_hits": {
+            "two_tower": 1256
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1256
+          }
+        },
+        "1000": {
+          "hits": 1679,
+          "candidate_count": 12765000,
+          "empty_requests": 0,
+          "full_requests": 12765,
+          "unique_items": 104293,
+          "source_candidate_count": {
+            "two_tower": 12765000
+          },
+          "source_target_hits": {
+            "two_tower": 1679
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1679
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 13.773699996818323,
+        "latency_p95_ms": 21.144579999963753,
+        "latency_p99_ms": 28.291131999721998
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 729.4343330000011,
+        "training_seconds": 280.3800627000019,
+        "parameter_bytes": 109899776,
+        "item_vector_bytes": 109016576,
+        "estimated_resident_model_bytes": 218916352,
+        "train_examples": 589429,
+        "generated_examples": 589429,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 212923,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "diagnostic",
+      "fold_index": 9,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 13539,
+      "reachable_targets": 12564,
+      "metrics": {
+        "Recall@100": 0.043060787355048376,
+        "reachable_recall@100": 0.04640241961158867,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.17771533074624202,
+        "Recall@500": 0.09476327646059532,
+        "reachable_recall@500": 0.10211716014008278,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.3917168473170079,
+        "Recall@1000": 0.1260063520200901,
+        "reachable_recall@1000": 0.13578478191658708,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5100985770997815
+      },
+      "totals": {
+        "100": {
+          "hits": 583,
+          "candidate_count": 1353900,
+          "empty_requests": 0,
+          "full_requests": 13539,
+          "unique_items": 39842,
+          "source_candidate_count": {
+            "two_tower": 1353900
+          },
+          "source_target_hits": {
+            "two_tower": 583
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 583
+          }
+        },
+        "500": {
+          "hits": 1283,
+          "candidate_count": 6769500,
+          "empty_requests": 0,
+          "full_requests": 13539,
+          "unique_items": 87819,
+          "source_candidate_count": {
+            "two_tower": 6769500
+          },
+          "source_target_hits": {
+            "two_tower": 1283
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1283
+          }
+        },
+        "1000": {
+          "hits": 1706,
+          "candidate_count": 13539000,
+          "empty_requests": 0,
+          "full_requests": 13539,
+          "unique_items": 114359,
+          "source_candidate_count": {
+            "two_tower": 13539000
+          },
+          "source_target_hits": {
+            "two_tower": 1706
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1706
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 11.986800000158837,
+        "latency_p95_ms": 14.280289999442171,
+        "latency_p99_ms": 16.829141998387048
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 776.2919622000009,
+        "training_seconds": 282.298752900002,
+        "parameter_bytes": 115666944,
+        "item_vector_bytes": 114785280,
+        "estimated_resident_model_bytes": 230452224,
+        "train_examples": 662340,
+        "generated_examples": 662340,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 224190,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    }
+  ],
+  "completed_folds": [
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "complete": true,
+  "results_sha256": "f29792b0f69fb0dd6888ddf63e556dd79a8d46e8f8e60aeafaf63f3fa6c8da9c"
+}

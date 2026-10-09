@@ -1,0 +1,70 @@
+{
+  "protocol_version": "m8-rolling-v1",
+  "selection_rule": "highest pooled Recall@1000 on folds 1\u20134; tie: Recall@100; then lower complexity",
+  "blind_holdout": false,
+  "selection_script_sha256": "db7c0b857f11cf664ef1b76bdda53d9f3e6709ea741efa50913539109e2e2933",
+  "two_tower": {
+    "selected_config": {
+      "dimension": 128,
+      "max_history": 50
+    },
+    "development_user_windows": 30784,
+    "development_hits_at_100": 964,
+    "development_recall_at_100": 0.03131496881496881,
+    "development_hits_at_1000": 2951,
+    "development_recall_at_1000": 0.09586148648648649,
+    "tie_break": "two-tower: lower summed parameter bytes, shorter history, lower dimension; ALS: fewer factors, fewer iterations, higher regularization",
+    "development_artifact_sha256": "20800873e0e484db4b3f3022058ab5063dd1f69e69ca702682e596ccb806c801",
+    "reused_legacy_als_artifact": false,
+    "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+    "input_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+    "policy_sha256": "6cdff58c9c4df8ab47bb986f6fb8b6908b8f40593775f6b455c7aefea6067cd6",
+    "runner_sha256": "7528b0b7fea1d2bbc53db4a417d11e94fceaca023966cee86eea4f2579b64dda",
+    "runtime": {
+      "python": "3.13.15",
+      "numpy": "2.5.2",
+      "pandas": "2.3.3",
+      "scipy": "1.18.1",
+      "torch": "2.14.1+cpu"
+    }
+  },
+  "als_candidate_recall": {
+    "selected_config": {
+      "factors": 128,
+      "iterations": 40,
+      "regularization": 0.01
+    },
+    "development_user_windows": 30784,
+    "development_hits_at_100": 1979,
+    "development_recall_at_100": 0.0642866424116424,
+    "development_hits_at_1000": 4122,
+    "development_recall_at_1000": 0.13390072765072766,
+    "tie_break": "two-tower: lower summed parameter bytes, shorter history, lower dimension; ALS: fewer factors, fewer iterations, higher regularization",
+    "development_artifact_sha256": "80b2be74ba551dc2f18318b98ff155c3c49e1fc2068eb08db864c0ef5fb1e4b4",
+    "reused_legacy_als_artifact": true,
+    "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+    "input_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+    "policy_sha256": "4f750c454ff2e52efb1ef0e8584e7c55fb6a1791515948c12fa9f22aed9b14e1",
+    "runner_sha256": "4c296e1044c2664d786ad9984592a9e8b139a9a47c514f9a0b56a7e2803b760c",
+    "runtime": {
+      "python": "3.13.15",
+      "numpy": "2.5.2",
+      "pandas": "2.3.3",
+      "scipy": "1.18.1",
+      "torch": "2.14.1+cpu"
+    },
+    "diagnostic_artifact_sha256": "e60d8aaba63d5ee73c4a4ca6a8601b2d4048ecbe3d937688e7288a6bbd454f9f",
+    "diagnostic_runner_sha256": "4c296e1044c2664d786ad9984592a9e8b139a9a47c514f9a0b56a7e2803b760c",
+    "diagnostic_policy_sha256": "4f750c454ff2e52efb1ef0e8584e7c55fb6a1791515948c12fa9f22aed9b14e1",
+    "diagnostic_selection_lock_sha256": "c0d5b31f64d32470eb935899738d3b1c57b788fed41ca4a2c16b68e6543b371f"
+  },
+  "policy_sha256": "6cdff58c9c4df8ab47bb986f6fb8b6908b8f40593775f6b455c7aefea6067cd6",
+  "runner_sha256": "7528b0b7fea1d2bbc53db4a417d11e94fceaca023966cee86eea4f2579b64dda",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.1+cpu"
+  }
+}

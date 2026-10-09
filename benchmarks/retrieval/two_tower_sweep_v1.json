@@ -1,0 +1,1695 @@
+{
+  "model": "two_tower",
+  "phase": "development",
+  "blind_holdout": false,
+  "result_validity": "development only",
+  "configurations": [
+    {
+      "dimension": 64,
+      "max_history": 20
+    },
+    {
+      "dimension": 64,
+      "max_history": 50
+    },
+    {
+      "dimension": 128,
+      "max_history": 20
+    },
+    {
+      "dimension": 128,
+      "max_history": 50
+    }
+  ],
+  "expected_folds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "policy": {
+    "protocol": "rolling-temporal",
+    "cohort": "warm",
+    "budgets": [
+      100,
+      500,
+      1000
+    ],
+    "selection": "pooled Recall@1000, then Recall@100, then lower parameter count",
+    "training_examples": "first occurrence of each item after strictly earlier user history",
+    "same_timestamp": "exclude timestamp peers from history and from negative candidates",
+    "history_semantics": "latest occurrence per item, preserving recency, truncated to max_history",
+    "negative_sampling": "independent uniform draws with replacement from train-catalog items first seen strictly before the positive timestamp; exclude full prior user history and every same-timestamp item; skip examples with no eligible negative",
+    "seed": 42,
+    "threads": 1,
+    "epochs": 3,
+    "negatives": 5,
+    "training_logit_scale": 20.0,
+    "batch_size": 1024,
+    "optimizer": "Adam lr=0.003 for MLPs, SparseAdam lr=0.003 for embedding tables",
+    "device": "cpu, one torch thread, deterministic algorithms enabled",
+    "history_tower": "mean of shared item-id embeddings over recent distinct items, then MLP",
+    "item_tower": "item-id and as-of-cutoff category embeddings concatenated, then MLP",
+    "scoring": "L2-normalized user/item vectors with dot product",
+    "event_weighting": "equal across interaction types"
+  },
+  "policy_sha256": "6cdff58c9c4df8ab47bb986f6fb8b6908b8f40593775f6b455c7aefea6067cd6",
+  "input_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "runner_sha256": "7528b0b7fea1d2bbc53db4a417d11e94fceaca023966cee86eea4f2579b64dda",
+  "selection_lock_sha256": null,
+  "development_artifact_sha256": null,
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.1+cpu"
+  },
+  "results": [
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "dimension": 64,
+        "max_history": 20
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.015151515151515152,
+        "reachable_recall@100": 0.020574041148082298,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.13400797301441275,
+        "Recall@500": 0.03535353535353535,
+        "reachable_recall@500": 0.04800609601219202,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.3048011412876818,
+        "Recall@1000": 0.051066217732884396,
+        "reachable_recall@1000": 0.06934213868427737,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.41014359425622976
+      },
+      "totals": {
+        "100": {
+          "hits": 81,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 10051,
+          "source_candidate_count": {
+            "two_tower": 534600
+          },
+          "source_target_hits": {
+            "two_tower": 81
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 81
+          }
+        },
+        "500": {
+          "hits": 189,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 22861,
+          "source_candidate_count": {
+            "two_tower": 2673000
+          },
+          "source_target_hits": {
+            "two_tower": 189
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 189
+          }
+        },
+        "1000": {
+          "hits": 273,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 30762,
+          "source_candidate_count": {
+            "two_tower": 5346000
+          },
+          "source_target_hits": {
+            "two_tower": 273
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 273
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.334000000402739,
+        "latency_p95_ms": 7.6329249991431425,
+        "latency_p99_ms": 10.220619999745406
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 67.47964609999872,
+        "training_seconds": 13.420843300000342,
+        "parameter_bytes": 19522304,
+        "item_vector_bytes": 19200768,
+        "estimated_resident_model_bytes": 38723072,
+        "train_examples": 70032,
+        "generated_examples": 70032,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 75003,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "dimension": 64,
+        "max_history": 50
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.013468013468013467,
+        "reachable_recall@100": 0.01828803657607315,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.13631454741810328,
+        "Recall@500": 0.03497942386831276,
+        "reachable_recall@500": 0.04749809499618999,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.30342786288548457,
+        "Recall@1000": 0.05181444070332959,
+        "reachable_recall@1000": 0.07035814071628144,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.4070103862512166
+      },
+      "totals": {
+        "100": {
+          "hits": 72,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 10224,
+          "source_candidate_count": {
+            "two_tower": 534600
+          },
+          "source_target_hits": {
+            "two_tower": 72
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 72
+          }
+        },
+        "500": {
+          "hits": 187,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 22758,
+          "source_candidate_count": {
+            "two_tower": 2673000
+          },
+          "source_target_hits": {
+            "two_tower": 187
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 187
+          }
+        },
+        "1000": {
+          "hits": 277,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 30527,
+          "source_candidate_count": {
+            "two_tower": 5346000
+          },
+          "source_target_hits": {
+            "two_tower": 277
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 277
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.112050000207091,
+        "latency_p95_ms": 6.252324999422854,
+        "latency_p99_ms": 7.950649999929746
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 69.01652189999913,
+        "training_seconds": 16.52601109999887,
+        "parameter_bytes": 19522304,
+        "item_vector_bytes": 19200768,
+        "estimated_resident_model_bytes": 38723072,
+        "train_examples": 70032,
+        "generated_examples": 70032,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 75003,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "dimension": 128,
+        "max_history": 20
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.01945379723157501,
+        "reachable_recall@100": 0.026416052832105665,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.20124528352199245,
+        "Recall@500": 0.04601571268237935,
+        "reachable_recall@500": 0.062484124968249934,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.39523752383238003,
+        "Recall@1000": 0.06434717545828657,
+        "reachable_recall@1000": 0.0873761747523495,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5068330600109329
+      },
+      "totals": {
+        "100": {
+          "hits": 104,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 15094,
+          "source_candidate_count": {
+            "two_tower": 534600
+          },
+          "source_target_hits": {
+            "two_tower": 104
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 104
+          }
+        },
+        "500": {
+          "hits": 246,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 29644,
+          "source_candidate_count": {
+            "two_tower": 2673000
+          },
+          "source_target_hits": {
+            "two_tower": 246
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 246
+          }
+        },
+        "1000": {
+          "hits": 344,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 38014,
+          "source_candidate_count": {
+            "two_tower": 5346000
+          },
+          "source_target_hits": {
+            "two_tower": 344
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 344
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.307199999355362,
+        "latency_p95_ms": 7.721250000031432,
+        "latency_p99_ms": 10.113530000580804
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 76.09136379999836,
+        "training_seconds": 23.256024099999195,
+        "parameter_bytes": 39208448,
+        "item_vector_bytes": 38401536,
+        "estimated_resident_model_bytes": 77609984,
+        "train_examples": 70032,
+        "generated_examples": 70032,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 75003,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.019827908716797606,
+        "reachable_recall@100": 0.026924053848107695,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.20709838273135742,
+        "Recall@500": 0.04564160119715675,
+        "reachable_recall@500": 0.06197612395224791,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.40357052384571285,
+        "Recall@1000": 0.06247661803217359,
+        "reachable_recall@1000": 0.08483616967233934,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.515619375224991
+      },
+      "totals": {
+        "100": {
+          "hits": 106,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 15533,
+          "source_candidate_count": {
+            "two_tower": 534600
+          },
+          "source_target_hits": {
+            "two_tower": 106
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 106
+          }
+        },
+        "500": {
+          "hits": 244,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 30269,
+          "source_candidate_count": {
+            "two_tower": 2673000
+          },
+          "source_target_hits": {
+            "two_tower": 244
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 244
+          }
+        },
+        "1000": {
+          "hits": 334,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 38673,
+          "source_candidate_count": {
+            "two_tower": 5346000
+          },
+          "source_target_hits": {
+            "two_tower": 334
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 334
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.303050000497024,
+        "latency_p95_ms": 7.850149999740097,
+        "latency_p99_ms": 10.094579998985866
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 82.58676190000006,
+        "training_seconds": 28.12407709999934,
+        "parameter_bytes": 39208448,
+        "item_vector_bytes": 38401536,
+        "estimated_resident_model_bytes": 77609984,
+        "train_examples": 70032,
+        "generated_examples": 70032,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 75003,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "dimension": 64,
+        "max_history": 20
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.02055270101374809,
+        "reachable_recall@100": 0.024836381943279074,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.06917853310126525,
+        "Recall@500": 0.05013192612137203,
+        "reachable_recall@500": 0.0605806343346199,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.19474780632535824,
+        "Recall@1000": 0.073462019164005,
+        "reachable_recall@1000": 0.08877328410807182,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.2785989340499788
+      },
+      "totals": {
+        "100": {
+          "hits": 148,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 7671,
+          "source_candidate_count": {
+            "two_tower": 720100
+          },
+          "source_target_hits": {
+            "two_tower": 148
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 148
+          }
+        },
+        "500": {
+          "hits": 361,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 21595,
+          "source_candidate_count": {
+            "two_tower": 3600500
+          },
+          "source_target_hits": {
+            "two_tower": 361
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 361
+          }
+        },
+        "1000": {
+          "hits": 529,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 30893,
+          "source_candidate_count": {
+            "two_tower": 7201000
+          },
+          "source_target_hits": {
+            "two_tower": 529
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 529
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.135900001027039,
+        "latency_p95_ms": 7.694799998716917,
+        "latency_p99_ms": 9.939999999915017
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 131.97165210000094,
+        "training_seconds": 27.02011019999918,
+        "parameter_bytes": 28722432,
+        "item_vector_bytes": 28387072,
+        "estimated_resident_model_bytes": 57109504,
+        "train_examples": 142280,
+        "generated_examples": 142280,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 110887,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "dimension": 64,
+        "max_history": 50
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.021108179419525065,
+        "reachable_recall@100": 0.025507635509313644,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.07608646640273431,
+        "Recall@500": 0.05360366615747813,
+        "reachable_recall@500": 0.06477596912233596,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.20605661619486504,
+        "Recall@1000": 0.07512845438133593,
+        "reachable_recall@1000": 0.09078704480617553,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.2908366174574116
+      },
+      "totals": {
+        "100": {
+          "hits": 152,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 8437,
+          "source_candidate_count": {
+            "two_tower": 720100
+          },
+          "source_target_hits": {
+            "two_tower": 152
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 152
+          }
+        },
+        "500": {
+          "hits": 386,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 22849,
+          "source_candidate_count": {
+            "two_tower": 3600500
+          },
+          "source_target_hits": {
+            "two_tower": 386
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 386
+          }
+        },
+        "1000": {
+          "hits": 541,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 32250,
+          "source_candidate_count": {
+            "two_tower": 7201000
+          },
+          "source_target_hits": {
+            "two_tower": 541
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 541
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.969400001049507,
+        "latency_p95_ms": 7.050800002616597,
+        "latency_p99_ms": 9.214999998221174
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 144.67589280000175,
+        "training_seconds": 33.81911680000121,
+        "parameter_bytes": 28722432,
+        "item_vector_bytes": 28387072,
+        "estimated_resident_model_bytes": 57109504,
+        "train_examples": 142280,
+        "generated_examples": 142280,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 110887,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "dimension": 128,
+        "max_history": 20
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.030829051520622135,
+        "reachable_recall@100": 0.03725457291491861,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.16072217663026325,
+        "Recall@500": 0.0680461047076795,
+        "reachable_recall@500": 0.08222856183923477,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.3533777629478658,
+        "Recall@1000": 0.0937369809748646,
+        "reachable_recall@1000": 0.11327403926833361,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.45733043548838004
+      },
+      "totals": {
+        "100": {
+          "hits": 222,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 17822,
+          "source_candidate_count": {
+            "two_tower": 720100
+          },
+          "source_target_hits": {
+            "two_tower": 222
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 222
+          }
+        },
+        "500": {
+          "hits": 490,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 39185,
+          "source_candidate_count": {
+            "two_tower": 3600500
+          },
+          "source_target_hits": {
+            "two_tower": 490
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 490
+          }
+        },
+        "1000": {
+          "hits": 675,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 50712,
+          "source_candidate_count": {
+            "two_tower": 7201000
+          },
+          "source_target_hits": {
+            "two_tower": 675
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 675
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.627099999808706,
+        "latency_p95_ms": 9.374500001285924,
+        "latency_p99_ms": 12.691800002357922
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 152.29926470000282,
+        "training_seconds": 48.58236349999788,
+        "parameter_bytes": 57608704,
+        "item_vector_bytes": 56774144,
+        "estimated_resident_model_bytes": 114382848,
+        "train_examples": 142280,
+        "generated_examples": 142280,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 110887,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.029995833911956673,
+        "reachable_recall@100": 0.036247692565866754,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.17387069719624482,
+        "Recall@500": 0.06929593112067768,
+        "reachable_recall@500": 0.08373888236281256,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.37035901413150324,
+        "Recall@1000": 0.09387585057630884,
+        "reachable_recall@1000": 0.11344185265984226,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.47427561391326306
+      },
+      "totals": {
+        "100": {
+          "hits": 216,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 19280,
+          "source_candidate_count": {
+            "two_tower": 720100
+          },
+          "source_target_hits": {
+            "two_tower": 216
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 216
+          }
+        },
+        "500": {
+          "hits": 499,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 41068,
+          "source_candidate_count": {
+            "two_tower": 3600500
+          },
+          "source_target_hits": {
+            "two_tower": 499
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 499
+          }
+        },
+        "1000": {
+          "hits": 676,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 52591,
+          "source_candidate_count": {
+            "two_tower": 7201000
+          },
+          "source_target_hits": {
+            "two_tower": 676
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 676
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.408099998428952,
+        "latency_p95_ms": 9.145299998635892,
+        "latency_p99_ms": 11.726000000635395
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 160.94458680000025,
+        "training_seconds": 56.65938169999936,
+        "parameter_bytes": 57608704,
+        "item_vector_bytes": 56774144,
+        "estimated_resident_model_bytes": 114382848,
+        "train_examples": 142280,
+        "generated_examples": 142280,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 110887,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "dimension": 64,
+        "max_history": 20
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.025807951639153684,
+        "reachable_recall@100": 0.030134383059590063,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.08572475719259666,
+        "Recall@500": 0.061962334340850966,
+        "reachable_recall@500": 0.07234966743586263,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.22878504672897196,
+        "Recall@1000": 0.0848639851197396,
+        "reachable_recall@1000": 0.099090538889643,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.32282939343961886
+      },
+      "totals": {
+        "100": {
+          "hits": 222,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 11695,
+          "source_candidate_count": {
+            "two_tower": 860200
+          },
+          "source_target_hits": {
+            "two_tower": 222
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 222
+          }
+        },
+        "500": {
+          "hits": 533,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 31212,
+          "source_candidate_count": {
+            "two_tower": 4301000
+          },
+          "source_target_hits": {
+            "two_tower": 533
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 533
+          }
+        },
+        "1000": {
+          "hits": 730,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 44042,
+          "source_candidate_count": {
+            "two_tower": 8602000
+          },
+          "source_target_hits": {
+            "two_tower": 730
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 730
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.905850001203362,
+        "latency_p95_ms": 9.521744999619841,
+        "latency_p99_ms": 13.954748002179253
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 191.77169499999945,
+        "training_seconds": 39.71493929999997,
+        "parameter_bytes": 35269888,
+        "item_vector_bytes": 34924800,
+        "estimated_resident_model_bytes": 70194688,
+        "train_examples": 215542,
+        "generated_examples": 215542,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 136425,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "dimension": 64,
+        "max_history": 50
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.024296675191815855,
+        "reachable_recall@100": 0.028369757024569023,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.09513652189847902,
+        "Recall@500": 0.06091606603115555,
+        "reachable_recall@500": 0.07112800325777115,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.24687557265897014,
+        "Recall@1000": 0.08532899325738201,
+        "reachable_recall@1000": 0.09963350074657255,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.3431189298149166
+      },
+      "totals": {
+        "100": {
+          "hits": 209,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 12979,
+          "source_candidate_count": {
+            "two_tower": 860200
+          },
+          "source_target_hits": {
+            "two_tower": 209
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 209
+          }
+        },
+        "500": {
+          "hits": 524,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 33680,
+          "source_candidate_count": {
+            "two_tower": 4301000
+          },
+          "source_target_hits": {
+            "two_tower": 524
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 524
+          }
+        },
+        "1000": {
+          "hits": 734,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 46810,
+          "source_candidate_count": {
+            "two_tower": 8602000
+          },
+          "source_target_hits": {
+            "two_tower": 734
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 734
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.1399499975086655,
+        "latency_p95_ms": 9.302770002432226,
+        "latency_p99_ms": 13.265678999632645
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 209.76594100000148,
+        "training_seconds": 53.895531799997116,
+        "parameter_bytes": 35269888,
+        "item_vector_bytes": 34924800,
+        "estimated_resident_model_bytes": 70194688,
+        "train_examples": 215542,
+        "generated_examples": 215542,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 136425,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "dimension": 128,
+        "max_history": 20
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.03348058591025343,
+        "reachable_recall@100": 0.03909325369892765,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.20118013560564413,
+        "Recall@500": 0.07498256219483841,
+        "reachable_recall@500": 0.08755259942989005,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.42200476452263147,
+        "Recall@1000": 0.1014880260404557,
+        "reachable_recall@1000": 0.11850142527487444,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5297562763423126
+      },
+      "totals": {
+        "100": {
+          "hits": 288,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 27446,
+          "source_candidate_count": {
+            "two_tower": 860200
+          },
+          "source_target_hits": {
+            "two_tower": 288
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 288
+          }
+        },
+        "500": {
+          "hits": 645,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 57572,
+          "source_candidate_count": {
+            "two_tower": 4301000
+          },
+          "source_target_hits": {
+            "two_tower": 645
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 645
+          }
+        },
+        "1000": {
+          "hits": 873,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 72272,
+          "source_candidate_count": {
+            "two_tower": 8602000
+          },
+          "source_target_hits": {
+            "two_tower": 873
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 873
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 8.971000001110951,
+        "latency_p95_ms": 10.829520000515913,
+        "latency_p99_ms": 13.98374600030365
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 229.2364721999984,
+        "training_seconds": 72.49077480000051,
+        "parameter_bytes": 70703616,
+        "item_vector_bytes": 69849600,
+        "estimated_resident_model_bytes": 140553216,
+        "train_examples": 215542,
+        "generated_examples": 215542,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 136425,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.031853057428505,
+        "reachable_recall@100": 0.03719288719967422,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.20829026937877954,
+        "Recall@500": 0.0748663101604278,
+        "reachable_recall@500": 0.08741685896565767,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.4296866410115448,
+        "Recall@1000": 0.10311555452220414,
+        "reachable_recall@1000": 0.12040179177412787,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5359208356239692
+      },
+      "totals": {
+        "100": {
+          "hits": 274,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 28416,
+          "source_candidate_count": {
+            "two_tower": 860200
+          },
+          "source_target_hits": {
+            "two_tower": 274
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 274
+          }
+        },
+        "500": {
+          "hits": 644,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 58620,
+          "source_candidate_count": {
+            "two_tower": 4301000
+          },
+          "source_target_hits": {
+            "two_tower": 644
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 644
+          }
+        },
+        "1000": {
+          "hits": 887,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 73113,
+          "source_candidate_count": {
+            "two_tower": 8602000
+          },
+          "source_target_hits": {
+            "two_tower": 887
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 887
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 9.021500000017113,
+        "latency_p95_ms": 11.484929999278393,
+        "latency_p99_ms": 16.308283998550902
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 248.99706819999847,
+        "training_seconds": 93.49428590000025,
+        "parameter_bytes": 70703616,
+        "item_vector_bytes": 69849600,
+        "estimated_resident_model_bytes": 140553216,
+        "train_examples": 215542,
+        "generated_examples": 215542,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 136425,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "dimension": 64,
+        "max_history": 20
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.027400103788271925,
+        "reachable_recall@100": 0.031301873369694096,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.08915946331569552,
+        "Recall@500": 0.06434872859366891,
+        "reachable_recall@500": 0.07351197533791795,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.2293640790054577,
+        "Recall@1000": 0.09174883238194084,
+        "reachable_recall@1000": 0.10481384870761205,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.3219210073387804
+      },
+      "totals": {
+        "100": {
+          "hits": 264,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 13935,
+          "source_candidate_count": {
+            "two_tower": 963500
+          },
+          "source_target_hits": {
+            "two_tower": 264
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 264
+          }
+        },
+        "500": {
+          "hits": 620,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 35848,
+          "source_candidate_count": {
+            "two_tower": 4817500
+          },
+          "source_target_hits": {
+            "two_tower": 620
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 620
+          }
+        },
+        "1000": {
+          "hits": 884,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 50314,
+          "source_candidate_count": {
+            "two_tower": 9635000
+          },
+          "source_target_hits": {
+            "two_tower": 884
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 884
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.352500000706641,
+        "latency_p95_ms": 8.802529999593386,
+        "latency_p99_ms": 12.434539998866954
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 259.0468288000011,
+        "training_seconds": 56.608930899998086,
+        "parameter_bytes": 40358400,
+        "item_vector_bytes": 40011008,
+        "estimated_resident_model_bytes": 80369408,
+        "train_examples": 292200,
+        "generated_examples": 292200,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 156293,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "dimension": 64,
+        "max_history": 50
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.0263622210690192,
+        "reachable_recall@100": 0.030116196348114774,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.09333751351628032,
+        "Recall@500": 0.06538661131292164,
+        "reachable_recall@500": 0.07469765235949727,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.23843038395833466,
+        "Recall@1000": 0.09143746756616503,
+        "reachable_recall@1000": 0.10445814560113825,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.33295796996666516
+      },
+      "totals": {
+        "100": {
+          "hits": 254,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 14588,
+          "source_candidate_count": {
+            "two_tower": 963500
+          },
+          "source_target_hits": {
+            "two_tower": 254
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 254
+          }
+        },
+        "500": {
+          "hits": 630,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 37265,
+          "source_candidate_count": {
+            "two_tower": 4817500
+          },
+          "source_target_hits": {
+            "two_tower": 630
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 630
+          }
+        },
+        "1000": {
+          "hits": 881,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 52039,
+          "source_candidate_count": {
+            "two_tower": 9635000
+          },
+          "source_target_hits": {
+            "two_tower": 881
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 881
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.5853000016650185,
+        "latency_p95_ms": 9.56623000092804,
+        "latency_p99_ms": 13.938110001836288
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 283.09356710000066,
+        "training_seconds": 73.12505840000085,
+        "parameter_bytes": 40358400,
+        "item_vector_bytes": 40011008,
+        "estimated_resident_model_bytes": 80369408,
+        "train_examples": 292200,
+        "generated_examples": 292200,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 156293,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "dimension": 128,
+        "max_history": 20
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.037986507524649715,
+        "reachable_recall@100": 0.04339577898980318,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.18900398610302444,
+        "Recall@500": 0.08168137000518941,
+        "reachable_recall@500": 0.09331278159829262,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.4076062267663939,
+        "Recall@1000": 0.10814737934613389,
+        "reachable_recall@1000": 0.12354754564856534,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5165554439418272
+      },
+      "totals": {
+        "100": {
+          "hits": 366,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 29540,
+          "source_candidate_count": {
+            "two_tower": 963500
+          },
+          "source_target_hits": {
+            "two_tower": 366
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 366
+          }
+        },
+        "500": {
+          "hits": 787,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 63706,
+          "source_candidate_count": {
+            "two_tower": 4817500
+          },
+          "source_target_hits": {
+            "two_tower": 787
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 787
+          }
+        },
+        "1000": {
+          "hits": 1042,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 80734,
+          "source_candidate_count": {
+            "two_tower": 9635000
+          },
+          "source_target_hits": {
+            "two_tower": 1042
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1042
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 9.739700002683094,
+        "latency_p95_ms": 13.089459997718222,
+        "latency_p99_ms": 20.95738000105484
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 323.7775244000004,
+        "training_seconds": 110.63071669999772,
+        "parameter_bytes": 80880640,
+        "item_vector_bytes": 80022016,
+        "estimated_resident_model_bytes": 160902656,
+        "train_examples": 292200,
+        "generated_examples": 292200,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 156293,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "dimension": 128,
+        "max_history": 50
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.03819408406850026,
+        "reachable_recall@100": 0.043632914394119045,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.1890807649734793,
+        "Recall@500": 0.08033212247016087,
+        "reachable_recall@500": 0.0917714014702395,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.4109717005879982,
+        "Recall@1000": 0.10939283860923715,
+        "reachable_recall@1000": 0.12497035807446051,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.5212005656043457
+      },
+      "totals": {
+        "100": {
+          "hits": 368,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 29552,
+          "source_candidate_count": {
+            "two_tower": 963500
+          },
+          "source_target_hits": {
+            "two_tower": 368
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 368
+          }
+        },
+        "500": {
+          "hits": 774,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 64232,
+          "source_candidate_count": {
+            "two_tower": 4817500
+          },
+          "source_target_hits": {
+            "two_tower": 774
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 774
+          }
+        },
+        "1000": {
+          "hits": 1054,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 81460,
+          "source_candidate_count": {
+            "two_tower": 9635000
+          },
+          "source_target_hits": {
+            "two_tower": 1054
+          },
+          "exclusive_source_target_hits": {
+            "two_tower": 1054
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 9.608500000467757,
+        "latency_p95_ms": 12.999230001878459,
+        "latency_p99_ms": 23.825410000936238
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 334.2987418999983,
+        "training_seconds": 124.86245599999893,
+        "parameter_bytes": 80880640,
+        "item_vector_bytes": 80022016,
+        "estimated_resident_model_bytes": 160902656,
+        "train_examples": 292200,
+        "generated_examples": 292200,
+        "skipped_examples_no_causal_negative": 0,
+        "skipped_example_rate": 0.0,
+        "skipped_batch_sampler_attempts": 0,
+        "catalog_items": 156293,
+        "epochs": 3,
+        "negative_samples": 5
+      }
+    }
+  ],
+  "completed_folds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "complete": true,
+  "results_sha256": "38e446073da4aec5f0051a4a038f61aa440acae264abc251a50516ae0a2190a6"
+}

@@ -1,0 +1,3047 @@
+{
+  "model": "als",
+  "phase": "development",
+  "blind_holdout": false,
+  "result_validity": "development only",
+  "configurations": [
+    {
+      "factors": 32,
+      "iterations": 20,
+      "regularization": 0.01
+    },
+    {
+      "factors": 64,
+      "iterations": 20,
+      "regularization": 0.01
+    },
+    {
+      "factors": 128,
+      "iterations": 20,
+      "regularization": 0.01
+    },
+    {
+      "factors": 64,
+      "iterations": 20,
+      "regularization": 0.001
+    },
+    {
+      "factors": 64,
+      "iterations": 20,
+      "regularization": 0.1
+    },
+    {
+      "factors": 64,
+      "iterations": 10,
+      "regularization": 0.01
+    },
+    {
+      "factors": 64,
+      "iterations": 40,
+      "regularization": 0.01
+    },
+    {
+      "factors": 128,
+      "iterations": 40,
+      "regularization": 0.01
+    }
+  ],
+  "expected_folds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "policy": {
+    "protocol": "rolling-temporal",
+    "cohort": "warm",
+    "budgets": [
+      100,
+      500,
+      1000
+    ],
+    "selection": "pooled Recall@1000, then Recall@100, then lower parameter count",
+    "training_examples": "first occurrence of each item after strictly earlier user history",
+    "same_timestamp": "exclude timestamp peers from history and from negative candidates",
+    "history_semantics": "latest occurrence per item, preserving recency, truncated to max_history",
+    "negative_sampling": "independent uniform draws with replacement from train-catalog items first seen strictly before the positive timestamp; exclude encoded history and every same-timestamp item; skip examples with no eligible negative",
+    "seed": 42,
+    "threads": 1,
+    "epochs": 3,
+    "negatives": 5,
+    "training_logit_scale": 20.0,
+    "batch_size": 1024,
+    "optimizer": "Adam lr=0.003 for MLPs, SparseAdam lr=0.003 for embedding tables",
+    "device": "cpu, one torch thread, deterministic algorithms enabled",
+    "history_tower": "mean of shared item-id embeddings over recent distinct items, then MLP",
+    "item_tower": "item-id and as-of-cutoff category embeddings concatenated, then MLP",
+    "scoring": "L2-normalized user/item vectors with dot product",
+    "event_weighting": "equal across interaction types"
+  },
+  "policy_sha256": "4f750c454ff2e52efb1ef0e8584e7c55fb6a1791515948c12fa9f22aed9b14e1",
+  "input_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "runner_sha256": "4c296e1044c2664d786ad9984592a9e8b139a9a47c514f9a0b56a7e2803b760c",
+  "selection_lock_sha256": null,
+  "development_artifact_sha256": null,
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "torch": "2.14.1+cpu"
+  },
+  "results": [
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.04638982416760194,
+        "reachable_recall@100": 0.06299212598425197,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.03993173606389078,
+        "Recall@500": 0.08585858585858586,
+        "reachable_recall@500": 0.11658623317246634,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.09899604015839367,
+        "Recall@1000": 0.11185933408155631,
+        "reachable_recall@1000": 0.15189230378460758,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12628828180206125
+      },
+      "totals": {
+        "100": {
+          "hits": 248,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 2995,
+          "source_candidate_count": {
+            "als": 534600
+          },
+          "source_target_hits": {
+            "als": 248
+          },
+          "exclusive_source_target_hits": {
+            "als": 248
+          }
+        },
+        "500": {
+          "hits": 459,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 7425,
+          "source_candidate_count": {
+            "als": 2673000
+          },
+          "source_target_hits": {
+            "als": 459
+          },
+          "exclusive_source_target_hits": {
+            "als": 459
+          }
+        },
+        "1000": {
+          "hits": 598,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 9472,
+          "source_candidate_count": {
+            "als": 5346000
+          },
+          "source_target_hits": {
+            "als": 598
+          },
+          "exclusive_source_target_hits": {
+            "als": 598
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 4.300650000459427,
+        "latency_p95_ms": 5.055775000300855,
+        "latency_p99_ms": 7.210584999847937
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 7.602438800000527,
+        "factor_array_bytes": 28197632,
+        "catalog_items": 75003
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.05929667040778152,
+        "reachable_recall@100": 0.08051816103632208,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.062450835299921334,
+        "Recall@500": 0.1025065469509914,
+        "reachable_recall@500": 0.13919227838455678,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.130208125008333,
+        "Recall@1000": 0.13112607557052003,
+        "reachable_recall@1000": 0.17805435610871223,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.16248683385997895
+      },
+      "totals": {
+        "100": {
+          "hits": 317,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 4684,
+          "source_candidate_count": {
+            "als": 534600
+          },
+          "source_target_hits": {
+            "als": 317
+          },
+          "exclusive_source_target_hits": {
+            "als": 317
+          }
+        },
+        "500": {
+          "hits": 548,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 9766,
+          "source_candidate_count": {
+            "als": 2673000
+          },
+          "source_target_hits": {
+            "als": 548
+          },
+          "exclusive_source_target_hits": {
+            "als": 548
+          }
+        },
+        "1000": {
+          "hits": 701,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 12187,
+          "source_candidate_count": {
+            "als": 5346000
+          },
+          "source_target_hits": {
+            "als": 701
+          },
+          "exclusive_source_target_hits": {
+            "als": 701
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.056500000137021,
+        "latency_p95_ms": 6.6518500002530345,
+        "latency_p99_ms": 10.929224999745207
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 13.35450579999997,
+        "factor_array_bytes": 56395264,
+        "catalog_items": 75003
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.07444818555929666,
+        "reachable_recall@100": 0.10109220218440437,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.09678279535485247,
+        "Recall@500": 0.11541339319117097,
+        "reachable_recall@500": 0.15671831343662687,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.1723664386757863,
+        "Recall@1000": 0.1442199775533109,
+        "reachable_recall@1000": 0.19583439166878333,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.20629841473007746
+      },
+      "totals": {
+        "100": {
+          "hits": 398,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 7259,
+          "source_candidate_count": {
+            "als": 534600
+          },
+          "source_target_hits": {
+            "als": 398
+          },
+          "exclusive_source_target_hits": {
+            "als": 398
+          }
+        },
+        "500": {
+          "hits": 617,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 12928,
+          "source_candidate_count": {
+            "als": 2673000
+          },
+          "source_target_hits": {
+            "als": 617
+          },
+          "exclusive_source_target_hits": {
+            "als": 617
+          }
+        },
+        "1000": {
+          "hits": 771,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 15473,
+          "source_candidate_count": {
+            "als": 5346000
+          },
+          "source_target_hits": {
+            "als": 771
+          },
+          "exclusive_source_target_hits": {
+            "als": 771
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.935199999839824,
+        "latency_p95_ms": 6.944350000139821,
+        "latency_p99_ms": 9.251589999803405
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 29.51008230000025,
+        "factor_array_bytes": 112790528,
+        "catalog_items": 75003
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.05929667040778152,
+        "reachable_recall@100": 0.08051816103632208,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.06242416969987867,
+        "Recall@500": 0.1026936026936027,
+        "reachable_recall@500": 0.13944627889255778,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.13015479380824768,
+        "Recall@1000": 0.13150018705574262,
+        "reachable_recall@1000": 0.17856235712471424,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.1624335026598936
+      },
+      "totals": {
+        "100": {
+          "hits": 317,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 4682,
+          "source_candidate_count": {
+            "als": 534600
+          },
+          "source_target_hits": {
+            "als": 317
+          },
+          "exclusive_source_target_hits": {
+            "als": 317
+          }
+        },
+        "500": {
+          "hits": 549,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 9762,
+          "source_candidate_count": {
+            "als": 2673000
+          },
+          "source_target_hits": {
+            "als": 549
+          },
+          "exclusive_source_target_hits": {
+            "als": 549
+          }
+        },
+        "1000": {
+          "hits": 703,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 12183,
+          "source_candidate_count": {
+            "als": 5346000
+          },
+          "source_target_hits": {
+            "als": 703
+          },
+          "exclusive_source_target_hits": {
+            "als": 703
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 4.8441500002809335,
+        "latency_p95_ms": 5.848950000199693,
+        "latency_p99_ms": 8.7783999995736
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 13.057811700000457,
+        "factor_array_bytes": 56395264,
+        "catalog_items": 75003
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.05910961466517022,
+        "reachable_recall@100": 0.08026416052832105,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.06257083050011333,
+        "Recall@500": 0.10362888140665918,
+        "reachable_recall@500": 0.14071628143256287,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.13038145140861032,
+        "Recall@1000": 0.13206135428357652,
+        "reachable_recall@1000": 0.1793243586487173,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.16260682906017093
+      },
+      "totals": {
+        "100": {
+          "hits": 316,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 4693,
+          "source_candidate_count": {
+            "als": 534600
+          },
+          "source_target_hits": {
+            "als": 316
+          },
+          "exclusive_source_target_hits": {
+            "als": 316
+          }
+        },
+        "500": {
+          "hits": 554,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 9779,
+          "source_candidate_count": {
+            "als": 2673000
+          },
+          "source_target_hits": {
+            "als": 554
+          },
+          "exclusive_source_target_hits": {
+            "als": 554
+          }
+        },
+        "1000": {
+          "hits": 706,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 12196,
+          "source_candidate_count": {
+            "als": 5346000
+          },
+          "source_target_hits": {
+            "als": 706
+          },
+          "exclusive_source_target_hits": {
+            "als": 706
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 4.929799999899842,
+        "latency_p95_ms": 5.837575000441575,
+        "latency_p99_ms": 8.603325000194683
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 12.46226470000056,
+        "factor_array_bytes": 56395264,
+        "catalog_items": 75003
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.05798728020950243,
+        "reachable_recall@100": 0.07874015748031496,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.06057091049691345,
+        "Recall@500": 0.09970071081182193,
+        "reachable_recall@500": 0.13538227076454154,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.12730157460368252,
+        "Recall@1000": 0.12457912457912458,
+        "reachable_recall@1000": 0.16916433832867667,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.1567270642507633
+      },
+      "totals": {
+        "100": {
+          "hits": 310,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 4543,
+          "source_candidate_count": {
+            "als": 534600
+          },
+          "source_target_hits": {
+            "als": 310
+          },
+          "exclusive_source_target_hits": {
+            "als": 310
+          }
+        },
+        "500": {
+          "hits": 533,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 9548,
+          "source_candidate_count": {
+            "als": 2673000
+          },
+          "source_target_hits": {
+            "als": 533
+          },
+          "exclusive_source_target_hits": {
+            "als": 533
+          }
+        },
+        "1000": {
+          "hits": 666,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 11755,
+          "source_candidate_count": {
+            "als": 5346000
+          },
+          "source_target_hits": {
+            "als": 666
+          },
+          "exclusive_source_target_hits": {
+            "als": 666
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 4.8791000003802765,
+        "latency_p95_ms": 5.744349999986298,
+        "latency_p99_ms": 7.923355000184529
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 6.881035499999598,
+        "factor_array_bytes": 56395264,
+        "catalog_items": 75003
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.06004489337822671,
+        "reachable_recall@100": 0.08153416306832614,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.06327746890124394,
+        "Recall@500": 0.10437710437710437,
+        "reachable_recall@500": 0.14173228346456693,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.1314880738103809,
+        "Recall@1000": 0.13524130190796857,
+        "reachable_recall@1000": 0.18364236728473457,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.16523339066437343
+      },
+      "totals": {
+        "100": {
+          "hits": 321,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 4746,
+          "source_candidate_count": {
+            "als": 534600
+          },
+          "source_target_hits": {
+            "als": 321
+          },
+          "exclusive_source_target_hits": {
+            "als": 321
+          }
+        },
+        "500": {
+          "hits": 558,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 9862,
+          "source_candidate_count": {
+            "als": 2673000
+          },
+          "source_target_hits": {
+            "als": 558
+          },
+          "exclusive_source_target_hits": {
+            "als": 558
+          }
+        },
+        "1000": {
+          "hits": 723,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 12393,
+          "source_candidate_count": {
+            "als": 5346000
+          },
+          "source_target_hits": {
+            "als": 723
+          },
+          "exclusive_source_target_hits": {
+            "als": 723
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 4.927599999973609,
+        "latency_p95_ms": 5.93689999959679,
+        "latency_p99_ms": 8.676990000003586
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 22.525811199999225,
+        "factor_array_bytes": 56395264,
+        "catalog_items": 75003
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 1,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 5346,
+      "reachable_targets": 3937,
+      "metrics": {
+        "Recall@100": 0.07631874298540965,
+        "reachable_recall@100": 0.10363220726441452,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.09995600175992961,
+        "Recall@500": 0.1225215114104003,
+        "reachable_recall@500": 0.16637033274066548,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.1757663026812261,
+        "Recall@1000": 0.1526374859708193,
+        "reachable_recall@1000": 0.20726441452882904,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.21063157473701052
+      },
+      "totals": {
+        "100": {
+          "hits": 408,
+          "candidate_count": 534600,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 7497,
+          "source_candidate_count": {
+            "als": 534600
+          },
+          "source_target_hits": {
+            "als": 408
+          },
+          "exclusive_source_target_hits": {
+            "als": 408
+          }
+        },
+        "500": {
+          "hits": 655,
+          "candidate_count": 2673000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 13183,
+          "source_candidate_count": {
+            "als": 2673000
+          },
+          "source_target_hits": {
+            "als": 655
+          },
+          "exclusive_source_target_hits": {
+            "als": 655
+          }
+        },
+        "1000": {
+          "hits": 816,
+          "candidate_count": 5346000,
+          "empty_requests": 0,
+          "full_requests": 5346,
+          "unique_items": 15798,
+          "source_candidate_count": {
+            "als": 5346000
+          },
+          "source_target_hits": {
+            "als": 816
+          },
+          "exclusive_source_target_hits": {
+            "als": 816
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.957200000011653,
+        "latency_p95_ms": 7.004225000400766,
+        "latency_p99_ms": 10.624189999680329
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 57.511173699999745,
+        "factor_array_bytes": 112790528,
+        "catalog_items": 75003
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.03999444521594223,
+        "reachable_recall@100": 0.04833025675448901,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.0344585028001479,
+        "Recall@500": 0.07651715039577836,
+        "reachable_recall@500": 0.09246517872126196,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.09001055128193566,
+        "Recall@1000": 0.10692959311206778,
+        "reachable_recall@1000": 0.12921631146165463,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.10592765608231804
+      },
+      "totals": {
+        "100": {
+          "hits": 288,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 3821,
+          "source_candidate_count": {
+            "als": 720100
+          },
+          "source_target_hits": {
+            "als": 288
+          },
+          "exclusive_source_target_hits": {
+            "als": 288
+          }
+        },
+        "500": {
+          "hits": 551,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 9981,
+          "source_candidate_count": {
+            "als": 3600500
+          },
+          "source_target_hits": {
+            "als": 551
+          },
+          "exclusive_source_target_hits": {
+            "als": 551
+          }
+        },
+        "1000": {
+          "hits": 770,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 11746,
+          "source_candidate_count": {
+            "als": 7201000
+          },
+          "source_target_hits": {
+            "als": 770
+          },
+          "exclusive_source_target_hits": {
+            "als": 770
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.0360000004729955,
+        "latency_p95_ms": 5.874400000720925,
+        "latency_p99_ms": 8.322699999553151
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 14.23708009999973,
+        "factor_array_bytes": 50895104,
+        "catalog_items": 110887
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.05388140536036662,
+        "reachable_recall@100": 0.06511159590535325,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.05108804458592982,
+        "Recall@500": 0.09970837383696708,
+        "reachable_recall@500": 0.12049001510320524,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.1166051926736227,
+        "Recall@1000": 0.129843077350368,
+        "reachable_recall@1000": 0.15690552106058064,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.14050339534841777
+      },
+      "totals": {
+        "100": {
+          "hits": 388,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 5665,
+          "source_candidate_count": {
+            "als": 720100
+          },
+          "source_target_hits": {
+            "als": 388
+          },
+          "exclusive_source_target_hits": {
+            "als": 388
+          }
+        },
+        "500": {
+          "hits": 718,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 12930,
+          "source_candidate_count": {
+            "als": 3600500
+          },
+          "source_target_hits": {
+            "als": 718
+          },
+          "exclusive_source_target_hits": {
+            "als": 718
+          }
+        },
+        "1000": {
+          "hits": 935,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 15580,
+          "source_candidate_count": {
+            "als": 7201000
+          },
+          "source_target_hits": {
+            "als": 935
+          },
+          "exclusive_source_target_hits": {
+            "als": 935
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.822900000566733,
+        "latency_p95_ms": 7.250999999996566,
+        "latency_p99_ms": 10.701899999730813
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 24.03448600000047,
+        "factor_array_bytes": 101790208,
+        "catalog_items": 110887
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.06665740869323705,
+        "reachable_recall@100": 0.08055042792414835,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.07193809914597743,
+        "Recall@500": 0.1162338564088321,
+        "reachable_recall@500": 0.14045980869273367,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.1487279843444227,
+        "Recall@1000": 0.14553534231356757,
+        "reachable_recall@1000": 0.17586843430105722,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.1766392814306456
+      },
+      "totals": {
+        "100": {
+          "hits": 480,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 7977,
+          "source_candidate_count": {
+            "als": 720100
+          },
+          "source_target_hits": {
+            "als": 480
+          },
+          "exclusive_source_target_hits": {
+            "als": 480
+          }
+        },
+        "500": {
+          "hits": 837,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 16492,
+          "source_candidate_count": {
+            "als": 3600500
+          },
+          "source_target_hits": {
+            "als": 837
+          },
+          "exclusive_source_target_hits": {
+            "als": 837
+          }
+        },
+        "1000": {
+          "hits": 1048,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 19587,
+          "source_candidate_count": {
+            "als": 7201000
+          },
+          "source_target_hits": {
+            "als": 1048
+          },
+          "exclusive_source_target_hits": {
+            "als": 1048
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.33459999992192,
+        "latency_p95_ms": 8.809199999632256,
+        "latency_p99_ms": 11.862100000143982
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 53.413205099999686,
+        "factor_array_bytes": 203580416,
+        "catalog_items": 110887
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.05388140536036662,
+        "reachable_recall@100": 0.06511159590535325,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.05108804458592982,
+        "Recall@500": 0.09984724343841134,
+        "reachable_recall@500": 0.12065782849471388,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.1166322472426885,
+        "Recall@1000": 0.1301208165532565,
+        "reachable_recall@1000": 0.1572411478435979,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.14041321345153174
+      },
+      "totals": {
+        "100": {
+          "hits": 388,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 5665,
+          "source_candidate_count": {
+            "als": 720100
+          },
+          "source_target_hits": {
+            "als": 388
+          },
+          "exclusive_source_target_hits": {
+            "als": 388
+          }
+        },
+        "500": {
+          "hits": 719,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 12933,
+          "source_candidate_count": {
+            "als": 3600500
+          },
+          "source_target_hits": {
+            "als": 719
+          },
+          "exclusive_source_target_hits": {
+            "als": 719
+          }
+        },
+        "1000": {
+          "hits": 937,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 15570,
+          "source_candidate_count": {
+            "als": 7201000
+          },
+          "source_target_hits": {
+            "als": 937
+          },
+          "exclusive_source_target_hits": {
+            "als": 937
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.7652999994388665,
+        "latency_p95_ms": 6.790899999941757,
+        "latency_p99_ms": 10.265199999594188
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 23.78121049999936,
+        "factor_array_bytes": 101790208,
+        "catalog_items": 110887
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.05388140536036662,
+        "reachable_recall@100": 0.06511159590535325,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.051304481138456266,
+        "Recall@500": 0.09956950423552284,
+        "reachable_recall@500": 0.1203222017116966,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.11683064741583775,
+        "Recall@1000": 0.13025968615470074,
+        "reachable_recall@1000": 0.15740896123510656,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.14061161362468097
+      },
+      "totals": {
+        "100": {
+          "hits": 388,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 5689,
+          "source_candidate_count": {
+            "als": 720100
+          },
+          "source_target_hits": {
+            "als": 388
+          },
+          "exclusive_source_target_hits": {
+            "als": 388
+          }
+        },
+        "500": {
+          "hits": 717,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 12955,
+          "source_candidate_count": {
+            "als": 3600500
+          },
+          "source_target_hits": {
+            "als": 717
+          },
+          "exclusive_source_target_hits": {
+            "als": 717
+          }
+        },
+        "1000": {
+          "hits": 938,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 15592,
+          "source_candidate_count": {
+            "als": 7201000
+          },
+          "source_target_hits": {
+            "als": 938
+          },
+          "exclusive_source_target_hits": {
+            "als": 938
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.794299999251962,
+        "latency_p95_ms": 6.79260000015347,
+        "latency_p99_ms": 11.527999999998428
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 23.18672770000012,
+        "factor_array_bytes": 101790208,
+        "catalog_items": 110887
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.05304818775170115,
+        "reachable_recall@100": 0.06410471555630139,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.04938360673478406,
+        "Recall@500": 0.09401472017775309,
+        "reachable_recall@500": 0.1136096660513509,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.11414322688863437,
+        "Recall@1000": 0.12331620608248854,
+        "reachable_recall@1000": 0.14901829165967445,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.1364361917988583
+      },
+      "totals": {
+        "100": {
+          "hits": 382,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 5476,
+          "source_candidate_count": {
+            "als": 720100
+          },
+          "source_target_hits": {
+            "als": 382
+          },
+          "exclusive_source_target_hits": {
+            "als": 382
+          }
+        },
+        "500": {
+          "hits": 677,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 12657,
+          "source_candidate_count": {
+            "als": 3600500
+          },
+          "source_target_hits": {
+            "als": 677
+          },
+          "exclusive_source_target_hits": {
+            "als": 677
+          }
+        },
+        "1000": {
+          "hits": 888,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 15129,
+          "source_candidate_count": {
+            "als": 7201000
+          },
+          "source_target_hits": {
+            "als": 888
+          },
+          "exclusive_source_target_hits": {
+            "als": 888
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.7901999998648535,
+        "latency_p95_ms": 6.943399999727262,
+        "latency_p99_ms": 10.613500000545173
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 12.575522199999796,
+        "factor_array_bytes": 101790208,
+        "catalog_items": 110887
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.05485349257047632,
+        "reachable_recall@100": 0.06628628964591374,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.05161109958786873,
+        "Recall@500": 0.10054159144563254,
+        "reachable_recall@500": 0.12149689545225709,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.11906715845861102,
+        "Recall@1000": 0.13095403416192195,
+        "reachable_recall@1000": 0.15824802819264977,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.14294732475402888
+      },
+      "totals": {
+        "100": {
+          "hits": 395,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 5723,
+          "source_candidate_count": {
+            "als": 720100
+          },
+          "source_target_hits": {
+            "als": 395
+          },
+          "exclusive_source_target_hits": {
+            "als": 395
+          }
+        },
+        "500": {
+          "hits": 724,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 13203,
+          "source_candidate_count": {
+            "als": 3600500
+          },
+          "source_target_hits": {
+            "als": 724
+          },
+          "exclusive_source_target_hits": {
+            "als": 724
+          }
+        },
+        "1000": {
+          "hits": 943,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 15851,
+          "source_candidate_count": {
+            "als": 7201000
+          },
+          "source_target_hits": {
+            "als": 943
+          },
+          "exclusive_source_target_hits": {
+            "als": 943
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.787099999906786,
+        "latency_p95_ms": 6.835700000010547,
+        "latency_p99_ms": 10.715999999774795
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 41.952211400000124,
+        "factor_array_bytes": 101790208,
+        "catalog_items": 110887
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 2,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 7201,
+      "reachable_targets": 5959,
+      "metrics": {
+        "Recall@100": 0.07137897514234134,
+        "reachable_recall@100": 0.08625608323544219,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.07362450061774599,
+        "Recall@500": 0.12026107485071517,
+        "reachable_recall@500": 0.1453263970464843,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.15260580591052153,
+        "Recall@1000": 0.1485904735453409,
+        "reachable_recall@1000": 0.17956032891424736,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.18113033989556937
+      },
+      "totals": {
+        "100": {
+          "hits": 514,
+          "candidate_count": 720100,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 8164,
+          "source_candidate_count": {
+            "als": 720100
+          },
+          "source_target_hits": {
+            "als": 514
+          },
+          "exclusive_source_target_hits": {
+            "als": 514
+          }
+        },
+        "500": {
+          "hits": 866,
+          "candidate_count": 3600500,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 16922,
+          "source_candidate_count": {
+            "als": 3600500
+          },
+          "source_target_hits": {
+            "als": 866
+          },
+          "exclusive_source_target_hits": {
+            "als": 866
+          }
+        },
+        "1000": {
+          "hits": 1070,
+          "candidate_count": 7201000,
+          "empty_requests": 0,
+          "full_requests": 7201,
+          "unique_items": 20085,
+          "source_candidate_count": {
+            "als": 7201000
+          },
+          "source_target_hits": {
+            "als": 1070
+          },
+          "exclusive_source_target_hits": {
+            "als": 1070
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.877600000028906,
+        "latency_p95_ms": 10.950400000183436,
+        "latency_p99_ms": 18.95039999999426
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 104.43592110000009,
+        "factor_array_bytes": 203580416,
+        "catalog_items": 110887
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.03906068356196234,
+        "reachable_recall@100": 0.045608795982082256,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.030273043796958037,
+        "Recall@500": 0.07184375726575215,
+        "reachable_recall@500": 0.08388760689561559,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.08047645226314824,
+        "Recall@1000": 0.09393164380376656,
+        "reachable_recall@1000": 0.10967829509976924,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.10139637163276526
+      },
+      "totals": {
+        "100": {
+          "hits": 336,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 4130,
+          "source_candidate_count": {
+            "als": 860200
+          },
+          "source_target_hits": {
+            "als": 336
+          },
+          "exclusive_source_target_hits": {
+            "als": 336
+          }
+        },
+        "500": {
+          "hits": 618,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 10979,
+          "source_candidate_count": {
+            "als": 4301000
+          },
+          "source_target_hits": {
+            "als": 618
+          },
+          "exclusive_source_target_hits": {
+            "als": 618
+          }
+        },
+        "1000": {
+          "hits": 808,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 13833,
+          "source_candidate_count": {
+            "als": 8602000
+          },
+          "source_target_hits": {
+            "als": 808
+          },
+          "exclusive_source_target_hits": {
+            "als": 808
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 5.88045000040438,
+        "latency_p95_ms": 6.9628349999675265,
+        "latency_p99_ms": 10.109067999701423
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 21.131809900000007,
+        "factor_array_bytes": 71909248,
+        "catalog_items": 136425
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.0480120902115787,
+        "reachable_recall@100": 0.05606081172797611,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.044119479567527944,
+        "Recall@500": 0.08544524529179261,
+        "reachable_recall@500": 0.09976924121080494,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10767821147150448,
+        "Recall@1000": 0.10985817251801906,
+        "reachable_recall@1000": 0.12827473869960634,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12723474436503573
+      },
+      "totals": {
+        "100": {
+          "hits": 413,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 6019,
+          "source_candidate_count": {
+            "als": 860200
+          },
+          "source_target_hits": {
+            "als": 413
+          },
+          "exclusive_source_target_hits": {
+            "als": 413
+          }
+        },
+        "500": {
+          "hits": 735,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 14690,
+          "source_candidate_count": {
+            "als": 4301000
+          },
+          "source_target_hits": {
+            "als": 735
+          },
+          "exclusive_source_target_hits": {
+            "als": 735
+          }
+        },
+        "1000": {
+          "hits": 945,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 17358,
+          "source_candidate_count": {
+            "als": 8602000
+          },
+          "source_target_hits": {
+            "als": 945
+          },
+          "exclusive_source_target_hits": {
+            "als": 945
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.763899999896239,
+        "latency_p95_ms": 7.9760500003430925,
+        "latency_p99_ms": 10.81113499980347
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 34.75140509999983,
+        "factor_array_bytes": 143818496,
+        "catalog_items": 136425
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.055684724482678444,
+        "reachable_recall@100": 0.0650196823673137,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.06125710097122961,
+        "Recall@500": 0.09462915601023018,
+        "reachable_recall@500": 0.11049273788516356,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.1340370166758292,
+        "Recall@1000": 0.12032085561497326,
+        "reachable_recall@1000": 0.14049138048052123,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.16060106285504855
+      },
+      "totals": {
+        "100": {
+          "hits": 479,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 8357,
+          "source_candidate_count": {
+            "als": 860200
+          },
+          "source_target_hits": {
+            "als": 479
+          },
+          "exclusive_source_target_hits": {
+            "als": 479
+          }
+        },
+        "500": {
+          "hits": 814,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 18286,
+          "source_candidate_count": {
+            "als": 4301000
+          },
+          "source_target_hits": {
+            "als": 814
+          },
+          "exclusive_source_target_hits": {
+            "als": 814
+          }
+        },
+        "1000": {
+          "hits": 1035,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 21910,
+          "source_candidate_count": {
+            "als": 8602000
+          },
+          "source_target_hits": {
+            "als": 1035
+          },
+          "exclusive_source_target_hits": {
+            "als": 1035
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 8.719850000034057,
+        "latency_p95_ms": 10.322604999964824,
+        "latency_p99_ms": 14.509126999992045
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 72.0666669000002,
+        "factor_array_bytes": 287636992,
+        "catalog_items": 136425
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.0477795861427575,
+        "reachable_recall@100": 0.05578933079951134,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.04410481949789261,
+        "Recall@500": 0.08602650546384562,
+        "reachable_recall@500": 0.10044794353196689,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10762690122778083,
+        "Recall@1000": 0.10997442455242967,
+        "reachable_recall@1000": 0.12841047916383874,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.1270514934945941
+      },
+      "totals": {
+        "100": {
+          "hits": 411,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 6017,
+          "source_candidate_count": {
+            "als": 860200
+          },
+          "source_target_hits": {
+            "als": 411
+          },
+          "exclusive_source_target_hits": {
+            "als": 411
+          }
+        },
+        "500": {
+          "hits": 740,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 14683,
+          "source_candidate_count": {
+            "als": 4301000
+          },
+          "source_target_hits": {
+            "als": 740
+          },
+          "exclusive_source_target_hits": {
+            "als": 740
+          }
+        },
+        "1000": {
+          "hits": 946,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 17333,
+          "source_candidate_count": {
+            "als": 8602000
+          },
+          "source_target_hits": {
+            "als": 946
+          },
+          "exclusive_source_target_hits": {
+            "als": 946
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.742349999967701,
+        "latency_p95_ms": 8.048020000433098,
+        "latency_p99_ms": 11.998103000114488
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 34.443491600000016,
+        "factor_array_bytes": 143818496,
+        "catalog_items": 136425
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.047663334108346896,
+        "reachable_recall@100": 0.055653590335278946,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.0442147700201576,
+        "Recall@500": 0.08591025342943502,
+        "reachable_recall@500": 0.10031220306773449,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10761957119296317,
+        "Recall@1000": 0.11032318065566148,
+        "reachable_recall@1000": 0.1288177005565359,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12716877405167676
+      },
+      "totals": {
+        "100": {
+          "hits": 410,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 6032,
+          "source_candidate_count": {
+            "als": 860200
+          },
+          "source_target_hits": {
+            "als": 410
+          },
+          "exclusive_source_target_hits": {
+            "als": 410
+          }
+        },
+        "500": {
+          "hits": 739,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 14682,
+          "source_candidate_count": {
+            "als": 4301000
+          },
+          "source_target_hits": {
+            "als": 739
+          },
+          "exclusive_source_target_hits": {
+            "als": 739
+          }
+        },
+        "1000": {
+          "hits": 949,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 17349,
+          "source_candidate_count": {
+            "als": 8602000
+          },
+          "source_target_hits": {
+            "als": 949
+          },
+          "exclusive_source_target_hits": {
+            "als": 949
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.7970499999319145,
+        "latency_p95_ms": 7.989250000036917,
+        "latency_p99_ms": 10.68078900004366
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 34.070776400000796,
+        "factor_array_bytes": 143818496,
+        "catalog_items": 136425
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.04731457800511509,
+        "reachable_recall@100": 0.05524636894258178,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.04271211288253619,
+        "Recall@500": 0.08219018832829575,
+        "reachable_recall@500": 0.09596850821229809,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10536192046912222,
+        "Recall@1000": 0.10683561962334341,
+        "reachable_recall@1000": 0.12474548662956428,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12380428807036833
+      },
+      "totals": {
+        "100": {
+          "hits": 407,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 5827,
+          "source_candidate_count": {
+            "als": 860200
+          },
+          "source_target_hits": {
+            "als": 407
+          },
+          "exclusive_source_target_hits": {
+            "als": 407
+          }
+        },
+        "500": {
+          "hits": 707,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 14374,
+          "source_candidate_count": {
+            "als": 4301000
+          },
+          "source_target_hits": {
+            "als": 707
+          },
+          "exclusive_source_target_hits": {
+            "als": 707
+          }
+        },
+        "1000": {
+          "hits": 919,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 16890,
+          "source_candidate_count": {
+            "als": 8602000
+          },
+          "source_target_hits": {
+            "als": 919
+          },
+          "exclusive_source_target_hits": {
+            "als": 919
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.769149999399815,
+        "latency_p95_ms": 8.156679999729022,
+        "latency_p99_ms": 11.293302999447397
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 18.116229600000224,
+        "factor_array_bytes": 143818496,
+        "catalog_items": 136425
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.04998837479655894,
+        "reachable_recall@100": 0.0583683996199267,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.04439802089059923,
+        "Recall@500": 0.08625900953266682,
+        "reachable_recall@500": 0.10071942446043165,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10840388491845336,
+        "Recall@1000": 0.11253196930946291,
+        "reachable_recall@1000": 0.13139676937695127,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12808502840388492
+      },
+      "totals": {
+        "100": {
+          "hits": 430,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 6057,
+          "source_candidate_count": {
+            "als": 860200
+          },
+          "source_target_hits": {
+            "als": 430
+          },
+          "exclusive_source_target_hits": {
+            "als": 430
+          }
+        },
+        "500": {
+          "hits": 742,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 14789,
+          "source_candidate_count": {
+            "als": 4301000
+          },
+          "source_target_hits": {
+            "als": 742
+          },
+          "exclusive_source_target_hits": {
+            "als": 742
+          }
+        },
+        "1000": {
+          "hits": 968,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 17474,
+          "source_candidate_count": {
+            "als": 8602000
+          },
+          "source_target_hits": {
+            "als": 968
+          },
+          "exclusive_source_target_hits": {
+            "als": 968
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.744249999883323,
+        "latency_p95_ms": 8.089180000115446,
+        "latency_p99_ms": 10.117093999670033
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 60.343555400000696,
+        "factor_array_bytes": 143818496,
+        "catalog_items": 136425
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 3,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 8602,
+      "reachable_targets": 7367,
+      "metrics": {
+        "Recall@100": 0.056847244826784465,
+        "reachable_recall@100": 0.06637708700963757,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.06226864577606744,
+        "Recall@500": 0.09753545687049524,
+        "reachable_recall@500": 0.11388624949097326,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.13729155213487265,
+        "Recall@1000": 0.12438967681934433,
+        "reachable_recall@1000": 0.14524229672865482,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.16434671064687556
+      },
+      "totals": {
+        "100": {
+          "hits": 489,
+          "candidate_count": 860200,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 8495,
+          "source_candidate_count": {
+            "als": 860200
+          },
+          "source_target_hits": {
+            "als": 489
+          },
+          "exclusive_source_target_hits": {
+            "als": 489
+          }
+        },
+        "500": {
+          "hits": 839,
+          "candidate_count": 4301000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 18730,
+          "source_candidate_count": {
+            "als": 4301000
+          },
+          "source_target_hits": {
+            "als": 839
+          },
+          "exclusive_source_target_hits": {
+            "als": 839
+          }
+        },
+        "1000": {
+          "hits": 1070,
+          "candidate_count": 8602000,
+          "empty_requests": 0,
+          "full_requests": 8602,
+          "unique_items": 22421,
+          "source_candidate_count": {
+            "als": 8602000
+          },
+          "source_target_hits": {
+            "als": 1070
+          },
+          "exclusive_source_target_hits": {
+            "als": 1070
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 8.656400000290887,
+        "latency_p95_ms": 10.27063500009717,
+        "latency_p99_ms": 12.969868000373019
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 139.41366710000057,
+        "factor_array_bytes": 287636992,
+        "catalog_items": 136425
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "factors": 32,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.03725998962117281,
+        "reachable_recall@100": 0.04256580507469765,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.027825942300678853,
+        "Recall@500": 0.07327451997924235,
+        "reachable_recall@500": 0.08370879772350012,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.07144273895823869,
+        "Recall@1000": 0.09423975090814737,
+        "reachable_recall@1000": 0.10765947355940242,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.09840491896630048
+      },
+      "totals": {
+        "100": {
+          "hits": 359,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 4349,
+          "source_candidate_count": {
+            "als": 963500
+          },
+          "source_target_hits": {
+            "als": 359
+          },
+          "exclusive_source_target_hits": {
+            "als": 359
+          }
+        },
+        "500": {
+          "hits": 706,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 11166,
+          "source_candidate_count": {
+            "als": 4817500
+          },
+          "source_target_hits": {
+            "als": 706
+          },
+          "exclusive_source_target_hits": {
+            "als": 706
+          }
+        },
+        "1000": {
+          "hits": 908,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 15380,
+          "source_candidate_count": {
+            "als": 9635000
+          },
+          "source_target_hits": {
+            "als": 908
+          },
+          "exclusive_source_target_hits": {
+            "als": 908
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 6.235599999854458,
+        "latency_p95_ms": 7.760539999890169,
+        "latency_p99_ms": 11.64887799970527
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 26.752513199999157,
+        "factor_array_bytes": 91431296,
+        "catalog_items": 156293
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.051167618059159314,
+        "reachable_recall@100": 0.058453877163860565,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.04126224463027775,
+        "Recall@500": 0.08645563051375195,
+        "reachable_recall@500": 0.09876689589755751,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10395219235666345,
+        "Recall@1000": 0.1073170731707317,
+        "reachable_recall@1000": 0.12259900403130188,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12556544438970396
+      },
+      "totals": {
+        "100": {
+          "hits": 493,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 6449,
+          "source_candidate_count": {
+            "als": 963500
+          },
+          "source_target_hits": {
+            "als": 493
+          },
+          "exclusive_source_target_hits": {
+            "als": 493
+          }
+        },
+        "500": {
+          "hits": 833,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 16247,
+          "source_candidate_count": {
+            "als": 4817500
+          },
+          "source_target_hits": {
+            "als": 833
+          },
+          "exclusive_source_target_hits": {
+            "als": 833
+          }
+        },
+        "1000": {
+          "hits": 1034,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 19625,
+          "source_candidate_count": {
+            "als": 9635000
+          },
+          "source_target_hits": {
+            "als": 1034
+          },
+          "exclusive_source_target_hits": {
+            "als": 1034
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.981599999993705,
+        "latency_p95_ms": 13.291530000012129,
+        "latency_p99_ms": 18.063648000006076
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 69.19985249999999,
+        "factor_array_bytes": 182862592,
+        "catalog_items": 156293
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "factors": 128,
+        "iterations": 20,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.05832900882200311,
+        "reachable_recall@100": 0.06663504861275789,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.0576097457979564,
+        "Recall@500": 0.09507005708354956,
+        "reachable_recall@500": 0.10860801517666588,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.1318037276141606,
+        "Recall@1000": 0.11728074727555786,
+        "reachable_recall@1000": 0.13398150343846335,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.1550869200795941
+      },
+      "totals": {
+        "100": {
+          "hits": 562,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 9004,
+          "source_candidate_count": {
+            "als": 963500
+          },
+          "source_target_hits": {
+            "als": 562
+          },
+          "exclusive_source_target_hits": {
+            "als": 562
+          }
+        },
+        "500": {
+          "hits": 916,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 20600,
+          "source_candidate_count": {
+            "als": 4817500
+          },
+          "source_target_hits": {
+            "als": 916
+          },
+          "exclusive_source_target_hits": {
+            "als": 916
+          }
+        },
+        "1000": {
+          "hits": 1130,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 24239,
+          "source_candidate_count": {
+            "als": 9635000
+          },
+          "source_target_hits": {
+            "als": 1130
+          },
+          "exclusive_source_target_hits": {
+            "als": 1130
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 10.000600000012128,
+        "latency_p95_ms": 14.690639999969335,
+        "latency_p99_ms": 22.98044599999457
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 104.69431050000003,
+        "factor_array_bytes": 365725184,
+        "catalog_items": 156293
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.001
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.05137519460300986,
+        "reachable_recall@100": 0.05869101256817643,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.04121745695584575,
+        "Recall@500": 0.08687078360145303,
+        "reachable_recall@500": 0.09924116670618924,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10392020116064059,
+        "Recall@1000": 0.10814737934613389,
+        "reachable_recall@1000": 0.12354754564856534,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.1257509933266365
+      },
+      "totals": {
+        "100": {
+          "hits": 495,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 6442,
+          "source_candidate_count": {
+            "als": 963500
+          },
+          "source_target_hits": {
+            "als": 495
+          },
+          "exclusive_source_target_hits": {
+            "als": 495
+          }
+        },
+        "500": {
+          "hits": 837,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 16242,
+          "source_candidate_count": {
+            "als": 4817500
+          },
+          "source_target_hits": {
+            "als": 837
+          },
+          "exclusive_source_target_hits": {
+            "als": 837
+          }
+        },
+        "1000": {
+          "hits": 1042,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 19654,
+          "source_candidate_count": {
+            "als": 9635000
+          },
+          "source_target_hits": {
+            "als": 1042
+          },
+          "exclusive_source_target_hits": {
+            "als": 1042
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 8.160700000075849,
+        "latency_p95_ms": 13.583870000002188,
+        "latency_p99_ms": 24.184939999963692
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 60.640925299999935,
+        "factor_array_bytes": 182862592,
+        "catalog_items": 156293
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 20,
+        "regularization": 0.1
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.05096004151530877,
+        "reachable_recall@100": 0.0582167417595447,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.04128783758709603,
+        "Recall@500": 0.08583290088220032,
+        "reachable_recall@500": 0.0980554896846099,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10406096242314115,
+        "Recall@1000": 0.10721328489880644,
+        "reachable_recall@1000": 0.12248043632914395,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12568061269538622
+      },
+      "totals": {
+        "100": {
+          "hits": 491,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 6453,
+          "source_candidate_count": {
+            "als": 963500
+          },
+          "source_target_hits": {
+            "als": 491
+          },
+          "exclusive_source_target_hits": {
+            "als": 491
+          }
+        },
+        "500": {
+          "hits": 827,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 16264,
+          "source_candidate_count": {
+            "als": 4817500
+          },
+          "source_target_hits": {
+            "als": 827
+          },
+          "exclusive_source_target_hits": {
+            "als": 827
+          }
+        },
+        "1000": {
+          "hits": 1033,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 19643,
+          "source_candidate_count": {
+            "als": 9635000
+          },
+          "source_target_hits": {
+            "als": 1033
+          },
+          "exclusive_source_target_hits": {
+            "als": 1033
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 8.281299999907787,
+        "latency_p95_ms": 10.389499999962482,
+        "latency_p99_ms": 18.11075999999266
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 51.74796879999997,
+        "factor_array_bytes": 182862592,
+        "catalog_items": 156293
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 10,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.04950700570835496,
+        "reachable_recall@100": 0.05655679392933365,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.040238526357546406,
+        "Recall@500": 0.0843798650752465,
+        "reachable_recall@500": 0.09639554185439886,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10028600129244432,
+        "Recall@1000": 0.10648676699532952,
+        "reachable_recall@1000": 0.12165046241403842,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12264144907321504
+      },
+      "totals": {
+        "100": {
+          "hits": 477,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 6289,
+          "source_candidate_count": {
+            "als": 963500
+          },
+          "source_target_hits": {
+            "als": 477
+          },
+          "exclusive_source_target_hits": {
+            "als": 477
+          }
+        },
+        "500": {
+          "hits": 813,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 15674,
+          "source_candidate_count": {
+            "als": 4817500
+          },
+          "source_target_hits": {
+            "als": 813
+          },
+          "exclusive_source_target_hits": {
+            "als": 813
+          }
+        },
+        "1000": {
+          "hits": 1026,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 19168,
+          "source_candidate_count": {
+            "als": 9635000
+          },
+          "source_target_hits": {
+            "als": 1026
+          },
+          "exclusive_source_target_hits": {
+            "als": 1026
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.823199999961616,
+        "latency_p95_ms": 9.508839999966765,
+        "latency_p99_ms": 14.277464000028882
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 26.370142200000032,
+        "factor_array_bytes": 182862592,
+        "catalog_items": 156293
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "factors": 64,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.050752464971458223,
+        "reachable_recall@100": 0.057979606355228835,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.041626944264938286,
+        "Recall@500": 0.0855215360664245,
+        "reachable_recall@500": 0.09769978657813612,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.10495671591178107,
+        "Recall@1000": 0.10825116761805915,
+        "reachable_recall@1000": 0.12366611335072326,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.12679390631698156
+      },
+      "totals": {
+        "100": {
+          "hits": 489,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 6506,
+          "source_candidate_count": {
+            "als": 963500
+          },
+          "source_target_hits": {
+            "als": 489
+          },
+          "exclusive_source_target_hits": {
+            "als": 489
+          }
+        },
+        "500": {
+          "hits": 824,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 16404,
+          "source_candidate_count": {
+            "als": 4817500
+          },
+          "source_target_hits": {
+            "als": 824
+          },
+          "exclusive_source_target_hits": {
+            "als": 824
+          }
+        },
+        "1000": {
+          "hits": 1043,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 19817,
+          "source_candidate_count": {
+            "als": 9635000
+          },
+          "source_target_hits": {
+            "als": 1043
+          },
+          "exclusive_source_target_hits": {
+            "als": 1043
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 7.69029999992199,
+        "latency_p95_ms": 9.009399999945341,
+        "latency_p99_ms": 11.916707999966993
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 89.2087148999999,
+        "factor_array_bytes": 182862592,
+        "catalog_items": 156293
+      }
+    },
+    {
+      "phase": "development",
+      "fold_index": 4,
+      "config": {
+        "factors": 128,
+        "iterations": 40,
+        "regularization": 0.01
+      },
+      "evaluation_users": 9635,
+      "reachable_targets": 8434,
+      "metrics": {
+        "Recall@100": 0.058951738453554746,
+        "reachable_recall@100": 0.06734645482570548,
+        "mean_candidates@100": 100.0,
+        "empty_rate@100": 0.0,
+        "full_rate@100": 1.0,
+        "coverage@100": 0.05881261476841573,
+        "Recall@500": 0.09673066943435392,
+        "reachable_recall@500": 0.11050509841119278,
+        "mean_candidates@500": 500.0,
+        "empty_rate@500": 0.0,
+        "full_rate@500": 1.0,
+        "coverage@500": 0.13483009475792262,
+        "Recall@1000": 0.12101712506486767,
+        "reachable_recall@1000": 0.13824994071614893,
+        "mean_candidates@1000": 1000.0,
+        "empty_rate@1000": 0.0,
+        "full_rate@1000": 1.0,
+        "coverage@1000": 0.15728151612676192
+      },
+      "totals": {
+        "100": {
+          "hits": 568,
+          "candidate_count": 963500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 9192,
+          "source_candidate_count": {
+            "als": 963500
+          },
+          "source_target_hits": {
+            "als": 568
+          },
+          "exclusive_source_target_hits": {
+            "als": 568
+          }
+        },
+        "500": {
+          "hits": 932,
+          "candidate_count": 4817500,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 21073,
+          "source_candidate_count": {
+            "als": 4817500
+          },
+          "source_target_hits": {
+            "als": 932
+          },
+          "exclusive_source_target_hits": {
+            "als": 932
+          }
+        },
+        "1000": {
+          "hits": 1166,
+          "candidate_count": 9635000,
+          "empty_requests": 0,
+          "full_requests": 9635,
+          "unique_items": 24582,
+          "source_candidate_count": {
+            "als": 9635000
+          },
+          "source_target_hits": {
+            "als": 1166
+          },
+          "exclusive_source_target_hits": {
+            "als": 1166
+          }
+        }
+      },
+      "latency": {
+        "latency_p50_ms": 10.260600000037812,
+        "latency_p95_ms": 14.701339999965057,
+        "latency_p99_ms": 20.048343999901586
+      },
+      "latency_scope": "all warm requests",
+      "model_cost": {
+        "fit_seconds": 200.36726139999996,
+        "factor_array_bytes": 365725184,
+        "catalog_items": 156293
+      }
+    }
+  ],
+  "completed_folds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "complete": true,
+  "results_sha256": "d6e097cc8f14baf40800b32f619ed4af24f1b5b5e951d68e42444179cef7bb07"
+}
