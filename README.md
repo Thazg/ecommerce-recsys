@@ -56,6 +56,16 @@ been inspected before configuration lock, so these are post-selection
 diagnostics, not blind validation. See the [M8 report](docs/TWO_TOWER_REPORT.md)
 for per-fold metrics, cost, latency scope and provenance.
 
+## ANN feasibility
+
+M9 screened approximate search against exact Two-Tower retrieval before adding an
+index to the candidate pipeline. Exact p95 exceeded the predeclared cost trigger
+on three of four development folds. In a paired fold-1 Faiss HNSW pilot, all four
+index configurations were slower than exact at the 1,000-candidate budget, so
+none met the predeclared speed gate. No ANN index was adopted, and no folds 5–9
+ANN results are reported. The [M9 feasibility report](docs/ANN_RETRIEVAL_REPORT.md)
+shows the timing, sample-hit and index-build evidence with its limitations.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -65,6 +75,7 @@ for per-fold metrics, cost, latency scope and provenance.
 - [Dataset card](docs/DATASET_CARD.md) and [data contract](docs/DATA_CONTRACT.md): source, schema, and processing assumptions.
 - [Engineering decisions](docs/DECISIONS.md): design rationale, including the transition from per-user leave-last-out to global temporal folds.
 - [Metric and protocol glossary](docs/METRICS_AND_PROTOCOLS.md): comparison boundaries, units, model references and latency workloads.
+- [M9 ANN plan](docs/M9_ANN_PLAN.md) and [feasibility report](docs/ANN_RETRIEVAL_REPORT.md): conditional index decision and measured no-go result.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 

@@ -1,7 +1,9 @@
 # Current architecture
 
 **Updated:** 2026-10-09
-**State:** offline pipeline, recommendation evaluation, M7 candidate generation and M8 two-tower retrieval. Online serving is not implemented.
+**State:** offline pipeline, recommendation evaluation, M7 candidate generation,
+M8 exact two-tower retrieval and an M9 ANN feasibility no-go. No ANN source is in
+the package retrieval layer; online serving is not implemented.
 
 ```text
 Retailrocket raw CSV
@@ -25,6 +27,12 @@ Prepared folds + manifest
        -> benchmarks/retrieval/m8_selection_lock_v1.json
     -> benchmark_two_tower.py (Two-Tower diagnostic folds 5–9)
     -> benchmarks/retrieval/two_tower_diagnostic_v1.json
+
+Prepared folds + published M8 selection lock
+    -> profile_m9_exact.py (development exact-cost profile)
+    -> benchmark_m9_ann_pilot.py (paired fold-1 Faiss HNSW speed screen)
+    -> benchmarks/retrieval/m9_profile_v1.json
+       + benchmarks/retrieval/m9_ann_pilot_v1.json (no-go)
 ```
 
 `src/ecommerce_recsys/data/splitting.py` contains rolling time windows and global causality guards. `src/ecommerce_recsys/data/catalog.py` constructs train-time item and category snapshots. Cohort and metric rules are in the [rolling evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md).
@@ -88,6 +96,18 @@ select configurations; folds 5–9 are post-selection diagnostics, not blind
 validation. Cold users have no personalized history representation and are not
 pooled into M8's warm results. See the [M8 report](TWO_TOWER_REPORT.md) and
 [M8 artifacts](../benchmarks/retrieval/).
+
+## M9 ANN feasibility
+
+The experimental `scripts/m9_faiss_adapter.py` queries a Faiss HNSW index built
+from the fitted M8 item vectors, then re-scores its shortlist with exact
+Two-Tower dot products and applies the shared candidate contract. This adapter
+was used only for a local paired fold-1 pilot. The exact-cost profiler covers
+development folds 1–4. All four predeclared ANN settings failed the paired p95
+speed gate on fold 1, so the pipeline still uses exact retrieval references; no
+ANN source is exposed through `src/ecommerce_recsys/retrieval/` or the M7 hybrid.
+Faiss is not a project dependency because Linux compatibility CI has not run.
+The [M9 report](ANN_RETRIEVAL_REPORT.md) describes the evidence and limits.
 
 ## M5–M6 engineering and model trade-offs
 

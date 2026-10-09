@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-06
+**Updated:** 2026-10-09
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -392,3 +392,32 @@ Reported latency is offline and not a serving SLA.
 **Artifacts and implementation:** [M8 report](TWO_TOWER_REPORT.md),
 [versioned development and diagnostic artifacts](../benchmarks/retrieval/),
 `retrieval/two_tower.py`, and `scripts/benchmark_two_tower.py`.
+
+## M9 — Approximate retrieval feasibility
+
+### ADR-19 — Do not adopt an ANN index for the current Two-Tower workload
+
+**Status:** Accepted as an offline feasibility no-go; no ANN source promoted to
+the retrieval package
+
+**Recorded:** 2026-10-09
+
+**Decision and rationale:** Profile exact Two-Tower retrieval before adding an
+index. Exact p95 at a 1,000-candidate request exceeded the declared 10 ms cost
+trigger on three of four development folds, permitting an ANN pilot. Compare
+Faiss HNSW settings against exact Two-Tower from the same fitted model on the
+same sampled warm requests. Require ANN p95 at most half of paired exact p95 on
+every development fold before paying index build and memory costs. All four
+predeclared settings were slower than exact on fold 1, so none can satisfy that
+all-fold gate. Stop without tuning on later periods or adopting an index.
+
+**Evidence and limits:** The [M9 report](ANN_RETRIEVAL_REPORT.md) and
+[exact profile](../benchmarks/retrieval/m9_profile_v1.json) record folds 1–4
+costs. The [paired pilot](../benchmarks/retrieval/m9_ann_pilot_v1.json) records
+3,000 timed calls per method and configuration on a 1,000-request fold-1 sample.
+ANN p95 was 14.844–35.411 ms, versus 9.311–10.698 ms for paired exact. Sample
+target hits are diagnostic only; no complete ANN recall sweep or folds 5–9 ANN
+evaluation was run. Faiss passed a local Windows smoke test, but Linux CI and
+loaded-process RSS were not measured. This no-go concerns this model, catalog,
+budget, index grid and machine; it does not rule out ANN for a larger catalog or
+a different workload. No serving SLA follows from offline retrieval timing.

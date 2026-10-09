@@ -2,13 +2,12 @@
 
 **Updated:** 2026-10-09
 
-**Stage:** M8 Two-Tower v1 sweep, selection lock and folds 5–9 diagnostics are
-complete. The implementation aligns inference history with training and clears
-stale state on refit. Prior exploratory Two-Tower metrics are excluded. ALS v2
-sweep and diagnostic results are reused as the unchanged comparator and are
-hash-bound into the M8 v1 selection lock. Configurations were selected on folds
-1–4; folds 5–9 are post-selection diagnostics, not blind validation. The
-project remains offline; online serving is not implemented.
+**Stage:** M9 ANN feasibility screening is complete with a no-go decision; no
+ANN index was adopted. The selected M8 Two-Tower and its exact retrieval remain
+offline references. M8 configurations were selected on folds 1–4; its folds
+5–9 results are post-selection diagnostics, not blind validation. M9 used only
+development folds for profiling and a fold-1 ANN pilot. The project remains
+offline; online serving and a learned final ranker are not implemented.
 
 ## Implemented
 
@@ -19,6 +18,7 @@ project remains offline; online serving is not implemented.
 | Models | Random, global/recent/category popularity, ItemKNN, implicit ALS, educational MF/BPR |
 | Retrieval | Common candidate interface, exact ALS, ItemKNN, category and popularity sources, source-aware reciprocal-rank fusion |
 | M8 retrieval | Deterministic CPU two-tower retriever with shared history encoding, train-only category features, sampled-softmax training and exact catalog scoring |
+| M9 feasibility | Reproducible exact-cost profile and paired fold-1 ANN pilot; no ANN source promoted to the package after the speed gate failed |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -71,12 +71,25 @@ diagnostics, not blind validation or evidence of statistical significance.
 The [two-tower report](TWO_TOWER_REPORT.md) includes per-fold results, cost,
 latency scope, artifact hashes and reproduction commands.
 
+## M9 ANN feasibility result
+
+The M9 exact-cost profile measured selected Two-Tower retrieval on 1,000 sampled
+warm requests per development fold, repeated three times. Exact p95 at budget
+1,000 was 8.426, 13.806, 12.083 and 13.550 ms on folds 1–4. Since three folds
+crossed the declared 10 ms cost trigger, a Faiss HNSW pilot compared four index
+settings with paired exact calls on fold 1. All four ANN p95 values were slower
+than exact (ANN 14.844–35.411 ms; paired exact 9.311–10.698 ms). Each failed the
+gate requiring ANN p95 at most half of exact on every development fold. M9
+stopped at that point: no full ANN quality sweep, folds 5–9 ANN diagnostic or
+serving claim exists. The [M9 report](ANN_RETRIEVAL_REPORT.md) provides sample
+hit counts, index costs, compatibility limits and the no-go decision.
+
 ## Next milestone
 
-M8 v1 is complete. Any follow-up milestone must preserve the shared rolling
-targets and train-time catalogs and report its trade-off against exact ALS and
-Two-Tower retrieval. Folds 5–9 remain non-blind diagnostics; independent model
-selection requires a later untouched time period. The [roadmap](ROADMAP.md)
-defines later milestone gates.
+M10–M11 can build a causal ranking dataset and learned ranker from the existing
+candidate sources. They must preserve the shared rolling targets and train-time
+catalogs. Folds 5–9 remain non-blind diagnostics; independent model selection
+requires a later untouched time period. The [roadmap](ROADMAP.md) defines later
+milestone gates.
 
 The [baseline](BASELINE_REPORT.md) and [MF](MF_EXPERIMENT_REPORT.md) reports document earlier per-user leave-last-out experiments. Their metrics are retained for provenance but are not directly comparable with rolling results.
