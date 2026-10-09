@@ -24,6 +24,9 @@ dev = [
     "pytest>=8.4,<9",
     "ruff>=0.16,<0.17",
 ]
+two-tower = [
+    "torch==2.14.1",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

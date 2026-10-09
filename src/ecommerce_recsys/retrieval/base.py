@@ -5,13 +5,14 @@ from __future__ import annotations
 import math
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True, slots=True)
 class RetrievalContext:
     user_id: str | None = None
     history: tuple[str, ...] = ()
+    ordered_history: tuple[str, ...] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         if self.history is None or isinstance(self.history, (str, bytes)):
@@ -20,7 +21,9 @@ class RetrievalContext:
             object.__setattr__(self, "user_id", str(self.user_id))
         if any(item is None for item in self.history):
             raise ValueError("History item IDs must not be null.")
-        object.__setattr__(self, "history", tuple(dict.fromkeys(map(str, self.history))))
+        normalized_history = tuple(map(str, self.history))
+        object.__setattr__(self, "ordered_history", normalized_history)
+        object.__setattr__(self, "history", tuple(dict.fromkeys(normalized_history)))
 
 
 @dataclass(frozen=True, slots=True)
