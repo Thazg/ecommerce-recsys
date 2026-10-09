@@ -1,7 +1,7 @@
 # Current architecture
 
-**Updated:** 2026-10-06
-**State:** offline pipeline, recommendation evaluation and M7 candidate retrieval. Online serving is planned.
+**Updated:** 2026-10-09
+**State:** offline pipeline, recommendation evaluation, M7 candidate generation and M8 two-tower retrieval. Online serving is not implemented.
 
 ```text
 Retailrocket raw CSV
@@ -18,6 +18,13 @@ Prepared folds + manifest
 
 Prepared folds + manifest + completed sweeps
     -> benchmark_candidates.py -> benchmarks/retrieval/candidates.json
+
+Prepared folds + manifest
+    -> benchmark_two_tower.py (Two-Tower development folds 1–4)
+    -> lock_m8_configs.py (binds unchanged ALS v2 evidence)
+       -> benchmarks/retrieval/m8_selection_lock_v1.json
+    -> benchmark_two_tower.py (Two-Tower diagnostic folds 5–9)
+    -> benchmarks/retrieval/two_tower_diagnostic_v1.json
 ```
 
 `src/ecommerce_recsys/data/splitting.py` contains rolling time windows and global causality guards. `src/ecommerce_recsys/data/catalog.py` constructs train-time item and category snapshots. Cohort and metric rules are in the [rolling evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md).
@@ -58,6 +65,30 @@ source comparison and cost measurements. Category candidates pool training count
 history's categories; this differs from the historical category recommender's
 category-order traversal and implicit global backfill.
 
+## M8 two-tower retrieval
+
+`src/ecommerce_recsys/retrieval/two_tower.py` implements a CPU two-tower model.
+The user tower mean-pools shared item-ID embeddings for recent distinct history
+items; the item tower combines its item-ID embedding with its category embedding
+from the fold's train-time catalog. Both towers project to L2-normalized vectors,
+scored by dot product. Training examples use each user's first occurrence of a
+novel item after strictly earlier history; all events at the positive timestamp
+are excluded from that history. Five uniform negatives are sampled from items
+that were in the train catalog strictly before the positive event.
+
+The same latest-occurrence history encoder is used for training and Two-Tower
+inference. `RetrievalContext.ordered_history` preserves the event order needed
+by that encoder; its existing deduplicated `history` view stays unchanged for
+M7 and ALS sources. Unknown categories use a reserved bucket. Training is
+deterministic on CPU with seed 42, one Torch thread, three epochs and fixed
+batches; no future fold events enter training.
+The benchmark compares exact catalog scoring at candidate budgets 100, 500 and
+1,000 against exact ALS on the same warm targets and cutoff catalogs. Folds 1–4
+select configurations; folds 5–9 are post-selection diagnostics, not blind
+validation. Cold users have no personalized history representation and are not
+pooled into M8's warm results. See the [M8 report](TWO_TOWER_REPORT.md) and
+[M8 artifacts](../benchmarks/retrieval/).
+
 ## M5–M6 engineering and model trade-offs
 
 | Area | Current finding | Detail |
@@ -70,4 +101,4 @@ category-order traversal and implicit global backfill.
 
 The rolling scripts can resume after interruption. The manifest hashes the interactions source, raw item properties, and each fold Parquet file; the runners verify these hashes before using cached results. ALS training and rolling benchmark calls use one numerical worker thread for repeatability. The result artifacts disclose that folds 5–9 are post-selection diagnostics, not blind validation.
 
-The benchmark uses identical folds and target users for every warm-user model. See [project status](PROJECT_STATUS.md) for measured results and the next milestone. The [baseline](BASELINE_REPORT.md) and [MF](MF_EXPERIMENT_REPORT.md) reports document earlier model experiments.
+The benchmark uses identical folds and target users for every warm-user model. See [project status](PROJECT_STATUS.md) for current results and the next milestone. The [baseline](BASELINE_REPORT.md) and [MF](MF_EXPERIMENT_REPORT.md) reports document earlier model experiments.

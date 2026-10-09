@@ -336,3 +336,59 @@ Linear percentiles use a shared helper. Top-20 recommendation latency, candidate
 retrieval at 1,000 and repeated cold-context latency have distinct workloads and
 are not directly comparable. See the
 [metric and protocol glossary](METRICS_AND_PROTOCOLS.md).
+
+## M8 — Two-tower retrieval
+
+### ADR-18 — Compare two-tower retrieval on shared rolling targets
+
+**Status:** Implemented; M8 v1 development and diagnostic artifacts complete
+
+**Decision and rationale:** Add a deterministic CPU two-tower retriever using
+recent distinct item history for the user representation and item ID plus
+train-time category for the item representation. Use exact dot-product scoring
+over the fold's train-time catalog so candidate recall can be compared directly
+with exact ALS without introducing an ANN index or a different target set.
+
+**Causal feature policy:** Training examples use only strictly earlier user
+history; every event sharing the positive timestamp is excluded from its
+history. The same history encoder is used at training and inference. Model
+training is limited to interactions at or before the fold cutoff, and item
+categories come from that fold's catalog. Five negatives are sampled uniformly
+from catalog items first seen strictly before the positive event, excluding the
+positive, the full same-timestamp positive bucket and history. Examples with no
+eligible causal negative are skipped and counted instead of aborting the fold.
+
+**Selection:** Compare four two-tower configurations (dimension 64/128 and
+history 20/50) and eight existing ALS configurations on folds 1–4. Select by
+pooled Recall@1000, then Recall@100, then the predeclared lower-complexity
+tie-break. The corrected Two-Tower v1 sweep selected dimension 128 and maximum
+history 50 on folds 1–4. The lock binds the development artifact, manifest,
+source data, policy and runner fingerprints. The existing ALS v2 sweep selected
+128 factors/40 iterations/regularization 0.01 on folds 1–4; its unchanged
+development and diagnostic artifacts are SHA-bound into the M8 v1 lock. The
+selected Two-Tower and ALS configurations were evaluated on the same 59,323
+warm user-windows in folds 5–9. Two-Tower pooled Recall@100/500/1000 was
+0.044485/0.096185/0.127640; ALS achieved 0.050705/0.087116/0.109216. Folds 5–9
+were previously inspected, so these are post-selection diagnostics and not
+blind validation.
+
+**Evidence and consequences:** A review found that negative sampling blocked
+only the truncated feature history, allowing an older previously seen item to
+be sampled as a negative. The implementation now keeps the full prior seen set
+for negative exclusion while retaining truncated history features for the user
+tower. A second review found that context deduplication erased event order at
+inference, making repeated-item histories differ from training. The M8 path now
+retains ordered events for the shared latest-occurrence encoder while preserving
+the deduplicated context view used by existing M7 and ALS sources. Refit clears
+prior model state, and defensive batch skips are counted separately. The
+corrected Two-Tower v1 benchmark completed; prior exploratory metrics are
+excluded because the inference history lost event order. ALS v2 artifacts are
+reused because the ALS path, deduplicated context, data, runtime and candidate
+policy are unchanged; their full artifact SHA and original provenance are
+bound into the selection lock. The model is CPU/offline only; no ANN index,
+final ranker, cold-user personalization or online serving is implemented.
+Reported latency is offline and not a serving SLA.
+
+**Artifacts and implementation:** [M8 report](TWO_TOWER_REPORT.md),
+[versioned development and diagnostic artifacts](../benchmarks/retrieval/),
+`retrieval/two_tower.py`, and `scripts/benchmark_two_tower.py`.

@@ -1,6 +1,6 @@
 # E-commerce recommendation system
 
-An offline recommendation project built on the Retailrocket interaction dataset. The repository contains data preparation, temporal evaluation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS and source-aware candidate retrieval. Online serving is planned.
+An offline recommendation project built on the Retailrocket interaction dataset. The repository contains data preparation, temporal evaluation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS and source-aware candidate retrieval. Online serving is not implemented.
 
 ## Recommendation evaluation
 
@@ -41,6 +41,20 @@ These figures measure target availability within the candidate pool, not final
 Top-20 accuracy. The [retrieval report](docs/CANDIDATE_RETRIEVAL_REPORT.md) covers
 all seven generators, cold users, availability, ALS ablation and fitting/retrieval
 cost. The [design](docs/CANDIDATE_GENERATION.md) specifies the candidate contract.
+
+## Two-tower retrieval
+
+M8 adds a deterministic CPU two-tower retriever and compares its exact catalog
+scores with ALS on the same rolling warm targets. The model uses recent distinct
+item history on the user side and item ID plus train-time category on the item
+side. Negative sampling excludes the full prior user history, including items
+outside the truncated feature history. The selected Two-Tower configuration
+(dimension 128, history 50) achieved pooled Recall@100/500/1000 of
+0.044485 / 0.096185 / 0.127640 on 59,323 warm user-windows in folds 5–9. ALS
+achieved 0.050705 / 0.087116 / 0.109216 on the same targets. The period had
+been inspected before configuration lock, so these are post-selection
+diagnostics, not blind validation. See the [M8 report](docs/TWO_TOWER_REPORT.md)
+for per-fold metrics, cost, latency scope and provenance.
 
 ## Repository guide
 

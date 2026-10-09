@@ -1,11 +1,14 @@
 # Project status
 
-**Updated:** 2026-10-06
+**Updated:** 2026-10-09
 
-**Stage:** M7 candidate retrieval is implemented. The nine-fold offline artifact
-passes its local integrity checks; later-fold figures are exploratory,
-post-selection diagnostics. This does not validate production readiness. Online
-serving is planned.
+**Stage:** M8 Two-Tower v1 sweep, selection lock and folds 5–9 diagnostics are
+complete. The implementation aligns inference history with training and clears
+stale state on refit. Prior exploratory Two-Tower metrics are excluded. ALS v2
+sweep and diagnostic results are reused as the unchanged comparator and are
+hash-bound into the M8 v1 selection lock. Configurations were selected on folds
+1–4; folds 5–9 are post-selection diagnostics, not blind validation. The
+project remains offline; online serving is not implemented.
 
 ## Implemented
 
@@ -15,6 +18,7 @@ serving is planned.
 | Evaluation | Nine rolling time folds, shared warm targets, separate cold-user cohort, causal checks, HR/MRR/NDCG and coverage |
 | Models | Random, global/recent/category popularity, ItemKNN, implicit ALS, educational MF/BPR |
 | Retrieval | Common candidate interface, exact ALS, ItemKNN, category and popularity sources, source-aware reciprocal-rank fusion |
+| M8 retrieval | Deterministic CPU two-tower retriever with shared history encoding, train-only category features, sampled-softmax training and exact catalog scoring |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -56,13 +60,23 @@ This is a net ablation difference, not a statistical significance claim. The
 empty/full pool rates, cold retrieval, source contributions and cost. Regression
 and artifact validation are documented with reproduction commands in that report.
 
+## M8 two-tower results
+
+The corrected Two-Tower v1 configuration (dimension 128, history 50) was
+selected on folds 1–4. On folds 5–9 it achieved pooled Recall@100/500/1000 of
+0.044485 / 0.096185 / 0.127640 over 59,323 warm user-windows. The same-window
+ALS v2 comparator achieved 0.050705 / 0.087116 / 0.109216. These folds had been
+inspected before configuration lock, so the results are post-selection
+diagnostics, not blind validation or evidence of statistical significance.
+The [two-tower report](TWO_TOWER_REPORT.md) includes per-fold results, cost,
+latency scope, artifact hashes and reproduction commands.
+
 ## Next milestone
 
-M8 introduces two-tower retrieval against the measured exact references, keeping
-the shared temporal cohorts and train-time catalog. The M7
-[design](CANDIDATE_GENERATION.md) documents the contracts and acceptance conditions.
-Offline retrieval latency excludes fitting, final ranking and API overhead. A new
-untouched time period is needed for independent model-selection confirmation.
-The [roadmap](ROADMAP.md) defines later milestone gates.
+M8 v1 is complete. Any follow-up milestone must preserve the shared rolling
+targets and train-time catalogs and report its trade-off against exact ALS and
+Two-Tower retrieval. Folds 5–9 remain non-blind diagnostics; independent model
+selection requires a later untouched time period. The [roadmap](ROADMAP.md)
+defines later milestone gates.
 
 The [baseline](BASELINE_REPORT.md) and [MF](MF_EXPERIMENT_REPORT.md) reports document earlier per-user leave-last-out experiments. Their metrics are retained for provenance but are not directly comparable with rolling results.
