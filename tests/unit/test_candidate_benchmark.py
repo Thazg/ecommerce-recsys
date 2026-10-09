@@ -208,6 +208,15 @@ def test_published_source_proof_accepts_line_endings_and_refuses_content_changes
         "source_snapshot": snapshot,
     }
     monkeypatch.setattr(artifact_verifier, "implementation_fingerprint", lambda: "different-native")
+    monkeypatch.setattr(
+        artifact_verifier,
+        "source_snapshot_at_commit",
+        lambda *_: artifact_verifier.source_snapshot(),
+    )
+    monkeypatch.setattr(artifact_verifier, "M7_SOURCE_SNAPSHOT_SHA256", snapshot["sha256"])
+    monkeypatch.setattr(
+        artifact_verifier, "M7_IMPLEMENTATION_SHA256", artifact["implementation_sha256"]
+    )
     # Identity passes; the deliberately incomplete artifact still fails the full-data guard.
     with pytest.raises(ValueError, match="nine ordered folds"):
         verify(artifact, {"folds": []}, source_proof=proof)

@@ -6,6 +6,7 @@ Run from the repository root: python -m scripts.verify_candidate_artifact
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 from ecommerce_recsys.data.rolling_provenance import manifest_fingerprint, sha256_file
@@ -16,6 +17,10 @@ from scripts.benchmark_candidates import (
     implementation_fingerprint,
     validate_checkpoint,
 )
+
+M7_SOURCE_COMMIT = "2fb4fd7545fd5f5dc5f0426b5ee37bcd28ff0ccb"
+M7_SOURCE_SNAPSHOT_SHA256 = "27157b84ccf98306b23eb77d0526c09a1ea05c6da60e7468b0f4091f847b4cbe"
+M7_IMPLEMENTATION_SHA256 = "d6e2c716cbf035586612e47dd8be45e674d6ed65e0c17892f6b91d8f9b117218"
 
 
 def source_snapshot() -> dict:
@@ -36,6 +41,31 @@ def source_snapshot() -> dict:
     return {"normalization": "LF line endings", "files_sha256": files, "sha256": digest}
 
 
+def source_snapshot_at_commit(commit: str, expected_files: dict[str, str]) -> dict:
+    """Read the immutable M7 source snapshot from Git, independent of M8 files."""
+    root = Path(__file__).resolve().parents[1]
+    resolved = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", f"{commit}^{{commit}}"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    if resolved != M7_SOURCE_COMMIT:
+        raise ValueError("M7 source commit does not match the published artifact anchor.")
+    files = {}
+    for relative in sorted(expected_files):
+        raw = subprocess.run(
+            ["git", "-C", str(root), "show", f"{resolved}:{relative}"],
+            check=True,
+            capture_output=True,
+        ).stdout
+        files[relative] = hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
+    digest = hashlib.sha256(
+        json.dumps(files, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+    return {"normalization": "LF line endings", "files_sha256": files, "sha256": digest}
+
+
 def verify(artifact: dict, manifest: dict, *, source_proof: dict | None = None) -> dict:
     """Verify native fingerprints or a published canonical source snapshot.
 
@@ -47,7 +77,15 @@ def verify(artifact: dict, manifest: dict, *, source_proof: dict | None = None) 
     if source_proof is not None:
         if (
             source_proof["implementation_sha256"] != artifact["implementation_sha256"]
-            or source_proof["source_snapshot"] != source_snapshot()
+            or source_proof["implementation_sha256"] != M7_IMPLEMENTATION_SHA256
+        ):
+            raise ValueError("Published source identity differs from the M7 artifact anchor.")
+        if source_proof["source_snapshot"].get(
+            "sha256"
+        ) != M7_SOURCE_SNAPSHOT_SHA256 or source_proof[
+            "source_snapshot"
+        ] != source_snapshot_at_commit(
+            M7_SOURCE_COMMIT, source_proof["source_snapshot"]["files_sha256"]
         ):
             raise ValueError("Published source identity differs from the current checkout.")
         implementation = source_proof["implementation_sha256"]
