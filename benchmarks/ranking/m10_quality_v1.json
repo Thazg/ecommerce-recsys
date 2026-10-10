@@ -1,0 +1,176 @@
+{
+  "benchmark": "m10-causal-ranking-dataset",
+  "protocol_version": "rolling-temporal",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "raw_property_sha256": {
+    "item_properties_part1.csv": "30aad5aeca58b2dc27dcc73e1708565f5818e45adb3eb57401f91e87355b0b81",
+    "item_properties_part2.csv": "d5e7d1a91dc40f522aeb596b267e6c87d8aed689a7192d12369cfb165eb987e5"
+  },
+  "implementation_sha256": "6dda3f317e91e9f07b325b0c35f1e11cfa06cb882e4c80a8a3779ddf6741dc04",
+  "m7_reference_sha256": "c9a78776f3ffebb99dfcdb9f48ca217b66391be2673f44575471cdeee49437de",
+  "sweep_sha256": {
+    "item_knn": "3f20dff5d461a8bb5177ed6e248ee1d2aea5de07c5dd710ec80201690f79992d",
+    "als": "fa429d070367ebc71c0449d3175613550acf53762b06a4b17480fac7e8a7a865"
+  },
+  "model_configs": {
+    "item_knn": {
+      "shrinkage_lambda": 100.0
+    },
+    "als": {
+      "factors": 128,
+      "iterations": 40,
+      "regularization": 0.01
+    }
+  },
+  "policy": {
+    "version": 1,
+    "cohort": "warm",
+    "folds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "generator": "hybrid",
+    "candidate_budget": 1000,
+    "label": "first unseen future item equals returned candidate item",
+    "source_rank_absent": 1001,
+    "source_score_absent": 0.0,
+    "numeric_threads": 1
+  },
+  "m7_policy": {
+    "n_values": [
+      100,
+      500,
+      1000
+    ],
+    "source_pool_size": 1000,
+    "fusion": "equal-weight reciprocal rank fusion",
+    "rank_constant": 60.0,
+    "recent_window_days": 30,
+    "category_policy": "training count across history categories, no fallback",
+    "cold_latency_samples": 100,
+    "numeric_threads": 1,
+    "source_rank_policy": "eligible source-list rank; fusion preserves supplied ranks",
+    "fallback_policy": "explicit popularity sources; personalized sources may be empty",
+    "latency_quantile_method": "linear"
+  },
+  "feature_schema": "request_id: string\nfold_index: int8\nitem_id: string\nretrieval_rank: int16\nlabel: int8\nrrf_score: double\nsource_count: int8\nuser_event_count: int32\nuser_distinct_item_count: int32\nuser_days_since_last_event: double\nitem_event_count: int32\nitem_distinct_user_count: int32\nitem_days_since_last_event: double\ncategory_known: int8\nuser_category_event_count: int32\nuser_view_count: int32\nitem_view_count: int32\nuser_addtocart_count: int32\nitem_addtocart_count: int32\nuser_transaction_count: int32\nitem_transaction_count: int32\nitem_knn_present: int8\nitem_knn_rank: int16\nitem_knn_score: double\nals_present: int8\nals_rank: int16\nals_score: double\ncategory_popularity_present: int8\ncategory_popularity_rank: int16\ncategory_popularity_score: double\nrecent_popularity_present: int8\nrecent_popularity_rank: int16\nrecent_popularity_score: double\nglobal_popularity_present: int8\nglobal_popularity_rank: int16\nglobal_popularity_score: double",
+  "request_schema": "request_id: string\nfold_index: int8\nuser_id: string\ncutoff: int64\ntarget_item_id: string\ntarget_timestamp: int64\ntarget_in_catalog: int8\ntarget_in_pool: int8\npool_size: int16",
+  "runtime": {
+    "python": "3.13.15",
+    "pandas": "2.3.3",
+    "numpy": "2.5.2",
+    "pyarrow": "19.0.1",
+    "implicit": "0.7.3",
+    "psutil": "7.1.0"
+  },
+  "blind_holdout": false,
+  "role": "development ranking data; no learned ranker or blind validation",
+  "unit": "warm user-window",
+  "folds": [
+    {
+      "fold_index": 1,
+      "cutoff": 1431821354421,
+      "requests": 5346,
+      "candidates": 5346000,
+      "positives": 1176,
+      "reachable": 3937,
+      "empty": 0,
+      "reachable_but_unretrieved": 2761,
+      "unreachable": 1409,
+      "candidate_recall@1000": 0.21997755331088664,
+      "fit_seconds": {
+        "item_knn": 1.9926926999996795,
+        "als": 58.03419500000018,
+        "category_popularity": 0.2553736999998364,
+        "recent_popularity": 0.22821680000015476,
+        "global_popularity": 0.22438330000113638
+      },
+      "build_seconds": 377.4340959000001,
+      "peak_rss_bytes": 1037168640,
+      "requests_sha256": "797c3aebead60a17c9ae127b5687e6f942e4bc9f94e53f4cc576b939ba52252f",
+      "candidates_sha256": "26658a45075c8f862e3e79ceea42cc67e58019a126dea10b3e486962aed3eafd",
+      "requests_bytes": 278407,
+      "candidates_bytes": 117103096
+    },
+    {
+      "fold_index": 2,
+      "cutoff": 1432923676688,
+      "requests": 7201,
+      "candidates": 7201000,
+      "positives": 1659,
+      "reachable": 5959,
+      "empty": 0,
+      "reachable_but_unretrieved": 4300,
+      "unreachable": 1242,
+      "candidate_recall@1000": 0.23038466879600056,
+      "fit_seconds": {
+        "item_knn": 7.137883499999589,
+        "als": 112.41861830000016,
+        "category_popularity": 0.4699134000002232,
+        "recent_popularity": 0.39064329999928304,
+        "global_popularity": 0.35521669999980077
+      },
+      "build_seconds": 584.4776628999989,
+      "peak_rss_bytes": 1321623552,
+      "requests_sha256": "78693074e2498982448fe4a0eb74c6c46ddad07d97f497dad2a7b2a650400341",
+      "candidates_sha256": "d4c67d72c4994986b99ea99cf1748cec32d62321d28f217ec7a0bba0a61b281b",
+      "requests_bytes": 366124,
+      "candidates_bytes": 161054582
+    },
+    {
+      "fold_index": 3,
+      "cutoff": 1434067768840,
+      "requests": 8602,
+      "candidates": 8602000,
+      "positives": 1826,
+      "reachable": 7367,
+      "empty": 0,
+      "reachable_but_unretrieved": 5541,
+      "unreachable": 1235,
+      "candidate_recall@1000": 0.21227621483375958,
+      "fit_seconds": {
+        "item_knn": 13.85160089999954,
+        "als": 163.61598309999863,
+        "category_popularity": 0.6259739000015543,
+        "recent_popularity": 0.48344340000039665,
+        "global_popularity": 0.4878472000000329
+      },
+      "build_seconds": 780.6827178000003,
+      "peak_rss_bytes": 1536765952,
+      "requests_sha256": "2d37cdad7a70ad1d7da8ec8779598dda4c92b07bc826177600176b727f947a8f",
+      "candidates_sha256": "da72688d944b46a55500b483bc60852acfb8c156df0057818255c4760b3889d5",
+      "requests_bytes": 438679,
+      "candidates_bytes": 207807780
+    },
+    {
+      "fold_index": 4,
+      "cutoff": 1435272269349,
+      "requests": 9635,
+      "candidates": 9635000,
+      "positives": 2056,
+      "reachable": 8434,
+      "empty": 0,
+      "reachable_but_unretrieved": 6378,
+      "unreachable": 1201,
+      "candidate_recall@1000": 0.21338868707836015,
+      "fit_seconds": {
+        "item_knn": 21.175873400001365,
+        "als": 209.66740019999997,
+        "category_popularity": 0.7956336999995983,
+        "recent_popularity": 0.47690589999911026,
+        "global_popularity": 0.5749388000003819
+      },
+      "build_seconds": 914.5160331000006,
+      "peak_rss_bytes": 1760956416,
+      "requests_sha256": "d30bb8691fa4d23ec79a32e7bf492792abe124da417c359f072a561025463324",
+      "candidates_sha256": "8a5f343c0a6ebe7e3aa9e66274832b50d41963c3baaf5e74e704920423927724",
+      "requests_bytes": 495506,
+      "candidates_bytes": 236784993
+    }
+  ],
+  "payload_sha256": "2b263bacdf76c6fa77e6a5fa4180281b013f282c24e900b844181871bc6927a3",
+  "data_sha256": "0682d32f505d53ca19fbaa575afd93813980366c7546a38e2bce78182ea08294"
+}
