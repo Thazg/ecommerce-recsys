@@ -10,12 +10,11 @@
 
 ## Question and decision
 
-The [ANN retrieval plan](ANN_RETRIEVAL_PLAN.md) asks whether approximate
-retrieval can materially reduce the cost of exact Two-Tower retrieval without
-losing its candidate target hits. The roadmap makes ANN conditional on measured
-exact-search cost. The screen first profiled exact retrieval on folds 1–4,
-then compared four fixed ANN settings with
-exact retrieval from the **same fitted model** on fold 1. The pilot used the same
+The feasibility policy asks whether approximate retrieval can materially
+reduce the cost of exact Two-Tower retrieval without losing its candidate
+target hits. The roadmap makes ANN conditional on measured exact-search
+cost. The screen first profiled exact retrieval on folds 1–4, then
+compared four fixed ANN settings with exact retrieval from the **same fitted model** on fold 1. The pilot used the same
 1,000 sampled warm requests for both paths, with 3,000 timed calls per path and
 configuration after warmup.
 

@@ -90,8 +90,8 @@ records the feature contract, per-fold counts, build cost and reproduction steps
 - [Dataset card](docs/DATASET_CARD.md) and [data contract](docs/DATA_CONTRACT.md): source, schema, and processing assumptions.
 - [Engineering decisions](docs/DECISIONS.md): design rationale, including the transition from per-user leave-last-out to global temporal folds.
 - [Metric and protocol glossary](docs/METRICS_AND_PROTOCOLS.md): comparison boundaries, units, model references and latency workloads.
-- [ANN retrieval plan](docs/ANN_RETRIEVAL_PLAN.md) and [feasibility report](docs/ANN_RETRIEVAL_REPORT.md): conditional index decision and measured no-go result.
-- [Ranking dataset plan](docs/RANKING_DATASET_PLAN.md) and [report](docs/RANKING_DATASET_REPORT.md): causal ranking rows, feature contract and development-fold audit.
+- [ANN feasibility report](docs/ANN_RETRIEVAL_REPORT.md): conditional index decision and measured no-go result.
+- [Ranking dataset report](docs/RANKING_DATASET_REPORT.md): causal ranking rows, feature contract and development-fold audit.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 

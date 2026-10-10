@@ -19,6 +19,9 @@ htmlcov/
 # Local working notes
 .local/
 
+# Module implementation plans stay local
+docs/*_PLAN.md
+
 # Build artifacts
 build/
 dist/

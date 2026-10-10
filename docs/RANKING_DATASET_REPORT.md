@@ -9,9 +9,8 @@ The dataset contains labelled candidate rows for the warm discovery task in the
 [rolling temporal protocol](ROLLING_EVALUATION_PROTOCOL.md). It uses the fixed
 full hybrid at a budget of 1,000 candidates, retaining its five source
 scores, eligible-list ranks and explicit popularity contribution. The
-[ranking dataset plan](RANKING_DATASET_PLAN.md) records the source choice and
-feature contract before this build. On development folds 1–4, the full hybrid
-found 6,717/30,784 targets at 1,000 candidates versus 6,590/30,784 without
+source choice and feature contract were fixed before this build. On development
+folds 1–4, the full hybrid found 6,717/30,784 targets at 1,000 candidates versus 6,590/30,784 without
 ALS. Folds 5–9 were previously inspected and favor the cheaper variant; this
 choice is an offline development policy, not a production recommendation.
 The ALS and ItemKNN sweep artifacts selected configurations on folds 1–4,
