@@ -41,5 +41,6 @@ data/processed/*
 *.csv
 !benchmarks/**/*.csv
 *.parquet
+*.parquet.tmp
 *.zip
 *.tar.gz

@@ -1,4 +1,4 @@
-"""M9 optional Faiss adapter and pilot checkpoint checks."""
+"""Faiss adapter and ANN pilot checkpoint checks."""
 
 import copy
 import json
@@ -9,8 +9,8 @@ import pytest
 
 from ecommerce_recsys.retrieval.base import RetrievalContext
 from ecommerce_recsys.retrieval.two_tower import TwoTowerRetriever
-from scripts.benchmark_m9_ann_pilot import CONFIGS, _sha, _validate_checkpoint
-from scripts.m9_faiss_adapter import FaissTwoTowerANN
+from scripts.benchmark_ann_feasibility import CONFIGS, _sha, _validate_checkpoint
+from scripts.faiss_ann_adapter import FaissTwoTowerANN
 
 
 def test_ann_contract_and_exact_parity_when_shortlist_is_exhaustive() -> None:

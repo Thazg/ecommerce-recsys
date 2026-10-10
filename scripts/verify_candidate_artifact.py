@@ -42,7 +42,7 @@ def source_snapshot() -> dict:
 
 
 def source_snapshot_at_commit(commit: str, expected_files: dict[str, str]) -> dict:
-    """Read the immutable M7 source snapshot from Git, independent of M8 files."""
+    """Read the immutable candidate-source snapshot from Git."""
     root = Path(__file__).resolve().parents[1]
     resolved = subprocess.run(
         ["git", "-C", str(root), "rev-parse", f"{commit}^{{commit}}"],

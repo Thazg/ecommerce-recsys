@@ -1,13 +1,12 @@
 # Project status
 
-**Updated:** 2026-10-09
+**Updated:** 2026-10-10
 
-**Stage:** M9 ANN feasibility screening is complete with a no-go decision; no
-ANN index was adopted. The selected M8 Two-Tower and its exact retrieval remain
-offline references. M8 configurations were selected on folds 1–4; its folds
-5–9 results are post-selection diagnostics, not blind validation. M9 used only
-development folds for profiling and a fold-1 ANN pilot. The project remains
-offline; online serving and a learned final ranker are not implemented.
+**Stage:** M10 has built and audited the warm ranking dataset for development
+folds 1–4. M9 ended with an ANN no-go; no ANN index was adopted. The project
+remains offline. A learned final ranker and online serving are not implemented.
+Folds 5–9 were inspected in earlier milestones and remain post-selection
+diagnostics, not blind validation.
 
 ## Implemented
 
@@ -19,6 +18,7 @@ offline; online serving and a learned final ranker are not implemented.
 | Retrieval | Common candidate interface, exact ALS, ItemKNN, category and popularity sources, source-aware reciprocal-rank fusion |
 | M8 retrieval | Deterministic CPU two-tower retriever with shared history encoding, train-only category features, sampled-softmax training and exact catalog scoring |
 | M9 feasibility | Reproducible exact-cost profile and paired fold-1 ANN pilot; no ANN source promoted to the package after the speed gate failed |
+| M10 ranking data | Causal warm request/candidate Parquet for folds 1–4, as-of features, zero-positive request audit, SHA-bound checkpoints and independent file verification |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -81,15 +81,31 @@ settings with paired exact calls on fold 1. All four ANN p95 values were slower
 than exact (ANN 14.844–35.411 ms; paired exact 9.311–10.698 ms). Each failed the
 gate requiring ANN p95 at most half of exact on every development fold. M9
 stopped at that point: no full ANN quality sweep, folds 5–9 ANN diagnostic or
-serving claim exists. The [M9 report](ANN_RETRIEVAL_REPORT.md) provides sample
+serving claim exists. The [ANN feasibility report](ANN_RETRIEVAL_REPORT.md) provides sample
 hit counts, index costs, compatibility limits and the no-go decision.
+
+## M10 ranking dataset
+
+M10 regenerated the fixed M7 full-hybrid pool for **30,784 warm user-windows**
+on development folds 1–4. It produced 30,784,000 candidate rows, including
+6,717 positive rows, for pooled Candidate Recall@1000 of **0.218198** with all
+warm targets in the denominator. The 5,087 targets outside their fold's
+train-time catalog and 18,980 catalog-reachable targets missed by retrieval
+remain in the request audit. All four folds reproduced M7's hit and pool-count
+totals; an independent Parquet scan found no null or nonfinite values. The
+[ranking dataset report](RANKING_DATASET_REPORT.md) explains the feature schema,
+provenance, build cost and limits. These are retrieval-data measurements, not
+learned-ranker Top-K results.
+The ItemKNN/ALS configurations and full-hybrid candidate policy were selected
+using folds 1–4. M10's fold 1–4 recall is therefore an in-sample dataset
+construction diagnostic, not an independent retrieval-quality estimate.
 
 ## Next milestone
 
-M10–M11 can build a causal ranking dataset and learned ranker from the existing
-candidate sources. They must preserve the shared rolling targets and train-time
-catalogs. Folds 5–9 remain non-blind diagnostics; independent model selection
-requires a later untouched time period. The [roadmap](ROADMAP.md) defines later
-milestone gates.
+M11 can train and compare a learned ranker against the M7 ordering on the same
+candidate pool. It must train on earlier labelled folds and preserve the shared
+rolling targets and train-time catalogs. Folds 5–9 remain non-blind diagnostics;
+independent confirmation requires a later untouched time period. The
+[roadmap](ROADMAP.md) defines later milestone gates.
 
 The [baseline](BASELINE_REPORT.md) and [MF](MF_EXPERIMENT_REPORT.md) reports document earlier per-user leave-last-out experiments. Their metrics are retained for provenance but are not directly comparable with rolling results.

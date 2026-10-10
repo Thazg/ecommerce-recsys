@@ -1,8 +1,8 @@
-# M8 two-tower candidate retrieval report
+# Two-tower candidate retrieval report
 
 | Field | Value |
 | :--- | :--- |
-| Status | M8 v1 development sweep, selection lock and folds 5–9 diagnostic complete |
+| Status | Published v1 development sweep, selection lock and folds 5–9 diagnostic complete |
 | Measured | 2026-10-09 |
 | Selected Two-Tower | Dimension 128, maximum history 50 |
 | Selected ALS comparator | 128 factors, 40 iterations, regularization 0.01 |
@@ -10,9 +10,9 @@
 
 ## Scope and validity
 
-M8 measures whether the next eligible warm-user target appears in an exact
-retriever's top 100, 500 or 1,000 candidates. It measures candidate recall, not
-final ranking quality or Top-20 recommendation quality. Two-Tower and ALS use
+This experiment measures whether the next eligible warm-user target appears in
+an exact retriever's top 100, 500 or 1,000 candidates. It measures candidate
+recall, not final ranking quality or Top-20 recommendation quality. Two-Tower and ALS use
 the same 59,323 warm user-window targets and fold-specific train-time catalogs
 on folds 5–9. The denominator includes unreachable targets; the 54,412
 reachable-target count is shown separately for context.
@@ -27,8 +27,9 @@ Earlier exploratory Two-Tower metrics are excluded. Review found that the
 inference context deduplicated history before encoding and could therefore lose
 repeated-event order. The corrected v1 path preserves ordered events for
 Two-Tower while retaining the existing deduplicated history contract used by
-M7 and ALS. Refit clears stale model state, full prior history is excluded from
-negative sampling, and defensive per-batch skips are counted.
+the hybrid candidate sources and ALS. Refit clears stale model state, full
+prior history is excluded from negative sampling, and defensive per-batch skips
+are counted.
 
 ALS v2 artifacts are reused as the comparator. The ALS fitting and scoring path,
 data, fold manifest, runtime, grid and candidate budgets are unchanged. The v1
@@ -79,7 +80,7 @@ diagnostic windows, a difference of 0.018425 in pooled recall. At budget 100,
 ALS found 369 more targets. These are descriptive differences on the
 post-selection period; they do not establish a statistically reliable win.
 
-The fixed M7 hybrid without ALS achieved Recall@1000 0.213206 on the same
+The fixed hybrid without ALS achieved Recall@1000 0.213206 on the same
 59,323 targets. Two-Tower is an additional model experiment, not the strongest
 candidate policy measured in this repository. Its advantage over exact ALS at
 budget 1,000 comes with lower Recall@100 and greater fitting time. This offline
@@ -129,8 +130,8 @@ measurements are offline exact-scoring timings on this runtime and hardware.
 The Two-Tower and ALS p95 values came from separate runs, so they are descriptive
 cost observations rather than a controlled serving comparison.
 They exclude model fitting, final ranking, network and service overhead and are
-not serving SLAs. They should not be compared with M4 Top-20 latency because the
-workloads differ.
+not serving SLAs. They should not be compared with the earlier Top-20 ranking
+latency because the workloads differ.
 
 ## Artifacts and provenance
 
@@ -153,17 +154,13 @@ selection-lock SHA-256 is
 artifact records Python 3.13.15, NumPy 2.5.2, pandas 2.3.3, SciPy 1.18.1 and
 Torch 2.14.1+cpu.
 
-## Reproduction
+## Reproduction of the published artifacts
 
-Use Python 3.13 in the `ecommerce-recsys` environment with the optional
-PyTorch dependency installed. From the repository root:
-
-```sh
-python -m scripts.benchmark_two_tower --model two_tower --phase development --input-path data/processed/interactions.parquet --output benchmarks/retrieval/two_tower_sweep_v1.json
-python -m scripts.lock_m8_configs --two-tower benchmarks/retrieval/two_tower_sweep_v1.json --als benchmarks/retrieval/als_candidate_sweep_v2.json --als-diagnostic benchmarks/retrieval/als_candidate_diagnostic_v2.json --output benchmarks/retrieval/m8_selection_lock_v1.json
-python -m scripts.benchmark_two_tower --model two_tower --phase diagnostic --max-fold 9 --selection-lock benchmarks/retrieval/m8_selection_lock_v1.json --development-artifact benchmarks/retrieval/two_tower_sweep_v1.json --input-path data/processed/interactions.parquet --output benchmarks/retrieval/two_tower_diagnostic_v1.json
-```
-
-The first command is resumable and the diagnostic command requires the complete
-development artifact and selection lock. The lock script validates and binds
-the reused ALS artifacts; it does not relabel their v2 results as v1.
+The published runner fingerprint above matches source commit
+`7b27f141f8d1a331bc4ebe0e924db59eeeef9e42`. Reproduce these frozen v1
+artifacts from that commit in a separate checkout, using the commands in its
+version of this report and Python 3.13 in the `ecommerce-recsys` environment.
+The current source uses semantic script names and has a different fingerprint;
+its guards intentionally reject resuming the published v1 files. New runs
+must use distinct artifact paths. The lock validates the reused ALS evidence
+without relabeling its v2 results.

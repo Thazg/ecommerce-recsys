@@ -1,0 +1,80 @@
+{
+  "benchmark": "m10-ranking-feature-audit",
+  "quality_sha256": "24448659c1edf5c6b7f5bc6a7a8ab819a5a754fbfcf443af2f09de487249eec0",
+  "verifier_sha256": "f5efa2911f47ab011762cc8ce323b338174e2d223e9b455182ab6c65e774cfb8",
+  "folds": [
+    {
+      "fold_index": 1,
+      "requests": 5346,
+      "candidates": 5346000,
+      "positives": 1176,
+      "null_feature_values": 0,
+      "nonfinite_numeric_values": 0,
+      "unknown_category_candidate_rows": 2228600,
+      "absent_source_rows": {
+        "item_knn": 5242831,
+        "als": 3019413,
+        "category_popularity": 4837298,
+        "recent_popularity": 1580309,
+        "global_popularity": 1580309
+      },
+      "requests_sha256": "797c3aebead60a17c9ae127b5687e6f942e4bc9f94e53f4cc576b939ba52252f",
+      "candidates_sha256": "26658a45075c8f862e3e79ceea42cc67e58019a126dea10b3e486962aed3eafd"
+    },
+    {
+      "fold_index": 2,
+      "requests": 7201,
+      "candidates": 7201000,
+      "positives": 1659,
+      "null_feature_values": 0,
+      "nonfinite_numeric_values": 0,
+      "unknown_category_candidate_rows": 2400920,
+      "absent_source_rows": {
+        "item_knn": 7023729,
+        "als": 4222850,
+        "category_popularity": 6295929,
+        "recent_popularity": 2266450,
+        "global_popularity": 2266450
+      },
+      "requests_sha256": "78693074e2498982448fe4a0eb74c6c46ddad07d97f497dad2a7b2a650400341",
+      "candidates_sha256": "d4c67d72c4994986b99ea99cf1748cec32d62321d28f217ec7a0bba0a61b281b"
+    },
+    {
+      "fold_index": 3,
+      "requests": 8602,
+      "candidates": 8602000,
+      "positives": 1826,
+      "null_feature_values": 0,
+      "nonfinite_numeric_values": 0,
+      "unknown_category_candidate_rows": 1311913,
+      "absent_source_rows": {
+        "item_knn": 8364967,
+        "als": 5177792,
+        "category_popularity": 7153451,
+        "recent_popularity": 2950006,
+        "global_popularity": 2910560
+      },
+      "requests_sha256": "2d37cdad7a70ad1d7da8ec8779598dda4c92b07bc826177600176b727f947a8f",
+      "candidates_sha256": "da72688d944b46a55500b483bc60852acfb8c156df0057818255c4760b3889d5"
+    },
+    {
+      "fold_index": 4,
+      "requests": 9635,
+      "candidates": 9635000,
+      "positives": 2056,
+      "null_feature_values": 0,
+      "nonfinite_numeric_values": 0,
+      "unknown_category_candidate_rows": 1485937,
+      "absent_source_rows": {
+        "item_knn": 9343799,
+        "als": 5843538,
+        "category_popularity": 7955376,
+        "recent_popularity": 3587071,
+        "global_popularity": 3432830
+      },
+      "requests_sha256": "d30bb8691fa4d23ec79a32e7bf492792abe124da417c359f072a561025463324",
+      "candidates_sha256": "8a5f343c0a6ebe7e3aa9e66274832b50d41963c3baaf5e74e704920423927724"
+    }
+  ],
+  "payload_sha256": "19cf3d2e141af848e05bde6f9e32c870062d8674aede074d5f8a100a8713d896"
+}

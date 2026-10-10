@@ -1,4 +1,4 @@
-"""Run the predeclared M9 fold-1 ANN speed gate against paired exact Two-Tower."""
+"""Run the predeclared ANN speed gate against paired exact Two-Tower."""
 
 from __future__ import annotations
 
@@ -23,18 +23,18 @@ from ecommerce_recsys.evaluation.latency import latency_metrics
 from ecommerce_recsys.evaluation.numeric_threads import single_thread_benchmark
 from ecommerce_recsys.retrieval.base import RetrievalContext
 from ecommerce_recsys.retrieval.two_tower import TwoTowerRetriever
-from scripts.m9_faiss_adapter import FaissTwoTowerANN
-from scripts.profile_m9_exact import (
-    M8_LOCK_SHA256,
-    _sample_indices,
-)
-from scripts.profile_m9_exact import (
+from scripts.faiss_ann_adapter import FaissTwoTowerANN
+from scripts.profile_exact_retrieval import (
     POLICY as PROFILE_POLICY,
 )
-from scripts.profile_m9_exact import (
+from scripts.profile_exact_retrieval import (
+    PUBLISHED_TWO_TOWER_LOCK_SHA256,
+    _sample_indices,
+)
+from scripts.profile_exact_retrieval import (
     _source_sha256 as _profile_runner_sha256,
 )
-from scripts.profile_m9_exact import (
+from scripts.profile_exact_retrieval import (
     _validate_checkpoint as _validate_profile,
 )
 
@@ -54,7 +54,7 @@ POLICY = {
     "limit": 1000,
     "budgets": [100, 500, 1000],
     "sample_size": 1000,
-    "sampling": "profile_m9_exact history-length quartiles, seed 42+fold",
+    "sampling": "exact-profile history-length quartiles, seed 42+fold",
     "repetitions": 3,
     "warmup": "one paired call per selected context before timing",
     "timing_order": "seeded request permutation and seeded exact/ANN call order per repeat",
@@ -72,9 +72,9 @@ def _sha(value: object) -> str:
 
 def _runner_sha256(root: Path) -> str:
     paths = [
-        root / "scripts/benchmark_m9_ann_pilot.py",
-        root / "scripts/m9_faiss_adapter.py",
-        root / "scripts/profile_m9_exact.py",
+        root / "scripts/benchmark_ann_feasibility.py",
+        root / "scripts/faiss_ann_adapter.py",
+        root / "scripts/profile_exact_retrieval.py",
         root / "src/ecommerce_recsys/retrieval/two_tower.py",
         root / "src/ecommerce_recsys/retrieval/base.py",
         root / "src/ecommerce_recsys/evaluation/candidates.py",
@@ -107,17 +107,17 @@ def _validate_checkpoint(artifact: dict, identity: dict) -> None:
     if any(artifact.get(key) != value for key, value in identity.items() if key != "policy") or (
         "policy" in identity and _sha(artifact.get("policy")) != _sha(identity["policy"])
     ):
-        raise ValueError("M9 ANN pilot checkpoint has different data, code, runtime or policy.")
+        raise ValueError("ANN pilot checkpoint has different data, code, runtime or policy.")
     rows = artifact.get("results")
     if not isinstance(rows, list) or artifact.get("results_sha256") != _sha(rows):
-        raise ValueError("M9 ANN pilot checkpoint result fingerprint differs.")
+        raise ValueError("ANN pilot checkpoint result fingerprint differs.")
     keys = [_config_key(row["config"]) for row in rows]
     expected = [_config_key(config) for config in CONFIGS]
     if keys != expected[: len(keys)]:
-        raise ValueError("M9 ANN pilot checkpoint has unexpected or duplicate configurations.")
+        raise ValueError("ANN pilot checkpoint has unexpected or duplicate configurations.")
     complete = len(rows) == len(CONFIGS)
     if artifact.get("complete") is not complete:
-        raise ValueError("M9 ANN pilot completeness metadata is inconsistent.")
+        raise ValueError("ANN pilot completeness metadata is inconsistent.")
     decision = "pending"
     if complete:
         decision = (
@@ -126,7 +126,7 @@ def _validate_checkpoint(artifact: dict, identity: dict) -> None:
             else "continue complete development evaluation"
         )
     if artifact.get("decision") != decision:
-        raise ValueError("M9 ANN pilot decision is inconsistent with its rows.")
+        raise ValueError("ANN pilot decision is inconsistent with its rows.")
 
 
 def _sample_metrics(hits: dict[int, int], denominator: int) -> dict[str, float | int]:
@@ -194,10 +194,14 @@ def main() -> None:
     parser.add_argument("--fold-dir", type=Path, default=Path("data/rolling"))
     parser.add_argument("--manifest", type=Path, default=Path("benchmarks/rolling/manifest.json"))
     parser.add_argument(
-        "--m8-lock", type=Path, default=Path("benchmarks/retrieval/m8_selection_lock_v1.json")
+        "--two-tower-lock",
+        type=Path,
+        default=Path("benchmarks/retrieval/m8_selection_lock_v1.json"),
     )
     parser.add_argument(
-        "--m8-development", type=Path, default=Path("benchmarks/retrieval/two_tower_sweep_v1.json")
+        "--two-tower-development",
+        type=Path,
+        default=Path("benchmarks/retrieval/two_tower_sweep_v1.json"),
     )
     parser.add_argument(
         "--profile", type=Path, default=Path("benchmarks/retrieval/m9_profile_v1.json")
@@ -211,7 +215,7 @@ def main() -> None:
 
     root = Path(__file__).resolve().parents[1]
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
-    lock = json.loads(args.m8_lock.read_text(encoding="utf-8"))
+    lock = json.loads(args.two_tower_lock.read_text(encoding="utf-8"))
     profile = json.loads(args.profile.read_text(encoding="utf-8"))
     profile_identity = {
         "protocol_version": PROFILE_POLICY["protocol"],
@@ -223,8 +227,8 @@ def main() -> None:
         "runner_sha256": _profile_runner_sha256(root),
         "manifest_sha256": manifest_fingerprint(manifest),
         "input_sha256": manifest["source_sha256"],
-        "m8_lock_sha256": sha256_file(args.m8_lock),
-        "m8_development_sha256": sha256_file(args.m8_development),
+        "m8_lock_sha256": sha256_file(args.two_tower_lock),
+        "m8_development_sha256": sha256_file(args.two_tower_development),
         "runtime": profile.get("runtime"),
     }
     _validate_profile(profile, profile_identity)
@@ -232,17 +236,18 @@ def main() -> None:
         manifest.get("protocol_version") != "rolling-temporal"
         or len(manifest.get("folds", [])) != 9
     ):
-        raise ValueError("M9 requires the full rolling manifest.")
+        raise ValueError("ANN feasibility requires the full rolling manifest.")
     if sha256_file(args.input_path) != manifest["source_sha256"]:
-        raise ValueError("M9 input differs from the rolling manifest.")
+        raise ValueError("ANN feasibility input differs from the rolling manifest.")
     verify_fold_files(manifest, args.fold_dir)
     if (
-        sha256_file(args.m8_lock) != M8_LOCK_SHA256
+        sha256_file(args.two_tower_lock) != PUBLISHED_TWO_TOWER_LOCK_SHA256
         or lock.get("two_tower", {}).get("selected_config") != POLICY["model_config"]
-        or lock["two_tower"].get("development_artifact_sha256") != sha256_file(args.m8_development)
+        or lock["two_tower"].get("development_artifact_sha256")
+        != sha256_file(args.two_tower_development)
         or lock["two_tower"].get("manifest_sha256") != manifest_fingerprint(manifest)
     ):
-        raise ValueError("M9 ANN pilot requires the published M8 selection evidence.")
+        raise ValueError("ANN pilot requires the published Two-Tower selection evidence.")
     if (
         profile.get("complete") is not True
         or profile.get("decision") != "proceed to ANN compatibility pilot"
@@ -250,7 +255,7 @@ def main() -> None:
         or profile.get("input_sha256") != manifest["source_sha256"]
         or profile.get("manifest_sha256") != manifest_fingerprint(manifest)
     ):
-        raise ValueError("M9 ANN pilot requires the complete exact-cost profile.")
+        raise ValueError("ANN pilot requires the complete exact-cost profile.")
     runtime = {
         "python": platform.python_version(),
         "numpy": np.__version__,
@@ -260,7 +265,7 @@ def main() -> None:
         "faiss": faiss.__version__,
     }
     if {key: value for key, value in runtime.items() if key != "faiss"} != lock["runtime"]:
-        raise ValueError("M9 ANN pilot runtime differs from the locked M8 runtime.")
+        raise ValueError("ANN pilot runtime differs from the locked Two-Tower runtime.")
     identity = {
         "protocol_version": POLICY["protocol"],
         "phase": "development-fold-1-pilot",
@@ -270,8 +275,8 @@ def main() -> None:
         "runner_sha256": _runner_sha256(root),
         "manifest_sha256": manifest_fingerprint(manifest),
         "input_sha256": manifest["source_sha256"],
-        "m8_lock_sha256": sha256_file(args.m8_lock),
-        "m8_development_sha256": sha256_file(args.m8_development),
+        "m8_lock_sha256": sha256_file(args.two_tower_lock),
+        "m8_development_sha256": sha256_file(args.two_tower_development),
         "profile_sha256": sha256_file(args.profile),
         "runtime": runtime,
     }
@@ -287,7 +292,7 @@ def main() -> None:
     fold = manifest["folds"][0]
     interactions = pd.read_parquet(args.input_path)
     if interactions[["user_id", "item_id", "timestamp"]].isna().any().any():
-        raise ValueError("M9 interactions contain null IDs or timestamps.")
+        raise ValueError("ANN feasibility interactions contain null IDs or timestamps.")
     train = interactions.loc[interactions["timestamp"] <= fold["train_cutoff"]].copy()
     train["user_id"] = train["user_id"].astype(str)
     train["item_id"] = train["item_id"].astype(str)
@@ -313,14 +318,14 @@ def main() -> None:
         [(str(targets.iloc[i]["user_id"]), str(targets.iloc[i]["item_id"])) for i in selected]
     )
     if sample_sha256 != profile["results"][0]["sample_sha256"]:
-        raise ValueError("M9 pilot sample differs from the exact-cost profile sample.")
-    print("M9 ANN fold-1 pilot: fitting selected M8 Two-Tower", flush=True)
+        raise ValueError("ANN pilot sample differs from the exact-cost profile sample.")
+    print("ANN fold-1 pilot: fitting selected Two-Tower", flush=True)
     exact = TwoTowerRetriever(catalog).fit(train, **POLICY["model_config"], **POLICY["training"])
     if exact.item_vectors is None:
-        raise ValueError("M9 could not fit the selected M8 Two-Tower model.")
+        raise ValueError("ANN feasibility could not fit the selected Two-Tower model.")
     vector_sha256 = hashlib.sha256(exact.item_vectors.tobytes()).hexdigest()
     for config in CONFIGS[len(artifact["results"]) :]:
-        print(f"M9 ANN pilot config {config}: building index", flush=True)
+        print(f"ANN pilot config {config}: building index", flush=True)
         ann = FaissTwoTowerANN(exact, **config)
         measured = _measure_pair(exact, ann, contexts, selected_targets)
         artifact["results"].append(

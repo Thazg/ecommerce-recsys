@@ -1,19 +1,20 @@
-# M9 ANN retrieval feasibility report
+# ANN retrieval feasibility report
 
 | Field | Result |
 | :--- | :--- |
 | Status | No-go after the predeclared fold-1 speed gate; no ANN source was adopted |
 | Measured | 2026-10-09, local Windows CPU run |
-| Model | Selected M8 Two-Tower, dimension 128 and maximum history 50 |
+| Model | Selected exact Two-Tower, dimension 128 and maximum history 50 |
 | Index pilot | Faiss CPU 1.15.1 HNSW, inner product, one thread |
 | Validity | Development-period feasibility screen only; no folds 5–9 ANN results |
 
 ## Question and decision
 
-The [M9 plan](M9_ANN_PLAN.md) asks whether approximate retrieval can materially
-reduce the cost of exact Two-Tower retrieval without losing its candidate target
-hits. The roadmap makes ANN conditional on measured exact-search cost. M9 first
-profiled exact retrieval on folds 1–4, then compared four fixed ANN settings with
+The [ANN retrieval plan](ANN_RETRIEVAL_PLAN.md) asks whether approximate
+retrieval can materially reduce the cost of exact Two-Tower retrieval without
+losing its candidate target hits. The roadmap makes ANN conditional on measured
+exact-search cost. The screen first profiled exact retrieval on folds 1–4,
+then compared four fixed ANN settings with
 exact retrieval from the **same fitted model** on fold 1. The pilot used the same
 1,000 sampled warm requests for both paths, with 3,000 timed calls per path and
 configuration after warmup.
@@ -24,9 +25,9 @@ All four configurations failed that speed condition on fold 1. Since each must
 pass every development fold, no configuration can qualify. The runner recorded
 `no-go: all configs fail fold-1 paired p95 gate` and did not open folds 2–4 for
 ANN or folds 5–9. This is a screening result, not a four-fold quality comparison
-or an independent validation result. The no-go keeps exact Two-Tower as the M8
+or an independent validation result. The no-go keeps exact Two-Tower as the
 model reference; it does not claim exact Two-Tower is the best retriever in the
-project. The M7 hybrid without ALS had higher Recall@1000 on the shared warm
+project. The hybrid without ALS had higher Recall@1000 on the shared warm
 cohort, under a different multi-source policy.
 
 ## Exact-cost profile: development folds 1–4
@@ -60,7 +61,7 @@ environment and has **not** been added to `pyproject.toml`.
 [Faiss CPU release files](https://pypi.org/project/faiss-cpu/#files) document the
 package distribution formats.
 
-The fold-1 pilot trained the same selected M8 Two-Tower once, built each index
+The fold-1 pilot trained the same selected Two-Tower once, built each index
 from its 75,003 train-catalog item vectors, and interleaved exact and ANN calls
 over identical request contexts. ANN re-scored its retrieved shortlist by exact
 Two-Tower dot product, filtered seen items, and used item ID as the tie-break.
@@ -109,27 +110,24 @@ all four development-fold rows and the cost-trigger decision. The
 [ANN pilot artifact](../benchmarks/retrieval/m9_ann_pilot_v1.json) contains all
 four fold-1 configurations, paired latency samples, sample hits, build cost,
 index bytes, model-vector SHA-256, and the no-go decision. Both bind the rolling
-manifest, processed input, published M8 selection lock, runtime, policy and
+manifest, processed input, published Two-Tower selection lock, runtime, policy and
 relevant source hashes; results and checkpoints have content fingerprints and
 atomic writes. These two artifacts carry their own runner-internal checkpoint
 validation (`results_sha256` plus policy/runner binding in each script); they
-are outside the scope of `verify_candidate_artifact`, which covers the M7
-`candidates.json` comparisons. Index binaries and scratch probes remain outside Git.
+are outside the scope of `verify_candidate_artifact`, which covers the hybrid
+`candidates.json` comparisons. Index binaries and scratch probes remain outside
+Git.
 
-Use the Python 3.13 `ecommerce-recsys` environment. Prepare the rolling data as
-described in the [M8 report](TWO_TOWER_REPORT.md), then run from the repository
-root (pass another `--input-path` if the verified Parquet lives elsewhere):
+The exact-profile and ANN-pilot runner fingerprints match source commit
+`7b27f141f8d1a331bc4ebe0e924db59eeeef9e42`. Reproduce the frozen v1
+artifacts in a separate checkout of that commit, following its version of
+this report and the [two-tower report](TWO_TOWER_REPORT.md). Use the Python
+3.13 `ecommerce-recsys` environment and the optional `faiss-cpu==1.15.1`
+dependency. Current semantic script names have a different source fingerprint;
+their guards reject resuming the published v1 artifacts. New runs must use
+distinct artifact paths.
 
-```sh
-python -m scripts.profile_m9_exact --input-path data/processed/interactions.parquet
-python -m pip install --no-deps faiss-cpu==1.15.1
-python -m scripts.benchmark_m9_ann_pilot --input-path data/processed/interactions.parquet
-pytest
-ruff check .
-ruff format --check .
-```
-
-The ANN package installation above is for reproducing the local pilot; it is not
+The optional ANN package is for reproducing the local pilot; it is not
 a project dependency or evidence that Linux CI passed. Timing is local CPU
 retrieval after model fitting and excludes data loading, model fit, final ranking,
 network and API overhead. The recorded Python/library versions and one-thread

@@ -1,11 +1,16 @@
-"""M9 exact-cost gate sampling and checkpoint integrity."""
+"""Exact retrieval cost sampling and checkpoint integrity."""
 
 import copy
 
 import pandas as pd
 import pytest
 
-from scripts.profile_m9_exact import POLICY, _results_sha256, _sample_indices, _validate_checkpoint
+from scripts.profile_exact_retrieval import (
+    POLICY,
+    _results_sha256,
+    _sample_indices,
+    _validate_checkpoint,
+)
 
 
 def test_profile_sample_is_stratified_deterministic_and_unique() -> None:
