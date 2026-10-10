@@ -33,6 +33,7 @@ matrices, Python objects and other process allocations.
 | Historical leave-last-out | One last event per eligible user; 200,028 users | Earlier within each user, without a global cutoff; targets can be repeats | Archived descriptive evidence |
 | Rolling Top-K | First unseen future event per warm user-window; cold first events separate | All training events at or before the declared global cutoff | Nine-fold trend and folds 5–9 post-selection diagnostics |
 | Rolling candidates | Same rolling targets and catalogs; budgets 100, 500, 1,000 | Same declared global cutoff | Target availability for downstream ranking |
+| M10 ranking data | Warm folds 1–4; one request per target and up to 1,000 labelled candidate rows per request | M7 sources and all features use the fold's declared global cutoff | Development training data; no learned-ranker Top-K result |
 
 Rolling folds 1–4 contain 30,784 warm targets; folds 5–9 contain 59,323.
 Nine-fold pooled figures and five-fold figures have different populations.
@@ -86,6 +87,7 @@ Matching percentile formulas does not make different workloads comparable.
 | M7 direct-source warm latency | Maximum N = 1,000 | Direct source call per warm request | Retrieval, filtering and candidate records |
 | M7 hybrid warm cost | Maximum N = 1,000 | Sum of measured constituent source calls plus fusion | Serial cost estimate; shared source outputs reused |
 | M7 cold latency | Empty context, maximum N = 1,000 | 100 repeated calls per fold | Repeated shared-pool workload; all cold targets still enter accuracy metrics |
+| M10 fold build time | Complete warm development fold at N = 1,000 | Wall time for fit, feature aggregation, retrieval and Parquet writing | Offline dataset construction; separate from per-request retrieval and serving latency |
 
 Compare timings only within a matching row/workload and runtime setting. Do not
 rank M4 versus M7, or warm versus cold, by their p95 values. These measurements

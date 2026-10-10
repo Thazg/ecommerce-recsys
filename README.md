@@ -23,7 +23,8 @@ ItemKNN and ALS configurations were selected using folds 1–4. The five-fold fi
 
 ## Candidate retrieval
 
-M7 evaluates retrieval separately from final Top-K ranking. Each source is asked
+The candidate-retrieval benchmark evaluates retrieval separately from final
+Top-K ranking. Each source is asked
 for up to 1,000 eligible, unseen products; this is a request budget, not a
 guarantee that every source can fill it. In folds 5–9, ItemKNN returned a mean
 of 40.07 products and an empty pool for 14.61% of warm requests. Reciprocal rank
@@ -44,7 +45,7 @@ cost. The [design](docs/CANDIDATE_GENERATION.md) specifies the candidate contrac
 
 ## Two-tower retrieval
 
-M8 adds a deterministic CPU two-tower retriever and compares its exact catalog
+A deterministic CPU two-tower retriever compares its exact catalog
 scores with ALS on the same rolling warm targets. The model uses recent distinct
 item history on the user side and item ID plus train-time category on the item
 side. Negative sampling excludes the full prior user history, including items
@@ -53,18 +54,32 @@ outside the truncated feature history. The selected Two-Tower configuration
 0.044485 / 0.096185 / 0.127640 on 59,323 warm user-windows in folds 5–9. ALS
 achieved 0.050705 / 0.087116 / 0.109216 on the same targets. The period had
 been inspected before configuration lock, so these are post-selection
-diagnostics, not blind validation. See the [M8 report](docs/TWO_TOWER_REPORT.md)
+diagnostics, not blind validation. See the [two-tower report](docs/TWO_TOWER_REPORT.md)
 for per-fold metrics, cost, latency scope and provenance.
 
 ## ANN feasibility
 
-M9 screened approximate search against exact Two-Tower retrieval before adding an
-index to the candidate pipeline. Exact p95 exceeded the predeclared cost trigger
-on three of four development folds. In a paired fold-1 Faiss HNSW pilot, all four
+The ANN feasibility study screened approximate search against exact Two-Tower
+retrieval before adding an index to the candidate pipeline. Exact p95 exceeded
+the predeclared cost trigger on three of four development folds. In a paired
+fold-1 Faiss HNSW pilot, all four
 index configurations were slower than exact at the 1,000-candidate budget, so
 none met the predeclared speed gate. No ANN index was adopted, and no folds 5–9
-ANN results are reported. The [M9 feasibility report](docs/ANN_RETRIEVAL_REPORT.md)
+ANN results are reported. The [ANN feasibility report](docs/ANN_RETRIEVAL_REPORT.md)
 shows the timing, sample-hit and index-build evidence with its limitations.
+
+## Causal ranking dataset
+
+The ranking pipeline builds candidate-level training data for the warm rolling
+task on development folds 1–4. The fixed full hybrid generated
+**30,784,000 candidate rows** for **30,784 warm user-windows**. Of those
+requests, 6,717 have their future target
+in the 1,000-item pool (Candidate Recall@1000 **0.218198**). Requests with an
+unreachable or unretrieved target remain in the denominator. Features use only
+the fold's training snapshot and as-of catalog; an independent Parquet audit
+found no null or nonfinite values. This dataset does not yet include a learned
+ranker or Top-K ranking comparison. The [ranking dataset report](docs/RANKING_DATASET_REPORT.md)
+records the feature contract, per-fold counts, build cost and reproduction steps.
 
 ## Repository guide
 
@@ -75,7 +90,8 @@ shows the timing, sample-hit and index-build evidence with its limitations.
 - [Dataset card](docs/DATASET_CARD.md) and [data contract](docs/DATA_CONTRACT.md): source, schema, and processing assumptions.
 - [Engineering decisions](docs/DECISIONS.md): design rationale, including the transition from per-user leave-last-out to global temporal folds.
 - [Metric and protocol glossary](docs/METRICS_AND_PROTOCOLS.md): comparison boundaries, units, model references and latency workloads.
-- [M9 ANN plan](docs/M9_ANN_PLAN.md) and [feasibility report](docs/ANN_RETRIEVAL_REPORT.md): conditional index decision and measured no-go result.
+- [ANN retrieval plan](docs/ANN_RETRIEVAL_PLAN.md) and [feasibility report](docs/ANN_RETRIEVAL_REPORT.md): conditional index decision and measured no-go result.
+- [Ranking dataset plan](docs/RANKING_DATASET_PLAN.md) and [report](docs/RANKING_DATASET_REPORT.md): causal ranking rows, feature contract and development-fold audit.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 
@@ -92,6 +108,8 @@ python scripts/sweep_rolling.py --model als
 python scripts/benchmark_rolling.py
 python scripts/benchmark_rolling_cold.py
 python scripts/benchmark_candidates.py
+python scripts/build_ranking_dataset.py
+python scripts/verify_ranking_dataset.py
 pytest
 ruff check .
 ruff format --check .

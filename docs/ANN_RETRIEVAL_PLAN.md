@@ -1,7 +1,7 @@
-# M9 plan: approximate nearest-neighbor retrieval
+# ANN retrieval feasibility plan
 
 **Status:** Feasibility screen completed with a no-go decision. This document
-records the experiment plan; the [M9 report](ANN_RETRIEVAL_REPORT.md) records the
+records the experiment plan; the [ANN feasibility report](ANN_RETRIEVAL_REPORT.md) records the
 measured exact profile and fold-1 ANN pilot. No ANN index was selected for the
 retrieval pipeline.
 
@@ -15,7 +15,7 @@ Exact ALS and the M7 hybrid remain context, not substitutes for this paired
 comparison. Candidate recall is not final Top-20 quality.
 
 The [roadmap](ROADMAP.md) makes ANN conditional on exact retrieval cost. The
-[M8 report](TWO_TOWER_REPORT.md) records exact Two-Tower p95 of 14.28–21.14 ms
+[two-tower report](TWO_TOWER_REPORT.md) records exact Two-Tower p95 of 14.28–21.14 ms
 on folds 5–9, but its ALS timings came from separate runs. Those figures motivate
 a controlled profile; they do not establish an online latency problem. The
 [charter](PROJECT_CHARTER.md) sets 300 ms p95 for a future full serving path; it
@@ -96,7 +96,7 @@ return `[]`. Index build/load failures must raise a visible error.
 | :--- | :--- | :--- |
 | 0. Profile | Freeze workload, exact-cost trigger, hardware/runtime identity and query sampling; measure exact Two-Tower on folds 1–4. | `m9_profile_v1.json` with per-fold p50/p95/p99, mean, request count, catalog size and no-go/proceed decision. |
 | 1. Compatibility pilot | Install the optional ANN library in `ecommerce-recsys`, check Windows and Linux CI import/build/query, fixed seed, one thread, ID mapping and save/load. | Smoke test and dependency/version record; no benchmark claims yet. |
-| 2. Adapter | Add an ANN candidate source using the M8 fitted vectors and shared retrieval contract. Keep exact M8 code and artifacts frozen. | Contract tests for causality, filtering, ties, prefixes, unknown users and short pools. |
+| 2. Adapter | Add an ANN candidate source using the selected Two-Tower vectors and shared retrieval contract. Preserve the published exact-retrieval artifacts and record a new source fingerprint for subsequent runs. | Contract tests for causality, filtering, ties, prefixes, unknown users and short pools. |
 | 3. Development sweep | Compare a small predeclared grid on folds 1–4: graph degree 16 or 32, construction effort 200, and search effort 2,000 or 4,000; use the same adaptive shortlist policy for every configuration. | Complete per-fold quality/cost rows, with one source and one cutoff identity per row. |
 | 4. Lock | Apply the eligibility and tie-break rules above using only folds 1–4. Bind selected parameters and every relevant input/code/runtime hash. | `m9_ann_lock_v1.json`, or a documented no-go decision. |
 | 5. Diagnostics | Only after lock, run the selected configuration and its paired exact comparator on folds 5–9. | Complete `m9_ann_diagnostic_v1.json` labelled `blind_holdout: false`; never use these scores to revise the selected configuration. |

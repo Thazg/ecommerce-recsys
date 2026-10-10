@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-09
+**Updated:** 2026-10-10
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -389,7 +389,7 @@ bound into the selection lock. The model is CPU/offline only; no ANN index,
 final ranker, cold-user personalization or online serving is implemented.
 Reported latency is offline and not a serving SLA.
 
-**Artifacts and implementation:** [M8 report](TWO_TOWER_REPORT.md),
+**Artifacts and implementation:** [two-tower report](TWO_TOWER_REPORT.md),
 [versioned development and diagnostic artifacts](../benchmarks/retrieval/),
 `retrieval/two_tower.py`, and `scripts/benchmark_two_tower.py`.
 
@@ -411,7 +411,7 @@ every development fold before paying index build and memory costs. All four
 predeclared settings were slower than exact on fold 1, so none can satisfy that
 all-fold gate. Stop without tuning on later periods or adopting an index.
 
-**Evidence and limits:** The [M9 report](ANN_RETRIEVAL_REPORT.md) and
+**Evidence and limits:** The [ANN feasibility report](ANN_RETRIEVAL_REPORT.md) and
 [exact profile](../benchmarks/retrieval/m9_profile_v1.json) record folds 1–4
 costs. The [paired pilot](../benchmarks/retrieval/m9_ann_pilot_v1.json) records
 3,000 timed calls per method and configuration on a 1,000-request fold-1 sample.
@@ -421,3 +421,35 @@ evaluation was run. Faiss passed a local Windows smoke test, but Linux CI and
 loaded-process RSS were not measured. This no-go concerns this model, catalog,
 budget, index grid and machine; it does not rule out ANN for a larger catalog or
 a different workload. No serving SLA follows from offline retrieval timing.
+
+## M10 — Causal ranking data
+
+### ADR-20 — Build labelled warm candidate rows from a fixed M7 pool
+
+**Status:** Accepted for development-fold dataset construction
+
+**Recorded:** 2026-10-10
+
+**Decision and rationale:** Use the M7 full hybrid with a 1,000-item budget as
+the single M10 candidate source. Its pooled development-fold target recall was
+6,717/30,784, compared with 6,590/30,784 for the hybrid without ALS. Regenerate
+each request pool from its fold's train-only snapshot and label a candidate only
+when it matches that request's first unseen future target. Keep every warm
+request in a separate audit table, including catalog-unreachable targets and
+catalog-reachable targets absent from the pool. Build features solely from
+cutoff-time interactions, as-of categories and retrieved source evidence.
+
+**Evidence and limits:** The [ranking dataset report](RANKING_DATASET_REPORT.md),
+[quality artifact](../benchmarks/ranking/m10_quality_v1.json) and
+[independent audit](../benchmarks/ranking/m10_feature_audit_v1.json) cover
+30,784 warm requests and 30,784,000 candidate rows on folds 1–4. All four
+folds reproduced the frozen M7 hit and pool counts; the persisted rows have
+no null or nonfinite values. M7's already-inspected folds 5–9 favor the cheaper
+hybrid without ALS, so the M10 source choice is a development policy rather
+than an independently validated or production-optimal one. The ALS and
+ItemKNN configurations were selected on folds 1–4, not folds 5–9; M10's
+fold 1–4 recall reuses development-selected retrieval and is in-sample.
+M10 does not train
+a ranker, evaluate Top-K ranking quality, mix cold users into warm results or
+open folds 5–9. M11 must compare rankings on the same fixed pool and keep later
+folds labelled as post-selection diagnostics.
