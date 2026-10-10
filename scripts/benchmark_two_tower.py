@@ -1,4 +1,4 @@
-"""Run the M8 two-tower and exact-ALS candidate-recall comparisons."""
+"""Compare exact Two-Tower and ALS candidate recall on rolling folds."""
 
 from __future__ import annotations
 
@@ -83,7 +83,7 @@ def _canonical_sha256(value: object) -> str:
 def _runner_sha256(root: Path) -> str:
     paths = sorted((root / "src/ecommerce_recsys").rglob("*.py")) + [
         root / "scripts/benchmark_two_tower.py",
-        root / "scripts/lock_m8_configs.py",
+        root / "scripts/lock_two_tower_configs.py",
         root / "pyproject.toml",
     ]
     digest = hashlib.sha256()
@@ -133,15 +133,19 @@ def _results_sha256(artifact: dict) -> str:
 
 def _validate_checkpoint(artifact: dict, identity: dict) -> None:
     if any(artifact.get(key) != value for key, value in identity.items()):
-        raise ValueError("Existing M8 checkpoint has different data, code, config or policy.")
+        raise ValueError(
+            "Existing Two-Tower checkpoint has different data, code, config or policy."
+        )
     if artifact.get("results_sha256") != _results_sha256(artifact):
-        raise ValueError("Existing M8 checkpoint result rows fail their content fingerprint.")
+        raise ValueError(
+            "Existing Two-Tower checkpoint result rows fail their content fingerprint."
+        )
     expected_configs = {_config_key(config) for config in identity["configurations"]}
     expected_folds = identity["expected_folds"]
     seen = set()
     for row in artifact.get("results", []):
         if not isinstance(row.get("config"), dict) or not isinstance(row.get("fold_index"), int):
-            raise ValueError("Existing M8 checkpoint has an invalid comparison row.")
+            raise ValueError("Existing Two-Tower checkpoint has an invalid comparison row.")
         key = (_config_key(row.get("config")), row.get("fold_index"))
         if (
             key in seen
@@ -149,7 +153,9 @@ def _validate_checkpoint(artifact: dict, identity: dict) -> None:
             or key[1] not in expected_folds
             or row.get("phase") != identity["phase"]
         ):
-            raise ValueError("Existing M8 checkpoint has an invalid or duplicate comparison row.")
+            raise ValueError(
+                "Existing Two-Tower checkpoint has an invalid or duplicate comparison row."
+            )
         seen.add(key)
     completed_folds = _completed_folds(
         artifact.get("results", []), identity["configurations"], expected_folds
@@ -159,7 +165,7 @@ def _validate_checkpoint(artifact: dict, identity: dict) -> None:
         artifact.get("completed_folds") != completed_folds
         or artifact.get("complete") is not complete
     ):
-        raise ValueError("Existing M8 checkpoint completeness metadata is inconsistent.")
+        raise ValueError("Existing Two-Tower checkpoint completeness metadata is inconsistent.")
 
 
 @single_thread_benchmark
@@ -202,7 +208,7 @@ def main() -> None:
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     if manifest.get("protocol_version") != "rolling-temporal" or len(manifest["folds"]) != 9:
-        raise ValueError("M8 requires the complete nine-fold rolling manifest.")
+        raise ValueError("Two-Tower requires the complete nine-fold rolling manifest.")
     if sha256_file(args.input_path) != manifest["source_sha256"]:
         raise ValueError("Input interactions do not match the rolling manifest.")
     verify_fold_files(manifest, args.fold_dir)
@@ -211,7 +217,7 @@ def main() -> None:
     )
     lower = 1 if args.phase == "development" else 5
     if maximum < lower or maximum > (4 if args.phase == "development" else 9):
-        raise ValueError("Fold bound is outside the selected M8 phase.")
+        raise ValueError("Fold bound is outside the selected Two-Tower phase.")
     if args.phase == "development":
         fold_range = range(1, maximum + 1)
         expected_folds = list(range(1, 5))
@@ -232,7 +238,7 @@ def main() -> None:
                 "Diagnostic folds require a selection lock and its development artifact."
             )
         lock = json.loads(args.selection_lock.read_text(encoding="utf-8"))
-        selection_script = root / "scripts/lock_m8_configs.py"
+        selection_script = root / "scripts/lock_two_tower_configs.py"
         if (
             lock.get("protocol_version") != "m8-rolling-v1"
             or lock.get("blind_holdout") is not False
@@ -241,7 +247,9 @@ def main() -> None:
             or lock.get("runner_sha256") != code_digest
             or lock.get("runtime") != runtime
         ):
-            raise ValueError("M8 selection lock has an unsupported protocol or stale selector.")
+            raise ValueError(
+                "Two-Tower selection lock has an unsupported protocol or stale selector."
+            )
         lock_key = "two_tower" if args.model == "two_tower" else "als_candidate_recall"
         lock_entry = lock[lock_key]
         development_artifact_sha256 = sha256_file(args.development_artifact)
@@ -262,7 +270,7 @@ def main() -> None:
             raise ValueError(
                 "Development artifact policy, runner, runtime or completeness differs."
             )
-        from scripts.lock_m8_configs import _select
+        from scripts.lock_two_tower_configs import _select
 
         expected_lock_entry = _select(
             args.development_artifact,
@@ -278,15 +286,21 @@ def main() -> None:
             or lock_entry.get("runner_sha256") != code_digest
             or lock_entry.get("runtime") != runtime
         ):
-            raise ValueError("Diagnostic runner does not match the locked M8 policy or runtime.")
+            raise ValueError(
+                "Diagnostic runner does not match the locked Two-Tower policy or runtime."
+            )
         if lock_entry["manifest_sha256"] != manifest_fingerprint(manifest) or lock_entry[
             "input_sha256"
         ] != sha256_file(args.input_path):
-            raise ValueError("M8 selection lock uses a different dataset or rolling manifest.")
+            raise ValueError(
+                "Two-Tower selection lock uses a different dataset or rolling manifest."
+            )
         selection_lock_sha256 = sha256_file(args.selection_lock)
         locked = lock_entry["selected_config"]
         if args.locked_config and json.loads(args.locked_config) != locked:
-            raise ValueError("Requested diagnostic config differs from the M8 selection lock.")
+            raise ValueError(
+                "Requested diagnostic config differs from the Two-Tower selection lock."
+            )
         if locked not in (TWO_TOWER_CONFIGS if args.model == "two_tower" else ALS_CONFIGS):
             raise ValueError("Locked configuration is outside the predeclared development grid.")
         configs = _diagnostic_configs(args.model, locked)

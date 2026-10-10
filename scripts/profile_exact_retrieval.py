@@ -1,4 +1,4 @@
-"""Profile locked M8 exact Two-Tower retrieval before an M9 ANN pilot."""
+"""Profile exact Two-Tower retrieval before the ANN feasibility screen."""
 
 from __future__ import annotations
 
@@ -41,7 +41,7 @@ POLICY = {
     "warmup": "one call for each selected request before timing",
     "threads": 1,
 }
-M8_LOCK_SHA256 = "0f851bde574ece8d3e762a4f9d21a4297868ca1af1bf775b193163ee19de97db"
+PUBLISHED_TWO_TOWER_LOCK_SHA256 = "0f851bde574ece8d3e762a4f9d21a4297868ca1af1bf775b193163ee19de97db"
 
 
 def _canonical_sha256(value: object) -> str:
@@ -52,7 +52,7 @@ def _canonical_sha256(value: object) -> str:
 
 def _source_sha256(root: Path) -> str:
     paths = [
-        root / "scripts/profile_m9_exact.py",
+        root / "scripts/profile_exact_retrieval.py",
         root / "src/ecommerce_recsys/retrieval/base.py",
         root / "src/ecommerce_recsys/retrieval/two_tower.py",
         root / "src/ecommerce_recsys/evaluation/latency.py",
@@ -102,17 +102,19 @@ def _save(path: Path, artifact: dict) -> None:
 
 def _validate_checkpoint(artifact: dict, identity: dict) -> None:
     if any(artifact.get(key) != value for key, value in identity.items()):
-        raise ValueError("M9 exact profile checkpoint has different input, code or policy.")
+        raise ValueError("Exact retrieval profile checkpoint has different input, code or policy.")
     rows = artifact.get("results")
     if not isinstance(rows, list) or artifact.get("results_sha256") != _results_sha256(rows):
-        raise ValueError("M9 exact profile checkpoint results fail their fingerprint.")
+        raise ValueError("Exact retrieval profile checkpoint results fail their fingerprint.")
     folds = [row.get("fold_index") for row in rows if isinstance(row, dict)]
     if len(folds) != len(rows) or folds != POLICY["folds"][: len(folds)]:
-        raise ValueError("M9 exact profile checkpoint has invalid or duplicate folds.")
+        raise ValueError("Exact retrieval profile checkpoint has invalid or duplicate folds.")
     if artifact.get("completed_folds") != folds or artifact.get("complete") != (
         folds == POLICY["folds"]
     ):
-        raise ValueError("M9 exact profile checkpoint completeness metadata is inconsistent.")
+        raise ValueError(
+            "Exact retrieval profile checkpoint completeness metadata is inconsistent."
+        )
     expected_decision = "pending"
     if folds == POLICY["folds"]:
         expected_decision = (
@@ -121,7 +123,9 @@ def _validate_checkpoint(artifact: dict, identity: dict) -> None:
             else "proceed to ANN compatibility pilot"
         )
     if artifact.get("decision") != expected_decision:
-        raise ValueError("M9 exact profile checkpoint decision is inconsistent with results.")
+        raise ValueError(
+            "Exact retrieval profile checkpoint decision is inconsistent with results."
+        )
 
 
 def _profile_fold(interactions: pd.DataFrame, fold: dict, fold_path: Path) -> dict:
@@ -160,7 +164,7 @@ def _profile_fold(interactions: pd.DataFrame, fold: dict, fold_path: Path) -> di
         **POLICY["training"],
     )
     if source.item_vectors is None or source.model is None:
-        raise ValueError("Selected M8 Two-Tower could not be fitted for M9 profiling.")
+        raise ValueError("Selected Two-Tower could not be fitted for exact retrieval profiling.")
     source.generate(contexts[0], POLICY["limit"])
     for context in contexts[1:]:
         source.generate(context, POLICY["limit"])
@@ -196,10 +200,14 @@ def main() -> None:
     parser.add_argument("--fold-dir", type=Path, default=Path("data/rolling"))
     parser.add_argument("--manifest", type=Path, default=Path("benchmarks/rolling/manifest.json"))
     parser.add_argument(
-        "--m8-lock", type=Path, default=Path("benchmarks/retrieval/m8_selection_lock_v1.json")
+        "--two-tower-lock",
+        type=Path,
+        default=Path("benchmarks/retrieval/m8_selection_lock_v1.json"),
     )
     parser.add_argument(
-        "--m8-development", type=Path, default=Path("benchmarks/retrieval/two_tower_sweep_v1.json")
+        "--two-tower-development",
+        type=Path,
+        default=Path("benchmarks/retrieval/two_tower_sweep_v1.json"),
     )
     parser.add_argument(
         "--output", type=Path, default=Path("benchmarks/retrieval/m9_profile_v1.json")
@@ -207,29 +215,32 @@ def main() -> None:
     parser.add_argument("--max-fold", type=int, default=4)
     args = parser.parse_args()
     if args.max_fold not in POLICY["folds"]:
-        raise ValueError("M9 exact profile permits only development folds 1-4.")
+        raise ValueError("Exact retrieval profile permits only development folds 1-4.")
     root = Path(__file__).resolve().parents[1]
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
-    lock = json.loads(args.m8_lock.read_text(encoding="utf-8"))
-    if sha256_file(args.m8_lock) != M8_LOCK_SHA256:
-        raise ValueError("M9 exact profile requires the published M8 selection lock bytes.")
+    lock = json.loads(args.two_tower_lock.read_text(encoding="utf-8"))
+    if sha256_file(args.two_tower_lock) != PUBLISHED_TWO_TOWER_LOCK_SHA256:
+        raise ValueError(
+            "Exact retrieval profile requires the published Two-Tower selection lock bytes."
+        )
     if (
         manifest.get("protocol_version") != "rolling-temporal"
         or len(manifest.get("folds", [])) != 9
     ):
-        raise ValueError("M9 requires the complete rolling manifest.")
+        raise ValueError("Exact retrieval profile requires the complete rolling manifest.")
     if sha256_file(args.input_path) != manifest["source_sha256"]:
-        raise ValueError("M9 input interactions differ from the rolling manifest.")
+        raise ValueError("Exact retrieval input interactions differ from the rolling manifest.")
     verify_fold_files(manifest, args.fold_dir)
     if (
         lock.get("protocol_version") != "m8-rolling-v1"
         or lock.get("two_tower", {}).get("selected_config") != {"dimension": 128, "max_history": 50}
         or lock["two_tower"].get("manifest_sha256") != manifest_fingerprint(manifest)
         or lock["two_tower"].get("input_sha256") != manifest["source_sha256"]
-        or lock["two_tower"].get("development_artifact_sha256") != sha256_file(args.m8_development)
+        or lock["two_tower"].get("development_artifact_sha256")
+        != sha256_file(args.two_tower_development)
     ):
         raise ValueError(
-            "M9 exact profile requires the published M8 selection and development evidence."
+            "Exact retrieval profile requires the published Two-Tower selection and development evidence."
         )
     import torch
 
@@ -241,7 +252,9 @@ def main() -> None:
         "torch": torch.__version__,
     }
     if runtime != lock["runtime"]:
-        raise ValueError("M9 exact profile runtime differs from the locked M8 runtime.")
+        raise ValueError(
+            "Exact retrieval profile runtime differs from the locked Two-Tower runtime."
+        )
     identity = {
         "protocol_version": POLICY["protocol"],
         "phase": "development-exact-cost",
@@ -252,8 +265,8 @@ def main() -> None:
         "runner_sha256": _source_sha256(root),
         "manifest_sha256": manifest_fingerprint(manifest),
         "input_sha256": manifest["source_sha256"],
-        "m8_lock_sha256": sha256_file(args.m8_lock),
-        "m8_development_sha256": sha256_file(args.m8_development),
+        "m8_lock_sha256": sha256_file(args.two_tower_lock),
+        "m8_development_sha256": sha256_file(args.two_tower_development),
         "runtime": runtime,
     }
     artifact = {
@@ -269,11 +282,11 @@ def main() -> None:
     completed = set(artifact["completed_folds"])
     interactions = pd.read_parquet(args.input_path)
     if interactions[["user_id", "item_id", "timestamp"]].isna().any().any():
-        raise ValueError("M9 input interactions contain null IDs or timestamps.")
+        raise ValueError("Exact retrieval input interactions contain null IDs or timestamps.")
     for fold in manifest["folds"][: args.max_fold]:
         if fold["fold_index"] in completed:
             continue
-        print(f"M9 exact profile fold {fold['fold_index']}: fitting", flush=True)
+        print(f"Exact retrieval profile fold {fold['fold_index']}: fitting", flush=True)
         row = _profile_fold(interactions, fold, args.fold_dir / f"fold_{fold['fold_index']:02d}")
         artifact["results"].append(row)
         artifact["completed_folds"] = sorted(row["fold_index"] for row in artifact["results"])

@@ -15,10 +15,10 @@ from scripts.benchmark_two_tower import (
     _save,
     _validate_checkpoint,
 )
-from scripts.lock_m8_configs import _select
+from scripts.lock_two_tower_configs import _select
 
 
-def test_m8_selection_requires_full_development_grid_and_uses_pooled_integer_hits(tmp_path):
+def test_two_tower_selection_requires_full_development_grid_and_uses_pooled_integer_hits(tmp_path):
     rows = []
     for config_index, config in enumerate(TWO_TOWER_CONFIGS):
         for fold in range(1, 5):
@@ -68,7 +68,7 @@ def test_m8_selection_requires_full_development_grid_and_uses_pooled_integer_hit
         _select(path, "two_tower", TWO_TOWER_CONFIGS)
 
 
-def test_m8_selection_rejects_policy_or_runner_drift(tmp_path):
+def test_two_tower_selection_rejects_policy_or_runner_drift(tmp_path):
     artifact = {
         "model": "two_tower",
         "phase": "development",
@@ -99,7 +99,7 @@ def test_m8_selection_rejects_policy_or_runner_drift(tmp_path):
     artifact["results_sha256"] = _results_sha256(artifact)
     path = tmp_path / "development.json"
     path.write_text(json.dumps(artifact), encoding="utf-8")
-    with pytest.raises(ValueError, match="recognized M8 policy"):
+    with pytest.raises(ValueError, match="recognized Two-Tower policy"):
         _select(path, "two_tower", TWO_TOWER_CONFIGS)
 
     artifact["policy"] = POLICY
@@ -110,7 +110,7 @@ def test_m8_selection_rejects_policy_or_runner_drift(tmp_path):
         _select(path, "two_tower", TWO_TOWER_CONFIGS)
 
 
-def test_m8_checkpoint_is_atomic_and_detects_row_changes(tmp_path):
+def test_two_tower_checkpoint_is_atomic_and_detects_row_changes(tmp_path):
     config = TWO_TOWER_CONFIGS[0]
     reversed_config = dict(reversed(list(config.items())))
     identity = {

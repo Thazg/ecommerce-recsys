@@ -1,4 +1,4 @@
-"""Lock M8 model configurations from complete folds 1–4 development artifacts."""
+"""Lock Two-Tower model configurations from complete folds 1–4 development artifacts."""
 
 from __future__ import annotations
 
@@ -33,13 +33,15 @@ def _select(path: Path, expected_model: str, configs: tuple[dict, ...]) -> dict:
     if artifact.get("model") != expected_model or artifact.get("phase") != "development":
         raise ValueError(f"Expected a {expected_model} development artifact.")
     if artifact.get("blind_holdout") is not False:
-        raise ValueError("M8 lock requires folds 1–4 development results, not holdout results.")
+        raise ValueError(
+            "Two-Tower lock requires folds 1–4 development results, not holdout results."
+        )
     if (
         artifact.get("complete") is not True
         or artifact.get("expected_folds") != [1, 2, 3, 4]
         or artifact.get("completed_folds") != [1, 2, 3, 4]
     ):
-        raise ValueError("M8 lock requires a complete folds 1–4 development checkpoint.")
+        raise ValueError("Two-Tower lock requires a complete folds 1–4 development checkpoint.")
     if artifact.get("configurations") != list(configs):
         raise ValueError("Development artifact does not contain the complete predeclared grid.")
     expected_policy = POLICY.copy()
@@ -60,7 +62,7 @@ def _select(path: Path, expected_model: str, configs: tuple[dict, ...]) -> dict:
             expected_runner = LEGACY_ALS_RUNNER_SHA256
             reused_als = True
     if artifact.get("policy") != expected_policy:
-        raise ValueError("Development artifact does not use a recognized M8 policy.")
+        raise ValueError("Development artifact does not use a recognized Two-Tower policy.")
     if artifact.get("policy_sha256") != _canonical_sha256(expected_policy):
         raise ValueError("Development artifact policy fingerprint is invalid.")
     if artifact.get("runner_sha256") != expected_runner:

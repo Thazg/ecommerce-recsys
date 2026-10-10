@@ -1,4 +1,4 @@
-"""Experimental Faiss HNSW adapter for paired M9 Two-Tower retrieval tests."""
+"""Experimental Faiss HNSW adapter for paired Two-Tower retrieval tests."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from ecommerce_recsys.retrieval.two_tower import TwoTowerRetriever, encode_histo
 
 
 class FaissTwoTowerANN(CandidateGenerator):
-    """Search fitted M8 vectors without hidden exact or popularity fallback."""
+    """Search fitted Two-Tower vectors without hidden exact or popularity fallback."""
 
     name = "two_tower_ann"
 
