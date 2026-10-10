@@ -36,7 +36,6 @@ ecommerce_recommendation_system_master_roadmap_*.txt
 
 # Data files (Do not track raw or processed datasets in Git)
 data/raw/*
-!data/raw/README.md
 data/interim/*
 !data/interim/README.md
 data/processed/*

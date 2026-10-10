@@ -69,7 +69,7 @@ alone is insufficient to reproduce the package.
 **Evidence and consequences:** [pyproject.toml](../pyproject.toml) defines the
 package and pytest import paths; [CI](../.github/workflows/ci.yml) installs the
 package and runs checks on Linux. Raw data is obtained separately as documented
-in the [data instructions](../data/raw/README.md).
+in the [reproduction instructions](../README.md#reproduce).
 
 ## M1 — Dataset and data contract
 

@@ -97,7 +97,13 @@ Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT
 
 ## Reproduce
 
-Use Python 3.13 from the repository root. Place the Retailrocket CSVs in `data/raw/` as described in the [data instructions](data/raw/README.md), then run:
+Use Python 3.13 from the repository root. Download the
+[Retailrocket dataset](https://www.kaggle.com/datasets/retailrocket/ecommerce-dataset)
+and extract `events.csv`, `category_tree.csv`, `item_properties_part1.csv` and
+`item_properties_part2.csv` into `data/raw/`. Alternatively, with an authenticated
+Kaggle CLI, run `python scripts/download_data.py`. Verify the files with
+`python scripts/download_data.py --verify-only`. The [dataset card](docs/DATASET_CARD.md)
+describes the source, schema and recorded input hashes. Then run:
 
 ```sh
 python -m pip install -e ".[dev]"
