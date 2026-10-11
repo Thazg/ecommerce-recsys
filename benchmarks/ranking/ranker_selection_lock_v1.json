@@ -1,0 +1,163 @@
+{
+  "benchmark": "pairwise-ranker-selection-lock-v1",
+  "protocol_version": "rolling-temporal",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "raw_property_sha256": {
+    "item_properties_part1.csv": "30aad5aeca58b2dc27dcc73e1708565f5818e45adb3eb57401f91e87355b0b81",
+    "item_properties_part2.csv": "d5e7d1a91dc40f522aeb596b267e6c87d8aed689a7192d12369cfb165eb987e5"
+  },
+  "m7_reference_sha256": "c9a78776f3ffebb99dfcdb9f48ca217b66391be2673f44575471cdeee49437de",
+  "sweep_sha256": {
+    "item_knn": "3f20dff5d461a8bb5177ed6e248ee1d2aea5de07c5dd710ec80201690f79992d",
+    "als": "fa429d070367ebc71c0449d3175613550acf53762b06a4b17480fac7e8a7a865"
+  },
+  "model_configs": {
+    "item_knn": {
+      "shrinkage_lambda": 100.0
+    },
+    "als": {
+      "factors": 128,
+      "iterations": 40,
+      "regularization": 0.01
+    }
+  },
+  "m7_policy": {
+    "n_values": [
+      100,
+      500,
+      1000
+    ],
+    "source_pool_size": 1000,
+    "fusion": "equal-weight reciprocal rank fusion",
+    "rank_constant": 60.0,
+    "recent_window_days": 30,
+    "category_policy": "training count across history categories, no fallback",
+    "cold_latency_samples": 100,
+    "numeric_threads": 1,
+    "source_rank_policy": "eligible source-list rank; fusion preserves supplied ranks",
+    "fallback_policy": "explicit popularity sources; personalized sources may be empty",
+    "latency_quantile_method": "linear"
+  },
+  "m10_policy": {
+    "version": 1,
+    "cohort": "warm",
+    "folds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "generator": "hybrid",
+    "candidate_budget": 1000,
+    "label": "first unseen future item equals returned candidate item",
+    "source_rank_absent": 1001,
+    "source_score_absent": 0.0,
+    "numeric_threads": 1
+  },
+  "policy": {
+    "version": 1,
+    "cohort": "warm",
+    "candidate_generator": "fixed full M7 hybrid",
+    "candidate_budget": 1000,
+    "development_train_evaluate": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "development_evaluation_folds": [
+      2,
+      3,
+      4
+    ],
+    "diagnostic_folds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "model": "linear pairwise logistic with L2",
+    "feature_transforms": {
+      "counts_and_nonnegative_recency": "log1p",
+      "ranks": "1/(60+rank)",
+      "source_scores": "signed log1p(abs(score))",
+      "other": "identity",
+      "scale": "RMS of training pair differences only"
+    },
+    "negative_sampling": {
+      "top_rrf_negatives": 20,
+      "uniform_remaining_negatives": 80,
+      "seed": 42,
+      "skip_zero_positive_training_requests": true
+    },
+    "alpha_grid": [
+      0.0001,
+      0.001,
+      0.01
+    ],
+    "max_iterations": 100,
+    "selection_rule": "pooled HR@20, then pooled NDCG@20, then larger alpha",
+    "tie_break": "descending learned score, ascending item ID",
+    "numeric_threads": 1,
+    "blind_holdout": false
+  },
+  "feature_names": [
+    "retrieval_rank",
+    "rrf_score",
+    "source_count",
+    "user_event_count",
+    "user_distinct_item_count",
+    "user_days_since_last_event",
+    "item_event_count",
+    "item_distinct_user_count",
+    "item_days_since_last_event",
+    "category_known",
+    "user_category_event_count",
+    "user_view_count",
+    "item_view_count",
+    "user_addtocart_count",
+    "item_addtocart_count",
+    "user_transaction_count",
+    "item_transaction_count",
+    "item_knn_present",
+    "item_knn_rank",
+    "item_knn_score",
+    "als_present",
+    "als_rank",
+    "als_score",
+    "category_popularity_present",
+    "category_popularity_rank",
+    "category_popularity_score",
+    "recent_popularity_present",
+    "recent_popularity_rank",
+    "recent_popularity_score",
+    "global_popularity_present",
+    "global_popularity_rank",
+    "global_popularity_score"
+  ],
+  "feature_schema": "request_id: string\nfold_index: int8\nitem_id: string\nretrieval_rank: int16\nlabel: int8\nrrf_score: double\nsource_count: int8\nuser_event_count: int32\nuser_distinct_item_count: int32\nuser_days_since_last_event: double\nitem_event_count: int32\nitem_distinct_user_count: int32\nitem_days_since_last_event: double\ncategory_known: int8\nuser_category_event_count: int32\nuser_view_count: int32\nitem_view_count: int32\nuser_addtocart_count: int32\nitem_addtocart_count: int32\nuser_transaction_count: int32\nitem_transaction_count: int32\nitem_knn_present: int8\nitem_knn_rank: int16\nitem_knn_score: double\nals_present: int8\nals_rank: int16\nals_score: double\ncategory_popularity_present: int8\ncategory_popularity_rank: int16\ncategory_popularity_score: double\nrecent_popularity_present: int8\nrecent_popularity_rank: int16\nrecent_popularity_score: double\nglobal_popularity_present: int8\nglobal_popularity_rank: int16\nglobal_popularity_score: double",
+  "code_sha256": "5042de643269fb690ea64cccda0e33fb56fd85d86493e64417ddee59a00a5335",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "pyarrow": "19.0.1",
+    "scipy": "1.18.1"
+  },
+  "m10_quality_sha256": "24448659c1edf5c6b7f5bc6a7a8ab819a5a754fbfcf443af2f09de487249eec0",
+  "m10_data_sha256": "0682d32f505d53ca19fbaa575afd93813980366c7546a38e2bce78182ea08294",
+  "development_artifact_sha256": "807fc97986cbdbf863009ecd856791c9bdc8b3e5e4e8e4dc50f9e15ff4e60567",
+  "selected_alpha": 0.01,
+  "role": "locked development choice; later folds are post-selection diagnostics",
+  "payload_sha256": "01bfa080b17b8c8657129d42644051e5e7a821c0225b96c993b889a3e4392087"
+}

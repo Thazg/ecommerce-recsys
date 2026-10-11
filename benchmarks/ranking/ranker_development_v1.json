@@ -1,0 +1,797 @@
+{
+  "benchmark": "pairwise-ranker-development-v1",
+  "protocol_version": "rolling-temporal",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "raw_property_sha256": {
+    "item_properties_part1.csv": "30aad5aeca58b2dc27dcc73e1708565f5818e45adb3eb57401f91e87355b0b81",
+    "item_properties_part2.csv": "d5e7d1a91dc40f522aeb596b267e6c87d8aed689a7192d12369cfb165eb987e5"
+  },
+  "m7_reference_sha256": "c9a78776f3ffebb99dfcdb9f48ca217b66391be2673f44575471cdeee49437de",
+  "sweep_sha256": {
+    "item_knn": "3f20dff5d461a8bb5177ed6e248ee1d2aea5de07c5dd710ec80201690f79992d",
+    "als": "fa429d070367ebc71c0449d3175613550acf53762b06a4b17480fac7e8a7a865"
+  },
+  "model_configs": {
+    "item_knn": {
+      "shrinkage_lambda": 100.0
+    },
+    "als": {
+      "factors": 128,
+      "iterations": 40,
+      "regularization": 0.01
+    }
+  },
+  "m7_policy": {
+    "n_values": [
+      100,
+      500,
+      1000
+    ],
+    "source_pool_size": 1000,
+    "fusion": "equal-weight reciprocal rank fusion",
+    "rank_constant": 60.0,
+    "recent_window_days": 30,
+    "category_policy": "training count across history categories, no fallback",
+    "cold_latency_samples": 100,
+    "numeric_threads": 1,
+    "source_rank_policy": "eligible source-list rank; fusion preserves supplied ranks",
+    "fallback_policy": "explicit popularity sources; personalized sources may be empty",
+    "latency_quantile_method": "linear"
+  },
+  "m10_policy": {
+    "version": 1,
+    "cohort": "warm",
+    "folds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "generator": "hybrid",
+    "candidate_budget": 1000,
+    "label": "first unseen future item equals returned candidate item",
+    "source_rank_absent": 1001,
+    "source_score_absent": 0.0,
+    "numeric_threads": 1
+  },
+  "policy": {
+    "version": 1,
+    "cohort": "warm",
+    "candidate_generator": "fixed full M7 hybrid",
+    "candidate_budget": 1000,
+    "development_train_evaluate": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "development_evaluation_folds": [
+      2,
+      3,
+      4
+    ],
+    "diagnostic_folds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "model": "linear pairwise logistic with L2",
+    "feature_transforms": {
+      "counts_and_nonnegative_recency": "log1p",
+      "ranks": "1/(60+rank)",
+      "source_scores": "signed log1p(abs(score))",
+      "other": "identity",
+      "scale": "RMS of training pair differences only"
+    },
+    "negative_sampling": {
+      "top_rrf_negatives": 20,
+      "uniform_remaining_negatives": 80,
+      "seed": 42,
+      "skip_zero_positive_training_requests": true
+    },
+    "alpha_grid": [
+      0.0001,
+      0.001,
+      0.01
+    ],
+    "max_iterations": 100,
+    "selection_rule": "pooled HR@20, then pooled NDCG@20, then larger alpha",
+    "tie_break": "descending learned score, ascending item ID",
+    "numeric_threads": 1,
+    "blind_holdout": false
+  },
+  "feature_names": [
+    "retrieval_rank",
+    "rrf_score",
+    "source_count",
+    "user_event_count",
+    "user_distinct_item_count",
+    "user_days_since_last_event",
+    "item_event_count",
+    "item_distinct_user_count",
+    "item_days_since_last_event",
+    "category_known",
+    "user_category_event_count",
+    "user_view_count",
+    "item_view_count",
+    "user_addtocart_count",
+    "item_addtocart_count",
+    "user_transaction_count",
+    "item_transaction_count",
+    "item_knn_present",
+    "item_knn_rank",
+    "item_knn_score",
+    "als_present",
+    "als_rank",
+    "als_score",
+    "category_popularity_present",
+    "category_popularity_rank",
+    "category_popularity_score",
+    "recent_popularity_present",
+    "recent_popularity_rank",
+    "recent_popularity_score",
+    "global_popularity_present",
+    "global_popularity_rank",
+    "global_popularity_score"
+  ],
+  "feature_schema": "request_id: string\nfold_index: int8\nitem_id: string\nretrieval_rank: int16\nlabel: int8\nrrf_score: double\nsource_count: int8\nuser_event_count: int32\nuser_distinct_item_count: int32\nuser_days_since_last_event: double\nitem_event_count: int32\nitem_distinct_user_count: int32\nitem_days_since_last_event: double\ncategory_known: int8\nuser_category_event_count: int32\nuser_view_count: int32\nitem_view_count: int32\nuser_addtocart_count: int32\nitem_addtocart_count: int32\nuser_transaction_count: int32\nitem_transaction_count: int32\nitem_knn_present: int8\nitem_knn_rank: int16\nitem_knn_score: double\nals_present: int8\nals_rank: int16\nals_score: double\ncategory_popularity_present: int8\ncategory_popularity_rank: int16\ncategory_popularity_score: double\nrecent_popularity_present: int8\nrecent_popularity_rank: int16\nrecent_popularity_score: double\nglobal_popularity_present: int8\nglobal_popularity_rank: int16\nglobal_popularity_score: double",
+  "code_sha256": "5042de643269fb690ea64cccda0e33fb56fd85d86493e64417ddee59a00a5335",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "pyarrow": "19.0.1",
+    "scipy": "1.18.1"
+  },
+  "m10_quality_sha256": "24448659c1edf5c6b7f5bc6a7a8ab819a5a754fbfcf443af2f09de487249eec0",
+  "m10_data_sha256": "0682d32f505d53ca19fbaa575afd93813980366c7546a38e2bce78182ea08294",
+  "folds": [
+    {
+      "fold_index": 2,
+      "training_folds": [
+        1
+      ],
+      "training_counts": {
+        "requests": 5346,
+        "positive_requests": 1176,
+        "zero_positive_requests": 4170,
+        "pairs": 117600
+      },
+      "requests": 7201,
+      "configs": {
+        "0.0001": {
+          "metrics": {
+            "requests": 7201,
+            "target_in_pool": 1659,
+            "candidates": 7201000,
+            "candidate_recall@1000": 0.23038466879600056,
+            "rrf": {
+              "HR@5": 0.021524788223857796,
+              "HR@10": 0.02874600749895848,
+              "HR@20": 0.03930009720872101,
+              "MRR@5": 0.012164977086515764,
+              "MRR@10": 0.01307165230578646,
+              "MRR@20": 0.013809254721744095,
+              "NDCG@5": 0.014470337153471591,
+              "NDCG@10": 0.01674777813672004,
+              "NDCG@20": 0.019422031918659224,
+              "hits": {
+                "5": 155,
+                "10": 207,
+                "20": 283
+              },
+              "conditional": {
+                "HR@5": 0.09342977697408077,
+                "HR@10": 0.12477396021699819,
+                "HR@20": 0.17058468957203135,
+                "MRR@5": 0.05280289330922243,
+                "MRR@10": 0.056738377488829594,
+                "MRR@20": 0.059939989904327445,
+                "NDCG@5": 0.06280946223155451,
+                "NDCG@10": 0.07269484651146534,
+                "NDCG@20": 0.08430262317436112
+              }
+            },
+            "learned": {
+              "HR@5": 0.032356617136508815,
+              "HR@10": 0.048187751701152616,
+              "HR@20": 0.06499097347590613,
+              "MRR@5": 0.019110771652085357,
+              "MRR@10": 0.021153312039994442,
+              "MRR@20": 0.02232656936535246,
+              "NDCG@5": 0.0223882090645867,
+              "NDCG@10": 0.027436813639756627,
+              "NDCG@20": 0.0316964875194252,
+              "hits": {
+                "5": 233,
+                "10": 347,
+                "20": 468
+              },
+              "conditional": {
+                "HR@5": 0.1404460518384569,
+                "HR@10": 0.20916214587100662,
+                "HR@20": 0.2820976491862568,
+                "MRR@5": 0.0829515772553747,
+                "MRR@10": 0.09181735985533453,
+                "MRR@20": 0.09690996142248527,
+                "NDCG@5": 0.09717751264260929,
+                "NDCG@10": 0.11909131707045659,
+                "NDCG@20": 0.13758071526665513
+              }
+            }
+          },
+          "fit_seconds": 0.9198043999995207,
+          "optimizer_iterations": 100,
+          "converged": false
+        },
+        "0.001": {
+          "metrics": {
+            "requests": 7201,
+            "target_in_pool": 1659,
+            "candidates": 7201000,
+            "candidate_recall@1000": 0.23038466879600056,
+            "rrf": {
+              "HR@5": 0.021524788223857796,
+              "HR@10": 0.02874600749895848,
+              "HR@20": 0.03930009720872101,
+              "MRR@5": 0.012164977086515764,
+              "MRR@10": 0.01307165230578646,
+              "MRR@20": 0.013809254721744095,
+              "NDCG@5": 0.014470337153471591,
+              "NDCG@10": 0.01674777813672004,
+              "NDCG@20": 0.019422031918659224,
+              "hits": {
+                "5": 155,
+                "10": 207,
+                "20": 283
+              },
+              "conditional": {
+                "HR@5": 0.09342977697408077,
+                "HR@10": 0.12477396021699819,
+                "HR@20": 0.17058468957203135,
+                "MRR@5": 0.05280289330922243,
+                "MRR@10": 0.056738377488829594,
+                "MRR@20": 0.059939989904327445,
+                "NDCG@5": 0.06280946223155451,
+                "NDCG@10": 0.07269484651146534,
+                "NDCG@20": 0.08430262317436112
+              }
+            },
+            "learned": {
+              "HR@5": 0.03416192195528399,
+              "HR@10": 0.048048882099708375,
+              "HR@20": 0.06721288709901403,
+              "MRR@5": 0.019631532657501265,
+              "MRR@10": 0.021428130572693813,
+              "MRR@20": 0.02277032062768735,
+              "NDCG@5": 0.023221924864906,
+              "NDCG@10": 0.02765684215155008,
+              "NDCG@20": 0.0325179349121208,
+              "hits": {
+                "5": 246,
+                "10": 346,
+                "20": 484
+              },
+              "conditional": {
+                "HR@5": 0.14828209764918626,
+                "HR@10": 0.20855937311633513,
+                "HR@20": 0.2917420132610006,
+                "MRR@5": 0.08521197508539277,
+                "MRR@10": 0.09301022800118634,
+                "MRR@20": 0.09883609333331923,
+                "NDCG@5": 0.10079631160469445,
+                "NDCG@10": 0.12004636548120079,
+                "NDCG@20": 0.1411462623882953
+              }
+            }
+          },
+          "fit_seconds": 0.6542891999997664,
+          "optimizer_iterations": 73,
+          "converged": true
+        },
+        "0.01": {
+          "metrics": {
+            "requests": 7201,
+            "target_in_pool": 1659,
+            "candidates": 7201000,
+            "candidate_recall@1000": 0.23038466879600056,
+            "rrf": {
+              "HR@5": 0.021524788223857796,
+              "HR@10": 0.02874600749895848,
+              "HR@20": 0.03930009720872101,
+              "MRR@5": 0.012164977086515764,
+              "MRR@10": 0.01307165230578646,
+              "MRR@20": 0.013809254721744095,
+              "NDCG@5": 0.014470337153471591,
+              "NDCG@10": 0.01674777813672004,
+              "NDCG@20": 0.019422031918659224,
+              "hits": {
+                "5": 155,
+                "10": 207,
+                "20": 283
+              },
+              "conditional": {
+                "HR@5": 0.09342977697408077,
+                "HR@10": 0.12477396021699819,
+                "HR@20": 0.17058468957203135,
+                "MRR@5": 0.05280289330922243,
+                "MRR@10": 0.056738377488829594,
+                "MRR@20": 0.059939989904327445,
+                "NDCG@5": 0.06280946223155451,
+                "NDCG@10": 0.07269484651146534,
+                "NDCG@20": 0.08430262317436112
+              }
+            },
+            "learned": {
+              "HR@5": 0.03499513956394945,
+              "HR@10": 0.0497153173170393,
+              "HR@20": 0.0690181919177892,
+              "MRR@5": 0.01979123269916215,
+              "MRR@10": 0.02172526743419673,
+              "MRR@20": 0.023022670165777425,
+              "NDCG@5": 0.023531662774562624,
+              "NDCG@10": 0.02826255291349978,
+              "NDCG@20": 0.03309178047910869,
+              "hits": {
+                "5": 252,
+                "10": 358,
+                "20": 497
+              },
+              "conditional": {
+                "HR@5": 0.1518987341772152,
+                "HR@10": 0.21579264617239302,
+                "HR@20": 0.29957805907172996,
+                "MRR@5": 0.08590516375326501,
+                "MRR@10": 0.09429997033975325,
+                "MRR@20": 0.0999314333114908,
+                "NDCG@5": 0.10214074963208286,
+                "NDCG@10": 0.12267549338765034,
+                "NDCG@20": 0.14363707729358752
+              }
+            }
+          },
+          "fit_seconds": 0.32373439999992115,
+          "optimizer_iterations": 30,
+          "converged": true
+        }
+      }
+    },
+    {
+      "fold_index": 3,
+      "training_folds": [
+        1,
+        2
+      ],
+      "training_counts": {
+        "requests": 12547,
+        "positive_requests": 2835,
+        "zero_positive_requests": 9712,
+        "pairs": 283500
+      },
+      "requests": 8602,
+      "configs": {
+        "0.0001": {
+          "metrics": {
+            "requests": 8602,
+            "target_in_pool": 1826,
+            "candidates": 8602000,
+            "candidate_recall@1000": 0.21227621483375958,
+            "rrf": {
+              "HR@5": 0.021041618228318997,
+              "HR@10": 0.028598000465008138,
+              "HR@20": 0.03929318763078354,
+              "MRR@5": 0.011656203983569717,
+              "MRR@10": 0.012701688053350469,
+              "MRR@20": 0.013415494639738347,
+              "NDCG@5": 0.013979179666840383,
+              "NDCG@10": 0.016459227691543735,
+              "NDCG@20": 0.019127613228160215,
+              "hits": {
+                "5": 181,
+                "10": 246,
+                "20": 338
+              },
+              "conditional": {
+                "HR@5": 0.0991237677984666,
+                "HR@10": 0.13472070098576122,
+                "HR@20": 0.1851040525739321,
+                "MRR@5": 0.054910551296093485,
+                "MRR@10": 0.05983566299831365,
+                "MRR@20": 0.06319829402575534,
+                "NDCG@5": 0.06585372590041674,
+                "NDCG@10": 0.07753684370353736,
+                "NDCG@20": 0.09010719002663427
+              }
+            },
+            "learned": {
+              "HR@5": 0.02766798418972332,
+              "HR@10": 0.04312950476633341,
+              "HR@20": 0.06126482213438735,
+              "MRR@5": 0.015951716655041463,
+              "MRR@10": 0.01797261065163878,
+              "MRR@20": 0.019207051589132256,
+              "NDCG@5": 0.01884331287178704,
+              "NDCG@10": 0.02380110409288627,
+              "NDCG@20": 0.028356418520840202,
+              "hits": {
+                "5": 238,
+                "10": 371,
+                "20": 527
+              },
+              "conditional": {
+                "HR@5": 0.1303395399780942,
+                "HR@10": 0.2031763417305586,
+                "HR@20": 0.28860898138006574,
+                "MRR@5": 0.07514603870025557,
+                "MRR@10": 0.08466615379265979,
+                "MRR@20": 0.09048141170302064,
+                "NDCG@5": 0.0887678955767317,
+                "NDCG@10": 0.11212327349781363,
+                "NDCG@20": 0.13358264628492192
+              }
+            }
+          },
+          "fit_seconds": 2.304399900000135,
+          "optimizer_iterations": 100,
+          "converged": false
+        },
+        "0.001": {
+          "metrics": {
+            "requests": 8602,
+            "target_in_pool": 1826,
+            "candidates": 8602000,
+            "candidate_recall@1000": 0.21227621483375958,
+            "rrf": {
+              "HR@5": 0.021041618228318997,
+              "HR@10": 0.028598000465008138,
+              "HR@20": 0.03929318763078354,
+              "MRR@5": 0.011656203983569717,
+              "MRR@10": 0.012701688053350469,
+              "MRR@20": 0.013415494639738347,
+              "NDCG@5": 0.013979179666840383,
+              "NDCG@10": 0.016459227691543735,
+              "NDCG@20": 0.019127613228160215,
+              "hits": {
+                "5": 181,
+                "10": 246,
+                "20": 338
+              },
+              "conditional": {
+                "HR@5": 0.0991237677984666,
+                "HR@10": 0.13472070098576122,
+                "HR@20": 0.1851040525739321,
+                "MRR@5": 0.054910551296093485,
+                "MRR@10": 0.05983566299831365,
+                "MRR@20": 0.06319829402575534,
+                "NDCG@5": 0.06585372590041674,
+                "NDCG@10": 0.07753684370353736,
+                "NDCG@20": 0.09010719002663427
+              }
+            },
+            "learned": {
+              "HR@5": 0.02824924436177633,
+              "HR@10": 0.042315740525459195,
+              "HR@20": 0.06231109044408277,
+              "MRR@5": 0.016327598232969073,
+              "MRR@10": 0.018165026221292208,
+              "MRR@20": 0.01954844779053437,
+              "NDCG@5": 0.019281179723480885,
+              "NDCG@10": 0.02378968565915339,
+              "NDCG@20": 0.028838833848751865,
+              "hits": {
+                "5": 243,
+                "10": 364,
+                "20": 536
+              },
+              "conditional": {
+                "HR@5": 0.1330777656078861,
+                "HR@10": 0.19934282584884994,
+                "HR@20": 0.29353778751369114,
+                "MRR@5": 0.0769167579408543,
+                "MRR@10": 0.0855725934039187,
+                "MRR@20": 0.09208967573613179,
+                "NDCG@5": 0.09083061773350634,
+                "NDCG@10": 0.1120694830449274,
+                "NDCG@20": 0.1358552293356865
+              }
+            }
+          },
+          "fit_seconds": 1.650724099999934,
+          "optimizer_iterations": 65,
+          "converged": true
+        },
+        "0.01": {
+          "metrics": {
+            "requests": 8602,
+            "target_in_pool": 1826,
+            "candidates": 8602000,
+            "candidate_recall@1000": 0.21227621483375958,
+            "rrf": {
+              "HR@5": 0.021041618228318997,
+              "HR@10": 0.028598000465008138,
+              "HR@20": 0.03929318763078354,
+              "MRR@5": 0.011656203983569717,
+              "MRR@10": 0.012701688053350469,
+              "MRR@20": 0.013415494639738347,
+              "NDCG@5": 0.013979179666840383,
+              "NDCG@10": 0.016459227691543735,
+              "NDCG@20": 0.019127613228160215,
+              "hits": {
+                "5": 181,
+                "10": 246,
+                "20": 338
+              },
+              "conditional": {
+                "HR@5": 0.0991237677984666,
+                "HR@10": 0.13472070098576122,
+                "HR@20": 0.1851040525739321,
+                "MRR@5": 0.054910551296093485,
+                "MRR@10": 0.05983566299831365,
+                "MRR@20": 0.06319829402575534,
+                "NDCG@5": 0.06585372590041674,
+                "NDCG@10": 0.07753684370353736,
+                "NDCG@20": 0.09010719002663427
+              }
+            },
+            "learned": {
+              "HR@5": 0.028946756568239945,
+              "HR@10": 0.04382701697279703,
+              "HR@20": 0.06231109044408277,
+              "MRR@5": 0.01696117182050686,
+              "MRR@10": 0.018962044633400125,
+              "MRR@20": 0.020249059407747405,
+              "NDCG@5": 0.01993743697020003,
+              "NDCG@10": 0.024764612156663195,
+              "NDCG@20": 0.02944290995225709,
+              "hits": {
+                "5": 249,
+                "10": 377,
+                "20": 536
+              },
+              "conditional": {
+                "HR@5": 0.13636363636363635,
+                "HR@10": 0.20646221248630886,
+                "HR@20": 0.29353778751369114,
+                "MRR@5": 0.0799014238773275,
+                "MRR@10": 0.08932722230914998,
+                "MRR@20": 0.09539014733047271,
+                "NDCG@5": 0.09392214283552063,
+                "NDCG@10": 0.11666220907536518,
+                "NDCG@20": 0.13870093724497015
+              }
+            }
+          },
+          "fit_seconds": 0.7913386000000173,
+          "optimizer_iterations": 31,
+          "converged": true
+        }
+      }
+    },
+    {
+      "fold_index": 4,
+      "training_folds": [
+        1,
+        2,
+        3
+      ],
+      "training_counts": {
+        "requests": 21149,
+        "positive_requests": 4661,
+        "zero_positive_requests": 16488,
+        "pairs": 466100
+      },
+      "requests": 9635,
+      "configs": {
+        "0.0001": {
+          "metrics": {
+            "requests": 9635,
+            "target_in_pool": 2056,
+            "candidates": 9635000,
+            "candidate_recall@1000": 0.21338868707836015,
+            "rrf": {
+              "HR@5": 0.021069019200830305,
+              "HR@10": 0.03061754021795537,
+              "HR@20": 0.041307732226258435,
+              "MRR@5": 0.012670818197543678,
+              "MRR@10": 0.01390668116407607,
+              "MRR@20": 0.014656486966045127,
+              "NDCG@5": 0.014754001540185973,
+              "NDCG@10": 0.017802666608252103,
+              "NDCG@20": 0.020515201910949805,
+              "hits": {
+                "5": 203,
+                "10": 295,
+                "20": 398
+              },
+              "conditional": {
+                "HR@5": 0.09873540856031128,
+                "HR@10": 0.14348249027237353,
+                "HR@20": 0.193579766536965,
+                "MRR@5": 0.059379053177691314,
+                "MRR@10": 0.06517065808165025,
+                "MRR@20": 0.0686844610495354,
+                "NDCG@5": 0.06914144204265167,
+                "NDCG@10": 0.08342835251483902,
+                "NDCG@20": 0.09614006342996177
+              }
+            },
+            "learned": {
+              "HR@5": 0.03020238713025428,
+              "HR@10": 0.04213803840166061,
+              "HR@20": 0.058951738453554746,
+              "MRR@5": 0.016132157066251512,
+              "MRR@10": 0.017733544204742942,
+              "MRR@20": 0.01886660754187717,
+              "NDCG@5": 0.019605177584893732,
+              "NDCG@10": 0.023472537915324145,
+              "NDCG@20": 0.027681975902045183,
+              "hits": {
+                "5": 291,
+                "10": 406,
+                "20": 568
+              },
+              "conditional": {
+                "HR@5": 0.14153696498054474,
+                "HR@10": 0.19747081712062256,
+                "HR@20": 0.27626459143968873,
+                "MRR@5": 0.07559987029831387,
+                "MRR@10": 0.08310442529800499,
+                "MRR@20": 0.0884142819387094,
+                "NDCG@5": 0.091875430948663,
+                "NDCG@10": 0.10999897996797088,
+                "NDCG@20": 0.12972560205068354
+              }
+            }
+          },
+          "fit_seconds": 3.993719500000225,
+          "optimizer_iterations": 100,
+          "converged": false
+        },
+        "0.001": {
+          "metrics": {
+            "requests": 9635,
+            "target_in_pool": 2056,
+            "candidates": 9635000,
+            "candidate_recall@1000": 0.21338868707836015,
+            "rrf": {
+              "HR@5": 0.021069019200830305,
+              "HR@10": 0.03061754021795537,
+              "HR@20": 0.041307732226258435,
+              "MRR@5": 0.012670818197543678,
+              "MRR@10": 0.01390668116407607,
+              "MRR@20": 0.014656486966045127,
+              "NDCG@5": 0.014754001540185973,
+              "NDCG@10": 0.017802666608252103,
+              "NDCG@20": 0.020515201910949805,
+              "hits": {
+                "5": 203,
+                "10": 295,
+                "20": 398
+              },
+              "conditional": {
+                "HR@5": 0.09873540856031128,
+                "HR@10": 0.14348249027237353,
+                "HR@20": 0.193579766536965,
+                "MRR@5": 0.059379053177691314,
+                "MRR@10": 0.06517065808165025,
+                "MRR@20": 0.0686844610495354,
+                "NDCG@5": 0.06914144204265167,
+                "NDCG@10": 0.08342835251483902,
+                "NDCG@20": 0.09614006342996177
+              }
+            },
+            "learned": {
+              "HR@5": 0.030721328489880642,
+              "HR@10": 0.04276076803321225,
+              "HR@20": 0.05926310326933056,
+              "MRR@5": 0.016450441100155686,
+              "MRR@10": 0.018050180805759413,
+              "MRR@20": 0.01917142440043338,
+              "NDCG@5": 0.019984171128090734,
+              "NDCG@10": 0.023869925982952477,
+              "NDCG@20": 0.028012414204724344,
+              "hits": {
+                "5": 296,
+                "10": 412,
+                "20": 571
+              },
+              "conditional": {
+                "HR@5": 0.14396887159533073,
+                "HR@10": 0.20038910505836577,
+                "HR@20": 0.2777237354085603,
+                "MRR@5": 0.07709143968871597,
+                "MRR@10": 0.08458827434994745,
+                "MRR@20": 0.08984274032012432,
+                "NDCG@5": 0.09365150234394662,
+                "NDCG@10": 0.11186125332964354,
+                "NDCG@20": 0.13127412979694508
+              }
+            }
+          },
+          "fit_seconds": 3.1451624999999694,
+          "optimizer_iterations": 78,
+          "converged": true
+        },
+        "0.01": {
+          "metrics": {
+            "requests": 9635,
+            "target_in_pool": 2056,
+            "candidates": 9635000,
+            "candidate_recall@1000": 0.21338868707836015,
+            "rrf": {
+              "HR@5": 0.021069019200830305,
+              "HR@10": 0.03061754021795537,
+              "HR@20": 0.041307732226258435,
+              "MRR@5": 0.012670818197543678,
+              "MRR@10": 0.01390668116407607,
+              "MRR@20": 0.014656486966045127,
+              "NDCG@5": 0.014754001540185973,
+              "NDCG@10": 0.017802666608252103,
+              "NDCG@20": 0.020515201910949805,
+              "hits": {
+                "5": 203,
+                "10": 295,
+                "20": 398
+              },
+              "conditional": {
+                "HR@5": 0.09873540856031128,
+                "HR@10": 0.14348249027237353,
+                "HR@20": 0.193579766536965,
+                "MRR@5": 0.059379053177691314,
+                "MRR@10": 0.06517065808165025,
+                "MRR@20": 0.0686844610495354,
+                "NDCG@5": 0.06914144204265167,
+                "NDCG@10": 0.08342835251483902,
+                "NDCG@20": 0.09614006342996177
+              }
+            },
+            "learned": {
+              "HR@5": 0.031966787752983915,
+              "HR@10": 0.04462895692786715,
+              "HR@20": 0.062065386611312924,
+              "MRR@5": 0.017682061927002238,
+              "MRR@10": 0.019345227798782526,
+              "MRR@20": 0.02053446723980412,
+              "NDCG@5": 0.021207297982605535,
+              "NDCG@10": 0.025275052330522053,
+              "NDCG@20": 0.029656785909895136,
+              "hits": {
+                "5": 308,
+                "10": 430,
+                "20": 598
+              },
+              "conditional": {
+                "HR@5": 0.14980544747081712,
+                "HR@10": 0.20914396887159534,
+                "HR@20": 0.2908560311284047,
+                "MRR@5": 0.08286316472114132,
+                "MRR@10": 0.09065723241306889,
+                "MRR@20": 0.09623034623322603,
+                "NDCG@5": 0.09938342220934064,
+                "NDCG@10": 0.1184460745158463,
+                "NDCG@20": 0.13898012268571966
+              }
+            }
+          },
+          "fit_seconds": 1.500958200000241,
+          "optimizer_iterations": 32,
+          "converged": true
+        }
+      }
+    }
+  ],
+  "complete": true,
+  "payload_sha256": "6d91a951971667a50b1db53169a5be8808d653d04301e528bbce2ab338942484",
+  "selected_alpha": 0.01
+}
