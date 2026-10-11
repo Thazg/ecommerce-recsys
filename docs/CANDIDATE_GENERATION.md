@@ -73,7 +73,9 @@ value, so neither is presented as empirically optimal. The full hybrid combines
 ItemKNN, ALS, category, recent popularity and
 global popularity. A second hybrid removes ALS to measure its incremental recall
 and cost. Popularity sources also provide the cold-user and sparse-history path.
-No learned final ranker is implemented in M7.
+M7 stops at candidate retrieval; the separate
+[learned-ranking evaluation](LEARNED_RANKING_REPORT.md) compares final ordering
+on fixed pools.
 
 ## Evaluation contract
 

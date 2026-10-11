@@ -1,7 +1,8 @@
 # Ranking dataset: causal features and labels
 
 **Status:** Development folds 1–4 completed and independently audited on
-2026-10-10. No learned ranker or later-fold ranking diagnostic exists.
+2026-10-10. The [learned-ranking report](LEARNED_RANKING_REPORT.md) covers the
+subsequent same-pool Top-K comparison and later-fold diagnostics.
 
 ## Scope and decision
 
@@ -115,15 +116,18 @@ ruff format --check .
 ```
 
 The builder accepts `--input-path` and `--fold-dir` when local data lives
-outside the checkout. It refuses folds 5–9 until a ranker configuration lock
-exists. A learned-ranker evaluation must train on earlier labelled folds,
-compare with the RRF order on the **same candidate pool**, and report Top-K
+outside the checkout. It writes development folds 1–4 only; the ranker runner
+reconstructs later-fold candidates and features in memory after locking its
+configuration. The learned-ranker evaluation trains on earlier labelled folds,
+compares with the RRF order on the **same candidate pool**, and reports Top-K
 accuracy over all evaluated warm requests. Later-fold results remain
-post-selection diagnostics, not blind validation. This dataset build does not
-measure learned-ranker quality or serving latency.
+post-selection diagnostics, not blind validation. This dataset build itself
+does not measure learned-ranker quality or serving latency; see the
+[ranking comparison](LEARNED_RANKING_REPORT.md).
 
-A separately predeclared no-ALS source ablation is warranted for ranker cost and
-quality analysis because the already inspected later folds favored that
-cheaper source. This source has a different candidate pool and must report its
-own recall and fit cost. It cannot replace the locked same-pool ranker
-comparison after later-fold ranking scores are viewed.
+The full-hybrid source pays for ALS even though the already inspected later
+folds favored the cheaper no-ALS source at Candidate Recall@1000. No no-ALS
+ranker was trained in this experiment. A separate source-policy comparison
+would use a predeclared protocol, its own pool recall and fit cost, and a later
+untouched period; it cannot replace the locked same-pool comparison after
+later-fold ranking scores have been viewed.

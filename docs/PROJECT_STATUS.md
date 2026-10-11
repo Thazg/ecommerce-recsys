@@ -1,12 +1,12 @@
 # Project status
 
-**Updated:** 2026-10-10
+**Updated:** 2026-10-11
 
-**Stage:** M10 has built and audited the warm ranking dataset for development
-folds 1–4. M9 ended with an ANN no-go; no ANN index was adopted. The project
-remains offline. A learned final ranker and online serving are not implemented.
-Folds 5–9 were inspected in earlier milestones and remain post-selection
-diagnostics, not blind validation.
+**Stage:** M11 has trained and evaluated an offline pairwise ranker on the
+fixed full-hybrid candidate pool. M9 ended with an ANN no-go; no ANN index was
+adopted. The project remains offline; no production ranker or online serving
+is implemented. Folds 5–9 were inspected in earlier milestones and remain
+post-selection diagnostics, not blind validation.
 
 ## Implemented
 
@@ -19,6 +19,7 @@ diagnostics, not blind validation.
 | M8 retrieval | Deterministic CPU two-tower retriever with shared history encoding, train-only category features, sampled-softmax training and exact catalog scoring |
 | M9 feasibility | Reproducible exact-cost profile and paired fold-1 ANN pilot; no ANN source promoted to the package after the speed gate failed |
 | M10 ranking data | Causal warm request/candidate Parquet for folds 1–4, as-of features, zero-positive request audit, SHA-bound checkpoints and independent file verification |
+| M11 learned ranking | Deterministic pairwise linear ranker, chronological development selection, SHA-bound lock and same-pool RRF comparison on folds 5–9 |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -100,12 +101,24 @@ The ItemKNN/ALS configurations and full-hybrid candidate policy were selected
 using folds 1–4. M10's fold 1–4 recall is therefore an in-sample dataset
 construction diagnostic, not an independent retrieval-quality estimate.
 
+## M11 learned ranking
+
+M11 trained on labelled warm folds 1–4 and selected `alpha=0.01` from a fixed
+three-setting grid using pooled development HR@20. On the same regenerated
+full-hybrid pools for **59,323 warm user-windows** in folds 5–9, RRF ranked
+**2,285** targets in the Top-20 (HR@20 **0.038518**); the locked ranker ranked
+**3,237** (HR@20 **0.054566**). The difference is **952 hits** or **0.016048**
+in HR. Both orders share Candidate Recall@1000 of **0.211537**
+(12,549/59,323 targets in pool). All five folds had a positive hit difference.
+These are post-selection diagnostics, not blind validation or a significance
+claim. The [learned-ranking report](LEARNED_RANKING_REPORT.md) gives per-fold
+HR/MRR/NDCG, model policy, cost scope, artifact provenance and limitations.
+
 ## Next milestone
 
-M11 can train and compare a learned ranker against the M7 ordering on the same
-candidate pool. It must train on earlier labelled folds and preserve the shared
-rolling targets and train-time catalogs. Folds 5–9 remain non-blind diagnostics;
-independent confirmation requires a later untouched time period. The
-[roadmap](ROADMAP.md) defines later milestone gates.
+The [roadmap](ROADMAP.md) defines optional sequential modelling and later
+re-ranking, model-policy and serving gates. Independent confirmation of M11
+requires a later untouched time period; its present results should not be used
+as a production model-selection claim.
 
 The [baseline](BASELINE_REPORT.md) and [MF](MF_EXPERIMENT_REPORT.md) reports document earlier per-user leave-last-out experiments. Their metrics are retained for provenance but are not directly comparable with rolling results.

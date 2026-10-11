@@ -77,9 +77,24 @@ requests, 6,717 have their future target
 in the 1,000-item pool (Candidate Recall@1000 **0.218198**). Requests with an
 unreachable or unretrieved target remain in the denominator. Features use only
 the fold's training snapshot and as-of catalog; an independent Parquet audit
-found no null or nonfinite values. This dataset does not yet include a learned
-ranker or Top-K ranking comparison. The [ranking dataset report](docs/RANKING_DATASET_REPORT.md)
+found no null or nonfinite values. The dataset build itself stops before
+learned Top-K evaluation. The [ranking dataset report](docs/RANKING_DATASET_REPORT.md)
 records the feature contract, per-fold counts, build cost and reproduction steps.
+
+## Learned ranking
+
+A deterministic pairwise linear ranker uses the labelled development rows and
+reorders the same fixed 1,000-candidate full-hybrid pool as RRF. Its L2 setting
+was selected on chronological folds 2–4, then locked before scoring folds
+5–9. On **59,323 warm user-windows** in those later folds, RRF had **2,285**
+hits@20 (HR@20 **0.038518**) and the ranker had **3,237** (HR@20
+**0.054566**). The pool itself reached **12,549** targets (Candidate
+Recall@1000 **0.211537**); the ranker changes ordering, not retrieval.
+All five later folds improved in hit count. These are **post-selection
+diagnostics, not blind validation**, and the offline experiment does not
+select a production retrieval or serving policy. The
+[learned-ranking report](docs/LEARNED_RANKING_REPORT.md) covers per-fold
+HR/MRR/NDCG, selection, cost and limitations.
 
 ## Repository guide
 
@@ -92,6 +107,7 @@ records the feature contract, per-fold counts, build cost and reproduction steps
 - [Metric and protocol glossary](docs/METRICS_AND_PROTOCOLS.md): comparison boundaries, units, model references and latency workloads.
 - [ANN feasibility report](docs/ANN_RETRIEVAL_REPORT.md): conditional index decision and measured no-go result.
 - [Ranking dataset report](docs/RANKING_DATASET_REPORT.md): causal ranking rows, feature contract and development-fold audit.
+- [Learned-ranking report](docs/LEARNED_RANKING_REPORT.md): same-pool Top-K comparison, model selection and diagnostic limits.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 
@@ -116,6 +132,9 @@ python scripts/benchmark_rolling_cold.py
 python scripts/benchmark_candidates.py
 python scripts/build_ranking_dataset.py
 python scripts/verify_ranking_dataset.py
+python scripts/benchmark_ranker.py development
+python scripts/benchmark_ranker.py lock
+python scripts/benchmark_ranker.py diagnostic
 pytest
 ruff check .
 ruff format --check .

@@ -1,10 +1,11 @@
 # Current architecture
 
-**Updated:** 2026-10-10
+**Updated:** 2026-10-11
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
-data for development folds 1–4. No learned final ranker, ANN production source
-or online serving process is implemented.
+data for development folds 1–4. A learned ranker has been evaluated offline
+on the same regenerated candidate pools in folds 5–9. No production ranker,
+ANN production source or online serving process is implemented.
 
 ```text
 Retailrocket raw CSV
@@ -41,6 +42,14 @@ Prepared folds + selected hybrid source policy and sweeps
        + benchmarks/ranking/m10_quality_v1.json (hash-bound checkpoint)
     -> verify_ranking_dataset.py
        + benchmarks/ranking/m10_feature_audit_v1.json
+
+Verified development ranking rows
+    -> benchmark_ranker.py development (train earlier folds, score folds 2–4)
+    -> ranker_development_v1.json -> benchmark_ranker.py lock
+    -> ranker_selection_lock_v1.json
+    -> benchmark_ranker.py diagnostic (fit ranker on folds 1–4;
+       regenerate each fold's full-hybrid pool at its cutoff, score folds 5–9)
+    -> ranker_diagnostic_v1.json (post-selection, not blind)
 ```
 
 `src/ecommerce_recsys/data/splitting.py` contains rolling time windows and global causality guards. `src/ecommerce_recsys/data/catalog.py` constructs train-time item and category snapshots. Cohort and metric rules are in the [rolling evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md).
@@ -63,8 +72,8 @@ Fitted train-time snapshot + user/history context
 `src/ecommerce_recsys/retrieval/` defines the common candidate interface and its
 adapters. ALS retrieves by exact user/item dot product. The hybrid retains source
 evidence and includes explicit popularity sources for cold or sparse context.
-Candidates can be passed to a later ranker; no learned final ranker or HTTP
-serving process is present.
+Candidates feed the offline learned-ranker experiment described below; no
+learned production ranker or HTTP serving process is present.
 
 `evaluation/candidates.py` measures Recall@100/500/1000, reachable-target recall,
 empty/full pool rates, candidate counts, coverage and source contribution. The
@@ -139,9 +148,28 @@ It writes Parquet files outside Git and atomically checkpoints their SHA-256
 hashes. A separate verifier reopens every file and checks counts, ranks,
 source evidence and finite features. The
 [ranking dataset report](RANKING_DATASET_REPORT.md) records 30,784 warm
-requests, 30,784,000 candidate rows, build cost and limitations. Ranking model
-training and same-pool Top-K comparison remain planned; this dataset does not
-open folds 5–9.
+requests, 30,784,000 candidate rows, build cost and limitations. The dataset
+builder itself never writes folds 5–9; the ranker runner generates their rows
+in memory after its configuration is locked.
+
+## Learned ranking
+
+`scripts/learned_ranker.py` implements a deterministic linear pairwise logistic
+ranker using cutoff-time candidate features. Positive targets are compared
+with deterministic hard and sampled negatives from their own request pools.
+The model uses training-only RMS scales, L2 regularization and score/item-ID
+tie-breaking. Fold 2 scores use fold 1 training rows; fold 3 uses folds 1–2;
+fold 4 uses folds 1–3. `scripts/benchmark_ranker.py` selects regularization
+from those development scores and requires a SHA-bound lock before scoring
+folds 5–9. The final model fits labelled folds 1–4 once; retrieval sources
+are refit separately for each diagnostic fold's cutoff. The RRF and learned
+orders are measured on each request's identical candidate list, retaining
+zero-positive requests in the denominator.
+
+The [learned-ranking report](LEARNED_RANKING_REPORT.md) documents pooled and
+per-fold Top-K metrics, cost scope, and validity limits. The five later folds
+are post-selection diagnostics because those periods were inspected in earlier
+experiments. The ranker is not deployed as a service.
 
 ## Model engineering and trade-offs
 
