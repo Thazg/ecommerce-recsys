@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-10
+**Updated:** 2026-10-11
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -264,7 +264,7 @@ and unknown users have no learned vector.
 
 ### ADR-15 — Separate candidate retrieval from final ranking
 
-**Status:** Retrieval implemented; learned ranker not implemented
+**Status:** Accepted; retrieval implemented in M7 and an offline ranker evaluated in M11
 
 **Decision and rationale:** Request candidate pools at budgets of 100, 500 and
 1,000 products, then allow a later ranker to order the available candidates for
@@ -449,7 +449,42 @@ hybrid without ALS, so the M10 source choice is a development policy rather
 than an independently validated or production-optimal one. The ALS and
 ItemKNN configurations were selected on folds 1–4, not folds 5–9; M10's
 fold 1–4 recall reuses development-selected retrieval and is in-sample.
-M10 does not train
-a ranker, evaluate Top-K ranking quality, mix cold users into warm results or
-open folds 5–9. M11 must compare rankings on the same fixed pool and keep later
-folds labelled as post-selection diagnostics.
+M10 does not train a ranker, evaluate Top-K ranking quality, mix cold users into
+warm results or open folds 5–9. The subsequent learned-ranker experiment
+compares orders on the same fixed pool and labels later folds as post-selection
+diagnostics.
+
+## M11 — Learned ranking on fixed candidate pools
+
+### ADR-21 — Use a pairwise linear ranker as the offline ordering comparison
+
+**Status:** Accepted for offline evaluation; no production ranker selected
+
+**Recorded:** 2026-10-11
+
+**Decision and rationale:** Reorder the fixed 1,000-item full-hybrid pool with
+a deterministic linear pairwise logistic model. Compare its order with the
+original RRF order on each exact same candidate list. Use cutoff-time item,
+category-affinity and source-evidence features, training-only scaling, and
+request-seeded hard/uniform negative sampling. Choose L2 `alpha` from
+`0.0001`, `0.001`, and `0.01` by pooled HR@20 on chronological development
+folds 2–4, then NDCG@20 and stronger regularization. Bind the chosen
+`alpha=0.01` to the complete development artifact before opening the M11
+scores for folds 5–9. Fit the final ranker on labelled folds 1–4; keep all
+warm requests, including targets absent from the pool, in diagnostic metrics.
+
+**Evidence and limits:** The [learned-ranking report](LEARNED_RANKING_REPORT.md),
+[development artifact](../benchmarks/ranking/ranker_development_v1.json),
+[selection lock](../benchmarks/ranking/ranker_selection_lock_v1.json) and
+[diagnostic artifact](../benchmarks/ranking/ranker_diagnostic_v1.json) record
+the policy, fingerprints, per-fold scores and costs. Across 59,323 warm
+user-windows in folds 5–9, RRF has 2,285 hits@20 and the ranker 3,237 on the
+same regenerated pools; Candidate Recall@1000 remains 12,549/59,323 for
+both. The gain is 952 hits, with positive differences in each fold. The
+development scores selected `alpha` and can be optimistic. Folds 5–9 were
+inspected in earlier milestones, so the later scores are post-selection
+diagnostics, not blind validation or statistical-significance evidence. M7
+aggregate parity does not prove historical item-by-item pool equality. The
+full hybrid retains an expensive ALS source despite a previously observed
+no-ALS retrieval advantage on later folds; this comparison does not choose a
+production retrieval policy or establish serving latency.
