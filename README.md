@@ -96,6 +96,18 @@ select a production retrieval or serving policy. The
 [learned-ranking report](docs/LEARNED_RANKING_REPORT.md) covers per-fold
 HR/MRR/NDCG, selection, cost and limitations.
 
+## Sequential retrieval experiment
+
+A train-time next-bucket transition source tested whether giving more weight
+to recent interaction buckets improves candidate order. On the same **59,323
+warm user-windows** in folds 5–9, the locked ordered policy found **3,799**
+targets at 100 candidates (Recall@100 **0.064039**); its equal-weight control
+using the same 20 buckets found **3,824** (Recall@100 **0.064461**). Both found
+**4,035** by 1,000 candidates. The predeclared order-benefit gate failed, so
+the source was not added to the hybrid. These are post-selection diagnostics,
+not blind validation. The [sequential report](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md)
+documents the temporal contract, ablation, per-fold results and cost scope.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -108,6 +120,7 @@ HR/MRR/NDCG, selection, cost and limitations.
 - [ANN feasibility report](docs/ANN_RETRIEVAL_REPORT.md): conditional index decision and measured no-go result.
 - [Ranking dataset report](docs/RANKING_DATASET_REPORT.md): causal ranking rows, feature contract and development-fold audit.
 - [Learned-ranking report](docs/LEARNED_RANKING_REPORT.md): same-pool Top-K comparison, model selection and diagnostic limits.
+- [Sequential retrieval report](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md): matched order ablation and measured no-go decision.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 
@@ -135,6 +148,9 @@ python scripts/verify_ranking_dataset.py
 python scripts/benchmark_ranker.py development
 python scripts/benchmark_ranker.py lock
 python scripts/benchmark_ranker.py diagnostic
+python scripts/benchmark_sequential.py development
+python scripts/benchmark_sequential.py lock
+python scripts/benchmark_sequential.py diagnostic
 pytest
 ruff check .
 ruff format --check .

@@ -1,12 +1,13 @@
 # Project status
 
-**Updated:** 2026-10-11
+**Updated:** 2026-10-12
 
-**Stage:** M11 has trained and evaluated an offline pairwise ranker on the
-fixed full-hybrid candidate pool. M9 ended with an ANN no-go; no ANN index was
-adopted. The project remains offline; no production ranker or online serving
-is implemented. Folds 5–9 were inspected in earlier milestones and remain
-post-selection diagnostics, not blind validation.
+**Stage:** M12 has completed an offline sequential-transition ablation. Giving
+more weight to recent interaction buckets did not improve the locked primary
+Recall@100 comparison, so no sequential source was adopted. M9 ended with an
+ANN no-go; no ANN index was adopted. The project remains offline; no production
+ranker or online serving is implemented. Folds 5–9 were inspected in earlier
+milestones and remain post-selection diagnostics, not blind validation.
 
 ## Implemented
 
@@ -20,6 +21,7 @@ post-selection diagnostics, not blind validation.
 | M9 feasibility | Reproducible exact-cost profile and paired fold-1 ANN pilot; no ANN source promoted to the package after the speed gate failed |
 | M10 ranking data | Causal warm request/candidate Parquet for folds 1–4, as-of features, zero-positive request audit, SHA-bound checkpoints and independent file verification |
 | M11 learned ranking | Deterministic pairwise linear ranker, chronological development selection, SHA-bound lock and same-pool RRF comparison on folds 5–9 |
+| M12 sequential experiment | Train-time next-bucket transition retrieval and a matched ordered/equal-weight ablation; no source promoted after the primary gate failed |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -114,11 +116,24 @@ These are post-selection diagnostics, not blind validation or a significance
 claim. The [learned-ranking report](LEARNED_RANKING_REPORT.md) gives per-fold
 HR/MRR/NDCG, model policy, cost scope, artifact provenance and limitations.
 
+## M12 sequential retrieval result
+
+The six-setting development grid selected an ordered transition source with
+20 timestamp buckets and decay 0.8, paired with an equal-weight control using
+the same buckets. On **59,323 warm user-windows** in folds 5–9, ordered
+weighting found **3,799** targets by rank 100 (Recall@100 **0.064039**);
+equal weighting found **3,824** (Recall@100 **0.064461**). Both found **4,035**
+by rank 1,000. The ordered policy lost 25 hits on the predeclared primary
+metric, with fewer hits@100 in every fold. The decision is **no-go** for adding
+this source to the hybrid. The [sequential report](SEQUENTIAL_RECOMMENDATION_REPORT.md)
+records the causal timestamp-bucket policy, per-fold numerators, cost and
+limitations. These are post-selection diagnostics, not blind validation.
+
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines optional sequential modelling and later
-re-ranking, model-policy and serving gates. Independent confirmation of M11
-requires a later untouched time period; its present results should not be used
-as a production model-selection claim.
+The [roadmap](ROADMAP.md) defines later re-ranking, model-policy and serving
+gates. Independent confirmation of the current model choices requires a later
+untouched time period; the existing post-selection results should not be used
+as production model-selection claims.
 
 The [baseline](BASELINE_REPORT.md) and [MF](MF_EXPERIMENT_REPORT.md) reports document earlier per-user leave-last-out experiments. Their metrics are retained for provenance but are not directly comparable with rolling results.

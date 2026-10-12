@@ -1,11 +1,12 @@
 # Current architecture
 
-**Updated:** 2026-10-11
+**Updated:** 2026-10-12
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
-data for development folds 1–4. A learned ranker has been evaluated offline
-on the same regenerated candidate pools in folds 5–9. No production ranker,
-ANN production source or online serving process is implemented.
+data for development folds 1–4. A learned ranker and a separate sequential
+transition source have been evaluated offline. The sequential order ablation
+failed its primary gate, so no source was adopted. No production ranker, ANN
+production source or online serving process is implemented.
 
 ```text
 Retailrocket raw CSV
@@ -50,6 +51,13 @@ Verified development ranking rows
     -> benchmark_ranker.py diagnostic (fit ranker on folds 1–4;
        regenerate each fold's full-hybrid pool at its cutoff, score folds 5–9)
     -> ranker_diagnostic_v1.json (post-selection, not blind)
+
+Prepared rolling folds + processed train interactions
+    -> benchmark_sequential.py development (six transition policies, folds 1–4)
+    -> sequential_development_v1.json -> benchmark_sequential.py lock
+    -> sequential_selection_lock_v1.json
+    -> benchmark_sequential.py diagnostic (matched ordered/equal control, folds 5–9)
+    -> sequential_diagnostic_v1.json (order-benefit gate failed; no source adopted)
 ```
 
 `src/ecommerce_recsys/data/splitting.py` contains rolling time windows and global causality guards. `src/ecommerce_recsys/data/catalog.py` constructs train-time item and category snapshots. Cohort and metric rules are in the [rolling evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md).
@@ -170,6 +178,22 @@ The [learned-ranking report](LEARNED_RANKING_REPORT.md) documents pooled and
 per-fold Top-K metrics, cost scope, and validity limits. The five later folds
 are post-selection diagnostics because those periods were inspected in earlier
 experiments. The ranker is not deployed as a service.
+
+## Sequential transition experiment
+
+`retrieval/sequential.py` builds directed transitions between adjacent,
+distinct user/timestamp buckets in each fold's training snapshot. Same-time
+items form one unordered bucket. The experimental source scores catalog items
+from the user's recent training buckets and filters their complete train-time
+history. `scripts/benchmark_sequential.py` compares recency-weighted and
+equal-weight bucket scores on the same transition table and lookback. A
+development artifact and SHA-bound lock precede the folds 5–9 diagnostic.
+
+The ordered policy had 3,799 hits@100 versus 3,824 for its matched control on
+59,323 warm user-windows, so this source was not added to the M7 hybrid. The
+[sequential report](SEQUENTIAL_RECOMMENDATION_REPORT.md) gives the fold-level
+metrics, measured cost and validity limits. This experiment is a direct
+candidate source, separate from M11's fixed-pool ranker.
 
 ## Model engineering and trade-offs
 

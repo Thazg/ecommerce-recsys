@@ -35,6 +35,7 @@ matrices, Python objects and other process allocations.
 | Rolling candidates | Same rolling targets and catalogs; budgets 100, 500, 1,000 | Same declared global cutoff | Target availability for downstream ranking |
 | M10 ranking data | Warm folds 1–4; one request per target and up to 1,000 labelled candidate rows per request | M7 sources and all features use the fold's declared global cutoff | Development training data; the dataset build alone does not score a ranker |
 | Learned ranking | Warm folds 2–4 development and folds 5–9 post-selection diagnostics; same full-hybrid pool for RRF and ranker | Ranker trains on earlier labelled folds; retrieval and features use each fold's global cutoff | Same-pool Top-K order comparison, not retrieval-source selection |
+| Sequential transitions | Warm folds 1–4 development and folds 5–9 post-selection diagnostics; matched ordered/equal bucket policies | Each fold's transition table and history use events at or before its global cutoff | Direct-source Candidate Recall@100/500/1000; no hybrid or Top-K ranker comparison |
 
 Rolling folds 1–4 contain 30,784 warm targets; folds 5–9 contain 59,323.
 Nine-fold pooled figures and five-fold figures have different populations.
@@ -66,6 +67,7 @@ production choice.
 | Standalone ALS recommender (Top-K) | Learned user/item scoring | Global recommendations for unknown users |
 | M7 Category / ItemKNN / ALS sources | Only candidates from the named mechanism | Empty when required context or eligible candidates are absent |
 | M7 hybrid | Fuses direct source lists and retains source evidence | Explicit global and recent popularity sources |
+| M12 experimental sequential source | Next-bucket transition candidates from warm history | Empty when there is no supported unseen transition; not added to M7 hybrid |
 
 An empty direct-source pool measures that source's availability. It does not
 mean the hybrid returns no recommendations. Cold hybrid requests have two active
@@ -79,7 +81,7 @@ output limits are prefixes of the same fused ordering.
 
 ## Timing scopes
 
-All current Python timing summaries use linear-interpolation percentiles.
+When percentiles are reported, the Python benchmarks use linear interpolation.
 Matching percentile formulas does not make different workloads comparable.
 
 | Measurement | Workload | Method | Scope |
@@ -90,9 +92,11 @@ Matching percentile formulas does not make different workloads comparable.
 | M7 cold latency | Empty context, maximum N = 1,000 | 100 repeated calls per fold | Repeated shared-pool workload; all cold targets still enter accuracy metrics |
 | M10 fold build time | Complete warm development fold at N = 1,000 | Wall time for fit, feature aggregation, retrieval and Parquet writing | Offline dataset construction; separate from per-request retrieval and serving latency |
 | Learned-ranking diagnostic cost | Complete warm fold at N = 1,000 | Separate source-fit wall time and sums of per-request retrieval, feature-row and scoring calls | Excludes data loading, ranker training, feature-aggregate/history preparation, persistence and serving overhead |
+| Sequential transition cost | Complete warm fold at maximum N = 1,000 | Separate transition-table fit wall time and sum of per-request generation calls | Excludes data loading, history preparation, metric accumulation, persistence and serving overhead |
 
 Compare timings only within a matching row/workload and runtime setting. Do not
-rank M4 versus M7, or warm versus cold, by their p95 values. These measurements
-exclude fitting, loading, final ranking and HTTP/network overhead; serving
-latency requires a separate end-to-end measurement. Per-fold percentile ranges
-are descriptive ranges, not pooled percentiles.
+rank M4 versus M7, or warm versus cold, by their p95 values. Per-request call
+measurements exclude fitting, loading, final ranking and HTTP/network overhead
+unless a row explicitly includes them. Serving latency requires a separate
+end-to-end measurement. Per-fold percentile ranges are descriptive ranges,
+not pooled percentiles.
