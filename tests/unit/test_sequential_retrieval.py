@@ -253,6 +253,7 @@ def test_artifact_payload_tamper_and_missing_lock_are_rejected(tmp_path: Path) -
             "selected_control": "equal_h5",
         },
     )
+    assert b"\r\n" not in artifact_path.read_bytes()
     expected = {"benchmark": "sequential-development-v1", **identity}
     assert read_artifact(artifact_path, expected)["complete"]
     manifest = {

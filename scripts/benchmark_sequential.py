@@ -86,7 +86,7 @@ def write_artifact(path: Path, payload: dict) -> None:
     )
     path.parent.mkdir(parents=True, exist_ok=True)
     pending = path.with_suffix(path.suffix + ".tmp")
-    pending.write_text(json.dumps(payload, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    pending.write_bytes((json.dumps(payload, indent=2, allow_nan=False) + "\n").encode("utf-8"))
     pending.replace(path)
 
 
