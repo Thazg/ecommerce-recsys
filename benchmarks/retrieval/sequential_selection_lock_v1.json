@@ -1,0 +1,71 @@
+{
+  "benchmark": "sequential-selection-lock-v1",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "code_sha256": "9bdf2dffb03237d6c17c9750d2575d1c1895031377774538fb7e35aac7668ffb",
+  "policy": {
+    "version": 1,
+    "cohort": "warm first unseen target, all targets in denominator",
+    "transition": "adjacent distinct timestamp buckets; all distinct cross-bucket item pairs except self",
+    "same_timestamp": "one unordered bucket; no within-bucket transition or order",
+    "score": "mean source-to-destination transition probability per bucket; sum weighted buckets",
+    "seen_filter": "entire train-time user history, no fallback",
+    "configs": {
+      "ordered_h5_d05": {
+        "lookback": 5,
+        "decay": 0.5
+      },
+      "ordered_h5_d08": {
+        "lookback": 5,
+        "decay": 0.8
+      },
+      "ordered_h20_d05": {
+        "lookback": 20,
+        "decay": 0.5
+      },
+      "ordered_h20_d08": {
+        "lookback": 20,
+        "decay": 0.8
+      },
+      "equal_h5": {
+        "lookback": 5,
+        "decay": null
+      },
+      "equal_h20": {
+        "lookback": 20,
+        "decay": null
+      }
+    },
+    "candidate_budgets": [
+      100,
+      500,
+      1000
+    ],
+    "development_folds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "diagnostic_folds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "selection": "ordered pooled integer hits@100, hits@1000, smaller H, smaller decay; equal control at same H",
+    "tie_break": "descending score, ascending string item ID",
+    "numeric_threads": 1,
+    "blind_holdout": false
+  },
+  "runtime": {
+    "python": "3.13.15",
+    "pandas": "2.3.3"
+  },
+  "development_artifact_sha256": "345fc86b1f27017514b62ba44db0be4e9b3ff349c22b159959a5332eb92ac292",
+  "selected_ordered": "ordered_h20_d08",
+  "selected_control": "equal_h20",
+  "role": "locked development choice; later folds are post-selection diagnostics",
+  "payload_sha256": "9d85476e98cb9052ed5ee862afb5f0075c84cf4951cf225f59dd2e5bd58694b7"
+}
