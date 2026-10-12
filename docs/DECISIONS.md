@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-11
+**Updated:** 2026-10-12
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -488,3 +488,33 @@ aggregate parity does not prove historical item-by-item pool equality. The
 full hybrid retains an expensive ALS source despite a previously observed
 no-ALS retrieval advantage on later folds; this comparison does not choose a
 production retrieval policy or establish serving latency.
+
+## M12 — Sequential candidate retrieval
+
+### ADR-22 — Keep ordered transitions experimental after the matched ablation
+
+**Status:** Accepted no-go for the tested ordered source; existing hybrid unchanged
+
+**Recorded:** 2026-10-12
+
+**Decision and rationale:** Test whether recency weights on the last interaction
+time buckets improve next-window candidate recall over equal weights. Both
+policies use one train-only next-bucket transition table, the same 20 selected
+buckets, the same train-time catalog, full-history seen filtering and no hidden
+fallback. A four-ordered-setting development grid selects lookback 20 and decay
+0.8 by pooled hits@100, hits@1000 and fixed simplicity tie-breaks. The
+equal-weight comparator is bound at the selected lookback in a separate
+SHA-verified lock before M12 diagnostic scoring on folds 5–9.
+
+**Evidence and consequences:** The [sequential report](SEQUENTIAL_RECOMMENDATION_REPORT.md),
+[development artifact](../benchmarks/retrieval/sequential_development_v1.json),
+[selection lock](../benchmarks/retrieval/sequential_selection_lock_v1.json) and
+[diagnostic artifact](../benchmarks/retrieval/sequential_diagnostic_v1.json)
+record the policy, fingerprints, integer counts and cost. The ordered policy
+found 3,799 targets at 100 candidates versus 3,824 for equal weighting over
+59,323 warm user-windows in folds 5–9. Each later fold favored the equal-weight
+control at rank 100; both policies found 4,035 by rank 1,000. The predeclared
+order-benefit gate failed, so the experimental source is not added to the M7
+hybrid. These are post-selection diagnostics because earlier experiments
+inspected folds 5–9. The result concerns this direct source and finite grid;
+it does not reject other sequential models or establish a serving policy.
