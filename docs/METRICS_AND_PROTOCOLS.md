@@ -17,6 +17,8 @@ relative changes; absolute recall differences use percentage points.
 | Reachable recall@N | Candidate recall conditional on target eligibility | Targets present in the cutoff catalog |
 | Coverage@K / Coverage@N | Unique recommended or retrieved items | Catalog items in the corresponding snapshot |
 | Empty / full pool rate | Requests returning zero / the requested number of candidates | Requests in the specified cohort |
+| Distinct known-category slots@20 | Sum of distinct known cutoff-time categories in each Top-20 output; unknown categories add zero | `20 × warm requests`, including empty output slots |
+| Known-category item slots@20 | Top-20 items with a known cutoff-time category | `20 × warm requests`, including empty output slots |
 
 Latency is in milliseconds. Fit time is in seconds. Factor-array storage is in
 MiB (`bytes / 2^20`); GiB means `bytes / 2^30`. Factor arrays exclude sparse
@@ -35,6 +37,7 @@ matrices, Python objects and other process allocations.
 | Rolling candidates | Same rolling targets and catalogs; budgets 100, 500, 1,000 | Same declared global cutoff | Target availability for downstream ranking |
 | M10 ranking data | Warm folds 1–4; one request per target and up to 1,000 labelled candidate rows per request | M7 sources and all features use the fold's declared global cutoff | Development training data; the dataset build alone does not score a ranker |
 | Learned ranking | Warm folds 2–4 development and folds 5–9 post-selection diagnostics; same full-hybrid pool for RRF and ranker | Ranker trains on earlier labelled folds; retrieval and features use each fold's global cutoff | Same-pool Top-K order comparison, not retrieval-source selection |
+| Category-aware re-ranking | Warm folds 2–4 development and folds 5–9 post-selection diagnostics; same learned scores and full-hybrid pool | Earlier-fold ranker training, each fold's cutoff-time category snapshot | Top-20 relevance/diversity trade-off on a fixed learned Top-100 shortlist |
 | Sequential transitions | Warm folds 1–4 development and folds 5–9 post-selection diagnostics; matched ordered/equal bucket policies | Each fold's transition table and history use events at or before its global cutoff | Direct-source Candidate Recall@100/500/1000; no hybrid or Top-K ranker comparison |
 
 Rolling folds 1–4 contain 30,784 warm targets; folds 5–9 contain 59,323.
@@ -92,6 +95,7 @@ Matching percentile formulas does not make different workloads comparable.
 | M7 cold latency | Empty context, maximum N = 1,000 | 100 repeated calls per fold | Repeated shared-pool workload; all cold targets still enter accuracy metrics |
 | M10 fold build time | Complete warm development fold at N = 1,000 | Wall time for fit, feature aggregation, retrieval and Parquet writing | Offline dataset construction; separate from per-request retrieval and serving latency |
 | Learned-ranking diagnostic cost | Complete warm fold at N = 1,000 | Separate source-fit wall time and sums of per-request retrieval, feature-row and scoring calls | Excludes data loading, ranker training, feature-aggregate/history preparation, persistence and serving overhead |
+| Category-aware re-ranking cost | Fixed learned Top-100 shortlist, Top-20 output on a complete warm fold | Sum of measured per-request re-ranking function calls, recorded separately from source fit, retrieval, feature construction and learned scoring | Includes re-ranker validation and sorting; excludes metric accumulation, data loading, history preparation, persistence and serving overhead |
 | Sequential transition cost | Complete warm fold at maximum N = 1,000 | Separate transition-table fit wall time and sum of per-request generation calls | Excludes data loading, history preparation, metric accumulation, persistence and serving overhead |
 
 Compare timings only within a matching row/workload and runtime setting. Do not

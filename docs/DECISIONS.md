@@ -518,3 +518,42 @@ order-benefit gate failed, so the experimental source is not added to the M7
 hybrid. These are post-selection diagnostics because earlier experiments
 inspected folds 5–9. The result concerns this direct source and finite grid;
 it does not reject other sequential models or establish a serving policy.
+
+## M13 — Category-aware re-ranking
+
+### ADR-23 — Retain a category-novelty bonus as an offline trade-off option
+
+**Status:** Accepted for offline comparison; no production re-ranker selected
+
+**Recorded:** 2026-10-13
+
+**Decision and rationale:** Reorder only the learned ranker's Top-100 candidates
+from the fixed full-hybrid pool. Use cutoff-time item categories and a
+deterministic utility equal to normalized learned rank plus a bonus for a
+known category not yet selected. Unknown categories receive no bonus. The
+zero-bonus order must reproduce the learned Top-5/10/20. A fixed grid of
+`0`, `0.05`, `0.10` and `0.20` was measured on chronological development
+folds 2–4. The predeclared gate required a strict increase in distinct known
+category slots@20, with at most `0.001` absolute HR@20 and NDCG@20 loss and
+at most `0.005` known-category item-slot loss. The complete development
+artifact selected `0.10` and a SHA-bound lock preceded the folds 5–9
+diagnostic. This option remains for complete-policy comparison; it is not a
+serving decision. The utility uses rank rather than score magnitude and is a
+distinct-category re-rank, not an item-distance or aspect-coverage model.
+The gate applies to pooled Top-20 only; it does not constrain each fold or
+Top-5/10 relevance.
+
+**Evidence and limits:** The [re-ranking report](DIVERSITY_RERANKING_REPORT.md),
+[development artifact](../benchmarks/ranking/diversity_development_v1.json),
+[selection lock](../benchmarks/ranking/diversity_selection_lock_v1.json) and
+[diagnostic artifact](../benchmarks/ranking/diversity_diagnostic_v1.json)
+record the policy, integer numerators, costs and provenance. Across 59,323
+warm user-windows in folds 5–9, distinct known-category slots@20 rose from
+0.125625 to 0.146108, while hits@20 changed from 3,237 to 3,236 and
+NDCG@20 from 0.026383 to 0.026135. Catalog item coverage fell slightly in
+every fold. The pool stayed fixed at Candidate Recall@1000 of 0.211537.
+These later periods were inspected before this experiment; the figures are
+post-selection diagnostics, not blind validation or significance evidence.
+Incomplete category metadata, the fixed Top-100 shortlist, the costly full
+hybrid source and missing online measurements limit generalization. A later
+untouched period is needed to confirm a full model-policy choice.
