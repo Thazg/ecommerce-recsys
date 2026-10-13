@@ -1,13 +1,14 @@
 # Project status
 
-**Updated:** 2026-10-12
+**Updated:** 2026-10-13
 
-**Stage:** M12 has completed an offline sequential-transition ablation. Giving
-more weight to recent interaction buckets did not improve the locked primary
-Recall@100 comparison, so no sequential source was adopted. M9 ended with an
-ANN no-go; no ANN index was adopted. The project remains offline; no production
-ranker or online serving is implemented. Folds 5–9 were inspected in earlier
-milestones and remain post-selection diagnostics, not blind validation.
+**Stage:** M13 has completed a fixed-pool category-aware re-ranking
+experiment. Its locked bonus increases known-category variety with a small
+observed Top-20 relevance cost; it is an offline option, not a production
+ranking policy. M12's sequential and M9's ANN experiments remain no-go for
+their tested settings. The project remains offline, without online serving.
+Folds 5–9 were inspected in earlier milestones and remain post-selection
+diagnostics, not blind validation.
 
 ## Implemented
 
@@ -22,6 +23,7 @@ milestones and remain post-selection diagnostics, not blind validation.
 | M10 ranking data | Causal warm request/candidate Parquet for folds 1–4, as-of features, zero-positive request audit, SHA-bound checkpoints and independent file verification |
 | M11 learned ranking | Deterministic pairwise linear ranker, chronological development selection, SHA-bound lock and same-pool RRF comparison on folds 5–9 |
 | M12 sequential experiment | Train-time next-bucket transition retrieval and a matched ordered/equal-weight ablation; no source promoted after the primary gate failed |
+| M13 re-ranking | Category-novelty re-ranking of the fixed learned Top-100 shortlist, development selection/lock and same-pool diagnostic on folds 5–9 |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -129,10 +131,27 @@ this source to the hybrid. The [sequential report](SEQUENTIAL_RECOMMENDATION_REP
 records the causal timestamp-bucket policy, per-fold numerators, cost and
 limitations. These are post-selection diagnostics, not blind validation.
 
+## M13 category-aware re-ranking
+
+The fixed bonus grid selected `0.10` using chronological development folds
+2–4 and a predeclared relevance/diversity gate. On the **59,323 warm
+user-windows** in folds 5–9, the bonus raised distinct known-category
+slots@20 from **0.125625** to **0.146108** on a `20 × requests` denominator.
+The same-pool learned baseline had **3,237** hits@20 (HR@20 **0.054566**);
+the bonus had **3,236** (HR@20 **0.054549**). Pooled NDCG@20 changed from
+**0.026383** to **0.026135**, and catalog item coverage decreased slightly
+in every fold. Hits@5 also fell from **1,649** to **1,638**; the locked
+selection gate constrained pooled Top-20, not shorter budgets or individual
+folds. Candidate Recall@1000 stayed **0.211537** because the pool
+did not change. These are descriptive post-selection diagnostics, not blind
+validation or a significance claim. The [re-ranking report](DIVERSITY_RERANKING_REPORT.md)
+provides per-fold numerators, category-metadata handling, measured cost,
+provenance and limits. A complete retrieval/ranking policy remains undecided.
+
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines later re-ranking, model-policy and serving
-gates. Independent confirmation of the current model choices requires a later
+The [roadmap](ROADMAP.md) defines the complete model-policy and serving gates.
+Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
 as production model-selection claims.
 

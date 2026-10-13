@@ -1,12 +1,13 @@
 # Current architecture
 
-**Updated:** 2026-10-12
+**Updated:** 2026-10-13
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
-data for development folds 1–4. A learned ranker and a separate sequential
-transition source have been evaluated offline. The sequential order ablation
-failed its primary gate, so no source was adopted. No production ranker, ANN
-production source or online serving process is implemented.
+data for development folds 1–4. A learned ranker, category-aware re-ranker
+and separate sequential transition source have been evaluated offline. The
+sequential order ablation failed its primary gate, so no source was adopted.
+No production ranker, ANN production source or online serving process is
+implemented.
 
 ```text
 Retailrocket raw CSV
@@ -51,6 +52,13 @@ Verified development ranking rows
     -> benchmark_ranker.py diagnostic (fit ranker on folds 1–4;
        regenerate each fold's full-hybrid pool at its cutoff, score folds 5–9)
     -> ranker_diagnostic_v1.json (post-selection, not blind)
+
+Fixed learned-ranker scores + fold cutoff category snapshots
+    -> benchmark_diversity.py development (category-novelty grid, folds 2–4)
+    -> diversity_development_v1.json -> benchmark_diversity.py lock
+    -> diversity_selection_lock_v1.json
+    -> benchmark_diversity.py diagnostic (fixed Top-100 shortlist, folds 5–9)
+    -> diversity_diagnostic_v1.json (same-pool learned-order control)
 
 Prepared rolling folds + processed train interactions
     -> benchmark_sequential.py development (six transition policies, folds 1–4)
@@ -178,6 +186,28 @@ The [learned-ranking report](LEARNED_RANKING_REPORT.md) documents pooled and
 per-fold Top-K metrics, cost scope, and validity limits. The five later folds
 are post-selection diagnostics because those periods were inspected in earlier
 experiments. The ranker is not deployed as a service.
+
+## Category-aware re-ranking
+
+`ranking/diversity.py` greedily reorders the first 100 learned-ranked
+candidates for a Top-20 output. It uses only a candidate's category from the
+fold's train-time catalog. Known categories not yet in the output receive a
+fixed novelty bonus; missing categories receive none. Utility ties preserve
+the learned-score and item-ID order. The utility uses learned rank rather
+than score magnitude or pairwise item distance. The zero-bonus control
+reproduces the learned Top-5/10/20 on each request.
+
+`scripts/benchmark_diversity.py` evaluates a fixed bonus grid on chronological
+development folds 2–4, locks one choice, and measures that choice against
+zero bonus on the same regenerated pools in folds 5–9. It verifies the
+published M10/M11 source revision and input hashes because later additions
+to the package changed those earlier runners' broad source fingerprints.
+The [re-ranking report](DIVERSITY_RERANKING_REPORT.md) defines the category,
+denominator, selection and cost contracts. On folds 5–9, the locked bonus
+increased distinct known-category slots@20 from 0.125625 to 0.146108 while
+Top-20 hits changed from 3,237 to 3,236 on the same 59,323 warm requests.
+This offline comparison does not deploy a re-ranker or select a complete
+retrieval policy.
 
 ## Sequential transition experiment
 

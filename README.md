@@ -96,6 +96,21 @@ select a production retrieval or serving policy. The
 [learned-ranking report](docs/LEARNED_RANKING_REPORT.md) covers per-fold
 HR/MRR/NDCG, selection, cost and limitations.
 
+## Category-aware re-ranking
+
+A fixed category-novelty bonus reorders the learned ranker's Top-100 shortlist
+without changing its candidate pool or scores. The bonus was selected on
+chronological folds 2–4 and locked before the folds 5–9 diagnostic. On the
+same **59,323 warm user-windows**, distinct known-category slots@20 increased
+from **0.125625** to **0.146108**, while Top-20 hits changed from **3,237** to
+**3,236** and NDCG@20 from **0.026383** to **0.026135**. Item catalog coverage
+fell slightly in every fold; Top-5 hits fell from **1,649** to **1,638**.
+The rule uses learned rank and category counts, without item-distance or
+aspect-probability modeling. This is an offline relevance/diversity trade-off,
+not a deployed ranking policy. The later folds are **post-selection
+diagnostics, not blind validation**. The [re-ranking report](docs/DIVERSITY_RERANKING_REPORT.md)
+gives the denominator, per-fold metrics, cost and limitations.
+
 ## Sequential retrieval experiment
 
 A train-time next-bucket transition source tested whether giving more weight
@@ -120,6 +135,7 @@ documents the temporal contract, ablation, per-fold results and cost scope.
 - [ANN feasibility report](docs/ANN_RETRIEVAL_REPORT.md): conditional index decision and measured no-go result.
 - [Ranking dataset report](docs/RANKING_DATASET_REPORT.md): causal ranking rows, feature contract and development-fold audit.
 - [Learned-ranking report](docs/LEARNED_RANKING_REPORT.md): same-pool Top-K comparison, model selection and diagnostic limits.
+- [Category-aware re-ranking report](docs/DIVERSITY_RERANKING_REPORT.md): locked same-pool diversity trade-off, relevance and cost.
 - [Sequential retrieval report](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md): matched order ablation and measured no-go decision.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
@@ -132,7 +148,8 @@ and extract `events.csv`, `category_tree.csv`, `item_properties_part1.csv` and
 `item_properties_part2.csv` into `data/raw/`. Alternatively, with an authenticated
 Kaggle CLI, run `python scripts/download_data.py`. Verify the files with
 `python scripts/download_data.py --verify-only`. The [dataset card](docs/DATASET_CARD.md)
-describes the source, schema and recorded input hashes. Then run:
+describes the source, schema and recorded input hashes. In a fresh checkout,
+prepare the shared rolling inputs and candidate reference with:
 
 ```sh
 python -m pip install -e ".[dev]"
@@ -143,17 +160,43 @@ python scripts/sweep_rolling.py --model als
 python scripts/benchmark_rolling.py
 python scripts/benchmark_rolling_cold.py
 python scripts/benchmark_candidates.py
-python scripts/build_ranking_dataset.py
-python scripts/verify_ranking_dataset.py
-python scripts/benchmark_ranker.py development
-python scripts/benchmark_ranker.py lock
-python scripts/benchmark_ranker.py diagnostic
-python scripts/benchmark_sequential.py development
-python scripts/benchmark_sequential.py lock
-python scripts/benchmark_sequential.py diagnostic
 pytest
 ruff check .
 ruff format --check .
 ```
 
-The raw CSVs and generated Parquet files are not committed. If they reside elsewhere, pass `--input-path` and `--raw-dir` to the preparation command, and `--input-path` to the sweep and benchmark commands. The manifest records SHA-256 hashes for the processed interactions, raw item properties, and each generated fold file; runners verify those hashes before resuming.
+The raw CSVs and generated Parquet files are not committed. If they reside
+elsewhere, pass `--input-path` and `--raw-dir` to the preparation command, and
+`--input-path` to the sweep and benchmark commands. The manifest records
+SHA-256 hashes for the processed interactions, raw item properties, and each
+generated fold file; runners verify those hashes before resuming.
+
+The published M10/M11 artifacts bind an earlier source tree. Later package
+additions changed their broad source fingerprints without changing their
+original implementation. To regenerate the frozen ranking inputs, use a
+separate full-history checkout at Git revision
+`c80cebee3378ea9af7c9757802fa40e2c8594ae2` with the matching processed
+interactions and rolling fold files, then run:
+
+```sh
+python scripts/build_ranking_dataset.py
+python scripts/verify_ranking_dataset.py
+python scripts/benchmark_ranker.py development
+python scripts/benchmark_ranker.py lock
+python scripts/benchmark_ranker.py diagnostic
+```
+
+With those verified M10 Parquet files and published M10/M11 JSON artifacts
+available in the current checkout, run the category-aware experiment:
+
+```sh
+python scripts/benchmark_diversity.py development
+python scripts/benchmark_diversity.py lock
+python scripts/benchmark_diversity.py diagnostic
+```
+
+The runner verifies the historical source revision and upstream hashes; it
+does not rewrite frozen artifacts. The [ranking dataset](docs/RANKING_DATASET_REPORT.md),
+[learned ranking](docs/LEARNED_RANKING_REPORT.md), [re-ranking](docs/DIVERSITY_RERANKING_REPORT.md)
+and [sequential](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md) reports give each
+experiment's commands, artifact paths and scope.
