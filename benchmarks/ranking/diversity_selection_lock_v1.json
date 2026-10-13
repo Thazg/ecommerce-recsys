@@ -1,0 +1,65 @@
+{
+  "benchmark": "diversity-selection-lock-v1",
+  "protocol_version": "rolling-temporal",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "raw_property_sha256": {
+    "item_properties_part1.csv": "30aad5aeca58b2dc27dcc73e1708565f5818e45adb3eb57401f91e87355b0b81",
+    "item_properties_part2.csv": "d5e7d1a91dc40f522aeb596b267e6c87d8aed689a7192d12369cfb165eb987e5"
+  },
+  "m7_reference_sha256": "c9a78776f3ffebb99dfcdb9f48ca217b66391be2673f44575471cdeee49437de",
+  "m10_quality_sha256": "24448659c1edf5c6b7f5bc6a7a8ab819a5a754fbfcf443af2f09de487249eec0",
+  "m10_data_sha256": "0682d32f505d53ca19fbaa575afd93813980366c7546a38e2bce78182ea08294",
+  "ranker_development_sha256": "807fc97986cbdbf863009ecd856791c9bdc8b3e5e4e8e4dc50f9e15ff4e60567",
+  "ranker_lock_sha256": "60aa1b20b5b1e7f5fe4bc8a3830d45b2197f738d8416e3937ee956345e2088f2",
+  "ranker_alpha": 0.01,
+  "published_upstream_source_revision": "c80cebee3378ea9af7c9757802fa40e2c8594ae2",
+  "policy": {
+    "version": 1,
+    "cohort": "warm first unseen target; all requests in denominator",
+    "candidate_generator": "fixed M11 full-hybrid pool",
+    "base_order": "locked M11 learned score descending, then item ID ascending",
+    "shortlist": 100,
+    "output_budget": 20,
+    "bonuses": [
+      0.0,
+      0.05,
+      0.1,
+      0.2
+    ],
+    "category": "train-cutoff catalog only; missing category earns no novelty bonus",
+    "utility": "1 - zero-based shortlist rank / max(shortlist length - 1, 1), plus bonus for an unselected known category",
+    "development_folds": [
+      2,
+      3,
+      4
+    ],
+    "diagnostic_folds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "selection": {
+      "hr_max_absolute_loss": 0.001,
+      "ndcg_max_absolute_loss": 0.001,
+      "known_category_slots_max_absolute_loss": 0.005,
+      "objective": "strictly higher distinct known category slots, then HR hits, NDCG, smaller bonus; otherwise zero"
+    },
+    "numeric_threads": 1,
+    "blind_holdout": false
+  },
+  "code_sha256": "7ac2fc5a97980418a846f86a5ac8bb5a407d673c1bc2ec12e4920cc5126d1a9d",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "pyarrow": "19.0.1",
+    "scipy": "1.18.1"
+  },
+  "development_artifact_sha256": "4276fd9c1375b250ad7a0963980a82423cb5e129eda42904c238e9ec5f014e3b",
+  "selected_bonus": 0.1,
+  "role": "locked development choice; later folds are post-selection diagnostics",
+  "payload_sha256": "2c9a3af3de4886df2123932b6f835b5ce2f6a6ffad14f4e7fb06c7263a05e3f6"
+}

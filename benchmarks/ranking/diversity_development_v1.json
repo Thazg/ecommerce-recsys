@@ -1,0 +1,573 @@
+{
+  "benchmark": "diversity-development-v1",
+  "protocol_version": "rolling-temporal",
+  "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+  "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+  "raw_property_sha256": {
+    "item_properties_part1.csv": "30aad5aeca58b2dc27dcc73e1708565f5818e45adb3eb57401f91e87355b0b81",
+    "item_properties_part2.csv": "d5e7d1a91dc40f522aeb596b267e6c87d8aed689a7192d12369cfb165eb987e5"
+  },
+  "m7_reference_sha256": "c9a78776f3ffebb99dfcdb9f48ca217b66391be2673f44575471cdeee49437de",
+  "m10_quality_sha256": "24448659c1edf5c6b7f5bc6a7a8ab819a5a754fbfcf443af2f09de487249eec0",
+  "m10_data_sha256": "0682d32f505d53ca19fbaa575afd93813980366c7546a38e2bce78182ea08294",
+  "ranker_development_sha256": "807fc97986cbdbf863009ecd856791c9bdc8b3e5e4e8e4dc50f9e15ff4e60567",
+  "ranker_lock_sha256": "60aa1b20b5b1e7f5fe4bc8a3830d45b2197f738d8416e3937ee956345e2088f2",
+  "ranker_alpha": 0.01,
+  "published_upstream_source_revision": "c80cebee3378ea9af7c9757802fa40e2c8594ae2",
+  "policy": {
+    "version": 1,
+    "cohort": "warm first unseen target; all requests in denominator",
+    "candidate_generator": "fixed M11 full-hybrid pool",
+    "base_order": "locked M11 learned score descending, then item ID ascending",
+    "shortlist": 100,
+    "output_budget": 20,
+    "bonuses": [
+      0.0,
+      0.05,
+      0.1,
+      0.2
+    ],
+    "category": "train-cutoff catalog only; missing category earns no novelty bonus",
+    "utility": "1 - zero-based shortlist rank / max(shortlist length - 1, 1), plus bonus for an unselected known category",
+    "development_folds": [
+      2,
+      3,
+      4
+    ],
+    "diagnostic_folds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "selection": {
+      "hr_max_absolute_loss": 0.001,
+      "ndcg_max_absolute_loss": 0.001,
+      "known_category_slots_max_absolute_loss": 0.005,
+      "objective": "strictly higher distinct known category slots, then HR hits, NDCG, smaller bonus; otherwise zero"
+    },
+    "numeric_threads": 1,
+    "blind_holdout": false
+  },
+  "code_sha256": "7ac2fc5a97980418a846f86a5ac8bb5a407d673c1bc2ec12e4920cc5126d1a9d",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "pyarrow": "19.0.1",
+    "scipy": "1.18.1"
+  },
+  "folds": [
+    {
+      "fold_index": 2,
+      "cutoff": 1432923676688,
+      "catalog_items": 110887,
+      "requests": 7201,
+      "training_folds": [
+        1
+      ],
+      "training_counts": {
+        "requests": 5346,
+        "positive_requests": 1176,
+        "zero_positive_requests": 4170,
+        "pairs": 117600
+      },
+      "fit_seconds": 0.2754058000000441,
+      "rerank_seconds": {
+        "0.0": 6.738221200032058,
+        "0.05": 9.62850289997914,
+        "0.1": 9.671200600028897,
+        "0.2": 9.708129400051803
+      },
+      "configs": {
+        "0.0": {
+          "requests": 7201,
+          "target_in_pool": 1659,
+          "candidate_count": 7201000,
+          "hits": {
+            "5": 252,
+            "10": 358,
+            "20": 497
+          },
+          "reciprocal_sum": {
+            "5": 142.51666666666665,
+            "10": 156.44365079365065,
+            "20": 165.78624786376324
+          },
+          "discounted_sum": {
+            "5": 169.45150363962546,
+            "10": 203.51864353011192,
+            "20": 238.2939112300617
+          },
+          "recommendation_slots": 144020,
+          "known_category_item_slots": 108560,
+          "distinct_known_category_slots": 22987,
+          "unique_items": 19527,
+          "known_category_item_slots@20": 0.7537841966393557,
+          "distinct_known_category_slots@20": 0.15960977641994167,
+          "item_coverage@20": 0.1760981900493295,
+          "HR@5": 0.03499513956394945,
+          "MRR@5": 0.01979123269916215,
+          "NDCG@5": 0.023531662774562624,
+          "HR@10": 0.0497153173170393,
+          "MRR@10": 0.02172526743419673,
+          "NDCG@10": 0.02826255291349978,
+          "HR@20": 0.0690181919177892,
+          "MRR@20": 0.023022670165777425,
+          "NDCG@20": 0.03309178047910869
+        },
+        "0.05": {
+          "requests": 7201,
+          "target_in_pool": 1659,
+          "candidate_count": 7201000,
+          "hits": {
+            "5": 248,
+            "10": 354,
+            "20": 496
+          },
+          "reciprocal_sum": {
+            "5": 137.2333333333333,
+            "10": 151.45595238095225,
+            "20": 161.13428938192868
+          },
+          "discounted_sum": {
+            "5": 164.60021662914087,
+            "10": 198.96575958868158,
+            "20": 234.6567801208347
+          },
+          "recommendation_slots": 144020,
+          "known_category_item_slots": 110180,
+          "distinct_known_category_slots": 25400,
+          "unique_items": 19467,
+          "known_category_item_slots@20": 0.7650326343563394,
+          "distinct_known_category_slots@20": 0.1763643938341897,
+          "item_coverage@20": 0.1755570986680134,
+          "HR@5": 0.03443966115817248,
+          "MRR@5": 0.01905753830486506,
+          "NDCG@5": 0.022857966480924995,
+          "HR@10": 0.04915983891126233,
+          "MRR@10": 0.021032627743501217,
+          "NDCG@10": 0.02763029573513145,
+          "HR@20": 0.06887932231634496,
+          "MRR@20": 0.02237665454546989,
+          "NDCG@20": 0.03258669353156988
+        },
+        "0.1": {
+          "requests": 7201,
+          "target_in_pool": 1659,
+          "candidate_count": 7201000,
+          "hits": {
+            "5": 241,
+            "10": 354,
+            "20": 494
+          },
+          "reciprocal_sum": {
+            "5": 130.79999999999995,
+            "10": 145.91746031746018,
+            "20": 155.45835543455505
+          },
+          "discounted_sum": {
+            "5": 157.89454167947468,
+            "10": 194.48806898668778,
+            "20": 229.66942981596756
+          },
+          "recommendation_slots": 144020,
+          "known_category_item_slots": 112213,
+          "distinct_known_category_slots": 28461,
+          "unique_items": 19359,
+          "known_category_item_slots@20": 0.7791487293431468,
+          "distinct_known_category_slots@20": 0.1976183863352312,
+          "item_coverage@20": 0.17458313418164437,
+          "HR@5": 0.03346757394806277,
+          "MRR@5": 0.01816414386890709,
+          "NDCG@5": 0.0219267520732502,
+          "HR@10": 0.04915983891126233,
+          "MRR@10": 0.020263499558041964,
+          "NDCG@10": 0.027008480625841935,
+          "HR@20": 0.06860158311345646,
+          "MRR@20": 0.02158843986037426,
+          "NDCG@20": 0.03189410218247015
+        },
+        "0.2": {
+          "requests": 7201,
+          "target_in_pool": 1659,
+          "candidate_count": 7201000,
+          "hits": {
+            "5": 207,
+            "10": 344,
+            "20": 487
+          },
+          "reciprocal_sum": {
+            "5": 121.66666666666664,
+            "10": 140.1269841269841,
+            "20": 149.9276801887483
+          },
+          "discounted_sum": {
+            "5": 142.75589614589754,
+            "10": 187.2523296444807,
+            "20": 223.25981846697098
+          },
+          "recommendation_slots": 144020,
+          "known_category_item_slots": 116427,
+          "distinct_known_category_slots": 34960,
+          "unique_items": 19031,
+          "known_category_item_slots@20": 0.808408554367449,
+          "distinct_known_category_slots@20": 0.24274406332453827,
+          "item_coverage@20": 0.17162516796378294,
+          "HR@5": 0.02874600749895848,
+          "MRR@5": 0.016895801509049665,
+          "NDCG@5": 0.019824454401596657,
+          "HR@10": 0.047771142896819885,
+          "MRR@10": 0.019459378437298166,
+          "NDCG@10": 0.026003656387235206,
+          "HR@20": 0.06762949590334676,
+          "MRR@20": 0.02082039719327153,
+          "NDCG@20": 0.031004002009022494
+        }
+      }
+    },
+    {
+      "fold_index": 3,
+      "cutoff": 1434067768840,
+      "catalog_items": 136425,
+      "requests": 8602,
+      "training_folds": [
+        1,
+        2
+      ],
+      "training_counts": {
+        "requests": 12547,
+        "positive_requests": 2835,
+        "zero_positive_requests": 9712,
+        "pairs": 283500
+      },
+      "fit_seconds": 0.8086968999996316,
+      "rerank_seconds": {
+        "0.0": 8.648299499971472,
+        "0.05": 12.321363300024132,
+        "0.1": 12.30143640003189,
+        "0.2": 12.326089400014098
+      },
+      "configs": {
+        "0.0": {
+          "requests": 8602,
+          "target_in_pool": 1826,
+          "candidate_count": 8602000,
+          "hits": {
+            "5": 249,
+            "10": 377,
+            "20": 536
+          },
+          "reciprocal_sum": {
+            "5": 145.9,
+            "10": 163.11150793650788,
+            "20": 174.18240902544318
+          },
+          "discounted_sum": {
+            "5": 171.50183281766067,
+            "10": 213.0251937716168,
+            "20": 253.26791140931547
+          },
+          "recommendation_slots": 172040,
+          "known_category_item_slots": 151260,
+          "distinct_known_category_slots": 25721,
+          "unique_items": 22664,
+          "known_category_item_slots@20": 0.8792141362473843,
+          "distinct_known_category_slots@20": 0.14950592885375494,
+          "item_coverage@20": 0.16612790910756825,
+          "HR@5": 0.028946756568239945,
+          "MRR@5": 0.01696117182050686,
+          "NDCG@5": 0.01993743697020003,
+          "HR@10": 0.04382701697279703,
+          "MRR@10": 0.018962044633400125,
+          "NDCG@10": 0.024764612156663195,
+          "HR@20": 0.06231109044408277,
+          "MRR@20": 0.020249059407747405,
+          "NDCG@20": 0.02944290995225709
+        },
+        "0.05": {
+          "requests": 8602,
+          "target_in_pool": 1826,
+          "candidate_count": 8602000,
+          "hits": {
+            "5": 250,
+            "10": 375,
+            "20": 536
+          },
+          "reciprocal_sum": {
+            "5": 144.39999999999998,
+            "10": 160.91626984126972,
+            "20": 172.06323283699447
+          },
+          "discounted_sum": {
+            "5": 170.5244420344229,
+            "10": 210.7864445335478,
+            "20": 251.45911347941117
+          },
+          "recommendation_slots": 172040,
+          "known_category_item_slots": 152315,
+          "distinct_known_category_slots": 28235,
+          "unique_items": 22623,
+          "known_category_item_slots@20": 0.8853464310625436,
+          "distinct_known_category_slots@20": 0.16411880957916763,
+          "item_coverage@20": 0.165827377680044,
+          "HR@5": 0.029063008602650545,
+          "MRR@5": 0.016786793768890952,
+          "NDCG@5": 0.019823813303234468,
+          "HR@10": 0.04359451290397582,
+          "MRR@10": 0.018706843738813036,
+          "NDCG@10": 0.02450435300320249,
+          "HR@20": 0.06231109044408277,
+          "MRR@20": 0.020002700864565737,
+          "NDCG@20": 0.029232633513068026
+        },
+        "0.1": {
+          "requests": 8602,
+          "target_in_pool": 1826,
+          "candidate_count": 8602000,
+          "hits": {
+            "5": 242,
+            "10": 371,
+            "20": 536
+          },
+          "reciprocal_sum": {
+            "5": 141.39999999999998,
+            "10": 158.3757936507935,
+            "20": 169.74493805987603
+          },
+          "discounted_sum": {
+            "5": 166.29688234653966,
+            "10": 207.776317250849,
+            "20": 249.38581042200138
+          },
+          "recommendation_slots": 172040,
+          "known_category_item_slots": 153712,
+          "distinct_known_category_slots": 31487,
+          "unique_items": 22560,
+          "known_category_item_slots@20": 0.8934666356661242,
+          "distinct_known_category_slots@20": 0.18302139037433154,
+          "item_coverage@20": 0.16536558548653107,
+          "HR@5": 0.028132992327365727,
+          "MRR@5": 0.016438037665659145,
+          "NDCG@5": 0.019332350888925792,
+          "HR@10": 0.04312950476633341,
+          "MRR@10": 0.018411508213298476,
+          "NDCG@10": 0.024154419582753894,
+          "HR@20": 0.06231109044408277,
+          "MRR@20": 0.019733194380362244,
+          "NDCG@20": 0.02899160781469442
+        },
+        "0.2": {
+          "requests": 8602,
+          "target_in_pool": 1826,
+          "candidate_count": 8602000,
+          "hits": {
+            "5": 233,
+            "10": 360,
+            "20": 528
+          },
+          "reciprocal_sum": {
+            "5": 136.48333333333335,
+            "10": 152.87261904761897,
+            "20": 164.34721145727326
+          },
+          "discounted_sum": {
+            "5": 160.2453146657856,
+            "10": 200.75993105058436,
+            "20": 243.00548713520038
+          },
+          "recommendation_slots": 172040,
+          "known_category_item_slots": 156931,
+          "distinct_known_category_slots": 38505,
+          "unique_items": 22245,
+          "known_category_item_slots@20": 0.9121774006045106,
+          "distinct_known_category_slots@20": 0.22381422924901187,
+          "item_coverage@20": 0.16305662451896646,
+          "HR@5": 0.02708672401767031,
+          "MRR@5": 0.015866465163140355,
+          "NDCG@5": 0.018628843834664684,
+          "HR@10": 0.04185073238781679,
+          "MRR@10": 0.017771752969962678,
+          "NDCG@10": 0.023338750412762656,
+          "HR@20": 0.061381074168797956,
+          "MRR@20": 0.019105697681617444,
+          "NDCG@20": 0.02824988225240646
+        }
+      }
+    },
+    {
+      "fold_index": 4,
+      "cutoff": 1435272269349,
+      "catalog_items": 156293,
+      "requests": 9635,
+      "training_folds": [
+        1,
+        2,
+        3
+      ],
+      "training_counts": {
+        "requests": 21149,
+        "positive_requests": 4661,
+        "zero_positive_requests": 16488,
+        "pairs": 466100
+      },
+      "fit_seconds": 1.5378936999995858,
+      "rerank_seconds": {
+        "0.0": 9.580155599915997,
+        "0.05": 13.726800900021772,
+        "0.1": 13.723759699978473,
+        "0.2": 13.761080899988883
+      },
+      "configs": {
+        "0.0": {
+          "requests": 9635,
+          "target_in_pool": 2056,
+          "candidate_count": 9635000,
+          "hits": {
+            "5": 308,
+            "10": 430,
+            "20": 598
+          },
+          "reciprocal_sum": {
+            "5": 170.36666666666656,
+            "10": 186.39126984126963,
+            "20": 197.84959185551273
+          },
+          "discounted_sum": {
+            "5": 204.33231606240435,
+            "10": 243.52512920457997,
+            "20": 285.74313224183965
+          },
+          "recommendation_slots": 192700,
+          "known_category_item_slots": 167626,
+          "distinct_known_category_slots": 24042,
+          "unique_items": 25714,
+          "known_category_item_slots@20": 0.8698806434872859,
+          "distinct_known_category_slots@20": 0.12476388168137001,
+          "item_coverage@20": 0.16452432290633617,
+          "HR@5": 0.031966787752983915,
+          "MRR@5": 0.017682061927002238,
+          "NDCG@5": 0.021207297982605535,
+          "HR@10": 0.04462895692786715,
+          "MRR@10": 0.019345227798782526,
+          "NDCG@10": 0.025275052330522053,
+          "HR@20": 0.062065386611312924,
+          "MRR@20": 0.02053446723980412,
+          "NDCG@20": 0.029656785909895136
+        },
+        "0.05": {
+          "requests": 9635,
+          "target_in_pool": 2056,
+          "candidate_count": 9635000,
+          "hits": {
+            "5": 308,
+            "10": 429,
+            "20": 598
+          },
+          "reciprocal_sum": {
+            "5": 170.6499999999999,
+            "10": 186.1623015873014,
+            "20": 197.7096767439646
+          },
+          "discounted_sum": {
+            "5": 204.5189156741408,
+            "10": 243.00175612617556,
+            "20": 285.49822069517984
+          },
+          "recommendation_slots": 192700,
+          "known_category_item_slots": 168927,
+          "distinct_known_category_slots": 26561,
+          "unique_items": 25701,
+          "known_category_item_slots@20": 0.8766320705760249,
+          "distinct_known_category_slots@20": 0.13783601453035807,
+          "item_coverage@20": 0.16444114579667676,
+          "HR@5": 0.031966787752983915,
+          "MRR@5": 0.017711468604047733,
+          "NDCG@5": 0.02122666483384959,
+          "HR@10": 0.04452516865594188,
+          "MRR@10": 0.019321463579377418,
+          "NDCG@10": 0.02522073234314225,
+          "HR@20": 0.062065386611312924,
+          "MRR@20": 0.02051994569216031,
+          "NDCG@20": 0.02963136696369277
+        },
+        "0.1": {
+          "requests": 9635,
+          "target_in_pool": 2056,
+          "candidate_count": 9635000,
+          "hits": {
+            "5": 298,
+            "10": 424,
+            "20": 595
+          },
+          "reciprocal_sum": {
+            "5": 165.39999999999992,
+            "10": 181.9317460317458,
+            "20": 193.75921835732203
+          },
+          "discounted_sum": {
+            "5": 198.0330839572141,
+            "10": 238.4890772121235,
+            "20": 281.66228831303573
+          },
+          "recommendation_slots": 192700,
+          "known_category_item_slots": 170617,
+          "distinct_known_category_slots": 29818,
+          "unique_items": 25643,
+          "known_category_item_slots@20": 0.8854021795537105,
+          "distinct_known_category_slots@20": 0.1547379346133887,
+          "item_coverage@20": 0.16407004792281163,
+          "HR@5": 0.030928905033731188,
+          "MRR@5": 0.017166580176440054,
+          "NDCG@5": 0.020553511567951644,
+          "HR@10": 0.044006227296315516,
+          "MRR@10": 0.018882381528982438,
+          "NDCG@10": 0.02475236919689917,
+          "HR@20": 0.06175402179553711,
+          "MRR@20": 0.020109934442897978,
+          "NDCG@20": 0.029233242170527838
+        },
+        "0.2": {
+          "requests": 9635,
+          "target_in_pool": 2056,
+          "candidate_count": 9635000,
+          "hits": {
+            "5": 287,
+            "10": 411,
+            "20": 593
+          },
+          "reciprocal_sum": {
+            "5": 161.19999999999993,
+            "10": 177.42777777777755,
+            "20": 190.01888389817952
+          },
+          "discounted_sum": {
+            "5": 192.09592944671567,
+            "10": 231.86475927169215,
+            "20": 277.8231231680564
+          },
+          "recommendation_slots": 192700,
+          "known_category_item_slots": 174252,
+          "distinct_known_category_slots": 36902,
+          "unique_items": 25450,
+          "known_category_item_slots@20": 0.9042656979761287,
+          "distinct_known_category_slots@20": 0.1914997405293202,
+          "item_coverage@20": 0.16283518775632946,
+          "HR@5": 0.029787234042553193,
+          "MRR@5": 0.01673066943435391,
+          "NDCG@5": 0.019937304561153675,
+          "HR@10": 0.042656979761286976,
+          "MRR@10": 0.018414922447096787,
+          "NDCG@10": 0.02406484268517822,
+          "HR@20": 0.06154644525168656,
+          "MRR@20": 0.01972173159296103,
+          "NDCG@20": 0.028834781854494694
+        }
+      }
+    }
+  ],
+  "complete": true,
+  "payload_sha256": "77fc867a0b56596df415e5f8474a057e3f1d39d8b46e5937a2097ba4860d540e",
+  "selected_bonus": 0.1
+}
