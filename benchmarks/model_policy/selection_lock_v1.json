@@ -1,0 +1,300 @@
+{
+  "benchmark": "model-policy-selection-lock-v1",
+  "protocol_version": "rolling-temporal",
+  "upstream_identity": {
+    "protocol_version": "rolling-temporal",
+    "manifest_sha256": "5e6a22d5afaca8bc52b1103ad17bed247d9553756945dbbce99981d19bf1f9c3",
+    "source_sha256": "5fdbf3e6b8cfdb80fe0aca1066786ac9c6c72326943f988529accfccfaf77a7e",
+    "raw_property_sha256": {
+      "item_properties_part1.csv": "30aad5aeca58b2dc27dcc73e1708565f5818e45adb3eb57401f91e87355b0b81",
+      "item_properties_part2.csv": "d5e7d1a91dc40f522aeb596b267e6c87d8aed689a7192d12369cfb165eb987e5"
+    },
+    "m7_reference_sha256": "c9a78776f3ffebb99dfcdb9f48ca217b66391be2673f44575471cdeee49437de",
+    "m10_quality_sha256": "24448659c1edf5c6b7f5bc6a7a8ab819a5a754fbfcf443af2f09de487249eec0",
+    "m10_data_sha256": "0682d32f505d53ca19fbaa575afd93813980366c7546a38e2bce78182ea08294",
+    "ranker_development_sha256": "807fc97986cbdbf863009ecd856791c9bdc8b3e5e4e8e4dc50f9e15ff4e60567",
+    "ranker_lock_sha256": "60aa1b20b5b1e7f5fe4bc8a3830d45b2197f738d8416e3937ee956345e2088f2",
+    "ranker_alpha": 0.01,
+    "published_upstream_source_revision": "c80cebee3378ea9af7c9757802fa40e2c8594ae2",
+    "policy": {
+      "version": 1,
+      "cohort": "warm first unseen target; all requests in denominator",
+      "candidate_generator": "fixed M11 full-hybrid pool",
+      "base_order": "locked M11 learned score descending, then item ID ascending",
+      "shortlist": 100,
+      "output_budget": 20,
+      "bonuses": [
+        0.0,
+        0.05,
+        0.1,
+        0.2
+      ],
+      "category": "train-cutoff catalog only; missing category earns no novelty bonus",
+      "utility": "1 - zero-based shortlist rank / max(shortlist length - 1, 1), plus bonus for an unselected known category",
+      "development_folds": [
+        2,
+        3,
+        4
+      ],
+      "diagnostic_folds": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "selection": {
+        "hr_max_absolute_loss": 0.001,
+        "ndcg_max_absolute_loss": 0.001,
+        "known_category_slots_max_absolute_loss": 0.005,
+        "objective": "strictly higher distinct known category slots, then HR hits, NDCG, smaller bonus; otherwise zero"
+      },
+      "numeric_threads": 1,
+      "blind_holdout": false
+    },
+    "code_sha256": "7ac2fc5a97980418a846f86a5ac8bb5a407d673c1bc2ec12e4920cc5126d1a9d",
+    "runtime": {
+      "python": "3.13.15",
+      "numpy": "2.5.2",
+      "pandas": "2.3.3",
+      "pyarrow": "19.0.1",
+      "scipy": "1.18.1"
+    }
+  },
+  "diversity_development_sha256": "4276fd9c1375b250ad7a0963980a82423cb5e129eda42904c238e9ec5f014e3b",
+  "diversity_lock_sha256": "e2b68aad4bc88148e1875e0200b575a353b5918554ebdd69b845cde05a78aa97",
+  "published_ranker_diagnostic_sha256": "7da78c68a7280ba8de5a53b290ad9675d11fe6eca3d3e27ab0b6018fee09f0c9",
+  "published_diversity_diagnostic_sha256": "79b2bd80d3a0e6e7146604d7769e412c7687ede13a26d666c5fe5c1a1775100f",
+  "policy": {
+    "version": 1,
+    "warm_policies": [
+      {
+        "name": "global_popularity",
+        "generator": "global_popularity",
+        "sources": [
+          "global_popularity"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "recent_popularity",
+        "generator": "recent_popularity",
+        "sources": [
+          "recent_popularity"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "category_popularity",
+        "generator": "category_popularity",
+        "sources": [
+          "category_popularity"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "item_knn",
+        "generator": "item_knn",
+        "sources": [
+          "item_knn"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "als",
+        "generator": "als",
+        "sources": [
+          "als"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "hybrid_rrf",
+        "generator": "hybrid",
+        "sources": [
+          "item_knn",
+          "als",
+          "category_popularity",
+          "recent_popularity",
+          "global_popularity"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "no_als_rrf",
+        "generator": "hybrid_without_als",
+        "sources": [
+          "item_knn",
+          "category_popularity",
+          "recent_popularity",
+          "global_popularity"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "hybrid_learned",
+        "generator": "hybrid",
+        "sources": [
+          "item_knn",
+          "als",
+          "category_popularity",
+          "recent_popularity",
+          "global_popularity"
+        ],
+        "learned": true,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "hybrid_category",
+        "generator": "hybrid",
+        "sources": [
+          "item_knn",
+          "als",
+          "category_popularity",
+          "recent_popularity",
+          "global_popularity"
+        ],
+        "learned": true,
+        "category_bonus": 0.1
+      },
+      {
+        "name": "no_als_learned_transfer",
+        "generator": "hybrid_without_als",
+        "sources": [
+          "item_knn",
+          "category_popularity",
+          "recent_popularity",
+          "global_popularity"
+        ],
+        "learned": true,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "no_als_category_transfer",
+        "generator": "hybrid_without_als",
+        "sources": [
+          "item_knn",
+          "category_popularity",
+          "recent_popularity",
+          "global_popularity"
+        ],
+        "learned": true,
+        "category_bonus": 0.1
+      }
+    ],
+    "cold_policies": [
+      {
+        "name": "global_popularity",
+        "generator": "global_popularity",
+        "sources": [
+          "global_popularity"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "recent_popularity",
+        "generator": "recent_popularity",
+        "sources": [
+          "recent_popularity"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      },
+      {
+        "name": "popularity_rrf",
+        "generator": "popularity_rrf",
+        "sources": [
+          "recent_popularity",
+          "global_popularity"
+        ],
+        "learned": false,
+        "category_bonus": 0.0
+      }
+    ],
+    "candidate_budget": 1000,
+    "output_budgets": [
+      5,
+      10,
+      20
+    ],
+    "development_folds": [
+      2,
+      3,
+      4
+    ],
+    "diagnostic_folds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "ranker_alpha": 0.01,
+    "ranker_training": "earlier labelled folds in development; frozen folds 1\u20134 model in diagnostic",
+    "no_als_ranker": "unchanged full-hybrid trained model and schema; transfer, no pool-specific refit",
+    "category_shortlist": 100,
+    "category_bonus": 0.1,
+    "selection": "separate warm/cold pooled hits@20, NDCG@20 sum, fewer sources, smaller bonus, policy name",
+    "denominator": "all cohort user-windows, including catalog-unreachable and pool-missed targets",
+    "warm_latency_requests": 100,
+    "warm_latency_repetitions": 3,
+    "cold_latency_repetitions": 100,
+    "latency_sample": "ascending SHA-256 of fold:user; rotate fixed policy order by repetition/request",
+    "latency_scope": "complete target-free offline inference with prebuilt context and fitted snapshot; no data load, fitting, network or API",
+    "cold_latency_scope": "repeated identical empty context; cohort quality counted in full",
+    "numeric_threads": 1,
+    "blind_holdout": false
+  },
+  "code_sha256": "e284aeae2594ebc777e5333c26d07d66bb67ad9e93ef374f5642a7363c16ba4b",
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "pyarrow": "19.0.1",
+    "scipy": "1.18.1",
+    "implicit": "0.7.3",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "machine": "AMD64"
+  },
+  "development_artifact_sha256": "f1c3c5fb95e070b1ba8fb7beb79162bec16c78a178eeea90e03210f063f9c800",
+  "development_result_sha256": "864f2f79c23c1938e2c505048390326352b8a38b406c355ddb54b4ce5b805d01",
+  "selected_routes": {
+    "warm": "hybrid_learned",
+    "cold": "recent_popularity"
+  },
+  "route_specs": {
+    "warm": {
+      "name": "hybrid_learned",
+      "generator": "hybrid",
+      "sources": [
+        "item_knn",
+        "als",
+        "category_popularity",
+        "recent_popularity",
+        "global_popularity"
+      ],
+      "learned": true,
+      "category_bonus": 0.0
+    },
+    "cold": {
+      "name": "recent_popularity",
+      "generator": "recent_popularity",
+      "sources": [
+        "recent_popularity"
+      ],
+      "learned": false,
+      "category_bonus": 0.0
+    }
+  },
+  "role": "offline reference; later periods are post-selection diagnostics",
+  "result_sha256": "670b24532ee0290977a253482f7bac890d9c524c69f43af730266f9c1853e2c0",
+  "payload_sha256": "1f2d0262c22f0ab08508c8690617c4fe41a28668d0e2a37d8dfce885821e88d7"
+}
