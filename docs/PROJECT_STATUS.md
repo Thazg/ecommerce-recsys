@@ -2,9 +2,12 @@
 
 **Updated:** 2026-10-15
 
-**Stage:** M14 has completed development comparison and locked an offline
-reference: full-hybrid learned ordering for warm requests and recent popularity
-for cold requests. All fixed-policy diagnostics on folds 5–9 are complete.
+**Stage:** M15 adds immutable model artifacts and Python snapshot inference
+separated from training. The fold-9 bundle passes exact reference parity and full warm/cold
+quality reconciliation. M14 has completed
+development comparison and locked an offline reference: full-hybrid learned
+ordering for warm requests and recent popularity for cold requests. All
+fixed-policy diagnostics on folds 5–9 are complete.
 M13's category-novelty bonus remains an offline trade-off option.
 M12's sequential and M9's ANN experiments remain no-go for
 their tested settings. The project remains offline, without online serving.
@@ -26,6 +29,7 @@ diagnostics, not blind validation.
 | M12 sequential experiment | Train-time next-bucket transition retrieval and a matched ordered/equal-weight ablation; no source promoted after the primary gate failed |
 | M13 re-ranking | Category-novelty re-ranking of the fixed learned Top-100 shortlist, development selection/lock and same-pool diagnostic on folds 5–9 |
 | M14 model policy | Complete target-free offline policy calls, eleven warm/three cold fixed alternatives, development selection/lock and resumable matched-cost diagnostics |
+| M15 artifacts | Safe-format snapshot export, SHA-bound manifest, package inference loader separated from training, snapshot-user adapter and complete fold-9 loaded-quality reconciliation |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -174,10 +178,23 @@ The [provenance supplement](../benchmarks/model_policy/provenance_v1.json)
 adds explicit seed and independent feature-audit bindings after the run,
 preserving the original result and selection-lock bytes.
 
+## M15 model artifacts
+
+The [artifact contract](MODEL_ARTIFACTS.md) and
+[validation receipt](../benchmarks/artifacts/fold09_v1.json) record the immutable
+fold-9 snapshot, 101 exact producer/loader reference traces and loaded-policy
+parity on 13,539 warm and 142,024 cold targets. This verifies packaging of the
+unchanged reference; it adds no independent accuracy evidence. Generated model
+bundles remain outside Git; checksummed validation receipts are tracked.
+The [loader review](../benchmarks/artifacts/fold09_loader_v1.json) preserves that
+manifest, verifies the current reader against 101 exact traces and records
+unchanged prediction-code identity. OS/architecture differences now warn;
+Python major/minor and library compatibility remain enforced. Full Linux
+execution of the Windows-built snapshot is still unverified.
+
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines the artifact and serving gates after the
-complete-policy diagnostic.
+The [roadmap](ROADMAP.md) defines the serving gates after the artifact boundary.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
 as production model-selection claims.

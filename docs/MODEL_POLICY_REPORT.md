@@ -410,3 +410,5 @@ relevance loss therefore needs an explicit operating objective and a new
 experiment; the current accuracy-first lock is an offline reference for that
 discussion. Versioned model packaging, artifact loaders and API behavior belong
 to the artifact/service stages of the [roadmap](ROADMAP.md).
+The subsequent [artifact contract](MODEL_ARTIFACTS.md) packages this unchanged
+reference as a cutoff snapshot and defines its independent Python loader.

@@ -1,6 +1,6 @@
 # E-commerce recommendation system
 
-An offline recommendation project built on the Retailrocket interaction dataset. The repository contains data preparation, temporal evaluation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS, source-aware candidate retrieval and learned ranking with locked warm/cold reference routes. Online serving is not implemented.
+An offline recommendation project built on the Retailrocket interaction dataset. The repository contains data preparation, temporal evaluation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS, source-aware candidate retrieval, learned ranking and versioned inference snapshots with locked warm/cold routes. Online serving is not implemented.
 
 ## Recommendation evaluation
 
@@ -135,7 +135,21 @@ later hits than the locked recent route; the development choice remains fixed.
 These are post-selection diagnostics on previously inspected periods. The
 [policy report](docs/MODEL_POLICY_REPORT.md) records selection,
 no-ALS model transfer, availability and matched inference-cost scope. This is
-an offline reference; artifact packaging and online serving are not implemented.
+an offline reference; online serving is not implemented.
+
+## Model artifacts
+
+The locked reference can be exported as an immutable, checksum-verified model
+bundle. The installed Python package loads its source state, as-of feature
+aggregates and ranker without training data, benchmark scripts or refitting.
+Inference still requires compatible package implementations and numerical
+dependencies; the bundle is independent of the training pipeline.
+Known snapshot users take the full-hybrid learned route; unknown users take
+explicit recent popularity. Recommendations include the bundle version and
+cutoff. The [artifact contract](docs/MODEL_ARTIFACTS.md) explains safe formats,
+atomic publication, integrity checks, save/load parity and snapshot limits.
+Generated bundles stay outside Git; validation receipts preserve their identity
+and reconciliation evidence.
 
 ## Repository guide
 
@@ -152,6 +166,7 @@ an offline reference; artifact packaging and online serving are not implemented.
 - [Category-aware re-ranking report](docs/DIVERSITY_RERANKING_REPORT.md): locked same-pool diversity trade-off, relevance and cost.
 - [Sequential retrieval report](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md): matched order ablation and measured no-go decision.
 - [Offline policy report](docs/MODEL_POLICY_REPORT.md): complete fixed-policy comparison, warm/cold route lock and matched cost scope.
+- [Model artifacts](docs/MODEL_ARTIFACTS.md): immutable bundle contract, independent Python inference and loaded-policy verification.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 

@@ -8,8 +8,10 @@ and separate sequential transition source have been evaluated offline. The
 sequential order ablation failed its primary gate, so no source was adopted.
 A complete-policy runner has locked separate warm/cold offline routes from
 development folds 2–4 and completed all fixed diagnostics on folds 5–9.
-No production ranker, ANN production source or online serving process is
-implemented.
+All routes remain offline; no ANN production source or online serving process
+is implemented.
+The artifact layer now separates fitted offline snapshots from package-only
+inference; it preserves the locked reference without adding a service.
 
 ```text
 Retailrocket raw CSV
@@ -98,8 +100,8 @@ Fitted train-time snapshot + user/history context
 `src/ecommerce_recsys/retrieval/` defines the common candidate interface and its
 adapters. ALS retrieves by exact user/item dot product. The hybrid retains source
 evidence and includes explicit popularity sources for cold or sparse context.
-Candidates feed the offline learned-ranker experiment described below; no
-learned production ranker or HTTP serving process is present.
+Candidates feed the offline learned-ranker experiment described below. Its
+frozen scorer is also used by the snapshot adapter; no HTTP service is present.
 
 `evaluation/candidates.py` measures Recall@100/500/1000, reachable-target recall,
 empty/full pool rates, candidate counts, coverage and source contribution. The
@@ -252,14 +254,42 @@ features; independent calls on matched request samples measure inference cost.
 `evaluation/model_policy.py` validates all-request quality numerators, pools
 them separately by cohort and applies the frozen selection rule. The
 [policy report](MODEL_POLICY_REPORT.md) records scope and limitations. This is
-an offline reference; model packaging and online request routing are not
-implemented.
+an offline reference. Its model state can be packaged as described below;
+online request routing is not implemented.
 
 `scripts/verify_model_policy.py` checks the completed source/data/lock chain and
 the earlier independent feature audit, then records explicit seeds and hashes
 in a separate provenance supplement. It performs no model fit and preserves the
 original benchmark JSON. The supplement is an evaluation record, without a
 serialized model bundle or service loader.
+
+## Versioned model snapshot
+
+`scripts/build_model_artifacts.py` verifies the complete policy provenance and
+fits its fixed retrieval sources at one declared cutoff. It persists ALS
+factors, mappings, full sparse seen sets, ItemKNN neighbors, category/popularity
+state, feature aggregates and frozen ranker weights/scales. A sealed manifest
+binds eleven safe-format components to their hashes, shapes/schemas, numerical
+environment, code identity and upstream evidence. Generated versions live
+outside Git under `artifacts/`; the builder publishes a completed staging
+directory with an atomic rename and refuses version overwrites.
+
+`ecommerce_recsys.artifacts.load_bundle` verifies inventory, hashes and semantic
+consistency before restoring direct-source adapters. A small package-native
+inference scorer implements the published feature transforms. The runtime
+imports no benchmark scripts and reads no training data. Known snapshot users
+use their full stored seen set and cutoff-time features; unknown users use
+explicit recent popularity. The response carries item IDs, route, bundle
+version and cutoff. It supports deterministic prefixes from 1 to 20 items.
+It still depends on compatible package implementations and numerical libraries.
+Python major/minor and library checks are strict; OS/architecture differences
+warn. Each component is hashed once before loading. Compatibility with the
+original reader is restricted to unchanged prediction code and dependencies.
+
+The [artifact contract](MODEL_ARTIFACTS.md) defines the supported snapshot lookup,
+round-trip and loaded-quality checks, resume behavior and limitations. Dynamic
+user history, HTTP serving, concurrency, cache and live fallback orchestration
+are outside this boundary. A loadable historical snapshot is not a deployment.
 
 ## Model engineering and trade-offs
 
