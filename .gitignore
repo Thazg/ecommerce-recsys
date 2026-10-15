@@ -16,8 +16,9 @@ htmlcov/
 # Ruff
 .ruff_cache/
 
-# Local working notes
+# Local working notes and agent instructions
 .local/
+/AGENTS.md
 
 # Module implementation plans stay local
 docs/*_PLAN.md
