@@ -1,4 +1,12 @@
 # Keep implementation fingerprints stable across Windows and Linux checkouts.
 *.py text eol=lf
-# Verification records hash the exact published result bytes.
-benchmarks/retrieval/*.json -text
+# Preserve exact serialized artifact bytes used by checksum and selection-lock chains.
+benchmarks/**/*.json -text
+# Existing checksum chains use CRLF serialization for these frozen inputs.
+benchmarks/rolling/als_sweep.json text eol=crlf
+benchmarks/rolling/item_knn_sweep.json text eol=crlf
+benchmarks/ranking/m10_quality_v1.json text eol=crlf
+benchmarks/ranking/m10_feature_audit_v1.json text eol=crlf
+benchmarks/ranking/ranker_development_v1.json text eol=crlf
+benchmarks/ranking/ranker_selection_lock_v1.json text eol=crlf
+benchmarks/ranking/ranker_diagnostic_v1.json text eol=crlf
