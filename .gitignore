@@ -27,6 +27,12 @@ docs/*_PLAN.md
 build/
 dist/
 
+# Immutable fitted snapshots are rebuilt locally; only their contract is tracked.
+/artifacts/*
+!/artifacts/README.md
+/benchmarks/artifacts/*.checkpoint.json
+/benchmarks/artifacts/*.build-cost.json
+
 # Jupyter
 .ipynb_checkpoints/
 
