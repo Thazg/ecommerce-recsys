@@ -1,0 +1,26 @@
+{
+  "verification": "offline-bundle-loader-v1",
+  "bundle_version": "retailrocket-fold09-v1",
+  "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+  "load_seconds": 20.095646800000395,
+  "reference_requests": 101,
+  "parity": true,
+  "producer_runtime_code_sha256": "f42f5c897858698eb9d6a0e8ed482e716dfb3d501f34c74e1c65ab79cc5c619c",
+  "loader_runtime_code_sha256": "274a6210a9d4a621dcbd608505a76c5a8a593df15acec117d8a7a767b711e4b0",
+  "inference_code_sha256": "275e4d65ca7bc0414f8ae61900949b6ac29a144c5d28b3cafcda6db4737220ce",
+  "verifier_sha256_lf": "cdd2848c2b07b7d5fc82577e4016b7a50063ae35e719a497ab48ac77151b3340",
+  "runtime": {
+    "python": "3.13.15",
+    "system": "Windows",
+    "machine": "AMD64",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1",
+    "pandas": "2.3.3",
+    "pyarrow": "19.0.1",
+    "implicit": "0.7.3",
+    "threadpoolctl": "3.6.0"
+  },
+  "quality_recomputed": false,
+  "source_quality_receipt_sha256": "12a954fb8535ff69ba767fde9b7c4c949f3aec421dbba995ba1a8137ad2098e8",
+  "payload_sha256": "24623e406f15dcf8a14afafb3bf53ff87c9b2af7d570d8862383f050a9029678"
+}
