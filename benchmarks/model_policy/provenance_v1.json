@@ -1,0 +1,52 @@
+{
+  "benchmark": "model-policy-provenance-v1",
+  "role": "retrospective verification supplement; not a pre-diagnostic lock or model bundle",
+  "code_sha256": "e284aeae2594ebc777e5333c26d07d66bb67ad9e93ef374f5642a7363c16ba4b",
+  "source_sha256_lf": {
+    "scripts/benchmark_model_policy.py": "012b75e69ce92a5a214dbf00aa4137aeb32fa2dc5b37a04c9d27cf46cea12102",
+    "src/ecommerce_recsys/evaluation/model_policy.py": "d9b7066cc703730309c4972a1013edf8a75540489f0155d5142fbf10b70d3522",
+    "scripts/learned_ranker.py": "7878d045bb6567fa0f137ce2b535f2ea10a1ca2bd39089956808a51e20188e10",
+    "scripts/benchmark_candidates.py": "7d6952b0fc5e3010b00774cf3688d399c49f29fe5f2f94e3c490404b7c76cef5",
+    "scripts/verify_ranking_dataset.py": "f5efa2911f47ab011762cc8ce323b338174e2d223e9b455182ab6c65e774cfb8",
+    "scripts/verify_model_policy.py": "a44338c70e12a43c6d4fee6945f25edb57077b522e16533b5884163a773a6cc4"
+  },
+  "artifact_sha256": {
+    "development_v1.json": "f1c3c5fb95e070b1ba8fb7beb79162bec16c78a178eeea90e03210f063f9c800",
+    "selection_lock_v1.json": "1d51e2fcd632bfc4eeef1dd4807b1c289e419471972fcdc5d23293a204a2ec1e",
+    "diagnostic_v1.json": "a599cb26ab0b74f58eea59713026b6cc7df70c5afca682921c8bb1cffd8752c9"
+  },
+  "m10_feature_audit_sha256": "c1a69b47d9be5f725cf2d4cd8b857a73b5ac4fce6fc494cf7bae03dd1727a91a",
+  "m10_quality_sha256": "24448659c1edf5c6b7f5bc6a7a8ab819a5a754fbfcf443af2f09de487249eec0",
+  "seeds": {
+    "als_fit": 42,
+    "ranker_negative_sampling": 42
+  },
+  "source_model_configs": {
+    "item_knn": {
+      "shrinkage_lambda": 100.0
+    },
+    "als": {
+      "factors": 128,
+      "iterations": 40,
+      "regularization": 0.01
+    }
+  },
+  "selected_routes": {
+    "warm": "hybrid_learned",
+    "cold": "recent_popularity"
+  },
+  "development_folds": [
+    2,
+    3,
+    4
+  ],
+  "diagnostic_folds": [
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "blind_holdout": false,
+  "payload_sha256": "230519451c53887f1bf0927712e96cc1c540ea6cbfa36a34123c2ef92adbf8a4"
+}
