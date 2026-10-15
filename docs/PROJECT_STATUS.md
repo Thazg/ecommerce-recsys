@@ -1,11 +1,12 @@
 # Project status
 
-**Updated:** 2026-10-13
+**Updated:** 2026-10-15
 
-**Stage:** M13 has completed a fixed-pool category-aware re-ranking
-experiment. Its locked bonus increases known-category variety with a small
-observed Top-20 relevance cost; it is an offline option, not a production
-ranking policy. M12's sequential and M9's ANN experiments remain no-go for
+**Stage:** M14 has completed development comparison and locked an offline
+reference: full-hybrid learned ordering for warm requests and recent popularity
+for cold requests. All fixed-policy diagnostics on folds 5–9 are complete.
+M13's category-novelty bonus remains an offline trade-off option.
+M12's sequential and M9's ANN experiments remain no-go for
 their tested settings. The project remains offline, without online serving.
 Folds 5–9 were inspected in earlier milestones and remain post-selection
 diagnostics, not blind validation.
@@ -24,6 +25,7 @@ diagnostics, not blind validation.
 | M11 learned ranking | Deterministic pairwise linear ranker, chronological development selection, SHA-bound lock and same-pool RRF comparison on folds 5–9 |
 | M12 sequential experiment | Train-time next-bucket transition retrieval and a matched ordered/equal-weight ablation; no source promoted after the primary gate failed |
 | M13 re-ranking | Category-novelty re-ranking of the fixed learned Top-100 shortlist, development selection/lock and same-pool diagnostic on folds 5–9 |
+| M14 model policy | Complete target-free offline policy calls, eleven warm/three cold fixed alternatives, development selection/lock and resumable matched-cost diagnostics |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -43,7 +45,7 @@ ItemKNN and ALS were selected on folds 1–4. Their configurations and the four 
 | ItemKNN (shrinkage 100) | 0.041889 | 0.018687 | 0.023962 |
 | Implicit ALS (128 factors, 40 iterations, regularization 0.01) | 0.027291 | 0.009456 | 0.013385 |
 
-The ItemKNN–Category HR@20 gap is 0.000371, and their fold-level ordering changes. No robust winner is claimed. For first-time users, global and recent popularity achieve HR@20 of 0.011394 and 0.011649 respectively; those scores are not pooled with warm results.
+The ItemKNN–Category HR@20 gap is 0.000371, and their fold-level ordering changes. No robust winner is claimed. Across all nine folds, the 1,262,289 first-time-user targets give global and recent popularity HR@20 of 0.011394 and 0.011649 respectively; those scores are not pooled with warm results.
 
 **Validity limit:** Reference scores for folds 5–9 were inspected before the sweep configurations were locked. These are post-selection diagnostic results, not a blind holdout. See the [benchmark report](ROLLING_BENCHMARK_REPORT.md) and [result artifacts](../benchmarks/rolling/) for per-fold metrics, coverage, and latency.
 
@@ -146,11 +148,36 @@ folds. Candidate Recall@1000 stayed **0.211537** because the pool
 did not change. These are descriptive post-selection diagnostics, not blind
 validation or a significance claim. The [re-ranking report](DIVERSITY_RERANKING_REPORT.md)
 provides per-fold numerators, category-metadata handling, measured cost,
-provenance and limits. A complete retrieval/ranking policy remains undecided.
+provenance and limits. The subsequent complete-policy comparison is described
+below.
+
+## M14 offline reference policy
+
+Development folds 2–4 contain **25,438 warm** and **405,518 cold** user-windows.
+The fixed accuracy-first rule selected full-hybrid learned ordering with
+**1,631 warm hits@20** (HR@20 **0.064117**) and recent popularity with
+**4,557 cold hits@20** (HR@20 **0.011237**). The separate routes are bound
+to a selection lock. The complete folds 5–9 diagnostic contains **59,323 warm**
+and **715,331 cold** targets. The locked warm route has **3,237 hits@20**
+(HR@20 **0.054566**), versus **3,120** for no-ALS learned transfer. The locked
+cold route has **8,416 hits@20** (HR@20 **0.011765**); popularity RRF has
+**8,945** on the same later cohort. The development lock keeps recent despite
+that later HR advantage. There are **112 fixed comparisons** across both
+phases. The
+[policy report](MODEL_POLICY_REPORT.md) defines the finite grid, transferred
+no-ALS ranker, denominator, matched inference timing and validity limits.
+Full-source fit estimates are 301.88–632.22 seconds/fold, versus
+34.71–115.25 without ALS. These inspected later periods remain post-selection
+diagnostics; the reference is selected by accuracy, without a serving latency
+or resource budget.
+The [provenance supplement](../benchmarks/model_policy/provenance_v1.json)
+adds explicit seed and independent feature-audit bindings after the run,
+preserving the original result and selection-lock bytes.
 
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines the complete model-policy and serving gates.
+The [roadmap](ROADMAP.md) defines the artifact and serving gates after the
+complete-policy diagnostic.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
 as production model-selection claims.

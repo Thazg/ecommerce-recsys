@@ -1,6 +1,6 @@
 # E-commerce recommendation system
 
-An offline recommendation project built on the Retailrocket interaction dataset. The repository contains data preparation, temporal evaluation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS and source-aware candidate retrieval. Online serving is not implemented.
+An offline recommendation project built on the Retailrocket interaction dataset. The repository contains data preparation, temporal evaluation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS, source-aware candidate retrieval and learned ranking with locked warm/cold reference routes. Online serving is not implemented.
 
 ## Recommendation evaluation
 
@@ -123,6 +123,20 @@ the source was not added to the hybrid. These are post-selection diagnostics,
 not blind validation. The [sequential report](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md)
 documents the temporal contract, ablation, per-fold results and cost scope.
 
+## Offline reference policy
+
+The complete-policy comparison locks separate routes on development folds 2–4:
+full-hybrid learned ordering for returning users and recent popularity for
+first-time users. Eleven warm and three cold alternatives share their cutoff
+snapshots, cohorts and output budgets. The complete folds 5–9 diagnostic has
+3,237/59,323 warm hits@20 for the locked route (HR@20 0.054566) and
+8,416/715,331 cold hits@20 (HR@20 0.011765). Cold popularity RRF has more
+later hits than the locked recent route; the development choice remains fixed.
+These are post-selection diagnostics on previously inspected periods. The
+[policy report](docs/MODEL_POLICY_REPORT.md) records selection,
+no-ALS model transfer, availability and matched inference-cost scope. This is
+an offline reference; artifact packaging and online serving are not implemented.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -137,6 +151,7 @@ documents the temporal contract, ablation, per-fold results and cost scope.
 - [Learned-ranking report](docs/LEARNED_RANKING_REPORT.md): same-pool Top-K comparison, model selection and diagnostic limits.
 - [Category-aware re-ranking report](docs/DIVERSITY_RERANKING_REPORT.md): locked same-pool diversity trade-off, relevance and cost.
 - [Sequential retrieval report](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md): matched order ablation and measured no-go decision.
+- [Offline policy report](docs/MODEL_POLICY_REPORT.md): complete fixed-policy comparison, warm/cold route lock and matched cost scope.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 
@@ -173,30 +188,44 @@ generated fold file; runners verify those hashes before resuming.
 
 The published M10/M11 artifacts bind an earlier source tree. Later package
 additions changed their broad source fingerprints without changing their
-original implementation. To regenerate the frozen ranking inputs, use a
+original implementation. To regenerate the frozen ranking Parquet inputs, use a
 separate full-history checkout at Git revision
 `c80cebee3378ea9af7c9757802fa40e2c8594ae2` with the matching processed
-interactions and rolling fold files, then run:
+interactions and rolling fold files. Copy the matching frozen benchmark JSON
+from the current checkout as well: their byte serialization is part of the
+checksum chain. Then run:
 
 ```sh
-python scripts/build_ranking_dataset.py
-python scripts/verify_ranking_dataset.py
-python scripts/benchmark_ranker.py development
-python scripts/benchmark_ranker.py lock
-python scripts/benchmark_ranker.py diagnostic
+python -m pip install -e ".[dev]"
+python scripts/build_ranking_dataset.py --artifact .local/ranking_rebuild_v1.json
+python scripts/verify_ranking_dataset.py --quality benchmarks/ranking/m10_quality_v1.json --output .local/ranking_rebuild_audit_v1.json
 ```
 
+Use a fresh scratch checkpoint for a rebuild; the published checkpoint resumes
+only when its generated files already exist and match their hashes. The verifier
+above checks rebuilt Parquet against the frozen file hashes. Preserve published
+JSON, whose checksums also bind the original measured costs. A different runtime
+or serialization may require a separately named experiment rather than a
+byte-identical reproduction.
+
 With those verified M10 Parquet files and published M10/M11 JSON artifacts
-available in the current checkout, run the category-aware experiment:
+available, return to the current checkout and reinstall its editable package
+before running the category-aware experiment:
 
 ```sh
+python -m pip install -e ".[dev]"
 python scripts/benchmark_diversity.py development
 python scripts/benchmark_diversity.py lock
 python scripts/benchmark_diversity.py diagnostic
+python scripts/benchmark_model_policy.py development
+python scripts/benchmark_model_policy.py lock
+python scripts/benchmark_model_policy.py diagnostic
+python scripts/verify_model_policy.py
 ```
 
 The runner verifies the historical source revision and upstream hashes; it
 does not rewrite frozen artifacts. The [ranking dataset](docs/RANKING_DATASET_REPORT.md),
-[learned ranking](docs/LEARNED_RANKING_REPORT.md), [re-ranking](docs/DIVERSITY_RERANKING_REPORT.md)
+[learned ranking](docs/LEARNED_RANKING_REPORT.md), [re-ranking](docs/DIVERSITY_RERANKING_REPORT.md),
+[offline policy](docs/MODEL_POLICY_REPORT.md)
 and [sequential](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md) reports give each
 experiment's commands, artifact paths and scope.

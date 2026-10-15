@@ -1,11 +1,13 @@
 # Current architecture
 
-**Updated:** 2026-10-13
+**Updated:** 2026-10-15
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
 and separate sequential transition source have been evaluated offline. The
 sequential order ablation failed its primary gate, so no source was adopted.
+A complete-policy runner has locked separate warm/cold offline routes from
+development folds 2–4 and completed all fixed diagnostics on folds 5–9.
 No production ranker, ANN production source or online serving process is
 implemented.
 
@@ -53,6 +55,13 @@ Verified development ranking rows
        regenerate each fold's full-hybrid pool at its cutoff, score folds 5–9)
     -> ranker_diagnostic_v1.json (post-selection, not blind)
 
+Prepared rolling folds + processed train interactions
+    -> benchmark_sequential.py development (six transition policies, folds 1–4)
+    -> sequential_development_v1.json -> benchmark_sequential.py lock
+    -> sequential_selection_lock_v1.json
+    -> benchmark_sequential.py diagnostic (matched ordered/equal control, folds 5–9)
+    -> sequential_diagnostic_v1.json (order-benefit gate failed; no source adopted)
+
 Fixed learned-ranker scores + fold cutoff category snapshots
     -> benchmark_diversity.py development (category-novelty grid, folds 2–4)
     -> diversity_development_v1.json -> benchmark_diversity.py lock
@@ -60,12 +69,13 @@ Fixed learned-ranker scores + fold cutoff category snapshots
     -> benchmark_diversity.py diagnostic (fixed Top-100 shortlist, folds 5–9)
     -> diversity_diagnostic_v1.json (same-pool learned-order control)
 
-Prepared rolling folds + processed train interactions
-    -> benchmark_sequential.py development (six transition policies, folds 1–4)
-    -> sequential_development_v1.json -> benchmark_sequential.py lock
-    -> sequential_selection_lock_v1.json
-    -> benchmark_sequential.py diagnostic (matched ordered/equal control, folds 5–9)
-    -> sequential_diagnostic_v1.json (order-benefit gate failed; no source adopted)
+Verified source snapshots + locked ranker/category settings
+    -> benchmark_model_policy.py development (eleven warm/three cold policies)
+    -> benchmarks/model_policy/development_v1.json
+    -> benchmark_model_policy.py lock -> selection_lock_v1.json
+    -> benchmark_model_policy.py diagnostic (folds 5–9, atomic checkpoints)
+    -> diagnostic_v1.json (complete flag records finished fold coverage)
+    -> verify_model_policy.py -> provenance_v1.json (retrospective seed/audit verification)
 ```
 
 `src/ecommerce_recsys/data/splitting.py` contains rolling time windows and global causality guards. `src/ecommerce_recsys/data/catalog.py` constructs train-time item and category snapshots. Cohort and metric rules are in the [rolling evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md).
@@ -224,6 +234,32 @@ The ordered policy had 3,799 hits@100 versus 3,824 for its matched control on
 [sequential report](SEQUENTIAL_RECOMMENDATION_REPORT.md) gives the fold-level
 metrics, measured cost and validity limits. This experiment is a direct
 candidate source, separate from M11's fixed-pool ranker.
+
+## Offline reference policy
+
+`scripts/benchmark_model_policy.py` compares complete target-free policy calls
+from candidate generation through Top-20 ordering. Development scores use
+rankers trained on earlier labelled folds; diagnostics reuse the frozen ranker
+trained on folds 1–4. The warm route is full-hybrid learned ordering with no
+category bonus. The cold route is explicit recent popularity. These choices
+come from the complete development comparison, before this runner's later-fold
+scoring, and remain unchanged on resume.
+
+The runner includes direct sources, full/no-ALS RRF, learned ordering and the
+fixed category option. No-ALS learned variants transfer the same full-pool
+model rather than retrain it. Quality can share source outputs and immutable
+features; independent calls on matched request samples measure inference cost.
+`evaluation/model_policy.py` validates all-request quality numerators, pools
+them separately by cohort and applies the frozen selection rule. The
+[policy report](MODEL_POLICY_REPORT.md) records scope and limitations. This is
+an offline reference; model packaging and online request routing are not
+implemented.
+
+`scripts/verify_model_policy.py` checks the completed source/data/lock chain and
+the earlier independent feature audit, then records explicit seeds and hashes
+in a separate provenance supplement. It performs no model fit and preserves the
+original benchmark JSON. The supplement is an evaluation record, without a
+serialized model bundle or service loader.
 
 ## Model engineering and trade-offs
 
