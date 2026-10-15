@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-12
+**Updated:** 2026-10-15
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -607,3 +607,38 @@ It preserves the original three artifacts and does not extend the original
 pre-diagnostic lock retroactively. A cost-constrained choice requires a new
 prospective objective and experiment; the accepted accuracy-first route remains
 fixed.
+
+## M15 — Versioned offline inference artifacts
+
+### ADR-25 — Package an immutable cutoff snapshot with an independent loader
+
+**Status:** Accepted; complete snapshot and loaded-quality verification
+
+**Decision and rationale:** Persist the locked warm/cold reference as a
+versioned snapshot. Use JSON, Parquet and NumPy with pickle disabled, rather
+than serializing executable Python training objects. Keep original factor
+precision, sorted mappings, full seen sets, KNN similarities/support and all
+cutoff-time ranking statistics. A package-native inference scorer preserves
+the frozen feature order and transforms without importing training scripts.
+
+**Evidence and consequences:** The [artifact contract](MODEL_ARTIFACTS.md)
+defines eleven components, a schema-versioned manifest, input/model/code hashes,
+Python major/minor and exact library requirements and an optional externally
+pinned manifest digest. OS/architecture changes warn and require host parity
+validation. One explicitly reviewed reader predecessor remains supported only
+while its prediction implementation fingerprint matches; other stale code is
+rejected. This preserves the original manifest and quality receipt.
+Inventory/checksum checks precede deserialization, followed by semantic shape,
+mapping, finite-value and chronology checks. Staging is sealed before atomic
+publication; existing versions cannot be overwritten. Tiny actually fitted
+models verify source/evidence/features/scores/output parity, malformed-state
+rejection, resume and isolated-process inference with scripts disabled.
+The [fold-9 validation receipt](../benchmarks/artifacts/fold09_v1.json) records
+101 exact reference traces and complete loaded quality parity with the frozen
+policy on 13,539 warm and 142,024 cold targets. These are round-trip and
+same-period engineering checks, not new blind accuracy evidence.
+The default historical snapshot uses the fold-9 cutoff and the ranker fitted
+on labelled folds 1–4. Known users use stored features and their complete seen
+set; unknown users take explicit recent popularity. No dynamic-history contract,
+HTTP service or deployment claim is introduced. Integrity checks do not provide
+publisher authentication; a trusted external manifest digest pins the version.
