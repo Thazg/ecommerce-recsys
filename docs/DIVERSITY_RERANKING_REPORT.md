@@ -141,8 +141,9 @@ The Top-5 loss and Top-10 gain show that the bonus changes positions within
 the list. It does not improve every relevance metric, even where HR@20 is
 nearly unchanged. The development gate selected an **offline trade-off option**
 for comparison; these already-inspected later periods do not justify adopting
-it as a production policy. A complete retrieval/ranking/cost policy remains a
-separate decision.
+it as a production policy. The subsequent [complete-policy comparison](MODEL_POLICY_REPORT.md)
+measures this option alongside the learned order and alternative source pools,
+using a separate development route-selection lock and matched inference scope.
 
 Only the locked `0.10` setting and its zero-bonus control were evaluated on
 folds 5–9. The `0.05` and `0.20` settings have development results only;

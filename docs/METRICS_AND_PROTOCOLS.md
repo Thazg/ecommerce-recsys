@@ -17,8 +17,8 @@ relative changes; absolute recall differences use percentage points.
 | Reachable recall@N | Candidate recall conditional on target eligibility | Targets present in the cutoff catalog |
 | Coverage@K / Coverage@N | Unique recommended or retrieved items | Catalog items in the corresponding snapshot |
 | Empty / full pool rate | Requests returning zero / the requested number of candidates | Requests in the specified cohort |
-| Distinct known-category slots@20 | Sum of distinct known cutoff-time categories in each Top-20 output; unknown categories add zero | `20 × warm requests`, including empty output slots |
-| Known-category item slots@20 | Top-20 items with a known cutoff-time category | `20 × warm requests`, including empty output slots |
+| Distinct known-category slots@20 | Sum of distinct known cutoff-time categories in each Top-20 output; unknown categories add zero | `20 × cohort requests`, including empty output slots; warm/cold separate |
+| Known-category item slots@20 | Top-20 items with a known cutoff-time category | `20 × cohort requests`, including empty output slots; warm/cold separate |
 
 Latency is in milliseconds. Fit time is in seconds. Factor-array storage is in
 MiB (`bytes / 2^20`); GiB means `bytes / 2^30`. Factor arrays exclude sparse
@@ -39,6 +39,7 @@ matrices, Python objects and other process allocations.
 | Learned ranking | Warm folds 2–4 development and folds 5–9 post-selection diagnostics; same full-hybrid pool for RRF and ranker | Ranker trains on earlier labelled folds; retrieval and features use each fold's global cutoff | Same-pool Top-K order comparison, not retrieval-source selection |
 | Category-aware re-ranking | Warm folds 2–4 development and folds 5–9 post-selection diagnostics; same learned scores and full-hybrid pool | Earlier-fold ranker training, each fold's cutoff-time category snapshot | Top-20 relevance/diversity trade-off on a fixed learned Top-100 shortlist |
 | Sequential transitions | Warm folds 1–4 development and folds 5–9 post-selection diagnostics; matched ordered/equal bucket policies | Each fold's transition table and history use events at or before its global cutoff | Direct-source Candidate Recall@100/500/1000; no hybrid or Top-K ranker comparison |
+| Complete offline policies | Separate warm/cold folds 2–4 development and folds 5–9 post-selection diagnostics; eleven warm and three cold alternatives | Cutoff-time retrieval/features; earlier-fold development ranker, frozen folds 1–4 diagnostic ranker | Top-5/10/20, pool availability, category slots and matched complete inference calls; fixed accuracy-first reference selection |
 
 Rolling folds 1–4 contain 30,784 warm targets; folds 5–9 contain 59,323.
 Nine-fold pooled figures and five-fold figures have different populations.
@@ -97,6 +98,14 @@ Matching percentile formulas does not make different workloads comparable.
 | Learned-ranking diagnostic cost | Complete warm fold at N = 1,000 | Separate source-fit wall time and sums of per-request retrieval, feature-row and scoring calls | Excludes data loading, ranker training, feature-aggregate/history preparation, persistence and serving overhead |
 | Category-aware re-ranking cost | Fixed learned Top-100 shortlist, Top-20 output on a complete warm fold | Sum of measured per-request re-ranking function calls, recorded separately from source fit, retrieval, feature construction and learned scoring | Includes re-ranker validation and sorting; excludes metric accumulation, data loading, history preparation, persistence and serving overhead |
 | Sequential transition cost | Complete warm fold at maximum N = 1,000 | Separate transition-table fit wall time and sum of per-request generation calls | Excludes data loading, history preparation, metric accumulation, persistence and serving overhead |
+| Complete-policy warm inference | N = 1,000, Top-20 prefix; same 100 deterministic users per fold and 3 repetitions | Independent calls, one excluded warmup per policy, rotated policy order | Retrieval/fusion, feature rows/transforms, ordering/re-ranking and validation; prebuilt context and fitted snapshot; excludes loading, fitting and service overhead |
+| Complete-policy cold inference | Empty context, N = 1,000, Top-20 output | 100 repeated independent calls per policy per fold; full cold cohort for accuracy | Shared-context workload, reported separately from warm personalized inference |
+
+Complete-policy source-fit estimates sum constituent fit times from one shared
+process; they are not isolated training-job measurements. Coverage and latency
+percentiles remain per fold. No-ALS learned rows transfer the full-pool ranker;
+their scores cannot establish the best separately trained no-ALS policy. See
+the [policy report](MODEL_POLICY_REPORT.md) for the locked comparison and scope.
 
 Compare timings only within a matching row/workload and runtime setting. Do not
 rank M4 versus M7, or warm versus cold, by their p95 values. Per-request call

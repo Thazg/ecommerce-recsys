@@ -557,3 +557,53 @@ post-selection diagnostics, not blind validation or significance evidence.
 Incomplete category metadata, the fixed Top-100 shortlist, the costly full
 hybrid source and missing online measurements limit generalization. A later
 untouched period is needed to confirm a full model-policy choice.
+
+## M14 — Complete offline model-policy comparison
+
+### ADR-24 — Freeze separate warm and cold offline reference routes
+
+**Status:** Accepted offline reference; complete post-selection diagnostics
+
+**Recorded:** 2026-10-13
+
+**Decision and rationale:** Compare eleven fixed warm policies and three cold
+policies on shared cutoff snapshots and cohorts. Keep the published retrieval
+settings, ranker alpha 0.01 and optional category bonus 0.10. Select each route
+on pooled development folds 2–4 by hits@20, NDCG@20 numerator, fewer source
+models, smaller bonus and stable name. The complete development comparison
+selects full-hybrid learned ordering for warm requests and recent popularity
+for cold requests. An explicit SHA-bound lock precedes this benchmark's
+diagnostic scoring; later scores cannot change the routes. The reference uses
+no category bonus because its development accuracy is lower under this rule.
+
+**Evidence and consequences:** The [policy report](MODEL_POLICY_REPORT.md),
+[development artifact](../benchmarks/model_policy/development_v1.json),
+[selection lock](../benchmarks/model_policy/selection_lock_v1.json) and
+[diagnostic artifact](../benchmarks/model_policy/diagnostic_v1.json) bind the
+grid, source/model/data identity and independent cohort choices. Warm selection
+has 1,631/25,438 hits@20; cold selection has 4,557/405,518. No-ALS learned
+alternatives use unchanged full-hybrid-trained weights and scales; this is
+transfer with changed pools and evidence, not pool-specific retraining.
+Matched independent inference calls measure retrieval through final ordering;
+source fit, feature preparation and factor arrays have separate cost scopes.
+The accuracy-first rule has no latency, diversity, per-fold or Top-5/10 gate.
+On folds 5–9, full learned has 3,237/59,323 hits@20 versus 3,120 for no-ALS
+transfer. The locked cold route has 8,416/715,331 hits@20; popularity RRF has
+8,945. The development lock retains recent, while the report discloses RRF's
+later HR advantage and recent's higher later NDCG. Full-source fit estimates
+range from 301.88–632.22 seconds/fold versus 34.71–115.25 without ALS. These
+are the costs of an accuracy-selected reference rather than a serving budget.
+Upstream tuning already reused the development period, and folds 5–9 were
+inspected earlier. All later measurements remain post-selection diagnostics,
+not blind validation. Packaging, HTTP serving, operational fallbacks and online
+confirmation remain separate work.
+
+**Provenance verification:** The retrospective
+[supplement](../benchmarks/model_policy/provenance_v1.json) records explicit ALS
+and ranker-sampling seeds, the independent feature-audit SHA and exact hashes
+of the completed policy artifacts. Its verifier checks the existing historical
+source chain, audit counts/file hashes and current data without model fitting.
+It preserves the original three artifacts and does not extend the original
+pre-diagnostic lock retroactively. A cost-constrained choice requires a new
+prospective objective and experiment; the accepted accuracy-first route remains
+fixed.
