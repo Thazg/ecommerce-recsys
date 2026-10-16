@@ -1,0 +1,4 @@
+-r serving.txt
+httpx2==2.13.1
+httpcore2==2.13.1
+truststore==0.10.5
