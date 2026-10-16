@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "verification": "loopback snapshot reference-output parity; no future-label scoring",
+  "identity": {
+    "bundle_version": "retailrocket-fold09-v1",
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "references_sha256": "83bd9e573027a95c7172b9ececf135f8d184347db525a9559d10adf454f5fe96",
+    "reader_runtime_code_sha256": "274a6210a9d4a621dcbd608505a76c5a8a593df15acec117d8a7a767b711e4b0",
+    "api_files_sha256": {
+      "src/ecommerce_recsys/serving/__init__.py": "4ddd5b4f7a639985fca45d0ddf4d4d49d5a138cb189ac6fb7d07a0e7da07b2f1",
+      "src/ecommerce_recsys/serving/__main__.py": "6e969861cce59aca4006a21c7c66147e64cf3a493172206641b0ab5361ff90d4",
+      "src/ecommerce_recsys/serving/app.py": "2a098e1d691491b92e1bac7e948e797d8a8c017d800e7049c8350cddc924608f",
+      "src/ecommerce_recsys/serving/boundary.py": "62a4f87fd433df385803a0402fb4c38c86caff2190bc645cfe8e22b5f229f5e5",
+      "src/ecommerce_recsys/serving/contracts.py": "0f25fffb6881f82b88a8861ee5845631bf6eb1d174607659d73aea9e56b0fc12",
+      "src/ecommerce_recsys/serving/service.py": "c0511bca62cd158e4d56c471929f0b0fa0c3c2d674302f266c82841f9cc56b8f",
+      "scripts/verify_recommendation_api.py": "96501e57ae4d9a03fd9a723ae68dcd0b75e677842aff472e594b50e639520f63",
+      "requirements/serving.txt": "2e8964b171b29eb17dd2d029fb694f4b22efb7b768258ed220c3106cbb485241",
+      "requirements/serving-test.txt": "82ab2ca410f959323da3556e22f4e522059701713407472042c6424484d3e54f",
+      "src/ecommerce_recsys/evaluation/latency.py": "b06b540285a936f7abaddafea8c385d041204eed6eb56c1ff0df3b88695fe1d0"
+    },
+    "openapi_sha256": "a1b4b2b3c669dadf46330ad60a8d9ad932d7523092f467c3ae68d904b93425f1"
+  },
+  "runtime": {
+    "python": "3.13.15",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "fastapi": "0.143.2",
+      "starlette": "1.8.0",
+      "uvicorn": "0.54.0",
+      "pydantic": "2.13.5",
+      "anyio": "4.15.1",
+      "psutil": "7.1.0"
+    }
+  },
+  "parity": {
+    "warm_references": 100,
+    "cold_references": 1,
+    "prefix_checks": 6,
+    "unknown_user_checks": 1,
+    "error_contract_checks": 7,
+    "all_passed": true,
+    "ordered_outputs_sha256": "3b173aeae5520fb73c60c3ebf435f760698d9bdf19c75a1a3d5097b37b6a3bfb"
+  },
+  "timing": {
+    "scope": "sequential loopback HTTP over one persistent connection; warm-up excluded; includes transport and JSON response read; no concurrent load or SLA inference",
+    "startup_scope": "child launch through manifest/component verification, model restoration, two startup predictions and first HTTP readiness response",
+    "startup_seconds": 20.613631899999746,
+    "warm": {
+      "latency_samples": 100,
+      "latency_avg_ms": 87.1109609999803,
+      "latency_p50_ms": 74.35375000000022,
+      "latency_p95_ms": 231.35727500018675,
+      "latency_p99_ms": 303.0222380001533
+    },
+    "cold": {
+      "latency_samples": 1,
+      "latency_avg_ms": 13.001100000110455,
+      "latency_p50_ms": 13.001100000110455,
+      "latency_p95_ms": 13.001100000110455,
+      "latency_p99_ms": 13.001100000110455
+    }
+  },
+  "memory": {
+    "scope": "server process RSS only; 50ms sampling; sampled peak is a lower bound on true peak",
+    "ready_rss_bytes": 2352865280,
+    "after_requests_rss_bytes": 2354012160,
+    "sampled_peak_rss_bytes": 2593103872,
+    "charter_target_bytes": 2147483648,
+    "observed_samples_within_target": false
+  },
+  "limits": [
+    "Historical snapshot; no dynamic request history, public deployment or Linux bundle parity.",
+    "Reference sample verifies HTTP outputs, not full-fold quality or a concurrent-load SLO.",
+    "One cold reference cannot establish a cold latency distribution.",
+    "Probe cleanup terminates the disposable process; graceful drain is covered by deterministic unit tests."
+  ],
+  "content_sha256": "d2964d37f9f7f3688e8e692d9da688e5314556c10252014080eb69ec7d0fc26e"
+}
