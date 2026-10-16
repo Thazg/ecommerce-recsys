@@ -1,8 +1,11 @@
 # Project status
 
-**Updated:** 2026-10-15
+**Updated:** 2026-10-16
 
-**Stage:** M15 adds immutable model artifacts and Python snapshot inference
+**Stage:** M16 exposes the frozen snapshot through a local HTTP API with strict
+validation, health probes and bounded inference admission. Real HTTP output
+parity passes; measured ready RSS exceeds the charter's 2 GiB target.
+M15 provides immutable model artifacts and Python snapshot inference
 separated from training. The fold-9 bundle passes exact reference parity and full warm/cold
 quality reconciliation. M14 has completed
 development comparison and locked an offline reference: full-hybrid learned
@@ -10,7 +13,8 @@ ordering for warm requests and recent popularity for cold requests. All
 fixed-policy diagnostics on folds 5–9 are complete.
 M13's category-novelty bonus remains an offline trade-off option.
 M12's sequential and M9's ANN experiments remain no-go for
-their tested settings. The project remains offline, without online serving.
+their tested settings. Evaluation remains offline; the HTTP API serves a
+historical snapshot locally, without public deployment or online evaluation.
 Folds 5–9 were inspected in earlier milestones and remain post-selection
 diagnostics, not blind validation.
 
@@ -30,6 +34,7 @@ diagnostics, not blind validation.
 | M13 re-ranking | Category-novelty re-ranking of the fixed learned Top-100 shortlist, development selection/lock and same-pool diagnostic on folds 5–9 |
 | M14 model policy | Complete target-free offline policy calls, eleven warm/three cold fixed alternatives, development selection/lock and resumable matched-cost diagnostics |
 | M15 artifacts | Safe-format snapshot export, SHA-bound manifest, package inference loader separated from training, snapshot-user adapter and complete fold-9 loaded-quality reconciliation |
+| M16 local API | FastAPI request/response contract, pinned startup load, live/ready probes, one active inference call, explicit busy/error responses and real loopback output verification |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -192,9 +197,28 @@ unchanged prediction-code identity. OS/architecture differences now warn;
 Python major/minor and library compatibility remain enforced. Full Linux
 execution of the Windows-built snapshot is still unverified.
 
+## M16 local HTTP API
+
+The [API contract](RECOMMENDATION_API.md) defines strict snapshot-user requests,
+Top-1–20 output, explicit cold routing, health states and sanitized errors.
+One dedicated worker keeps model calls outside the event loop; process-wide
+admission rejects overlap with 503 rather than queueing numerical work.
+Cancellation retains admission until computation ends, and graceful shutdown
+waits for accepted work. Unexpected inference errors require restart.
+
+The [HTTP boundary receipt](../benchmarks/serving/http_boundary_v1.json) records exact
+output parity for 100 warm and one cold reference, six prefix checks and seven
+invalid-request checks. It preserves the original manifest and reader identity.
+On Windows, launch-to-readiness was 20.61 seconds; 100 sequential warm calls
+had p95 231.36 ms and p99 303.02 ms. These are smoke measurements, not an SLA.
+Ready server RSS was 2.19 GiB, so the 2 GiB charter target remains unmet.
+Cache, operational fallbacks, public deployment and Linux full-bundle parity
+are not implemented or verified by this HTTP boundary.
+
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines the serving gates after the artifact boundary.
+The [roadmap](ROADMAP.md) defines subsequent cache, reliability and deployment
+work. Memory-budget compliance and concurrent-load objectives remain open.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
 as production model-selection claims.

@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-15
+**Updated:** 2026-10-16
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -642,3 +642,39 @@ on labelled folds 1–4. Known users use stored features and their complete seen
 set; unknown users take explicit recent popularity. No dynamic-history contract,
 HTTP service or deployment claim is introduced. Integrity checks do not provide
 publisher authentication; a trusted external manifest digest pins the version.
+
+## M16 — Local snapshot recommendation API
+
+### ADR-26 — Bound HTTP inference around the immutable snapshot
+
+**Status:** Accepted; local HTTP reference verification complete, memory target unmet
+
+**Decision and rationale:** Expose the frozen warm/cold reference through a
+separate FastAPI transport and service controller. Load a mandatory
+digest-pinned bundle once during lifespan startup; accept only a stored user
+ID and strict Top-1–20 budget. Do not accept request-time histories or silently
+recover inference errors with popularity. This keeps HTTP behavior distinct
+from model selection and the artifact producer.
+
+The frozen numerical adapter changes thread limits process-wide. Run model
+work in one dedicated thread with a process-wide admission permit, returning
+503 busy on overlap. Keep health routes asynchronous. A cancelled waiter
+cannot release admission while its worker runs; graceful shutdown drains
+accepted work. Unexpected execution or output-contract failures make the
+service unready until restart. The supported launcher has one process, accepts
+loopback bindings and has no reload. Cache, public deployment and operational
+fallbacks have separate scope.
+
+**Evidence and consequences:** The [API contract](RECOMMENDATION_API.md) defines
+the strict schema, bounded JSON parsing, errors and lifecycle. The
+[HTTP boundary receipt](../benchmarks/serving/http_boundary_v1.json) binds code, optional
+requirements, schema, runtime and the unchanged manifest. A real loopback
+process matches 100 warm and one cold reference output, six prefix calls and
+an unknown-user cold call; seven invalid requests follow the error contract.
+Deterministic tests cover admission across app instances, cancellation,
+shutdown, failure cleanup and output guards. Optional HTTP dependencies live
+in requirements files because historical experiment fingerprints bind
+`pyproject.toml`. Ready RSS is 2.19 GiB, above the 2 GiB charter target.
+The sequential warm sample has p95 231.36 ms and p99 303.02 ms; it is not a
+concurrent-load or SLA result. Linux full-bundle parity and online accuracy
+remain unverified. No model refit or benchmark selection changes are introduced.

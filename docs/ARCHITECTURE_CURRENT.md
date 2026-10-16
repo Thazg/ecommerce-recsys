@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-15
+**Updated:** 2026-10-16
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -8,10 +8,10 @@ and separate sequential transition source have been evaluated offline. The
 sequential order ablation failed its primary gate, so no source was adopted.
 A complete-policy runner has locked separate warm/cold offline routes from
 development folds 2–4 and completed all fixed diagnostics on folds 5–9.
-All routes remain offline; no ANN production source or online serving process
-is implemented.
+No ANN source has been adopted. The locked routes now have a local HTTP
+snapshot interface; public deployment and online evaluation are not implemented.
 The artifact layer now separates fitted offline snapshots from package-only
-inference; it preserves the locked reference without adding a service.
+inference. A separate service layer preserves that frozen inference code.
 
 ```text
 Retailrocket raw CSV
@@ -82,7 +82,7 @@ Verified source snapshots + locked ranker/category settings
 
 `src/ecommerce_recsys/data/splitting.py` contains rolling time windows and global causality guards. `src/ecommerce_recsys/data/catalog.py` constructs train-time item and category snapshots. Cohort and metric rules are in the [rolling evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md).
 
-`src/ecommerce_recsys/recommendation/` contains Random, Global Popularity, Recent Popularity, Category Popularity, ItemKNN, ALS, and educational MF/BPR implementations. ItemKNN indexes eligible interaction items and uses popularity fallback for unknown history. ALS uses the `implicit` library. None of these models is wrapped in an online serving process.
+`src/ecommerce_recsys/recommendation/` contains Random, Global Popularity, Recent Popularity, Category Popularity, ItemKNN, ALS, and educational MF/BPR implementations. ItemKNN indexes eligible interaction items and uses popularity fallback for unknown history. ALS uses the `implicit` library. The snapshot service restores the locked source states through package adapters; it does not expose arbitrary model selection.
 
 `src/ecommerce_recsys/evaluation/` computes HR@K, MRR@K, NDCG@K, catalog coverage, and recommendation-call latency. Its rolling benchmark harness rejects training data that overlaps evaluation time globally, checks unseen targets, and removes previously seen items from global popularity recommendations. Latency excludes training, data loading, network time, and API overhead.
 
@@ -101,7 +101,7 @@ Fitted train-time snapshot + user/history context
 adapters. ALS retrieves by exact user/item dot product. The hybrid retains source
 evidence and includes explicit popularity sources for cold or sparse context.
 Candidates feed the offline learned-ranker experiment described below. Its
-frozen scorer is also used by the snapshot adapter; no HTTP service is present.
+frozen scorer is also used by the snapshot adapter and local HTTP interface.
 
 `evaluation/candidates.py` measures Recall@100/500/1000, reachable-target recall,
 empty/full pool rates, candidate counts, coverage and source contribution. The
@@ -197,7 +197,8 @@ zero-positive requests in the denominator.
 The [learned-ranking report](LEARNED_RANKING_REPORT.md) documents pooled and
 per-fold Top-K metrics, cost scope, and validity limits. The five later folds
 are post-selection diagnostics because those periods were inspected in earlier
-experiments. The ranker is not deployed as a service.
+experiments. The local snapshot API uses its frozen weights through the
+package-native inference scorer, without importing the experiment runner.
 
 ## Category-aware re-ranking
 
@@ -254,8 +255,8 @@ features; independent calls on matched request samples measure inference cost.
 `evaluation/model_policy.py` validates all-request quality numerators, pools
 them separately by cohort and applies the frozen selection rule. The
 [policy report](MODEL_POLICY_REPORT.md) records scope and limitations. This is
-an offline reference. Its model state can be packaged as described below;
-online request routing is not implemented.
+an offline reference. Its model state is packaged as described below and
+exposed through the local snapshot service without retuning.
 
 `scripts/verify_model_policy.py` checks the completed source/data/lock chain and
 the earlier independent feature audit, then records explicit seeds and hashes
@@ -289,7 +290,32 @@ original reader is restricted to unchanged prediction code and dependencies.
 The [artifact contract](MODEL_ARTIFACTS.md) defines the supported snapshot lookup,
 round-trip and loaded-quality checks, resume behavior and limitations. Dynamic
 user history, HTTP serving, concurrency, cache and live fallback orchestration
-are outside this boundary. A loadable historical snapshot is not a deployment.
+are outside the artifact layer. The separate HTTP boundary below controls
+admission to its process-wide numerical calls.
+
+## Local snapshot HTTP interface
+
+`serving/contracts.py` defines strict input/output schemas and mandatory model
+settings. `serving/app.py` supplies async FastAPI routes and lifespan ownership;
+constructing/importing the application performs no model load.
+`serving/boundary.py` bounds JSON bodies before parsing, rejects duplicate keys
+and nonfinite numbers, and assigns server-generated request IDs.
+
+`serving/service.py` restores the digest-pinned bundle once in a dedicated
+worker and checks warm/cold startup predictions. One process-wide permit
+serializes numerical work. Recommendations run outside the ASGI event loop;
+overlap receives 503 busy while health probes remain responsive. The worker
+retains its permit after HTTP cancellation. Shutdown drains accepted work;
+unexpected inference/output errors mark the service failed until restart.
+
+The supported `python -m ecommerce_recsys.serving` launcher uses one Uvicorn
+worker and accepts only loopback bindings. Optional HTTP requirements are isolated from
+the historically fingerprinted `pyproject.toml`. The
+[API contract](RECOMMENDATION_API.md) documents routes, snapshot semantics,
+validation, lifecycle and limits. A separate HTTP process matches the 101
+sealed reference outputs. Its 2.19 GiB ready RSS exceeds the charter target;
+sequential local timings do not establish concurrent-load service objectives.
+Cache, operational fallback orchestration and public hosting remain absent.
 
 ## Model engineering and trade-offs
 

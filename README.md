@@ -1,6 +1,6 @@
 # E-commerce recommendation system
 
-An offline recommendation project built on the Retailrocket interaction dataset. The repository contains data preparation, temporal evaluation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS, source-aware candidate retrieval, learned ranking and versioned inference snapshots with locked warm/cold routes. Online serving is not implemented.
+A recommendation project built on the Retailrocket interaction dataset, with temporal offline evaluation and a local HTTP snapshot API. The repository contains data preparation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS, source-aware candidate retrieval, learned ranking and versioned inference snapshots with locked warm/cold routes. Public deployment and online evaluation are not implemented.
 
 ## Recommendation evaluation
 
@@ -135,7 +135,7 @@ later hits than the locked recent route; the development choice remains fixed.
 These are post-selection diagnostics on previously inspected periods. The
 [policy report](docs/MODEL_POLICY_REPORT.md) records selection,
 no-ALS model transfer, availability and matched inference-cost scope. This is
-an offline reference; online serving is not implemented.
+an offline reference, now exposed unchanged through the local snapshot API.
 
 ## Model artifacts
 
@@ -150,6 +150,21 @@ cutoff. The [artifact contract](docs/MODEL_ARTIFACTS.md) explains safe formats,
 atomic publication, integrity checks, save/load parity and snapshot limits.
 Generated bundles stay outside Git; validation receipts preserve their identity
 and reconciliation evidence.
+
+## Local recommendation API
+
+A FastAPI application loads one digest-pinned snapshot at startup and exposes
+`POST /v1/recommendations`, liveness and readiness probes, and OpenAPI docs.
+Strict request validation, full seen-item filtering and one active inference
+call preserve the snapshot contract. Overlapping requests receive 503 busy;
+backend failures make the model unready rather than trigger a hidden fallback.
+
+The [API contract](docs/RECOMMENDATION_API.md) includes installation, launch and
+request examples. A [real HTTP verification](benchmarks/serving/http_boundary_v1.json)
+matches 100 warm and one cold reference output. The measured ready RSS is
+2.19 GiB, exceeding the charter's 2 GiB target. Sequential local timings are
+smoke evidence, not an SLA; cache, public deployment and online confirmation
+remain outside this implementation.
 
 ## Repository guide
 
@@ -167,6 +182,7 @@ and reconciliation evidence.
 - [Sequential retrieval report](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md): matched order ablation and measured no-go decision.
 - [Offline policy report](docs/MODEL_POLICY_REPORT.md): complete fixed-policy comparison, warm/cold route lock and matched cost scope.
 - [Model artifacts](docs/MODEL_ARTIFACTS.md): immutable bundle contract, independent Python inference and loaded-policy verification.
+- [Recommendation API](docs/RECOMMENDATION_API.md): local HTTP contract, lifecycle, bounded admission, reference parity and measured resource limits.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 

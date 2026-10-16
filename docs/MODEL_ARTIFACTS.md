@@ -256,7 +256,8 @@ process memory; this artifact boundary is not a cold-start serving design.
 Factor-array bytes and serialized component bytes are not whole-process memory.
 Loaded quality evaluation time includes diagnostic trace construction and
 quality accounting; it is not serving latency. Numerical calls use one thread,
-and `threadpoolctl` changes process-wide worker limits. Concurrent request
-handling has not been validated. HTTP serving, request-time updates, cache,
-deployment, live fallback orchestration and online confirmation are not
-implemented by this artifact layer.
+and `threadpoolctl` changes process-wide worker limits. Concurrent direct
+bundle calls are unsupported. The separate [local HTTP boundary](RECOMMENDATION_API.md)
+serializes inference with explicit busy responses; it preserves this artifact
+implementation. Request-time updates, cache, public deployment, live fallback
+orchestration and online confirmation are not implemented by this artifact layer.

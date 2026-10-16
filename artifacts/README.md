@@ -26,3 +26,7 @@ exact library versions. A different OS/architecture emits a warning; full
 Linux parity and resource validation remain outstanding. The separate
 [loader verification](../benchmarks/artifacts/fold09_loader_v1.json) preserves
 the original manifest and records the current reader's reference parity.
+
+The separate [local HTTP API](../docs/RECOMMENDATION_API.md) serves a pinned
+snapshot with one active inference call. Its measured process memory exceeds
+the charter target; a loadable bundle alone does not satisfy deployment gates.
