@@ -806,3 +806,45 @@ pass; sampled ready/peak memory still exceeds 2 GiB. New-connection paced client
 timings differ from earlier persistent probes and do not isolate auth/cache cost.
 Earlier receipts remain unchanged. No public-security certification, Linux
 full-bundle compatibility, production hit rate or workload SLO is established.
+
+## M20 — Integration and functional release verification
+
+### ADR-30 — Separate fixture coverage, model parity and deployment eligibility
+
+**Status:** Accepted — functional gate and explicit integration profiles implemented.
+
+**Context:** Unit faults, finite HTTP receipts and historical loaded-policy
+quality answer different questions. A green fixture suite alone does not verify
+that the current installed reader and HTTP launcher preserve a particular
+Retailrocket snapshot. A passing local model check also cannot establish Linux
+compatibility, workload performance or the outstanding resource budgets.
+
+**Decision:** Keep one sequential functional command that checks dependencies,
+format/lint, unit regressions, fitted-process integration, explicit isolated
+real-bundle references and fresh hardened HTTP evidence. Train only the small
+synthetic fixture. Require trusted external manifest and historical quality
+pins, verify component inventory, and bind all package/script/test sources and
+requirement/CI configuration around execution. Keep earlier model, benchmark
+and HTTP receipts unchanged.
+
+Compare the real loader's candidate order, evidence/feature/score digests and
+ordered outputs exactly against the sealed producer references. HTTP comparison
+uses ordered IDs and model lineage, with separately fresh request IDs. Reject
+stale/foreign/partial evidence, unexpected skips, empty profiles and failed or
+duplicate JUnit cases. Publish complete fsynced JSON atomically without replacing
+an existing receipt; keep logs, JUnit and intermediates outside Git.
+Validate profile membership and UTF-8 XML without DTD or entity declarations. Require
+the declared HTTP sample counts, finite positive timings and ordered percentiles
+before considering cache ratio gates; empty summaries are not evidence.
+
+**Evidence and consequences:** The [strategy](TESTING_AND_RELEASE_GATES.md)
+defines commands, test responsibilities, numerical policy and platform limits.
+The [functional receipt](../benchmarks/release/integration_boundary_validation_v1.json)
+keeps actual profile counts and fresh loader/HTTP evidence separate from the
+externally pinned historical quality result. Windows process tests demonstrate
+stop/restart; owned graceful drain remains controlled unit coverage, while the
+POSIX integration path requests SIGTERM cleanup. CI configures unit and fitted
+process checks without a full Retailrocket bundle. `functional_passed` can be
+true while `deployment_eligible` remains false: Linux full-bundle, representative
+load, target recovery and the 2 GiB memory budget are independent gates. This
+work creates no release tag, container, model refit or public endpoint.

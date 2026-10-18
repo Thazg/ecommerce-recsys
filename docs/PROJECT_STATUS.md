@@ -2,7 +2,11 @@
 
 **Updated:** 2026-10-18
 
-**Stage:** M19 adds tested local input/access controls: connection/header/body
+**Stage:** M20 adds a functional integration gate with separate unit, fitted
+HTTP-process and explicit real-bundle profiles, exact numerical/output parity,
+source/input identity checks and a non-overwriting validation receipt. It does
+not authorize deployment or recompute model quality. M19 adds tested local
+input/access controls: connection/header/body
 budgets, absolute input deadlines, bounded global/socket-peer attempt limits,
 Host/Origin policy and optional shared bearer credentials. The unchanged model
 passes paced real HTTP reference parity under API 1.2.0; both ready RSS samples
@@ -48,6 +52,7 @@ diagnostics, not blind validation.
 | M17 cache and fallback | Opt-in insertion-TTL/LRU cache with entry/count bounds, snapshot/context identity, cache-failure bypass and an explicitly attributed seen-filtered busy fallback |
 | M18 observability | App-local Prometheus text export, bounded dimensions, owned JSON events, independent HTTP/worker outcomes, persistent cache events and failure-isolated RSS sampling |
 | M19 input and exposure | Pinned pre-ASGI connection/header guards, absolute body deadline, reader/rate/table bounds, local Host/Origin policy, optional shared bearer mode and safe denial telemetry |
+| M20 integration strategy | Unit and actually fitted child-process HTTP profiles, explicit isolated real-bundle parity, strict evidence checks and a source-pinned functional gate |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -288,9 +293,28 @@ connections. Ready RSS is 2.20/2.19 GiB and sampled peaks 2.42/2.40 GiB; the
 2 GiB target remains unmet. No public-security, Linux full-bundle or SLO claim
 follows from local fault probes and fixtures.
 
+## M20 integration and functional gates
+
+The [test strategy](TESTING_AND_RELEASE_GATES.md) separates synthetic fitted
+process checks, real loader/reference checks and historical full-fold quality.
+The functional command runs profiles sequentially and creates a new
+[receipt](../benchmarks/release/integration_boundary_validation_v1.json) only when source,
+input pins, test outcomes, parity and finite HTTP telemetry checks agree.
+Fixture tests cover warm/cold and exhausted contexts, cache off/on, request
+validation/access denials, corrupt startup and stop/restart. The real profile
+compares all 100 warm/one cold producer traces without fitting a Retailrocket
+model. CI configures the unit and fitted-process profiles; it does not carry
+the full real bundle. Functional success remains separate from deployment
+eligibility, memory budgets and previously unseen model-quality evidence.
+The completed gate records **741 unit, 7 fitted-process and 1 real-bundle test
+passed**, plus one allowed Windows symlink skip. Exact loader and off/miss/hit
+HTTP parity pass. Fresh ready RSS is 2.19/2.23 GiB and sampled peaks are
+2.41/2.44 GiB for anonymous-off/bearer-on, so deployment eligibility remains false.
+Measured scope and the numerical/output policy are recorded in the strategy and receipt.
+
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines subsequent integration, reliability and deployment
+The [roadmap](ROADMAP.md) defines subsequent Linux reproduction, reliability and deployment
 work. Memory-budget compliance and concurrent-load objectives remain open.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used

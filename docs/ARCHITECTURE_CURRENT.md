@@ -397,6 +397,28 @@ events from application HTTP outcomes. The [hardening contract](API_HARDENING.md
 defines default budgets, bearer limitations, error behavior, pinned verification
 and the absence of public security or workload-SLO certification.
 
+## Functional integration boundary
+
+```text
+Unit regressions + fitted synthetic snapshot
+    -> actual child launcher and loopback HTTP checks
+Sealed real bundle + trusted manifest/quality pins
+    -> isolated package loader -> exact producer-reference parity
+    -> unchanged hardened HTTP verifier -> fresh paired reference evidence
+All checks + source/input/runtime identities
+    -> verify_release.py -> non-overwriting functional validation receipt
+```
+
+`tests/integration/` uses an actual fitted synthetic bundle for portable process
+tests; its separately enabled real-bundle case never substitutes that fixture
+for Retailrocket evidence. `scripts/release_validation.py` checks completeness,
+pins, test outcomes and numerical/output policy before `verify_release.py`
+publishes a successful record. Profiles execute sequentially, with bounded
+child-process ownership and ignored private logs. Current model and HTTP code
+remain unchanged. The [test strategy](TESTING_AND_RELEASE_GATES.md) defines
+exact parity, explicit skip rules, platform/lifecycle scope and why functional
+success does not establish deployment eligibility or new quality results.
+
 ## Model engineering and trade-offs
 
 | Area | Current finding | Detail |
