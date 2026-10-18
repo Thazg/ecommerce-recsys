@@ -27,12 +27,34 @@ ENDPOINTS = {
     "/metrics": "metrics",
 }
 METHODS = {"GET", "POST", "HEAD", "OPTIONS"}
-STATUSES = {"200", "400", "404", "405", "413", "415", "422", "500", "503"}
+STATUSES = {
+    "200",
+    "400",
+    "401",
+    "403",
+    "404",
+    "405",
+    "408",
+    "413",
+    "415",
+    "422",
+    "429",
+    "431",
+    "500",
+    "503",
+}
 OUTCOMES = {"completed", "cancelled", "disconnected", "aborted"}
 ROUTES = {"hybrid_learned", "recent_popularity", "recent_popularity_fallback"}
 CACHE_PATHS = {"disabled", "miss", "hit", "bypass"}
 CACHE_EVENTS = {"hits", "misses", "evictions", "expirations", "oversized"}
 ERROR_CODES = {
+    "invalid_host",
+    "forbidden_origin",
+    "unauthorized",
+    "rate_limited",
+    "headers_too_large",
+    "body_timeout",
+    "request_overloaded",
     "invalid_json",
     "invalid_request",
     "body_too_large",
@@ -175,6 +197,18 @@ class Telemetry:
         if event not in CACHE_EVENTS:
             raise ValueError("Unknown cache event.")
         self._inc("recsys_cache_events_total", (("event", event),))
+
+    @guarded
+    def transport(self, event):
+        if event not in {
+            "header_timeout",
+            "connection_limit",
+            "input_limit",
+            "invalid_http",
+            "trailers_rejected",
+        }:
+            raise ValueError("Unknown transport event.")
+        self._inc("recsys_transport_events_total", (("event", event),))
 
     @guarded
     def admission(self, decision):
