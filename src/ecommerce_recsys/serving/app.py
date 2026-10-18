@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, Response
 
 from ecommerce_recsys.artifacts import load_bundle
 from ecommerce_recsys.serving.boundary import RequestBoundary, error_response
@@ -15,15 +15,16 @@ from ecommerce_recsys.serving.contracts import (
     ErrorResponse,
     HealthResponse,
     RecommendationRequest,
-    RecommendationResponse,
+    ServedRecommendationResponse,
     ServiceSettings,
 )
+from ecommerce_recsys.serving.observability import CONTENT_TYPE
+from ecommerce_recsys.serving.observation_boundary import ObservationBoundary
 from ecommerce_recsys.serving.service import (
     Busy,
     InferenceFailed,
     NotReady,
     RecommendationService,
-    State,
 )
 
 
@@ -42,7 +43,7 @@ def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -
 
     app = FastAPI(
         title="Retailrocket recommendation API",
-        version="1.0.0",
+        version="1.1.0",
         description="Recommendations from one verified historical snapshot. User IDs select stored snapshot context; dynamic histories are not accepted.",
         lifespan=lifespan,
         responses={
@@ -52,9 +53,11 @@ def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -
     )
     app.state.service = service
     app.add_middleware(RequestBoundary)
+    app.add_middleware(ObservationBoundary, telemetry=service.telemetry)
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(request, error):
+        request.state.telemetry_error = "validation_error"
         fields = sorted(
             {
                 str(entry["loc"][1])
@@ -73,6 +76,7 @@ def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -
 
     @app.exception_handler(HTTPException)
     async def http_error(request, error):
+        request.state.telemetry_error = "http_error"
         return error_response(
             request.state.request_id,
             error.status_code,
@@ -83,6 +87,7 @@ def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -
 
     @app.exception_handler(Exception)
     async def unexpected_error(request, error):
+        request.state.telemetry_error = "internal_error"
         return error_response(
             request.state.request_id, 500, "internal_error", "The request could not be completed."
         )
@@ -97,11 +102,15 @@ def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -
         "/health/ready", response_model=HealthResponse, responses={503: {"model": HealthResponse}}
     )
     async def ready(request: Request):
-        healthy = service.state == State.READY
+        state, healthy = service.readiness()
         result = HealthResponse(
             request_id=request.state.request_id,
             status="ready" if healthy else "not_ready",
-            state=service.state.value,
+            state=state.value,
+            cache=service.cache_info(),
+            busy_policy=service.settings.busy_policy,
+            primary_calls=service.primary_calls,
+            fallback_calls=service.fallback_calls,
             **(service.identity.model_dump() if healthy else {}),
         )
         return JSONResponse(
@@ -110,17 +119,25 @@ def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -
 
     @app.post(
         "/v1/recommendations",
-        response_model=RecommendationResponse,
+        response_model=ServedRecommendationResponse,
         responses={status: {"model": ErrorResponse} for status in (400, 413, 415, 422, 500, 503)},
     )
     async def recommend(body: RecommendationRequest, request: Request):
         try:
-            return await service.recommend(body.user_id, body.k, request.state.request_id)
+            response = await service.recommend(body.user_id, body.k, request.state.request_id)
+            request.state.telemetry_delivery = (
+                response.route,
+                response.cache_status,
+                response.degraded,
+            )
+            return response
         except NotReady:
+            request.state.telemetry_error = "not_ready"
             return error_response(
                 request.state.request_id, 503, "not_ready", "Recommendation service is not ready."
             )
         except Busy:
+            request.state.telemetry_error = "busy"
             return error_response(
                 request.state.request_id,
                 503,
@@ -129,11 +146,23 @@ def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -
                 headers={"Retry-After": "1"},
             )
         except InferenceFailed:
+            request.state.telemetry_error = "inference_failed"
             return error_response(
                 request.state.request_id,
                 500,
                 "inference_failed",
                 "Recommendation execution failed; service requires restart.",
             )
+
+    @app.get("/metrics", response_class=Response, include_in_schema=False)
+    async def metrics():
+        text = service.telemetry.render(service)
+        if text is None:
+            return Response(
+                "Metrics temporarily unavailable.\n",
+                status_code=503,
+                headers={"Cache-Control": "no-store"},
+            )
+        return Response(text, headers={"Content-Type": CONTENT_TYPE, "Cache-Control": "no-store"})
 
     return app

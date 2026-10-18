@@ -27,17 +27,30 @@ def main():
     parser.add_argument("--manifest-sha256", default=os.environ.get("RECSYS_MANIFEST_SHA256"))
     parser.add_argument("--host", type=loopback_host, default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--cache-max-entries", type=int, default=0)
+    parser.add_argument("--cache-max-bytes", type=int, default=1048576)
+    parser.add_argument("--cache-ttl-seconds", type=float, default=300.0)
+    parser.add_argument("--busy-policy", choices=("reject", "recent_popularity"), default="reject")
     args = parser.parse_args()
     if args.bundle_path is None or args.manifest_sha256 is None or not 1 <= args.port <= 65535:
         parser.error("Provide --bundle-path, --manifest-sha256 and a port in 1-65535.")
     try:
-        settings = ServiceSettings(args.bundle_path, args.manifest_sha256)
+        settings = ServiceSettings(
+            args.bundle_path,
+            args.manifest_sha256,
+            cache_max_entries=args.cache_max_entries,
+            cache_max_bytes=args.cache_max_bytes,
+            cache_ttl_seconds=args.cache_ttl_seconds,
+            busy_policy=args.busy_policy,
+        )
     except ValueError as error:
         parser.error(str(error))
     import uvicorn
 
     from ecommerce_recsys.serving.app import create_app
+    from ecommerce_recsys.serving.observability import configure_event_logging
 
+    configure_event_logging()
     uvicorn.run(
         create_app(settings),
         host=args.host,

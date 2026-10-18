@@ -56,3 +56,33 @@ def test_non_loopback_bind_is_rejected(launch, host):
     with pytest.raises(SystemExit) as error:
         launch("--host", host)
     assert error.value.code == 2
+
+
+def test_cache_and_busy_flags_are_operator_settings(launch):
+    settings, _ = launch(
+        "--cache-max-entries",
+        "256",
+        "--cache-max-bytes",
+        "1048576",
+        "--cache-ttl-seconds",
+        "300",
+        "--busy-policy",
+        "recent_popularity",
+    )[0]
+    assert settings.cache_max_entries == 256 and settings.cache_max_bytes == 1048576
+    assert settings.cache_ttl_seconds == 300 and settings.busy_policy == "recent_popularity"
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        ["--cache-max-entries", "-1"],
+        ["--cache-max-bytes", "0"],
+        ["--cache-ttl-seconds", "nan"],
+        ["--busy-policy", "hidden"],
+    ],
+)
+def test_invalid_cache_flags_abort_before_launch(launch, arguments):
+    with pytest.raises(SystemExit) as error:
+        launch(*arguments)
+    assert error.value.code == 2

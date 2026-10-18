@@ -66,6 +66,7 @@ class RequestBoundary:
             await send(message)
 
         async def reject(status, code, message):
+            scope["state"]["telemetry_error"] = code
             await error_response(request_id, status, code, message)(scope, receive, tagged_send)
 
         if scope["path"] == RECOMMENDATION_PATH and scope["method"] == "POST":
