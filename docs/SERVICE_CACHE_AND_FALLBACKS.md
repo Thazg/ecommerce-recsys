@@ -126,8 +126,10 @@ use the same frozen 100 warm and one cold producer references on Windows/AMD64,
 Python 3.13.15. The parent never loads the model. All output/lineage comparisons
 pass for cache off, first miss and repeated hit, plus six prefix calls and two
 canonical cold-context reuse calls.
-The [observability report](OBSERVABILITY.md) records current service evidence;
-the earlier cache receipts preserve their original source identities.
+The [hardening report](API_HARDENING.md) records current 1.2.0 service evidence;
+the [observability report](OBSERVABILITY.md) and earlier cache receipts preserve
+their original source identities. Input/access admission precedes every cache
+lookup and degraded delivery; cache hits do not bypass request budgets or credentials.
 
 The fixed gate requires hit p95 at most 0.5 times uncached warm p95 and miss
 p95 at most 1.25 times it, with exact reference output and bounded accounting.
@@ -172,7 +174,10 @@ Event-controlled regressions also cover failure during cache lookup, overlapping
 startup/shutdown, repeated startup cancellation and fallback faults while a
 primary worker owns admission.
 
-Reproduce with a fresh receipt path:
+The following runner targets the receipt's matching pre-hardening 1.1.0 source;
+it does not verify the current 1.2.0 contract. Use the
+[hardening verifier](API_HARDENING.md#verification) for current source.
+For historical reproduction, use a fresh receipt path:
 
 ```sh
 python -m pip install -e ".[dev]" -r requirements/serving-test.txt

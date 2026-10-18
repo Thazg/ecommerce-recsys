@@ -6,7 +6,9 @@ The [snapshot API](RECOMMENDATION_API.md) exports process-local metrics and
 structured service events. Instrumentation covers the HTTP boundary, primary
 worker, admission, optional [cache/fallback](SERVICE_CACHE_AND_FALLBACKS.md),
 model identity and process memory. It preserves the locked model, snapshot
-cutoff and recommendation schema 1.1.0.
+cutoff and recommendation fields. API 1.2.0 adds [input/access controls](API_HARDENING.md)
+and finite security/transport outcomes; the original 1.1.0 measurements below
+remain scoped to their pre-hardening source.
 
 The supported launcher enables owned JSON events on stderr. `GET /metrics`
 exports Prometheus text 0.0.4 on the same loopback listener. It is an operational
@@ -34,6 +36,7 @@ No individual latency samples or request records are retained in the registry.
 | :--- | :--- | :--- |
 | `recsys_http_requests_total` | Counter: endpoint, method, status, outcome | One observation per HTTP invocation, including early validation failures |
 | `recsys_http_errors_total` | Counter: fixed error code | Application error envelopes attributed at the boundary/handler |
+| `recsys_transport_events_total` | Counter: fixed event | Header timeout, connection/input limits, invalid HTTP and unsupported trailers; no peer labels |
 | `recsys_http_duration_seconds` | Histogram: endpoint, outcome | ASGI receive/validation/handling through successful final-body send, or early termination |
 | `recsys_deliveries_total` | Counter: route, cache, degraded | Successfully completed recommendation HTTP responses |
 | `recsys_delivery_duration_seconds` | Histogram: route, cache, degraded | Successful recommendation boundary duration separated by delivery path |
@@ -55,7 +58,7 @@ No individual latency samples or request records are retained in the registry.
 
 HTTP endpoints map to `recommendations`, `live`, `ready`, `openapi`, `docs` or
 `other`. Unknown paths and methods share fixed buckets. Status dimensions use
-200/400/404/405/413/415/422/500/503 or `other`. Outcomes are `completed`,
+200/400/401/403/404/405/408/413/415/422/429/431/500/503 or `other`. Outcomes are `completed`,
 `cancelled`, `disconnected` or `aborted`. Routes and cache statuses are the fixed
 response enums. Model version/manifest occur only on one information sample,
 not on request counters or latency histograms.
@@ -65,6 +68,13 @@ never metric labels. Version replacement requires service restart; registry
 state is not accumulated across model versions. `/metrics` requests are excluded
 from HTTP counters/events to avoid scrape self-observation. Its own failure
 returns 503 when export cannot complete.
+Bearer mode protects this endpoint. Its denied scrapes also remain outside
+HTTP self-observation; access behavior is verified in the hardening tests/probe.
+Protocol-generated closes/errors have transport counters, without claiming an
+ASGI request ID, HTTP outcome or owned HTTP log for an undispatched request.
+Unsupported trailers can instead terminate an already-started ASGI body reader.
+That invocation is observed as disconnected separately from the transport event;
+neither represents a completed recommendation delivery.
 
 ## Timing and cancellation
 
@@ -199,7 +209,8 @@ established. Hardware load, allocator behavior and filesystem caches vary
 between runs; these measurements do not revise the budget or establish Linux
 full-bundle parity.
 
-Regression verification: 541 passed, one Windows symlink-privilege skip with
+At the pre-hardening revision `d618394`, regression verification reported
+541 passed, one Windows symlink-privilege skip with
 `pytest`. The 32 added observability cases cover thread-safe accounting,
 independent registries, malformed/early exits, privacy sentinels, cancellation,
 busy fallback, startup/cleanup, cache fault/expiry, RSS failure and actual owned
@@ -209,7 +220,8 @@ invalid cache-sample isolation. A fitted tiny ALS/KNN snapshot retains its exist
 parity/fallback test. Forced failures are deterministic test evidence; the real
 probe observes normal paths, not a failure/load campaign.
 
-Reproduce with a new output path:
+Reproduce the 1.1.0 observability receipt from Git revision `d618394` with a new
+output path. Current source uses the [1.2.0 hardening verifier](API_HARDENING.md#verification):
 
 ```sh
 python -m pip install -e ".[dev]" -r requirements/serving-test.txt

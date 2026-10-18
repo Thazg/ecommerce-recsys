@@ -9,8 +9,9 @@ Known training users use full-hybrid candidates and learned ordering; unknown,
 null or omitted user IDs use recent popularity. The cold route is a selected
 model policy, not a recovery mechanism for inference errors.
 
-API schema 1.1.0 adds optional bounded result caching and an explicit
-overload-only fallback. Both are disabled by default. Their configuration,
+API schema **1.2.0** adds [local input and exposure controls](API_HARDENING.md),
+including optional shared bearer credentials. Schema 1.1.0 introduced bounded
+result caching and an explicit overload-only fallback. Both remain disabled by default. Their configuration,
 identity and evidence are documented in [cache and fallbacks](SERVICE_CACHE_AND_FALLBACKS.md).
 The [observability contract](OBSERVABILITY.md) defines `GET /metrics`, owned
 JSON events, bounded labels and HTTP/worker timing scopes.
@@ -48,10 +49,13 @@ calculating a digest from an untrusted download does not authenticate it.
 Never replace a recorded digest to bypass a failed compatibility check.
 
 Use the supported single-process launcher, without reload or extra workers.
-Every process would otherwise duplicate a large model state. The interface has
-no authentication, TLS termination or public-hosting contract; the tested setup
-is loopback only. Interactive documentation is available at `/docs`, with the
-machine-readable schema at `/openapi.json`.
+Every process would otherwise duplicate a large model state. The optional
+shared bearer credential provides no per-user authorization, TLS termination
+or public-hosting contract; the tested setup is loopback only. The default is
+local anonymous access. See [credential provisioning](API_HARDENING.md#optional-operator-credential)
+for `RECSYS_API_TOKEN` / `RECSYS_API_TOKEN_FILE`. Interactive documentation is
+available at `/docs` in anonymous mode and disabled in bearer mode; authorized
+clients can read `/openapi.json`.
 
 To opt into caching and the prepared overload fallback, add
 `--cache-max-entries 256`, `--cache-max-bytes 1048576`, `--cache-ttl-seconds 300`
@@ -164,18 +168,26 @@ filesystem paths and tracebacks. Uvicorn access logging is disabled by default.
 | HTTP status | Application error code | Meaning |
 | :--- | :--- | :--- |
 | 400 | `invalid_json` / `invalid_request` | Malformed UTF-8/JSON, duplicate keys, nonfinite numbers or invalid application-level length |
+| 400 / 403 | `invalid_host` / `forbidden_origin` | Configured local authority or same-origin policy failed |
+| 401 | `unauthorized` | Shared credential missing/invalid; `WWW-Authenticate: Bearer` |
+| 408 | `body_timeout` | Absolute body-read deadline expired |
 | 413 | `body_too_large` | Body exceeds 8 KiB, including chunked/no-length requests |
-| 415 | `unsupported_media_type` | Expected `application/json` |
+| 415 | `unsupported_media_type` | Expected `application/json` without unsupported content encoding |
 | 422 | `validation_error` | Invalid schema, unsupported fields or query parameters |
+| 429 | `rate_limited` | Recommendation rate/table budget exhausted; positive `Retry-After` |
+| 431 | `headers_too_large` | Complete ASGI header budget exceeded |
 | 500 | `inference_failed` / `internal_error` | Unexpected execution failure; no recovery recommendation |
-| 503 | `busy` / `not_ready` | Retry a busy request later, or restore/restart the service |
+| 503 | `busy` / `not_ready` / `request_overloaded` | Numerical admission, readiness or body-reader budget rejected |
 
 Errors have the shape `{"request_id": "...", "error": {"code": "...",
 "message": "...", "fields": []}}`. Unknown endpoints and methods use 404/405
 `http_error`; OpenAPI declares these shared errors on registered operations.
 Readiness uses its health schema. Malformed HTTP framing rejected
 by Uvicorn before ASGI is outside the application's JSON-envelope contract.
-Body size limits do not establish request-rate or slow-client protections.
+The [hardening contract](API_HARDENING.md) defines separate 5-second header/body
+deadlines, 32 accepted connections, eight body readers and bounded global/peer
+rate admission. Protocol rejections can close the socket or return plain 400
+before ASGI. These protections do not establish a serving SLA.
 
 ## Verification evidence
 
@@ -214,17 +226,18 @@ with earlier source-only or offline inference timings.
 
 For the pre-observability schema 1.1.0 cache-off/cache-on evidence, see the
 [paired HTTP receipt](../benchmarks/serving/cache_state_validation_v1.json) and
-[cache report](SERVICE_CACHE_AND_FALLBACKS.md). Current source verification is
-described in the [observability report](OBSERVABILITY.md). Reproduce the boundary receipt's
+[cache report](SERVICE_CACHE_AND_FALLBACKS.md). The pre-hardening observability
+receipt retains its 1.1.0 source; current verification is described in the
+[hardening report](API_HARDENING.md). Reproduce the boundary receipt's
 1.0.0 contract from revision `dc218a8`; its runner compares that exact response
-shape and cannot verify the additional 1.1.0 fields. Run current checks with:
+shape and cannot verify later operational contracts. Run current checks with:
 
 ```sh
 python -m pip install -e ".[dev]" -r requirements/serving-test.txt
 pytest
 ruff check .
 ruff format --check .
-python scripts/verify_service_observability.py --bundle artifacts/retailrocket-fold09-v1 --manifest-sha256 84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe --output .local/observability_verification_repeat.json
+python scripts/verify_service_hardening.py --bundle artifacts/retailrocket-fold09-v1 --manifest-sha256 84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe --output .local/hardening_repeat.json
 ```
 
 The verifier refuses to overwrite completed receipts. Its disposable process
@@ -243,7 +256,7 @@ without treating scheduler speed as a latency benchmark.
 ## Limits
 
 The API has no dynamic-history updates, stale-result recovery, automatic model
-recovery, hot replacement, authentication or public deployment. The optional
+recovery, hot replacement, per-user authorization or public deployment. The optional
 fallback handles busy admission only; failed inference still requires restart.
 The full Windows-built
 bundle has not been verified on Linux; API fixture tests in Linux CI would
