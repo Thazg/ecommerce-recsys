@@ -8,11 +8,11 @@ from threading import Event
 import pytest
 
 pytest.importorskip("fastapi", reason="Install requirements/serving-test.txt for API tests.")
-from fastapi.testclient import TestClient
+from serving_test_support import TestClient
+from serving_test_support import create_fixture_app as create_app
 from test_observability import samples, total
 from test_service_cache import Snapshot, application
 
-from ecommerce_recsys.serving.app import create_app
 from ecommerce_recsys.serving.contracts import ServiceSettings
 from ecommerce_recsys.serving.service import _PROCESS_PERMIT, State
 from scripts.verify_service_observability import parse_metrics

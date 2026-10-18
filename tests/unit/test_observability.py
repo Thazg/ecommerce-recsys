@@ -12,7 +12,7 @@ import pytest
 
 pytest.importorskip("fastapi", reason="Install requirements/serving-test.txt for API tests.")
 import httpx2 as httpx
-from fastapi.testclient import TestClient
+from serving_test_support import TestClient
 from test_service_cache import application
 
 from ecommerce_recsys.serving.observability import BOUNDS, EVENT_LOGGER, Telemetry
@@ -196,7 +196,7 @@ def test_cancelled_http_and_running_worker_are_distinct_observations(tmp_path, b
         service = app.state.service
         async with app.router.lifespan_context(app):
             async with httpx.AsyncClient(
-                transport=httpx.ASGITransport(app=app), base_url="http://test"
+                transport=httpx.ASGITransport(app=app), base_url="http://127.0.0.1:8000"
             ) as client:
                 model.blocking = True
                 model.release.clear()

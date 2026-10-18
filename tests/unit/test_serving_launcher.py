@@ -4,6 +4,7 @@
 
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -19,9 +20,19 @@ def launch(monkeypatch, tmp_path):
     calls = []
     monkeypatch.setenv("RECSYS_BUNDLE_PATH", str(tmp_path / "bundle with spaces"))
     monkeypatch.setenv("RECSYS_MANIFEST_SHA256", "a" * 64)
-    monkeypatch.setattr(serving_app, "create_app", lambda settings: settings)
+
+    def factory(settings, *, security):
+        return SimpleNamespace(
+            settings=settings,
+            security=security,
+            state=SimpleNamespace(
+                service=SimpleNamespace(telemetry=SimpleNamespace(transport=lambda event: None))
+            ),
+        )
+
+    monkeypatch.setattr(serving_app, "create_app", factory)
     monkeypatch.setattr(
-        uvicorn, "run", lambda settings, **options: calls.append((settings, options))
+        uvicorn, "run", lambda app, **options: calls.append((app.settings, options))
     )
 
     def invoke(*args):
@@ -39,6 +50,8 @@ def test_env_only_launcher_converts_path_and_uses_one_loopback_worker(launch):
     assert settings.manifest_sha256 == "a" * 64
     assert options["host"] == "127.0.0.1"
     assert options["workers"] == 1 and options["access_log"] is False
+    assert options["proxy_headers"] is False and options["limit_concurrency"] == 32
+    assert options["backlog"] == 64 and options["h11_max_incomplete_event_size"] == 16384
 
 
 @pytest.mark.parametrize("host", ["127.0.0.1", "::1", "localhost"])

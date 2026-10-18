@@ -8,7 +8,7 @@ import json
 import pytest
 
 pytest.importorskip("fastapi", reason="Install requirements/serving-test.txt for API tests.")
-from fastapi.testclient import TestClient
+from serving_test_support import TestClient
 from test_observability import samples, total
 from test_service_cache import application
 

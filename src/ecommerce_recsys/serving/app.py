@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.openapi.utils import get_openapi
 from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse, Response
 
@@ -20,6 +21,8 @@ from ecommerce_recsys.serving.contracts import (
 )
 from ecommerce_recsys.serving.observability import CONTENT_TYPE
 from ecommerce_recsys.serving.observation_boundary import ObservationBoundary
+from ecommerce_recsys.serving.rate_limit import RequestAdmission
+from ecommerce_recsys.serving.security import SecuritySettings
 from ecommerce_recsys.serving.service import (
     Busy,
     InferenceFailed,
@@ -28,9 +31,16 @@ from ecommerce_recsys.serving.service import (
 )
 
 
-def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -> FastAPI:
+def create_app(
+    settings: ServiceSettings | None = None,
+    *,
+    loader=load_bundle,
+    security: SecuritySettings | None = None,
+) -> FastAPI:
     """Create routes without loading files. ASGI lifespan owns model lifetime."""
     settings = settings or ServiceSettings.from_environment()
+    security = security or SecuritySettings()
+    admission = RequestAdmission(security)
     service = RecommendationService(settings, loader=loader)
 
     @asynccontextmanager
@@ -43,17 +53,44 @@ def create_app(settings: ServiceSettings | None = None, *, loader=load_bundle) -
 
     app = FastAPI(
         title="Retailrocket recommendation API",
-        version="1.1.0",
+        version="1.2.0",
         description="Recommendations from one verified historical snapshot. User IDs select stored snapshot context; dynamic histories are not accepted.",
         lifespan=lifespan,
+        redirect_slashes=False,
+        docs_url=None if security.token is not None else "/docs",
+        redoc_url=None if security.token is not None else "/redoc",
         responses={
+            **{
+                status: {"model": ErrorResponse}
+                for status in (400, 401, 403, 408, 415, 429, 431, 503)
+            },
             404: {"model": ErrorResponse, "description": "Unknown endpoint."},
             405: {"model": ErrorResponse, "description": "Unsupported HTTP method."},
         },
     )
     app.state.service = service
-    app.add_middleware(RequestBoundary)
+    app.state.security = security
+    app.state.request_admission = admission
+    app.add_middleware(RequestBoundary, security=security, admission=admission)
     app.add_middleware(ObservationBoundary, telemetry=service.telemetry)
+
+    def openapi():
+        if app.openapi_schema is None:
+            schema = get_openapi(
+                title=app.title, version=app.version, description=app.description, routes=app.routes
+            )
+            if security.token is not None:
+                schema.setdefault("components", {})["securitySchemes"] = {
+                    "BearerAuth": {"type": "http", "scheme": "bearer"}
+                }
+                for path, methods in schema["paths"].items():
+                    if path != "/health/live":
+                        for operation in methods.values():
+                            operation["security"] = [{"BearerAuth": []}]
+            app.openapi_schema = schema
+        return app.openapi_schema
+
+    app.openapi = openapi
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(request, error):

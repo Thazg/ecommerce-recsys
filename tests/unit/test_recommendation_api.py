@@ -17,10 +17,10 @@ import pytest
 
 pytest.importorskip("fastapi", reason="Install requirements/serving-test.txt for API tests.")
 import httpx2 as httpx
-from fastapi.testclient import TestClient
+from serving_test_support import TestClient
+from serving_test_support import create_fixture_app as create_app
 
 from ecommerce_recsys.artifacts import Recommendation
-from ecommerce_recsys.serving.app import create_app
 from ecommerce_recsys.serving.boundary import BODY_LIMIT, RequestBoundary
 from ecommerce_recsys.serving.contracts import ServiceSettings
 from ecommerce_recsys.serving.service import (
@@ -264,7 +264,11 @@ def test_asgi_chunked_body_and_malformed_length(headers, chunks, expected, monke
                 "type": "http",
                 "method": "POST",
                 "path": "/v1/recommendations",
-                "headers": [(b"content-type", b"application/json"), *headers],
+                "headers": [
+                    (b"host", b"127.0.0.1:8000"),
+                    (b"content-type", b"application/json"),
+                    *headers,
+                ],
             },
             receive,
             send,
@@ -369,7 +373,7 @@ def test_busy_health_cancellation_and_shutdown_preserve_single_worker(api):
         app, snapshot, _ = api
         async with app.router.lifespan_context(app):
             async with httpx.AsyncClient(
-                transport=httpx.ASGITransport(app=app), base_url="http://test"
+                transport=httpx.ASGITransport(app=app), base_url="http://127.0.0.1:8000"
             ) as client:
                 snapshot.blocking = True
                 snapshot.release.clear()
@@ -422,10 +426,10 @@ def test_inference_is_serialized_across_app_instances(api, tmp_path):
         )
         async with first.router.lifespan_context(first), second.router.lifespan_context(second):
             async with httpx.AsyncClient(
-                transport=httpx.ASGITransport(app=first), base_url="http://first"
+                transport=httpx.ASGITransport(app=first), base_url="http://127.0.0.1:8000"
             ) as a:
                 async with httpx.AsyncClient(
-                    transport=httpx.ASGITransport(app=second), base_url="http://second"
+                    transport=httpx.ASGITransport(app=second), base_url="http://127.0.0.1:8000"
                 ) as b:
                     snapshot.blocking = True
                     snapshot.release.clear()

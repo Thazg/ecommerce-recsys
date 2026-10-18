@@ -9,9 +9,9 @@ import pytest
 
 pytest.importorskip("fastapi", reason="Install requirements/serving-test.txt for API tests.")
 import httpx2 as httpx
+from serving_test_support import create_fixture_app as create_app
 from test_service_cache import Snapshot, application
 
-from ecommerce_recsys.serving.app import create_app
 from ecommerce_recsys.serving.contracts import ServiceSettings
 from ecommerce_recsys.serving.service import _PROCESS_PERMIT, StartupFailed, State
 
@@ -22,7 +22,7 @@ def test_primary_failure_during_lookup_cannot_admit_another_model_call(tmp_path,
         service = app.state.service
         async with app.router.lifespan_context(app):
             async with httpx.AsyncClient(
-                transport=httpx.ASGITransport(app=app), base_url="http://test"
+                transport=httpx.ASGITransport(app=app), base_url="http://127.0.0.1:8000"
             ) as client:
                 finished = Event()
                 execute = service._execute
@@ -106,7 +106,7 @@ def test_stop_while_loading_never_publishes_ready(tmp_path, cancel_start, loader
             assert service.bundle is service.identity is service.executor is service.cache is None
             assert service.fallback_pool == ()
             async with httpx.AsyncClient(
-                transport=httpx.ASGITransport(app=app), base_url="http://test"
+                transport=httpx.ASGITransport(app=app), base_url="http://127.0.0.1:8000"
             ) as client:
                 ready = await client.get("/health/ready")
                 assert ready.status_code == 503 and ready.json()["state"] == "stopped"
@@ -164,7 +164,7 @@ def test_fallback_snapshot_fault_invalidates_state_without_releasing_primary_per
         service = app.state.service
         async with app.router.lifespan_context(app):
             async with httpx.AsyncClient(
-                transport=httpx.ASGITransport(app=app), base_url="http://test"
+                transport=httpx.ASGITransport(app=app), base_url="http://127.0.0.1:8000"
             ) as client:
                 await client.post("/v1/recommendations", json={"user_id": "known"})
                 model.blocking = True

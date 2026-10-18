@@ -13,11 +13,11 @@ import pytest
 
 pytest.importorskip("fastapi", reason="Install requirements/serving-test.txt for API tests.")
 import httpx2 as httpx
-from fastapi.testclient import TestClient
+from serving_test_support import TestClient
+from serving_test_support import create_fixture_app as create_app
 
 from ecommerce_recsys.artifacts import Recommendation
 from ecommerce_recsys.retrieval.popularity_retriever import PopularityRetriever
-from ecommerce_recsys.serving.app import create_app
 from ecommerce_recsys.serving.contracts import ServiceSettings
 from ecommerce_recsys.serving.service import StartupFailed, State
 
@@ -181,7 +181,7 @@ def test_busy_hits_misses_cancellation_and_no_fallback_cache_pollution(tmp_path,
         app, model = application(tmp_path, cache_max_entries=8, busy_policy=busy_policy)
         async with app.router.lifespan_context(app):
             async with httpx.AsyncClient(
-                transport=httpx.ASGITransport(app=app), base_url="http://test"
+                transport=httpx.ASGITransport(app=app), base_url="http://127.0.0.1:8000"
             ) as client:
                 await client.post("/v1/recommendations", json={"user_id": "known"})
                 model.blocking = True

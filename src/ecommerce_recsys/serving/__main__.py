@@ -8,6 +8,7 @@ from ipaddress import ip_address
 from pathlib import Path
 
 from ecommerce_recsys.serving.contracts import ServiceSettings
+from ecommerce_recsys.serving.security import SecuritySettings
 
 
 def loopback_host(value):
@@ -35,6 +36,10 @@ def main():
     if args.bundle_path is None or args.manifest_sha256 is None or not 1 <= args.port <= 65535:
         parser.error("Provide --bundle-path, --manifest-sha256 and a port in 1-65535.")
     try:
+        host_authority = f"[{args.host}]" if ":" in args.host else args.host
+        security = SecuritySettings.from_environment(
+            authorities=(f"{host_authority}:{args.port}", f"localhost:{args.port}")
+        )
         settings = ServiceSettings(
             args.bundle_path,
             args.manifest_sha256,
@@ -48,20 +53,27 @@ def main():
     import uvicorn
 
     from ecommerce_recsys.serving.app import create_app
+    from ecommerce_recsys.serving.http_protocol import guarded_http_protocol
     from ecommerce_recsys.serving.observability import configure_event_logging
 
     configure_event_logging()
+    app = create_app(settings, security=security)
+    protocol = guarded_http_protocol(security, app.state.service.telemetry)
     uvicorn.run(
-        create_app(settings),
+        app,
         host=args.host,
         port=args.port,
         workers=1,
         access_log=False,
         loop="asyncio",
-        http="h11",
+        http=protocol,
         ws="none",
         lifespan="on",
         timeout_keep_alive=5,
+        proxy_headers=False,
+        limit_concurrency=security.max_connections,
+        backlog=64,
+        h11_max_incomplete_event_size=security.header_limit,
     )
 
 
