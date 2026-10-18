@@ -179,6 +179,15 @@ admission, cache and degraded delivery; process RSS and model identity remain
 visible without exporting user IDs. External collection, dashboards and alert
 delivery are separate operational work.
 
+## Integration verification
+
+The functional gate runs unit regressions, HTTP process tests with genuinely
+fitted synthetic models, explicit real-bundle numerical references and fresh
+HTTP parity checks. Its [test strategy](docs/TESTING_AND_RELEASE_GATES.md)
+distinguishes fixture coverage, current model parity and historical full-fold
+quality. A successful functional check does not establish Linux compatibility,
+representative-load performance or deployment eligibility.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -198,6 +207,7 @@ delivery are separate operational work.
 - [Recommendation API](docs/RECOMMENDATION_API.md): local HTTP contract, lifecycle, bounded admission, reference parity and measured resource limits.
 - [Cache and overload fallback](docs/SERVICE_CACHE_AND_FALLBACKS.md): optional bounded reuse, explicit degraded responses, failure semantics and paired HTTP evidence.
 - [API hardening](docs/API_HARDENING.md): local access policy, connection/input budgets, request limits and source-pinned verification.
+- [Testing and functional gates](docs/TESTING_AND_RELEASE_GATES.md): unit and fitted-process profiles, explicit real-bundle parity and deployment boundaries.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 
@@ -213,7 +223,7 @@ describes the source, schema and recorded input hashes. In a fresh checkout,
 prepare the shared rolling inputs and candidate reference with:
 
 ```sh
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[dev]" -r requirements/serving-test.txt
 python scripts/build_interactions.py
 python scripts/prepare_rolling_data.py
 python scripts/sweep_rolling.py --model item_knn
