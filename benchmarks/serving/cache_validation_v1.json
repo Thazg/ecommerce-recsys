@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "experiment": {
+    "cache_entries": 256,
+    "cache_entry_bytes": 1048576,
+    "ttl_seconds": 300.0,
+    "output_limit": 20,
+    "prefix_limits": [
+      5,
+      10
+    ],
+    "prefix_warm_users": 3,
+    "hit_p95_max_fraction_of_uncached": 0.5,
+    "miss_p95_max_fraction_of_uncached": 1.25,
+    "scope": "same pinned producer references; sequential loopback sample; no load/SLA/quality selection"
+  },
+  "identity": {
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "references_sha256": "83bd9e573027a95c7172b9ececf135f8d184347db525a9559d10adf454f5fe96",
+    "bundle_version": "retailrocket-fold09-v1",
+    "reader_runtime_code_sha256": "274a6210a9d4a621dcbd608505a76c5a8a593df15acec117d8a7a767b711e4b0",
+    "files_sha256": {
+      "src/ecommerce_recsys/serving/__init__.py": "4ddd5b4f7a639985fca45d0ddf4d4d49d5a138cb189ac6fb7d07a0e7da07b2f1",
+      "src/ecommerce_recsys/serving/__main__.py": "fdf51c1483f80f320632f32b1a228a902c2c3a1640a5bd51bccfc637d69a9044",
+      "src/ecommerce_recsys/serving/app.py": "6941736a7f1bce564d7c80f54c550b8b69317d962964d8159f1cc1c255a178ec",
+      "src/ecommerce_recsys/serving/boundary.py": "62a4f87fd433df385803a0402fb4c38c86caff2190bc645cfe8e22b5f229f5e5",
+      "src/ecommerce_recsys/serving/cache.py": "d2373d1eeace3b953479a9174a906bbc7cf8467b82e48dc6c987c681a3e806b3",
+      "src/ecommerce_recsys/serving/contracts.py": "003a6999246c70c94fdb76b70d612358b0d02be49f6267149ef89905b5b0d70b",
+      "src/ecommerce_recsys/serving/service.py": "f688b6f90562ac8bbfc4ec227dee6affd3fb82b04b4f7ff07d04116931415c1f",
+      "scripts/verify_recommendation_api.py": "96501e57ae4d9a03fd9a723ae68dcd0b75e677842aff472e594b50e639520f63",
+      "requirements/serving.txt": "2e8964b171b29eb17dd2d029fb694f4b22efb7b768258ed220c3106cbb485241",
+      "requirements/serving-test.txt": "82ab2ca410f959323da3556e22f4e522059701713407472042c6424484d3e54f",
+      "src/ecommerce_recsys/evaluation/latency.py": "b06b540285a936f7abaddafea8c385d041204eed6eb56c1ff0df3b88695fe1d0",
+      "scripts/verify_service_cache.py": "abc75209b95adada56f396b73c3657d228f89954eea19d06c18bb6f6e0255a7e"
+    },
+    "request_sequence_sha256": "4c60b5b7212b58d1d3951ca628b1b549511d5f756ecfbb54b045533071f06c72"
+  },
+  "runtime": {
+    "python": "3.13.15",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "fastapi": "0.143.2",
+      "starlette": "1.8.0",
+      "uvicorn": "0.54.0",
+      "pydantic": "2.13.5",
+      "anyio": "4.15.1",
+      "psutil": "7.1.0"
+    }
+  },
+  "cache_off": {
+    "timing": {
+      "warm": {
+        "latency_samples": 100,
+        "latency_avg_ms": 84.62729700001091,
+        "latency_p50_ms": 74.06464999985474,
+        "latency_p95_ms": 225.61067999999977,
+        "latency_p99_ms": 252.64557699986204
+      },
+      "cold": {
+        "latency_samples": 1,
+        "latency_avg_ms": 11.763299999984156,
+        "latency_p50_ms": 11.763299999984156,
+        "latency_p95_ms": 11.763299999984156,
+        "latency_p99_ms": 11.763299999984156
+      }
+    },
+    "startup_seconds": 21.65766719999965,
+    "schema_sha256": "a3cf63d697a209b46e91659ab0da6cc881b20c276d20e97c83dc0dfe3eee9a4d",
+    "ordered_outputs_sha256": "3b173aeae5520fb73c60c3ebf435f760698d9bdf19c75a1a3d5097b37b6a3bfb",
+    "ready": {
+      "request_id": "2dd9fa587f7d4dc1a7c3fceaf18a8319",
+      "status": "ready",
+      "state": "ready",
+      "bundle_version": "retailrocket-fold09-v1",
+      "cutoff": 1441216678608,
+      "cache": {
+        "enabled": false,
+        "entries": 0,
+        "charged_bytes": 0,
+        "max_entries": 0,
+        "max_bytes": 1048576,
+        "ttl_seconds": 300.0,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0,
+        "expirations": 0,
+        "oversized": 0,
+        "failures": 0
+      },
+      "busy_policy": "reject",
+      "primary_calls": 0,
+      "fallback_calls": 0
+    },
+    "after_passes": [
+      {
+        "request_id": "6bc59f1e387d45cfb556389ce1e809cb",
+        "status": "ready",
+        "state": "ready",
+        "bundle_version": "retailrocket-fold09-v1",
+        "cutoff": 1441216678608,
+        "cache": {
+          "enabled": false,
+          "entries": 0,
+          "charged_bytes": 0,
+          "max_entries": 0,
+          "max_bytes": 1048576,
+          "ttl_seconds": 300.0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "expirations": 0,
+          "oversized": 0,
+          "failures": 0
+        },
+        "busy_policy": "reject",
+        "primary_calls": 102,
+        "fallback_calls": 0
+      }
+    ],
+    "final": {
+      "request_id": "8bfa279d17b74401a442b67aa3650cf3",
+      "status": "ready",
+      "state": "ready",
+      "bundle_version": "retailrocket-fold09-v1",
+      "cutoff": 1441216678608,
+      "cache": {
+        "enabled": false,
+        "entries": 0,
+        "charged_bytes": 0,
+        "max_entries": 0,
+        "max_bytes": 1048576,
+        "ttl_seconds": 300.0,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0,
+        "expirations": 0,
+        "oversized": 0,
+        "failures": 0
+      },
+      "busy_policy": "reject",
+      "primary_calls": 102,
+      "fallback_calls": 0
+    },
+    "memory": {
+      "ready_rss_bytes": 2370674688,
+      "after_requests_rss_bytes": 2371989504,
+      "sampled_peak_rss_bytes": 2600767488,
+      "charter_target_bytes": 2147483648,
+      "observed_samples_within_target": false
+    }
+  },
+  "cache_on": {
+    "timing": {
+      "miss_warm": {
+        "latency_samples": 100,
+        "latency_avg_ms": 83.11485399997764,
+        "latency_p50_ms": 73.1882999998561,
+        "latency_p95_ms": 216.22012999989693,
+        "latency_p99_ms": 232.39718899975767
+      },
+      "miss_cold": {
+        "latency_samples": 1,
+        "latency_avg_ms": 13.854299999820796,
+        "latency_p50_ms": 13.854299999820796,
+        "latency_p95_ms": 13.854299999820796,
+        "latency_p99_ms": 13.854299999820796
+      },
+      "hit_warm": {
+        "latency_samples": 100,
+        "latency_avg_ms": 0.8041709999861268,
+        "latency_p50_ms": 0.7460499998614978,
+        "latency_p95_ms": 1.077039999995577,
+        "latency_p99_ms": 1.3666700000840188
+      },
+      "hit_cold": {
+        "latency_samples": 1,
+        "latency_avg_ms": 0.6769999999960419,
+        "latency_p50_ms": 0.6769999999960419,
+        "latency_p95_ms": 0.6769999999960419,
+        "latency_p99_ms": 0.6769999999960419
+      }
+    },
+    "startup_seconds": 21.734082599999965,
+    "schema_sha256": "a3cf63d697a209b46e91659ab0da6cc881b20c276d20e97c83dc0dfe3eee9a4d",
+    "ordered_outputs_sha256": "3b173aeae5520fb73c60c3ebf435f760698d9bdf19c75a1a3d5097b37b6a3bfb",
+    "ready": {
+      "request_id": "2a6ea9ee04db451693b61f2acdfaae5f",
+      "status": "ready",
+      "state": "ready",
+      "bundle_version": "retailrocket-fold09-v1",
+      "cutoff": 1441216678608,
+      "cache": {
+        "enabled": true,
+        "entries": 0,
+        "charged_bytes": 0,
+        "max_entries": 256,
+        "max_bytes": 1048576,
+        "ttl_seconds": 300.0,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0,
+        "expirations": 0,
+        "oversized": 0,
+        "failures": 0
+      },
+      "busy_policy": "recent_popularity",
+      "primary_calls": 0,
+      "fallback_calls": 0
+    },
+    "after_passes": [
+      {
+        "request_id": "1d60573092a44e25839bfcb0d86aaca5",
+        "status": "ready",
+        "state": "ready",
+        "bundle_version": "retailrocket-fold09-v1",
+        "cutoff": 1441216678608,
+        "cache": {
+          "enabled": true,
+          "entries": 101,
+          "charged_bytes": 217152,
+          "max_entries": 256,
+          "max_bytes": 1048576,
+          "ttl_seconds": 300.0,
+          "hits": 0,
+          "misses": 101,
+          "evictions": 0,
+          "expirations": 0,
+          "oversized": 0,
+          "failures": 0
+        },
+        "busy_policy": "recent_popularity",
+        "primary_calls": 101,
+        "fallback_calls": 0
+      },
+      {
+        "request_id": "532f42c1050041db8c285249ddf38278",
+        "status": "ready",
+        "state": "ready",
+        "bundle_version": "retailrocket-fold09-v1",
+        "cutoff": 1441216678608,
+        "cache": {
+          "enabled": true,
+          "entries": 101,
+          "charged_bytes": 217152,
+          "max_entries": 256,
+          "max_bytes": 1048576,
+          "ttl_seconds": 300.0,
+          "hits": 101,
+          "misses": 101,
+          "evictions": 0,
+          "expirations": 0,
+          "oversized": 0,
+          "failures": 0
+        },
+        "busy_policy": "recent_popularity",
+        "primary_calls": 101,
+        "fallback_calls": 0
+      }
+    ],
+    "final": {
+      "request_id": "793340379f5840d392ac681562bb8a91",
+      "status": "ready",
+      "state": "ready",
+      "bundle_version": "retailrocket-fold09-v1",
+      "cutoff": 1441216678608,
+      "cache": {
+        "enabled": true,
+        "entries": 101,
+        "charged_bytes": 217152,
+        "max_entries": 256,
+        "max_bytes": 1048576,
+        "ttl_seconds": 300.0,
+        "hits": 109,
+        "misses": 101,
+        "evictions": 0,
+        "expirations": 0,
+        "oversized": 0,
+        "failures": 0
+      },
+      "busy_policy": "recent_popularity",
+      "primary_calls": 101,
+      "fallback_calls": 0
+    },
+    "memory": {
+      "ready_rss_bytes": 2292572160,
+      "after_requests_rss_bytes": 2322587648,
+      "sampled_peak_rss_bytes": 2549043200,
+      "charter_target_bytes": 2147483648,
+      "observed_samples_within_target": false
+    }
+  },
+  "parity": {
+    "reference_requests_per_pass": 101,
+    "warm_references": 100,
+    "cold_references": 1,
+    "all_passed": true
+  },
+  "benefit_gates": {
+    "hit_latency": true,
+    "miss_latency": true,
+    "all_passed": true
+  },
+  "limits": [
+    "Opt-in cache; no production hit-rate, workload SLO or independent quality evidence.",
+    "One cold reference is not a latency distribution. Off has one excluded warm-up; on starts with empty cache.",
+    "50ms process RSS sampling is a lower bound on peak; independent processes do not isolate cache allocation cost.",
+    "Cache byte budget accounts stored entries, excluding fixed container/allocator costs; RSS is measured separately.",
+    "Forced busy/failure semantics are verified in tests, including a fitted tiny snapshot; this probe does not force operational fallback.",
+    "Probe processes are terminated after checks; graceful drain has deterministic test coverage."
+  ],
+  "content_sha256": "43bbbaff040549502822e34d1b660782138a6b3589e60e03827eed05fa2ddcf1"
+}

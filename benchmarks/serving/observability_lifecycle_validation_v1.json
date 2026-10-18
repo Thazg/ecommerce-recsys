@@ -1,0 +1,342 @@
+{
+  "schema_version": 1,
+  "experiment": {
+    "cache_entries": 256,
+    "cache_entry_bytes": 1048576,
+    "ttl_seconds": 300.0,
+    "output_limit": 20,
+    "prefix_limits": [
+      5,
+      10
+    ],
+    "prefix_warm_users": 3,
+    "hit_p95_max_fraction_of_uncached": 0.5,
+    "miss_p95_max_fraction_of_uncached": 1.25,
+    "scope": "same pinned producer references; sequential loopback sample; no load/SLA/quality selection"
+  },
+  "identity": {
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "references_sha256": "83bd9e573027a95c7172b9ececf135f8d184347db525a9559d10adf454f5fe96",
+    "bundle_version": "retailrocket-fold09-v1",
+    "reader_runtime_code_sha256": "274a6210a9d4a621dcbd608505a76c5a8a593df15acec117d8a7a767b711e4b0",
+    "files_sha256": {
+      "src/ecommerce_recsys/serving/__init__.py": "4ddd5b4f7a639985fca45d0ddf4d4d49d5a138cb189ac6fb7d07a0e7da07b2f1",
+      "src/ecommerce_recsys/serving/__main__.py": "6dd680c94897bfaaaecd7f599d636bbf482d07b63de5ce519e6fa9a2b97296bf",
+      "src/ecommerce_recsys/serving/app.py": "1e654b58b08540a4b0927cac4f489c97070729ffd71d48508ba83d86596460e1",
+      "src/ecommerce_recsys/serving/boundary.py": "e2401be7456024f60ed52bda10be688510633cc05e1329e0ab6fc5685322c860",
+      "src/ecommerce_recsys/serving/cache.py": "605e8d29fb51e000525f6b4b0e74768123312da3a5785d78ec98389c38c829e4",
+      "src/ecommerce_recsys/serving/contracts.py": "003a6999246c70c94fdb76b70d612358b0d02be49f6267149ef89905b5b0d70b",
+      "src/ecommerce_recsys/serving/observability.py": "9adc3b4b5bee02bffa2b56305e5f781e3cbcaee2bce812b51659a35a1a4cfe59",
+      "src/ecommerce_recsys/serving/observation_boundary.py": "f8379cba46d84c36f89e69526f2135cbe3d8ad4f3d2e4c52f7dc292de15cc747",
+      "src/ecommerce_recsys/serving/service.py": "a4771f28ca737d45979c18ec1778c914c9f7b581fc2194c8a8d2dc698d436763",
+      "scripts/verify_recommendation_api.py": "96501e57ae4d9a03fd9a723ae68dcd0b75e677842aff472e594b50e639520f63",
+      "requirements/serving.txt": "2e8964b171b29eb17dd2d029fb694f4b22efb7b768258ed220c3106cbb485241",
+      "requirements/serving-test.txt": "82ab2ca410f959323da3556e22f4e522059701713407472042c6424484d3e54f",
+      "src/ecommerce_recsys/evaluation/latency.py": "b06b540285a936f7abaddafea8c385d041204eed6eb56c1ff0df3b88695fe1d0",
+      "scripts/verify_service_cache.py": "abc75209b95adada56f396b73c3657d228f89954eea19d06c18bb6f6e0255a7e",
+      "scripts/verify_service_observability.py": "9a5e9d0460d4b2cd4d6530f916e9fe410b90e6da8826f9f2c163cbeb7c6bf6b1"
+    },
+    "request_sequence_sha256": "4c60b5b7212b58d1d3951ca628b1b549511d5f756ecfbb54b045533071f06c72"
+  },
+  "runtime": {
+    "python": "3.13.15",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "fastapi": "0.143.2",
+      "starlette": "1.8.0",
+      "uvicorn": "0.54.0",
+      "pydantic": "2.13.5",
+      "anyio": "4.15.1",
+      "psutil": "7.1.0"
+    }
+  },
+  "cache_off": {
+    "timing": {
+      "warm": {
+        "latency_samples": 100,
+        "latency_avg_ms": 123.00537799999914,
+        "latency_p50_ms": 101.30060000000185,
+        "latency_p95_ms": 241.84698500004623,
+        "latency_p99_ms": 519.1448180000265
+      },
+      "cold": {
+        "latency_samples": 1,
+        "latency_avg_ms": 19.684099999949467,
+        "latency_p50_ms": 19.684099999949467,
+        "latency_p95_ms": 19.684099999949467,
+        "latency_p99_ms": 19.684099999949467
+      }
+    },
+    "startup_seconds": 24.36756330000003,
+    "schema_sha256": "a3cf63d697a209b46e91659ab0da6cc881b20c276d20e97c83dc0dfe3eee9a4d",
+    "ordered_outputs_sha256": "3b173aeae5520fb73c60c3ebf435f760698d9bdf19c75a1a3d5097b37b6a3bfb",
+    "ready": {
+      "request_id": "04d8f309c70448b180490f8f95b6e0f3",
+      "status": "ready",
+      "state": "ready",
+      "bundle_version": "retailrocket-fold09-v1",
+      "cutoff": 1441216678608,
+      "cache": {
+        "enabled": false,
+        "entries": 0,
+        "charged_bytes": 0,
+        "max_entries": 0,
+        "max_bytes": 1048576,
+        "ttl_seconds": 300.0,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0,
+        "expirations": 0,
+        "oversized": 0,
+        "failures": 0
+      },
+      "busy_policy": "reject",
+      "primary_calls": 0,
+      "fallback_calls": 0
+    },
+    "after_passes": [
+      {
+        "request_id": "d3684b59623d472b89ed24517f0b241f",
+        "status": "ready",
+        "state": "ready",
+        "bundle_version": "retailrocket-fold09-v1",
+        "cutoff": 1441216678608,
+        "cache": {
+          "enabled": false,
+          "entries": 0,
+          "charged_bytes": 0,
+          "max_entries": 0,
+          "max_bytes": 1048576,
+          "ttl_seconds": 300.0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "expirations": 0,
+          "oversized": 0,
+          "failures": 0
+        },
+        "busy_policy": "reject",
+        "primary_calls": 102,
+        "fallback_calls": 0
+      }
+    ],
+    "final": {
+      "request_id": "f550a2acb89449a5a5f77f7f1eb9d299",
+      "status": "ready",
+      "state": "ready",
+      "bundle_version": "retailrocket-fold09-v1",
+      "cutoff": 1441216678608,
+      "cache": {
+        "enabled": false,
+        "entries": 0,
+        "charged_bytes": 0,
+        "max_entries": 0,
+        "max_bytes": 1048576,
+        "ttl_seconds": 300.0,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0,
+        "expirations": 0,
+        "oversized": 0,
+        "failures": 0
+      },
+      "busy_policy": "reject",
+      "primary_calls": 102,
+      "fallback_calls": 0
+    },
+    "memory": {
+      "ready_rss_bytes": 1992544256,
+      "after_requests_rss_bytes": 1972887552,
+      "sampled_peak_rss_bytes": 2412990464,
+      "charter_target_bytes": 2147483648,
+      "observed_samples_within_target": false
+    }
+  },
+  "cache_on": {
+    "timing": {
+      "miss_warm": {
+        "latency_samples": 100,
+        "latency_avg_ms": 102.00211800000828,
+        "latency_p50_ms": 88.80764999997837,
+        "latency_p95_ms": 231.68923499998184,
+        "latency_p99_ms": 293.8395589999417
+      },
+      "miss_cold": {
+        "latency_samples": 1,
+        "latency_avg_ms": 17.689799999971,
+        "latency_p50_ms": 17.689799999971,
+        "latency_p95_ms": 17.689799999971,
+        "latency_p99_ms": 17.689799999971
+      },
+      "hit_warm": {
+        "latency_samples": 100,
+        "latency_avg_ms": 1.3381230000106825,
+        "latency_p50_ms": 1.2902500000109285,
+        "latency_p95_ms": 1.8456649999450288,
+        "latency_p99_ms": 2.2006159999375545
+      },
+      "hit_cold": {
+        "latency_samples": 1,
+        "latency_avg_ms": 1.4681000000109634,
+        "latency_p50_ms": 1.4681000000109634,
+        "latency_p95_ms": 1.4681000000109634,
+        "latency_p99_ms": 1.4681000000109634
+      }
+    },
+    "startup_seconds": 24.001569399999994,
+    "schema_sha256": "a3cf63d697a209b46e91659ab0da6cc881b20c276d20e97c83dc0dfe3eee9a4d",
+    "ordered_outputs_sha256": "3b173aeae5520fb73c60c3ebf435f760698d9bdf19c75a1a3d5097b37b6a3bfb",
+    "ready": {
+      "request_id": "b2e3e6f44d3549aea3af2bf464a6e3ad",
+      "status": "ready",
+      "state": "ready",
+      "bundle_version": "retailrocket-fold09-v1",
+      "cutoff": 1441216678608,
+      "cache": {
+        "enabled": true,
+        "entries": 0,
+        "charged_bytes": 0,
+        "max_entries": 256,
+        "max_bytes": 1048576,
+        "ttl_seconds": 300.0,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0,
+        "expirations": 0,
+        "oversized": 0,
+        "failures": 0
+      },
+      "busy_policy": "recent_popularity",
+      "primary_calls": 0,
+      "fallback_calls": 0
+    },
+    "after_passes": [
+      {
+        "request_id": "6ff98b7e7ba74749a09e8f956cb608a1",
+        "status": "ready",
+        "state": "ready",
+        "bundle_version": "retailrocket-fold09-v1",
+        "cutoff": 1441216678608,
+        "cache": {
+          "enabled": true,
+          "entries": 101,
+          "charged_bytes": 217152,
+          "max_entries": 256,
+          "max_bytes": 1048576,
+          "ttl_seconds": 300.0,
+          "hits": 0,
+          "misses": 101,
+          "evictions": 0,
+          "expirations": 0,
+          "oversized": 0,
+          "failures": 0
+        },
+        "busy_policy": "recent_popularity",
+        "primary_calls": 101,
+        "fallback_calls": 0
+      },
+      {
+        "request_id": "2d4d464154d34451b40fd87c0c30f988",
+        "status": "ready",
+        "state": "ready",
+        "bundle_version": "retailrocket-fold09-v1",
+        "cutoff": 1441216678608,
+        "cache": {
+          "enabled": true,
+          "entries": 101,
+          "charged_bytes": 217152,
+          "max_entries": 256,
+          "max_bytes": 1048576,
+          "ttl_seconds": 300.0,
+          "hits": 101,
+          "misses": 101,
+          "evictions": 0,
+          "expirations": 0,
+          "oversized": 0,
+          "failures": 0
+        },
+        "busy_policy": "recent_popularity",
+        "primary_calls": 101,
+        "fallback_calls": 0
+      }
+    ],
+    "final": {
+      "request_id": "9f2ee85d4b064f7aaf47e854a12be152",
+      "status": "ready",
+      "state": "ready",
+      "bundle_version": "retailrocket-fold09-v1",
+      "cutoff": 1441216678608,
+      "cache": {
+        "enabled": true,
+        "entries": 101,
+        "charged_bytes": 217152,
+        "max_entries": 256,
+        "max_bytes": 1048576,
+        "ttl_seconds": 300.0,
+        "hits": 109,
+        "misses": 101,
+        "evictions": 0,
+        "expirations": 0,
+        "oversized": 0,
+        "failures": 0
+      },
+      "busy_policy": "recent_popularity",
+      "primary_calls": 101,
+      "fallback_calls": 0
+    },
+    "memory": {
+      "ready_rss_bytes": 2342522880,
+      "after_requests_rss_bytes": 2346074112,
+      "sampled_peak_rss_bytes": 2581966848,
+      "charter_target_bytes": 2147483648,
+      "observed_samples_within_target": false
+    }
+  },
+  "parity": {
+    "reference_requests_per_pass": 101,
+    "warm_references": 100,
+    "cold_references": 1,
+    "all_passed": true
+  },
+  "benefit_gates": {
+    "hit_latency": true,
+    "miss_latency": true,
+    "all_passed": true
+  },
+  "limits": [
+    "Opt-in cache; no production hit-rate, workload SLO or independent quality evidence.",
+    "One cold reference is not a latency distribution. Off has one excluded warm-up; on starts with empty cache.",
+    "50ms process RSS sampling is a lower bound on peak; independent processes do not isolate cache allocation cost.",
+    "Cache byte budget accounts stored entries, excluding fixed container/allocator costs; RSS is measured separately.",
+    "Forced busy/failure semantics are verified in tests, including a fitted tiny snapshot; this probe does not force operational fallback.",
+    "Probe processes are terminated after checks; graceful drain has deterministic test coverage."
+  ],
+  "observability": {
+    "phases": [
+      {
+        "cache_enabled": false,
+        "sample_series": 105,
+        "http_requests": 106,
+        "deliveries": 102,
+        "owned_json_records": 107,
+        "metrics_text": "# HELP recsys_admission_total Local snapshot service admission_total.\n# TYPE recsys_admission_total counter\nrecsys_admission_total{decision=\"accepted\"} 102\n# HELP recsys_deliveries_total Local snapshot service deliveries_total.\n# TYPE recsys_deliveries_total counter\nrecsys_deliveries_total{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\"} 101\nrecsys_deliveries_total{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\"} 1\n# HELP recsys_http_requests_total Local snapshot service http_requests_total.\n# TYPE recsys_http_requests_total counter\nrecsys_http_requests_total{endpoint=\"openapi\",method=\"GET\",status=\"200\",outcome=\"completed\"} 1\nrecsys_http_requests_total{endpoint=\"ready\",method=\"GET\",status=\"200\",outcome=\"completed\"} 3\nrecsys_http_requests_total{endpoint=\"recommendations\",method=\"POST\",status=\"200\",outcome=\"completed\"} 102\n# HELP recsys_lifecycle_events_total Local snapshot service lifecycle_events_total.\n# TYPE recsys_lifecycle_events_total counter\nrecsys_lifecycle_events_total{event=\"startup_ready\"} 1\n# HELP recsys_primary_calls_total Local snapshot service primary_calls_total.\n# TYPE recsys_primary_calls_total counter\nrecsys_primary_calls_total 102\n# HELP recsys_delivery_duration_seconds Local snapshot service delivery_duration_seconds.\n# TYPE recsys_delivery_duration_seconds histogram\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"0.001\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"0.005\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"0.01\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"0.025\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"0.05\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"0.1\"} 50\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"0.25\"} 96\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"0.5\"} 99\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"1.0\"} 101\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"5.0\"} 101\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\",le=\"+Inf\"} 101\nrecsys_delivery_duration_seconds_sum{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\"} 12.31300999999985\nrecsys_delivery_duration_seconds_count{route=\"hybrid_learned\",cache=\"disabled\",degraded=\"false\"} 101\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"0.001\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"0.005\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"0.01\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"0.025\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"0.05\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"0.1\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"0.25\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"0.5\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"1.0\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"5.0\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\",le=\"+Inf\"} 1\nrecsys_delivery_duration_seconds_sum{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\"} 0.01896620000002258\nrecsys_delivery_duration_seconds_count{route=\"recent_popularity\",cache=\"disabled\",degraded=\"false\"} 1\n# HELP recsys_http_duration_seconds Local snapshot service http_duration_seconds.\n# TYPE recsys_http_duration_seconds histogram\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.001\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.005\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.01\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.025\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.05\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.1\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.25\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.5\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"1.0\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"5.0\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"+Inf\"} 1\nrecsys_http_duration_seconds_sum{endpoint=\"openapi\",outcome=\"completed\"} 0.03721700000005512\nrecsys_http_duration_seconds_count{endpoint=\"openapi\",outcome=\"completed\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.001\"} 2\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.005\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.01\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.025\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.05\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.1\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.25\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.5\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"1.0\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"5.0\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"+Inf\"} 3\nrecsys_http_duration_seconds_sum{endpoint=\"ready\",outcome=\"completed\"} 0.005721600000129001\nrecsys_http_duration_seconds_count{endpoint=\"ready\",outcome=\"completed\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.001\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.005\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.01\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.025\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.05\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.1\"} 51\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.25\"} 97\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.5\"} 100\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"1.0\"} 102\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"5.0\"} 102\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"+Inf\"} 102\nrecsys_http_duration_seconds_sum{endpoint=\"recommendations\",outcome=\"completed\"} 12.331976199999872\nrecsys_http_duration_seconds_count{endpoint=\"recommendations\",outcome=\"completed\"} 102\n# HELP recsys_primary_duration_seconds Local snapshot service primary_duration_seconds.\n# TYPE recsys_primary_duration_seconds histogram\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.001\"} 0\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.005\"} 0\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.01\"} 0\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.025\"} 1\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.05\"} 1\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.1\"} 55\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.25\"} 97\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.5\"} 100\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"1.0\"} 102\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"5.0\"} 102\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"+Inf\"} 102\nrecsys_primary_duration_seconds_sum{outcome=\"success\"} 12.223412900000653\nrecsys_primary_duration_seconds_count{outcome=\"success\"} 102\n# HELP recsys_cache_charged_bytes Local snapshot service cache_charged_bytes.\n# TYPE recsys_cache_charged_bytes gauge\nrecsys_cache_charged_bytes 0\n# HELP recsys_cache_enabled Local snapshot service cache_enabled.\n# TYPE recsys_cache_enabled gauge\nrecsys_cache_enabled 0\n# HELP recsys_cache_entries Local snapshot service cache_entries.\n# TYPE recsys_cache_entries gauge\nrecsys_cache_entries 0\n# HELP recsys_cache_failures Local snapshot service cache_failures.\n# TYPE recsys_cache_failures gauge\nrecsys_cache_failures 0\n# HELP recsys_cache_max_charged_bytes Local snapshot service cache_max_charged_bytes.\n# TYPE recsys_cache_max_charged_bytes gauge\nrecsys_cache_max_charged_bytes 1048576\n# HELP recsys_cache_max_entries Local snapshot service cache_max_entries.\n# TYPE recsys_cache_max_entries gauge\nrecsys_cache_max_entries 0\n# HELP recsys_cache_sample_success Local snapshot service cache_sample_success.\n# TYPE recsys_cache_sample_success gauge\nrecsys_cache_sample_success 1\n# HELP recsys_cache_ttl_seconds Local snapshot service cache_ttl_seconds.\n# TYPE recsys_cache_ttl_seconds gauge\nrecsys_cache_ttl_seconds 300.0\n# HELP recsys_memory_sample_success Local snapshot service memory_sample_success.\n# TYPE recsys_memory_sample_success gauge\nrecsys_memory_sample_success 1\n# HELP recsys_observer_errors_total Local snapshot service observer_errors_total.\n# TYPE recsys_observer_errors_total counter\nrecsys_observer_errors_total 0\n# HELP recsys_primary_in_flight Local snapshot service primary_in_flight.\n# TYPE recsys_primary_in_flight gauge\nrecsys_primary_in_flight 0\n# HELP recsys_process_resident_memory_bytes Local snapshot service process_resident_memory_bytes.\n# TYPE recsys_process_resident_memory_bytes gauge\nrecsys_process_resident_memory_bytes 1972887552\n# HELP recsys_ready Local snapshot service ready.\n# TYPE recsys_ready gauge\nrecsys_ready 1\n# HELP recsys_startup_duration_seconds Local snapshot service startup_duration_seconds.\n# TYPE recsys_startup_duration_seconds gauge\nrecsys_startup_duration_seconds 22.405974600000036\n# HELP recsys_state Local snapshot service state.\n# TYPE recsys_state gauge\nrecsys_state{state=\"starting\"} 0\nrecsys_state{state=\"ready\"} 1\nrecsys_state{state=\"failed\"} 0\nrecsys_state{state=\"stopped\"} 0\n# HELP recsys_model_info Local snapshot service model_info.\n# TYPE recsys_model_info gauge\nrecsys_model_info{version=\"retailrocket-fold09-v1\",manifest_sha256=\"84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe\"} 1\n",
+        "owned_log_events_sha256": "4f745110d5a652de992dcf68549fb57c0deea488a5b494999852115842e149f8",
+        "all_passed": true
+      },
+      {
+        "cache_enabled": true,
+        "sample_series": 135,
+        "http_requests": 215,
+        "deliveries": 210,
+        "owned_json_records": 216,
+        "metrics_text": "# HELP recsys_admission_total Local snapshot service admission_total.\n# TYPE recsys_admission_total counter\nrecsys_admission_total{decision=\"accepted\"} 101\n# HELP recsys_cache_events_total Local snapshot service cache_events_total.\n# TYPE recsys_cache_events_total counter\nrecsys_cache_events_total{event=\"hits\"} 109\nrecsys_cache_events_total{event=\"misses\"} 101\n# HELP recsys_deliveries_total Local snapshot service deliveries_total.\n# TYPE recsys_deliveries_total counter\nrecsys_deliveries_total{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\"} 106\nrecsys_deliveries_total{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\"} 100\nrecsys_deliveries_total{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\"} 3\nrecsys_deliveries_total{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\"} 1\n# HELP recsys_http_requests_total Local snapshot service http_requests_total.\n# TYPE recsys_http_requests_total counter\nrecsys_http_requests_total{endpoint=\"openapi\",method=\"GET\",status=\"200\",outcome=\"completed\"} 1\nrecsys_http_requests_total{endpoint=\"ready\",method=\"GET\",status=\"200\",outcome=\"completed\"} 4\nrecsys_http_requests_total{endpoint=\"recommendations\",method=\"POST\",status=\"200\",outcome=\"completed\"} 210\n# HELP recsys_lifecycle_events_total Local snapshot service lifecycle_events_total.\n# TYPE recsys_lifecycle_events_total counter\nrecsys_lifecycle_events_total{event=\"startup_ready\"} 1\n# HELP recsys_primary_calls_total Local snapshot service primary_calls_total.\n# TYPE recsys_primary_calls_total counter\nrecsys_primary_calls_total 101\n# HELP recsys_delivery_duration_seconds Local snapshot service delivery_duration_seconds.\n# TYPE recsys_delivery_duration_seconds histogram\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"0.001\"} 100\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"0.005\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"0.01\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"0.025\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"0.05\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"0.1\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"0.25\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"0.5\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"1.0\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"5.0\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\",le=\"+Inf\"} 106\nrecsys_delivery_duration_seconds_sum{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\"} 0.07632200000068678\nrecsys_delivery_duration_seconds_count{route=\"hybrid_learned\",cache=\"hit\",degraded=\"false\"} 106\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"0.001\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"0.005\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"0.01\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"0.025\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"0.05\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"0.1\"} 76\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"0.25\"} 96\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"0.5\"} 100\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"1.0\"} 100\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"5.0\"} 100\nrecsys_delivery_duration_seconds_bucket{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\",le=\"+Inf\"} 100\nrecsys_delivery_duration_seconds_sum{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\"} 10.13300569999933\nrecsys_delivery_duration_seconds_count{route=\"hybrid_learned\",cache=\"miss\",degraded=\"false\"} 100\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"0.001\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"0.005\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"0.01\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"0.025\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"0.05\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"0.1\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"0.25\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"0.5\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"1.0\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"5.0\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\",le=\"+Inf\"} 3\nrecsys_delivery_duration_seconds_sum{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\"} 0.0018683999999211665\nrecsys_delivery_duration_seconds_count{route=\"recent_popularity\",cache=\"hit\",degraded=\"false\"} 3\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"0.001\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"0.005\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"0.01\"} 0\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"0.025\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"0.05\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"0.1\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"0.25\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"0.5\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"1.0\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"5.0\"} 1\nrecsys_delivery_duration_seconds_bucket{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\",le=\"+Inf\"} 1\nrecsys_delivery_duration_seconds_sum{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\"} 0.0170800999999301\nrecsys_delivery_duration_seconds_count{route=\"recent_popularity\",cache=\"miss\",degraded=\"false\"} 1\n# HELP recsys_http_duration_seconds Local snapshot service http_duration_seconds.\n# TYPE recsys_http_duration_seconds histogram\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.001\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.005\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.01\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.025\"} 0\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.05\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.1\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.25\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"0.5\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"1.0\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"5.0\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"openapi\",outcome=\"completed\",le=\"+Inf\"} 1\nrecsys_http_duration_seconds_sum{endpoint=\"openapi\",outcome=\"completed\"} 0.033443199999965145\nrecsys_http_duration_seconds_count{endpoint=\"openapi\",outcome=\"completed\"} 1\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.001\"} 3\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.005\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.01\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.025\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.05\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.1\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.25\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"0.5\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"1.0\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"5.0\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"ready\",outcome=\"completed\",le=\"+Inf\"} 4\nrecsys_http_duration_seconds_sum{endpoint=\"ready\",outcome=\"completed\"} 0.005226300000003903\nrecsys_http_duration_seconds_count{endpoint=\"ready\",outcome=\"completed\"} 4\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.001\"} 103\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.005\"} 109\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.01\"} 109\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.025\"} 110\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.05\"} 110\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.1\"} 186\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.25\"} 206\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"0.5\"} 210\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"1.0\"} 210\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"5.0\"} 210\nrecsys_http_duration_seconds_bucket{endpoint=\"recommendations\",outcome=\"completed\",le=\"+Inf\"} 210\nrecsys_http_duration_seconds_sum{endpoint=\"recommendations\",outcome=\"completed\"} 10.228276199999868\nrecsys_http_duration_seconds_count{endpoint=\"recommendations\",outcome=\"completed\"} 210\n# HELP recsys_primary_duration_seconds Local snapshot service primary_duration_seconds.\n# TYPE recsys_primary_duration_seconds histogram\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.001\"} 0\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.005\"} 0\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.01\"} 0\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.025\"} 1\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.05\"} 1\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.1\"} 77\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.25\"} 97\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"0.5\"} 101\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"1.0\"} 101\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"5.0\"} 101\nrecsys_primary_duration_seconds_bucket{outcome=\"success\",le=\"+Inf\"} 101\nrecsys_primary_duration_seconds_sum{outcome=\"success\"} 10.0570727999999\nrecsys_primary_duration_seconds_count{outcome=\"success\"} 101\n# HELP recsys_cache_charged_bytes Local snapshot service cache_charged_bytes.\n# TYPE recsys_cache_charged_bytes gauge\nrecsys_cache_charged_bytes 217152\n# HELP recsys_cache_enabled Local snapshot service cache_enabled.\n# TYPE recsys_cache_enabled gauge\nrecsys_cache_enabled 1\n# HELP recsys_cache_entries Local snapshot service cache_entries.\n# TYPE recsys_cache_entries gauge\nrecsys_cache_entries 101\n# HELP recsys_cache_failures Local snapshot service cache_failures.\n# TYPE recsys_cache_failures gauge\nrecsys_cache_failures 0\n# HELP recsys_cache_max_charged_bytes Local snapshot service cache_max_charged_bytes.\n# TYPE recsys_cache_max_charged_bytes gauge\nrecsys_cache_max_charged_bytes 1048576\n# HELP recsys_cache_max_entries Local snapshot service cache_max_entries.\n# TYPE recsys_cache_max_entries gauge\nrecsys_cache_max_entries 256\n# HELP recsys_cache_sample_success Local snapshot service cache_sample_success.\n# TYPE recsys_cache_sample_success gauge\nrecsys_cache_sample_success 1\n# HELP recsys_cache_ttl_seconds Local snapshot service cache_ttl_seconds.\n# TYPE recsys_cache_ttl_seconds gauge\nrecsys_cache_ttl_seconds 300.0\n# HELP recsys_memory_sample_success Local snapshot service memory_sample_success.\n# TYPE recsys_memory_sample_success gauge\nrecsys_memory_sample_success 1\n# HELP recsys_observer_errors_total Local snapshot service observer_errors_total.\n# TYPE recsys_observer_errors_total counter\nrecsys_observer_errors_total 0\n# HELP recsys_primary_in_flight Local snapshot service primary_in_flight.\n# TYPE recsys_primary_in_flight gauge\nrecsys_primary_in_flight 0\n# HELP recsys_process_resident_memory_bytes Local snapshot service process_resident_memory_bytes.\n# TYPE recsys_process_resident_memory_bytes gauge\nrecsys_process_resident_memory_bytes 2346074112\n# HELP recsys_ready Local snapshot service ready.\n# TYPE recsys_ready gauge\nrecsys_ready 1\n# HELP recsys_startup_duration_seconds Local snapshot service startup_duration_seconds.\n# TYPE recsys_startup_duration_seconds gauge\nrecsys_startup_duration_seconds 21.130771200000027\n# HELP recsys_state Local snapshot service state.\n# TYPE recsys_state gauge\nrecsys_state{state=\"starting\"} 0\nrecsys_state{state=\"ready\"} 1\nrecsys_state{state=\"failed\"} 0\nrecsys_state{state=\"stopped\"} 0\n# HELP recsys_model_info Local snapshot service model_info.\n# TYPE recsys_model_info gauge\nrecsys_model_info{version=\"retailrocket-fold09-v1\",manifest_sha256=\"84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe\"} 1\n",
+        "owned_log_events_sha256": "ef1a37e369ed904cff19e587cc0a3ac67a9a9e10be6346a11e9d7f9651867e6b",
+        "all_passed": true
+      }
+    ],
+    "all_passed": true,
+    "scope": "Real normal-path telemetry; forced failure/cancellation/redaction paths use deterministic tests. ASGI histogram and client timings have different boundaries."
+  },
+  "content_sha256": "fcb1842485d7469c6019c1adc8f7ba3bc80078689e92683b7d54db2d0c4f85c1"
+}
