@@ -1,8 +1,13 @@
 # Project status
 
-**Updated:** 2026-10-16
+**Updated:** 2026-10-18
 
-**Stage:** M16 exposes the frozen snapshot through a local HTTP API with strict
+**Stage:** M18 adds bounded local metrics and structured service events, with
+separate HTTP/worker timing, cache/admission accounting and process RSS sampling.
+M17 adds optional bounded snapshot caching and explicit overload-only
+fallback. Cache off/miss/hit preserve reference outputs; repeated-request
+latency gates pass, while the serving memory target remains unmet.
+M16 exposes the frozen snapshot through a local HTTP API with strict
 validation, health probes and bounded inference admission. Real HTTP output
 parity passes; measured ready RSS exceeds the charter's 2 GiB target.
 M15 provides immutable model artifacts and Python snapshot inference
@@ -35,6 +40,8 @@ diagnostics, not blind validation.
 | M14 model policy | Complete target-free offline policy calls, eleven warm/three cold fixed alternatives, development selection/lock and resumable matched-cost diagnostics |
 | M15 artifacts | Safe-format snapshot export, SHA-bound manifest, package inference loader separated from training, snapshot-user adapter and complete fold-9 loaded-quality reconciliation |
 | M16 local API | FastAPI request/response contract, pinned startup load, live/ready probes, one active inference call, explicit busy/error responses and real loopback output verification |
+| M17 cache and fallback | Opt-in insertion-TTL/LRU cache with entry/count bounds, snapshot/context identity, cache-failure bypass and an explicitly attributed seen-filtered busy fallback |
+| M18 observability | App-local Prometheus text export, bounded dimensions, owned JSON events, independent HTTP/worker outcomes, persistent cache events and failure-isolated RSS sampling |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -212,12 +219,51 @@ invalid-request checks. It preserves the original manifest and reader identity.
 On Windows, launch-to-readiness was 20.61 seconds; 100 sequential warm calls
 had p95 231.36 ms and p99 303.02 ms. These are smoke measurements, not an SLA.
 Ready server RSS was 2.19 GiB, so the 2 GiB charter target remains unmet.
-Cache, operational fallbacks, public deployment and Linux full-bundle parity
-are not implemented or verified by this HTTP boundary.
+This receipt precedes the optional cache/fallback extension below. Public
+deployment and Linux full-bundle parity remain unverified.
+
+## M17 bounded cache and overload fallback
+
+The [service report](SERVICE_CACHE_AND_FALLBACKS.md) defines immutable Top-20
+cache entries, exact K prefixes, canonical cold context, insertion TTL, LRU and
+entry-memory accounting. Cache and busy fallback remain opt-in. Default overload
+still returns 503. An enabled fallback uses the verified recent Top-1,000 pool,
+filters the full stored seen history and exposes degraded route/reason/lineage.
+Primary or fallback context/output failure invalidates cached/prepared state
+and requires restart. Admission rechecks readiness after taking the permit;
+startup cancellation and shutdown share worker cleanup and cannot publish late
+readiness.
+
+The [paired HTTP receipt](../benchmarks/serving/cache_state_validation_v1.json) matches
+100 warm and one cold reference in each off/miss/hit pass. Warm p95 is
+236.69 / 221.35 / 1.15 ms respectively. Repeating the cached pass makes no
+additional primary calls; final cache state has 101 entries and 217,152 charged
+bytes within the 256-entry/1 MiB settings. Both prospective latency gates pass
+on this constructed repeat sample; no production hit rate or SLA follows.
+Separate off/on server ready RSS is 1.80/1.87 GiB; sampled peaks are 1.93/2.03
+GiB. The cache-on process exceeds the 2 GiB charter budget, so compliance remains
+unestablished. These process differences do not measure isolated cache allocation cost.
+
+## M18 local observability
+
+The [observability contract/report](OBSERVABILITY.md) defines bounded metrics,
+owned JSON events and independent HTTP/worker accounting. The
+[real HTTP receipt](../benchmarks/serving/observability_lifecycle_validation_v1.json) binds
+current service/runner/requirements and the unchanged model. All reference
+outputs match; off/on telemetry reconciles 106/215 HTTP invocations, 102/210
+completed recommendations and 107/216 JSON records. Final scrapes contain
+105/135 metric samples with no observer errors. Fault/cancellation/privacy
+paths are covered separately by deterministic tests.
+
+Warm client p95 is 241.85/231.69/1.85 ms for off/miss/hit, and both prospective
+cache latency gates pass. Uncached p99 is 519.14 ms, above the initial 500 ms
+target. Sampled off/on process peaks are 2.25/2.40 GiB, exceeding
+the charter's 2 GiB target. No production hit-rate, workload SLO, installed
+dashboard/alerting or Linux full-bundle claim follows.
 
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines subsequent cache, reliability and deployment
+The [roadmap](ROADMAP.md) defines subsequent observability, reliability and deployment
 work. Memory-budget compliance and concurrent-load objectives remain open.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used

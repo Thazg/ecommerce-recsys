@@ -156,15 +156,27 @@ and reconciliation evidence.
 A FastAPI application loads one digest-pinned snapshot at startup and exposes
 `POST /v1/recommendations`, liveness and readiness probes, and OpenAPI docs.
 Strict request validation, full seen-item filtering and one active inference
-call preserve the snapshot contract. Overlapping requests receive 503 busy;
-backend failures make the model unready rather than trigger a hidden fallback.
+call preserve the snapshot contract. With the default cache-off/reject settings,
+overlapping requests receive 503 busy. Operators can enable bounded result
+caching and an explicitly attributed recent-popularity fallback for overload;
+backend failures still make the model unready and require restart.
 
 The [API contract](docs/RECOMMENDATION_API.md) includes installation, launch and
-request examples. A [real HTTP verification](benchmarks/serving/http_boundary_v1.json)
-matches 100 warm and one cold reference output. The measured ready RSS is
-2.19 GiB, exceeding the charter's 2 GiB target. Sequential local timings are
-smoke evidence, not an SLA; cache, public deployment and online confirmation
-remain outside this implementation.
+request examples. [Paired HTTP verification](benchmarks/serving/observability_lifecycle_validation_v1.json)
+matches 100 warm and one cold reference output with cache off, on-miss and on-hit.
+In this sequential repeat sample, warm p95 is 241.85 ms uncached, 231.69 ms on a
+miss and 1.85 ms on a hit. Uncached p99 is 519.14 ms, above the initial 500 ms
+target. Sampled peak RSS is 2.25/2.40 GiB for the separate off/on processes,
+exceeding the 2 GiB charter target. The
+[cache and fallback report](docs/SERVICE_CACHE_AND_FALLBACKS.md) explains identity,
+limits and measured scope. These timings are smoke evidence, not an SLA;
+public deployment and online confirmation remain outside this implementation.
+
+The [observability contract](docs/OBSERVABILITY.md) documents local `GET /metrics`
+and owned JSON events. Bounded labels separate HTTP outcomes, model-worker cost,
+admission, cache and degraded delivery; process RSS and model identity remain
+visible without exporting user IDs. External collection, dashboards and alert
+delivery are separate operational work.
 
 ## Repository guide
 
@@ -183,6 +195,7 @@ remain outside this implementation.
 - [Offline policy report](docs/MODEL_POLICY_REPORT.md): complete fixed-policy comparison, warm/cold route lock and matched cost scope.
 - [Model artifacts](docs/MODEL_ARTIFACTS.md): immutable bundle contract, independent Python inference and loaded-policy verification.
 - [Recommendation API](docs/RECOMMENDATION_API.md): local HTTP contract, lifecycle, bounded admission, reference parity and measured resource limits.
+- [Cache and overload fallback](docs/SERVICE_CACHE_AND_FALLBACKS.md): optional bounded reuse, explicit degraded responses, failure semantics and paired HTTP evidence.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 

@@ -9,6 +9,12 @@ Known training users use full-hybrid candidates and learned ordering; unknown,
 null or omitted user IDs use recent popularity. The cold route is a selected
 model policy, not a recovery mechanism for inference errors.
 
+API schema 1.1.0 adds optional bounded result caching and an explicit
+overload-only fallback. Both are disabled by default. Their configuration,
+identity and evidence are documented in [cache and fallbacks](SERVICE_CACHE_AND_FALLBACKS.md).
+The [observability contract](OBSERVABILITY.md) defines `GET /metrics`, owned
+JSON events, bounded labels and HTTP/worker timing scopes.
+
 The snapshot cutoff is **1441216678608** (2015-09-02 17:57:58.608 UTC).
 A known ID selects its stored history and features at that cutoff. Requests
 cannot provide new events, change the model or choose another candidate budget.
@@ -47,6 +53,12 @@ no authentication, TLS termination or public-hosting contract; the tested setup
 is loopback only. Interactive documentation is available at `/docs`, with the
 machine-readable schema at `/openapi.json`.
 
+To opt into caching and the prepared overload fallback, add
+`--cache-max-entries 256`, `--cache-max-bytes 1048576`, `--cache-ttl-seconds 300`
+and `--busy-policy recent_popularity` to the launch command. These are operator
+settings; request bodies cannot override them. The default entry limit is zero
+and the default busy policy is `reject`.
+
 ## Request and response
 
 ### `POST /v1/recommendations`
@@ -83,11 +95,16 @@ with urlopen(request, timeout=30) as response:
     print(result["items"], result["route"], result["bundle_version"])
 ```
 
-The response contains `request_id`, ordered `items`, `route`, `bundle_version`
-and `cutoff`. `route` is `hybrid_learned` or `recent_popularity`. Results contain
+The response contains `request_id`, ordered `items`, `route`, `bundle_version`,
+`cutoff`, `manifest_sha256`, `cache_status`, `degraded` and `degraded_reason`.
+Primary routes are `hybrid_learned` and `recent_popularity`. An explicitly
+enabled busy fallback uses `recent_popularity_fallback`, `degraded: true` and
+`degraded_reason: "busy"`. Cache status is `disabled`, `miss`, `hit` or `bypass`.
+Cached results preserve primary prefixes and carry fresh request IDs. Results contain
 up to `k` unique, catalog-eligible items and exclude the complete stored seen
-set. Short or empty eligible outputs are valid. The same user/snapshot has
-deterministic prefixes: a Top-5 request matches the first five Top-20 items.
+set. Short or empty eligible outputs are valid. For the same route and snapshot
+context, a Top-5 request matches the first five Top-20 items. A busy fallback
+uses its declared popularity order and can differ from the primary route.
 The server generates a fresh request ID and returns it in both the JSON
 response and `X-Request-ID`; it does not trust a caller-supplied request ID.
 
@@ -98,18 +115,32 @@ response and `X-Request-ID`; it does not trust a caller-supplied request ID.
 | `GET /health/live` | Event loop answers HTTP; status `alive` | Does not certify model health |
 | `GET /health/ready` | State `ready`, verified model loaded and startup predictions passed | 503 with `not_ready` after a model failure or during application shutdown |
 
+`GET /metrics` is a separate local operational endpoint in Prometheus text
+format. Scrapes do not call the model or participate in inference admission;
+they remain available when the primary is busy or failed. A sampling failure
+is marked explicitly and does not certify model health.
+
 Readiness includes the bundle version and cutoff only when ready. Liveness
+is independent of cache health. Readiness also reports aggregate cache state,
+entry accounting, primary-call counts and fallback-call counts. A cache failure
+disables that optional optimization while a healthy primary remains ready. Liveness
 continues to return 200 after an inference failure. Startup uses
 [FastAPI lifespan](https://fastapi.tiangolo.com/advanced/events/); Uvicorn starts
 accepting connections after loading completes. A bad bundle or pin aborts
 startup instead of opening an uninitialized service.
+Overlapping startup/shutdown cannot publish readiness after shutdown starts;
+startup cancellation and shutdown share cleanup until the loading worker exits.
 
 ## Execution and errors
 
 One dedicated worker executes model calls outside the ASGI event loop. A
 process-wide admission permit allows **one active model call and no application
-inference queue**. An overlapping request receives 503 `busy`, with
-`Retry-After: 1`; health requests can still run. A ready service can be busy.
+inference queue**. A valid cache hit can answer while inference is busy. A cache
+miss or disabled cache receives 503 `busy`, with `Retry-After: 1`, on overlap
+under the default policy. Opting into `recent_popularity` instead returns an
+attributed, seen-filtered recommendation from the prepared recent Top-1,000
+pool. Degraded results do not populate the primary cache. Health requests can
+still run. A ready service can be busy.
 This is bounded admission, not a throughput or concurrent-load guarantee.
 
 Cancelling an HTTP waiter does not interrupt model computation or release its
@@ -123,6 +154,10 @@ affect the entire process.
 Unexpected inference failures or malformed backend outputs mark the service
 failed. That request receives a generic 500; later recommendation requests
 receive 503 until restart. No error is converted into a cold-policy success.
+Snapshot-dependent fallback failures follow the same failure transition and
+invalidate cached/prepared output without releasing another worker's permit.
+An accepted primary still running when fallback invalidates the service returns
+503 on completion. Admission rechecks readiness after acquiring the permit.
 Server logs retain diagnostic exceptions; client errors omit raw inputs,
 filesystem paths and tracebacks. Uvicorn access logging is disabled by default.
 
@@ -144,7 +179,7 @@ Body size limits do not establish request-rate or slow-client protections.
 
 ## Verification evidence
 
-The [HTTP boundary receipt](../benchmarks/serving/http_boundary_v1.json) binds the original
+The historical [HTTP boundary receipt](../benchmarks/serving/http_boundary_v1.json) binds the original
 manifest and reference component, unchanged reader fingerprint, API source and
 requirement-file hashes, OpenAPI schema and measured runtime versions.
 The verifier starts a separate server process without loading the model into
@@ -156,7 +191,8 @@ retains that separate evidence.
 
 The [initial HTTP receipt](../benchmarks/serving/http_snapshot_v1.json) preserves
 the earlier source identity and measurements. The boundary receipt verifies
-the current launcher, parsing guards, service validation and OpenAPI contract;
+the launcher, parsing guards, service validation and OpenAPI 1.0.0 contract
+at Git revision `dc218a8`;
 both use the same unchanged model bundle and reference outputs.
 
 Measured on Windows/AMD64, Python 3.13.15, with one excluded warm-up and a
@@ -176,14 +212,19 @@ charter's 300/500 ms p95/p99 goals, but it is not a workload/load test and does
 not establish those service objectives. These HTTP timings must not be equated
 with earlier source-only or offline inference timings.
 
-Run tests and reproduce verification with a new receipt path:
+For the pre-observability schema 1.1.0 cache-off/cache-on evidence, see the
+[paired HTTP receipt](../benchmarks/serving/cache_state_validation_v1.json) and
+[cache report](SERVICE_CACHE_AND_FALLBACKS.md). Current source verification is
+described in the [observability report](OBSERVABILITY.md). Reproduce the boundary receipt's
+1.0.0 contract from revision `dc218a8`; its runner compares that exact response
+shape and cannot verify the additional 1.1.0 fields. Run current checks with:
 
 ```sh
 python -m pip install -e ".[dev]" -r requirements/serving-test.txt
 pytest
 ruff check .
 ruff format --check .
-python scripts/verify_recommendation_api.py --bundle artifacts/retailrocket-fold09-v1 --manifest-sha256 84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe --output .local/http_verification_repeat.json
+python scripts/verify_service_observability.py --bundle artifacts/retailrocket-fold09-v1 --manifest-sha256 84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe --output .local/observability_verification_repeat.json
 ```
 
 The verifier refuses to overwrite completed receipts. Its disposable process
@@ -201,8 +242,10 @@ without treating scheduler speed as a latency benchmark.
 
 ## Limits
 
-The API has no dynamic-history updates, cache, operational fallback chain,
-hot replacement, authentication or public deployment. The full Windows-built
+The API has no dynamic-history updates, stale-result recovery, automatic model
+recovery, hot replacement, authentication or public deployment. The optional
+fallback handles busy admission only; failed inference still requires restart.
+The full Windows-built
 bundle has not been verified on Linux; API fixture tests in Linux CI would
 not establish that compatibility. The heavy snapshot restoration and process
 memory need further engineering before a resource-budgeted deployment.

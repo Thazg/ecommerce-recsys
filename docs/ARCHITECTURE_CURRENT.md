@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-16
+**Updated:** 2026-10-17
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -11,7 +11,8 @@ development folds 2–4 and completed all fixed diagnostics on folds 5–9.
 No ANN source has been adopted. The locked routes now have a local HTTP
 snapshot interface; public deployment and online evaluation are not implemented.
 The artifact layer now separates fitted offline snapshots from package-only
-inference. A separate service layer preserves that frozen inference code.
+inference. A separate service layer preserves that frozen inference code and
+provides optional bounded result caching and an explicit busy fallback.
 
 ```text
 Retailrocket raw CSV
@@ -304,7 +305,8 @@ and nonfinite numbers, and assigns server-generated request IDs.
 `serving/service.py` restores the digest-pinned bundle once in a dedicated
 worker and checks warm/cold startup predictions. One process-wide permit
 serializes numerical work. Recommendations run outside the ASGI event loop;
-overlap receives 503 busy while health probes remain responsive. The worker
+uncached overlap receives 503 busy under the default policy while health probes
+remain responsive. The worker
 retains its permit after HTTP cancellation. Shutdown drains accepted work;
 unexpected inference/output errors mark the service failed until restart.
 
@@ -315,7 +317,59 @@ the historically fingerprinted `pyproject.toml`. The
 validation, lifecycle and limits. A separate HTTP process matches the 101
 sealed reference outputs. Its 2.19 GiB ready RSS exceeds the charter target;
 sequential local timings do not establish concurrent-load service objectives.
-Cache, operational fallback orchestration and public hosting remain absent.
+The historical HTTP receipt records the pre-cache interface; current schema
+1.1.0 and paired evidence are described below. Public hosting remains absent.
+
+## Optional cache and overload fallback
+
+`serving/cache.py` stores immutable Top-20 results in a lock-protected LRU with
+insertion-based monotonic TTL and entry/count bounds. Namespace and context
+identity bind the manifest/policy, known-user snapshot or canonical cold route.
+Cache hits reconstruct fresh request metadata and recheck eligibility. Cache
+failure disables this optimization and bypasses to the healthy primary.
+
+`serving/service.py` checks readiness before cache lookup and after acquiring
+numerical admission. A hit
+can answer during another model call. An optional overload policy filters the
+full seen history against a startup-prepared recent Top-1,000 pool and returns
+`recent_popularity_fallback` with explicit degraded reason and manifest lineage.
+It does not call a model, refill the truncated pool or populate the primary
+cache. Primary or fallback context/output failures invalidate cache/pool state
+and make the service unready until restart. Only the owning primary worker
+releases its permit. Startup cancellation and shutdown share one cleanup task;
+startup cannot become ready after shutdown starts. Shutdown drains work and
+drops both states.
+
+Defaults keep caching disabled and overload rejected. The
+[service report](SERVICE_CACHE_AND_FALLBACKS.md) and
+[pre-observability HTTP receipt](../benchmarks/serving/cache_state_validation_v1.json) separate
+uncached/miss/hit costs and declare byte accounting and RSS scope. Normal output
+parity holds on the 101-reference sample; cache-on sampled peak exceeds 2 GiB RSS.
+No deployed cache dependency, hot replacement or automatic model recovery exists.
+
+## Local observability
+
+`serving/observability.py` owns a lock-protected, fixed-schema registry per app.
+`serving/observation_boundary.py` observes ASGI completion and early/cancelled
+paths outside the JSON validation boundary. Service/cache hooks retain worker,
+admission and cumulative cache events independently of HTTP waiter cancellation.
+The dedicated owned event logger emits allowlisted JSON; the supported launcher
+configures its stderr handler without changing root logging on package import.
+
+`GET /metrics` exports Prometheus text 0.0.4 on the existing loopback listener.
+Scrapes do not run models, take numerical admission, expire entries or disable
+cache state. Current state/cache inventory and RSS are point samples; sampler
+failures have explicit flags. User/item/request IDs and raw URLs/errors are
+excluded from metric labels. One model information gauge binds the loaded
+version/manifest. HTTP and worker histograms use distinct timing boundaries.
+Owned cleanup records one startup outcome/duration across stop or repeated
+cancellation. Invalid cache samples are omitted without mutating the source.
+
+The [observability contract](OBSERVABILITY.md) defines metric dimensions, owned
+event privacy, event-sink failure isolation, cancellation accounting and operational
+queries. External collectors, dashboards and alert delivery remain unimplemented.
+Synchronous local logging can block, and third-party logs are outside the owned
+JSON redaction guarantee. Instrumentation adds no new accuracy or SLA claim.
 
 ## Model engineering and trade-offs
 

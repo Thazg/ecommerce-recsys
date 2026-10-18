@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-16
+**Updated:** 2026-10-17
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -678,3 +678,84 @@ in requirements files because historical experiment fingerprints bind
 The sequential warm sample has p95 231.36 ms and p99 303.02 ms; it is not a
 concurrent-load or SLA result. Linux full-bundle parity and online accuracy
 remain unverified. No model refit or benchmark selection changes are introduced.
+
+## M17 — Bounded cache and explicit overload fallback
+
+### ADR-27 — Make reuse and degraded delivery optional snapshot policies
+
+**Status:** Accepted; reference parity and repeat-sample cache gates pass, memory target unmet
+
+**Decision and rationale:** Add a process-local LRU with insertion TTL and both
+entry-count and charged-entry limits. Bind keys to the immutable manifest/policy
+and known-user or canonical cold context. Store validated Top-20 output without
+request metadata; all K requests use exact prefixes with fresh IDs. Cache
+failures disable reuse and leave a healthy primary available. Primary failures
+invalidate cache state and require restart.
+
+Keep cache disabled and busy admission rejected by default. An explicit operator
+option may return a startup-prepared recent-popularity pool filtered against
+the full seen history on busy only. Attribute that response as degraded, with
+reason and manifest lineage. Never store it as personalized primary output or
+permit it after failed startup/inference or shutdown. No external cache,
+request-history updates, queue, hot replacement or automatic recovery is added.
+
+**Evidence and consequences:** The [service contract/report](SERVICE_CACHE_AND_FALLBACKS.md)
+and [paired HTTP receipt](../benchmarks/serving/cache_state_validation_v1.json) bind
+source, inputs, settings and runtime. Separate off/on processes match 100 warm
+and one cold reference on off, miss and hit paths. Warm p95 is 236.69/221.35/1.15
+ms respectively; the fixed hit/miss ratio gates pass. Repetition avoids all
+additional primary calls. The live cache holds 101 entries and 217,152 charged
+bytes; this excludes container/allocator costs and is not an RSS cap. Off/on
+sampled peak RSS is 1.93/2.03 GiB, exceeding the 2 GiB target in the cache-on
+process. The synthetic repeat workload does not establish
+production hit rate, throughput or SLA. Deterministic tests and an actually
+fitted tiny snapshot verify busy attribution, full seen filtering, cache faults,
+cancellation and shutdown. Event-controlled regressions verify readiness after
+permit acquisition, shared startup/shutdown cleanup and fallback-failure
+invalidation without releasing another worker's admission. The bounded fallback can return short/empty results;
+its warm relevance has not been independently evaluated. Earlier policy/model
+artifacts and HTTP receipts remain immutable under their original identities.
+
+## M18 — Local service observability
+
+### ADR-28 — Observe HTTP delivery and primary computation separately
+
+**Status:** Accepted; fixed-schema exporter and failure-isolated event logging implemented
+
+**Decision and rationale:** Give each app an independent registry and expose
+Prometheus text 0.0.4 at the local `/metrics` endpoint. Keep fixed enum dimensions
+for endpoints, methods, statuses, outcomes, delivery routes/cache, admission and
+cache events. Put version and manifest on one loaded-model information sample;
+exclude user/item/request IDs, raw URLs and backend errors from metric labels.
+Retain bounded histogram buckets and counters rather than per-request samples.
+
+Observe HTTP final-body completion/cancellation independently of numerical worker
+execution. A cancelled waiter still owns accepted computation until its worker
+releases admission. Cache events remain cumulative after disable, while retained
+inventory gauges and point-in-time process RSS have separate resource meanings.
+Scrapes do not call models, expire entries or change a faulty cache's state.
+
+The launcher configures an owned JSON event logger with fixed fields and validated
+server-generated correlation IDs. Ordinary observer, log-sink and sampling errors
+are counted without changing recommendation behavior. Raw payloads, item lists,
+paths, exception strings and tracebacks stay outside owned events. Uvicorn/model
+library output has a separate review boundary; synchronous stderr may block.
+
+**Evidence and consequences:** The [contract](OBSERVABILITY.md) specifies scope,
+dimensions, privacy, histogram boundaries and operational queries. Regression
+tests cover independent registries, early HTTP rejects, cancellation versus worker
+completion, degraded attribution, live cache counters, memory/sink failures and
+redaction. The implementation uses standard-library state/locks and the existing
+psutil dependency; no model, upstream benchmark or requirement changes are needed.
+It installs no collector, dashboard, alert delivery or public monitoring endpoint,
+and provides no new quality, traffic hit-rate or workload-SLO claim.
+The [real HTTP receipt](../benchmarks/serving/observability_lifecycle_validation_v1.json)
+reconciles normal-path metrics/events against 100 warm/one cold references:
+off/on 106/215 HTTP invocations, 102/210 deliveries and no observer errors.
+Source/model pins and both cache latency gates pass. Sampled peak RSS is
+2.25/2.40 GiB, above the 2 GiB target; uncached p99 is 519.14 ms, above the
+initial 500 ms target. These budgets remain separate from the ratio gates.
+Owned cleanup records one startup outcome/duration even after repeated caller
+cancellation or stop-before-ready. The verifier canonicalizes label sets;
+out-of-bounds cache samples are rejected without modifying cache state.
+Earlier receipts are preserved under their original source identities.
