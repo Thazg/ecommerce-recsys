@@ -162,14 +162,15 @@ caching and an explicitly attributed recent-popularity fallback for overload;
 backend failures still make the model unready and require restart.
 
 The [API contract](docs/RECOMMENDATION_API.md) includes installation, launch and
-request examples. [Paired HTTP verification](benchmarks/serving/observability_lifecycle_validation_v1.json)
+request examples. [Current HTTP verification](benchmarks/serving/hardening_boundary_validation_v1.json)
 matches 100 warm and one cold reference output with cache off, on-miss and on-hit.
-In this sequential repeat sample, warm p95 is 241.85 ms uncached, 231.69 ms on a
-miss and 1.85 ms on a hit. Uncached p99 is 519.14 ms, above the initial 500 ms
-target. Sampled peak RSS is 2.25/2.40 GiB for the separate off/on processes,
-exceeding the 2 GiB charter target. The
+The [input and exposure controls](docs/API_HARDENING.md) add absolute header/body
+deadlines, bounded connections/readers, global/socket-peer request budgets,
+local Host/Origin checks and optional shared bearer credentials. The launcher
+ignores forwarded identity and remains loopback-only. The
 [cache and fallback report](docs/SERVICE_CACHE_AND_FALLBACKS.md) explains identity,
-limits and measured scope. These timings are smoke evidence, not an SLA;
+limits and measured scope. Process-memory and workload-latency targets remain
+independent release gates. Local timings are smoke evidence, not an SLA;
 public deployment and online confirmation remain outside this implementation.
 
 The [observability contract](docs/OBSERVABILITY.md) documents local `GET /metrics`
@@ -196,6 +197,7 @@ delivery are separate operational work.
 - [Model artifacts](docs/MODEL_ARTIFACTS.md): immutable bundle contract, independent Python inference and loaded-policy verification.
 - [Recommendation API](docs/RECOMMENDATION_API.md): local HTTP contract, lifecycle, bounded admission, reference parity and measured resource limits.
 - [Cache and overload fallback](docs/SERVICE_CACHE_AND_FALLBACKS.md): optional bounded reuse, explicit degraded responses, failure semantics and paired HTTP evidence.
+- [API hardening](docs/API_HARDENING.md): local access policy, connection/input budgets, request limits and source-pinned verification.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 

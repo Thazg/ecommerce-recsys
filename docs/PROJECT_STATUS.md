@@ -2,7 +2,12 @@
 
 **Updated:** 2026-10-18
 
-**Stage:** M18 adds bounded local metrics and structured service events, with
+**Stage:** M19 adds tested local input/access controls: connection/header/body
+budgets, absolute input deadlines, bounded global/socket-peer attempt limits,
+Host/Origin policy and optional shared bearer credentials. The unchanged model
+passes paced real HTTP reference parity under API 1.2.0; both ready RSS samples
+still exceed 2 GiB. Public deployment and per-user authorization remain absent.
+M18 adds bounded local metrics and structured service events, with
 separate HTTP/worker timing, cache/admission accounting and process RSS sampling.
 M17 adds optional bounded snapshot caching and explicit overload-only
 fallback. Cache off/miss/hit preserve reference outputs; repeated-request
@@ -42,6 +47,7 @@ diagnostics, not blind validation.
 | M16 local API | FastAPI request/response contract, pinned startup load, live/ready probes, one active inference call, explicit busy/error responses and real loopback output verification |
 | M17 cache and fallback | Opt-in insertion-TTL/LRU cache with entry/count bounds, snapshot/context identity, cache-failure bypass and an explicitly attributed seen-filtered busy fallback |
 | M18 observability | App-local Prometheus text export, bounded dimensions, owned JSON events, independent HTTP/worker outcomes, persistent cache events and failure-isolated RSS sampling |
+| M19 input and exposure | Pinned pre-ASGI connection/header guards, absolute body deadline, reader/rate/table bounds, local Host/Origin policy, optional shared bearer mode and safe denial telemetry |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -249,7 +255,7 @@ unestablished. These process differences do not measure isolated cache allocatio
 The [observability contract/report](OBSERVABILITY.md) defines bounded metrics,
 owned JSON events and independent HTTP/worker accounting. The
 [real HTTP receipt](../benchmarks/serving/observability_lifecycle_validation_v1.json) binds
-current service/runner/requirements and the unchanged model. All reference
+pre-hardening 1.1.0 service/runner/requirements and the unchanged model. All reference
 outputs match; off/on telemetry reconciles 106/215 HTTP invocations, 102/210
 completed recommendations and 107/216 JSON records. Final scrapes contain
 105/135 metric samples with no observer errors. Fault/cancellation/privacy
@@ -261,9 +267,30 @@ target. Sampled off/on process peaks are 2.25/2.40 GiB, exceeding
 the charter's 2 GiB target. No production hit-rate, workload SLO, installed
 dashboard/alerting or Linux full-bundle claim follows.
 
+## M19 local input and exposure controls
+
+The [hardening contract/report](API_HARDENING.md) defines the prospective limits,
+access policy and [source-pinned receipt](../benchmarks/serving/hardening_boundary_validation_v1.json).
+The launcher stays loopback-only and ignores forwarded identity. Header/body
+deadlines, socket/reader limits and atomic global/peer buckets reject unsafe
+input before model/cache/fallback execution. Trailer declarations and nonempty
+chunked trailers are rejected before body completion, with separate transport
+and disconnected-reader accounting. A shared bearer token is optional;
+it grants snapshot-wide access and does not implement per-user authorization.
+
+All 100 warm/one cold references match across anonymous cache-off and bearer
+miss/hit paths, with prefix/canonical-cold checks and healthy recovery after
+denials. Off/on telemetry reconciles 136/238 HTTP invocations and 111/211
+deliveries with no observer errors. Warm client p95 is 240.77/240.69/28.77 ms
+for off/miss/hit, including a new TCP connection per call; these timings cannot
+isolate security overhead or be compared directly with earlier persistent
+connections. Ready RSS is 2.20/2.19 GiB and sampled peaks 2.42/2.40 GiB; the
+2 GiB target remains unmet. No public-security, Linux full-bundle or SLO claim
+follows from local fault probes and fixtures.
+
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines subsequent observability, reliability and deployment
+The [roadmap](ROADMAP.md) defines subsequent integration, reliability and deployment
 work. Memory-budget compliance and concurrent-load objectives remain open.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used

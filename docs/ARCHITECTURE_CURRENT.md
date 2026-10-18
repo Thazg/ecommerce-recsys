@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-17
+**Updated:** 2026-10-18
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -318,7 +318,8 @@ validation, lifecycle and limits. A separate HTTP process matches the 101
 sealed reference outputs. Its 2.19 GiB ready RSS exceeds the charter target;
 sequential local timings do not establish concurrent-load service objectives.
 The historical HTTP receipt records the pre-cache interface; current schema
-1.1.0 and paired evidence are described below. Public hosting remains absent.
+1.2.0 retains the 1.1.0 cache fields and adds the input/access boundary described
+below. Public hosting remains absent.
 
 ## Optional cache and overload fallback
 
@@ -370,6 +371,31 @@ event privacy, event-sink failure isolation, cancellation accounting and operati
 queries. External collectors, dashboards and alert delivery remain unimplemented.
 Synchronous local logging can block, and third-party logs are outside the owned
 JSON redaction guarantee. Instrumentation adds no new accuracy or SLA claim.
+
+## Local input and exposure boundary
+
+`serving/security.py` validates immutable nonsecret limits, explicit local
+authorities and optional secret-safe operator credentials. The supported
+launcher disables proxy headers, restricts loopback binding and installs the
+pinned `serving/http_protocol.py` adapter. It closes excess connections, enforces
+complete-header/target limits before scope creation and uses absolute,
+generation-checked header timers across keep-alive cycles.
+It also rejects trailer declarations before dispatch and nonempty chunked
+trailers before body completion, including after an ASGI reader starts.
+
+`serving/security_boundary.py` checks Host/Origin, request attempts, credentials
+and framing before body work. `serving/rate_limit.py` owns atomic global/peer
+buckets, bounded expiring peer state and reader slots. `serving/boundary.py`
+adds the absolute body deadline to its existing pre-copy byte/strict-JSON guards.
+Slots release before model execution and on timeout/disconnect/cancellation.
+Unsupported body routes close immediately; redirects cannot bypass the boundary.
+
+These app-local resources remain separate from the unchanged numerical permit,
+cache and failure transitions. Security denials preserve readiness and never
+become degraded successes. Fixed telemetry distinguishes pre-ASGI transport
+events from application HTTP outcomes. The [hardening contract](API_HARDENING.md)
+defines default budgets, bearer limitations, error behavior, pinned verification
+and the absence of public security or workload-SLO certification.
 
 ## Model engineering and trade-offs
 

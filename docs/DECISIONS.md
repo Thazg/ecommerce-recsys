@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-17
+**Updated:** 2026-10-18
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -759,3 +759,50 @@ Owned cleanup records one startup outcome/duration even after repeated caller
 cancellation or stop-before-ready. The verifier canonicalizes label sets;
 out-of-bounds cache samples are rejected without modifying cache state.
 Earlier receipts are preserved under their original source identities.
+
+## M19 — Local input and exposure controls
+
+### ADR-29 — Bound local HTTP input and make shared access explicit
+
+**Status:** Accepted — implemented for loopback API contract 1.2.0.
+
+**Context:** The existing snapshot service bounds numerical work and JSON bytes,
+but those controls do not bound incomplete-header sockets, body-read time,
+request attempts or browser exposure. Forwarded headers trusted from a local
+peer would also undermine a socket-peer limiter. Public deployment is not an
+implemented contract.
+
+**Decision:** Keep one loopback process with the unchanged model/cache/failure
+semantics. Use a narrow Uvicorn 0.54.0/h11 0.16.0 adapter to cap connections,
+enforce header/target budgets before ASGI scope creation and apply absolute
+generation-checked header deadlines across keep-alive cycles. Pin compatibility
+and reject unaudited upgrades. Disable proxy-header processing explicitly.
+
+Before inference, enforce local Host/same-origin policy, atomic global and
+actual-socket-peer token buckets, bounded idle-expiring peer state, optional
+shared bearer credentials and bounded body readers with one absolute deadline.
+Reject unsupported body routes and close early-denied connections instead of
+draining them. Refuse trailer declarations and nonempty chunked trailers before
+publishing body completion; ordinary chunked JSON remains supported. Preserve
+strict JSON/schema validation, numerical worker ownership
+and failure readiness. Default settings are prospective engineering limits;
+they were not optimized against diagnostic model results.
+
+Default access remains local anonymous. Operator tokens come from one bounded
+environment/file source, stay out of repr/public policy/evidence and use
+constant-time comparison. Bearer mode protects readiness/metrics/schema while
+leaving minimal liveness public and disabling interactive docs. It grants access
+to all snapshot contexts; it is not user/tenant authorization. Neither tokens
+nor Host/Origin checks permit external binding or provide TLS.
+
+**Evidence and consequences:** The [contract/report](API_HARDENING.md) defines
+limits, denial headers, operational configuration and logging boundaries. Tests
+cover policy edges, resource ownership, real incomplete sockets/pipelining and
+a fitted tiny snapshot across HTTP. The [real-bundle receipt](../benchmarks/serving/hardening_boundary_validation_v1.json)
+pins current service/runner/requirements and the original manifest/reader,
+checks 100 warm/one cold off/miss/hit references and reconciles denials,
+transport events, worker/delivery counts and owned logs. Both cache ratio gates
+pass; sampled ready/peak memory still exceeds 2 GiB. New-connection paced client
+timings differ from earlier persistent probes and do not isolate auth/cache cost.
+Earlier receipts remain unchanged. No public-security certification, Linux
+full-bundle compatibility, production hit rate or workload SLO is established.
