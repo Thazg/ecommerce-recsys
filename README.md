@@ -188,6 +188,20 @@ distinguishes fixture coverage, current model parity and historical full-fold
 quality. A successful functional check does not establish Linux compatibility,
 representative-load performance or deployment eligibility.
 
+## Isolated Linux container
+
+The unchanged snapshot can run in a pinned Linux/amd64 container with a
+non-root user, read-only model/root mounts, bounded resources and internal
+health checks. Qualification compares 101 real references and HTTP outputs;
+pool, evidence and output order remain exact, with a separately declared
+`1e-12` feature/score tolerance across operating systems. The original
+same-host bitwise checks remain unchanged.
+
+The [container report](docs/LINUX_CONTAINER.md) records the build, numerical
+policy revision and measured limits. This isolated configuration has no
+published ports. It does not establish deployment eligibility, representative
+load capacity or compliance with the outstanding 2 GiB serving RSS target.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -208,6 +222,7 @@ representative-load performance or deployment eligibility.
 - [Cache and overload fallback](docs/SERVICE_CACHE_AND_FALLBACKS.md): optional bounded reuse, explicit degraded responses, failure semantics and paired HTTP evidence.
 - [API hardening](docs/API_HARDENING.md): local access policy, connection/input budgets, request limits and source-pinned verification.
 - [Testing and functional gates](docs/TESTING_AND_RELEASE_GATES.md): unit and fitted-process profiles, explicit real-bundle parity and deployment boundaries.
+- [Linux snapshot container](docs/LINUX_CONTAINER.md): pinned build, read-only artifact delivery, isolated runtime and real cross-platform qualification.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 

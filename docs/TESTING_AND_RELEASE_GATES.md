@@ -57,6 +57,14 @@ Exact parity on a finite reference set is a regression check, not proof of
 equivalence for every possible request. It does not turn the previously
 inspected folds 5–9 into blind validation or change the offline selection rule.
 
+The later [Linux container qualification](LINUX_CONTAINER.md) has a separate
+cross-platform numerical policy. It preserves exact pool/evidence/output order
+and bounds feature/score differences; it does not relax this same-host gate or
+change its original receipt. Reproduce the published functional receipt from
+revision `d8e4a31`; subsequent container scripts/tests and checkout rules change
+the broad source fingerprint, while the measured model/HTTP implementation
+remains unchanged. A new current-tree functional run needs a fresh receipt path.
+
 ## Run the profiles
 
 Use Python 3.13 and install the declared service test dependencies:
@@ -171,11 +179,12 @@ certified by these timings.
 
 `functional_passed` and `deployment_eligible` are separate fields. Functional
 success requires the checks above; the receipt deliberately records
-`deployment_eligible: false`. Linux full-bundle/reference parity, representative
-load and target-host recovery remain unverified. The sampled 2 GiB memory budget
+`deployment_eligible: false`. This gate alone does not verify Linux execution;
+later [container evidence](LINUX_CONTAINER.md) qualifies a finite Linux sample.
+Representative load and target-host recovery remain unverified. The sampled 2 GiB memory budget
 is evaluated explicitly and is not waived by output parity or a cache speedup.
 
-The [roadmap](ROADMAP.md) assigns Linux container reproduction, controlled
-release/rollback and workload qualification to subsequent work. No image,
+The [roadmap](ROADMAP.md) separately defines container reproduction, controlled
+release/rollback and workload qualification. No image,
 registry publication, release tag, hot replacement or public service is created
 by this command.

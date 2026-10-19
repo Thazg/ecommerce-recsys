@@ -258,9 +258,10 @@ without treating scheduler speed as a latency benchmark.
 The API has no dynamic-history updates, stale-result recovery, automatic model
 recovery, hot replacement, per-user authorization or public deployment. The optional
 fallback handles busy admission only; failed inference still requires restart.
-The full Windows-built
-bundle has not been verified on Linux; API fixture tests in Linux CI would
-not establish that compatibility. The heavy snapshot restoration and process
+The later [Linux qualification](LINUX_CONTAINER.md) checks the full Windows-built
+bundle in an isolated Linux container, with its separately declared numerical
+policy; API fixture tests alone do not establish that compatibility.
+The heavy snapshot restoration and process
 memory need further engineering before a resource-budgeted deployment.
 Previously inspected folds remain post-selection diagnostics, not blind
 validation; adding HTTP does not improve or reconfirm model accuracy.

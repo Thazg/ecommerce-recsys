@@ -85,9 +85,11 @@ unrelated future modules. Loading requires the recorded Python major/minor
 version and exact numerical-library versions; Python patch changes are allowed.
 OS and machine differences emit a compatibility warning rather than rejecting
 the bundle. Host metadata remains recorded unchanged. Cross-host loading still
-requires prediction-parity and resource validation before deployment. Linux
-execution of this full Windows-built snapshot has not been verified; the tests
-simulate host metadata changes and are not Linux deployment evidence.
+requires prediction-parity and resource validation before deployment. The
+[Linux container qualification](LINUX_CONTAINER.md) provides later full-bundle
+execution and finite reference evidence under a separately approved numerical
+tolerance. The original metadata-simulation tests do not provide that evidence,
+and deployment resource/load gates remain open.
 
 The reader supports one explicitly reviewed schema-1 predecessor while its
 prediction AST, policy, feature order and inference dependency hashes remain
