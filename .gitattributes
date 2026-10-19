@@ -1,7 +1,12 @@
 # Keep implementation fingerprints stable across Windows and Linux checkouts.
+/.gitattributes text eol=lf
 *.py text eol=lf
 # Optional dependency files are also bound by HTTP verification receipts.
 requirements/*.txt text eol=lf
+# Container source/lock bytes are part of Linux qualification identity.
+/.dockerignore text eol=lf
+/containers/Dockerfile text eol=lf
+/containers/*.lock text eol=lf
 # Preserve exact serialized artifact bytes used by checksum and selection-lock chains.
 benchmarks/**/*.json -text
 # Existing checksum chains use CRLF serialization for these frozen inputs.

@@ -1,0 +1,9 @@
+**
+!pyproject.toml
+!src/ecommerce_recsys/**/*.py
+!containers/Dockerfile
+!containers/runtime.lock
+!containers/build.lock
+!containers/probe.py
+!containers/healthcheck.py
+!containers/qualification.py
