@@ -848,3 +848,52 @@ process checks without a full Retailrocket bundle. `functional_passed` can be
 true while `deployment_eligible` remains false: Linux full-bundle, representative
 load, target recovery and the 2 GiB memory budget are independent gates. This
 work creates no release tag, container, model refit or public endpoint.
+
+## M21 — Isolated Linux snapshot runtime
+
+### ADR-31 — Qualify a pinned Linux runtime with explicit numerical portability
+
+**Status:** Accepted — isolated container and real-reference verification implemented.
+
+**Context:** A Dockerfile and fixture-only CI cannot demonstrate that the
+Windows-produced snapshot loads and serves on Linux. The original numerical
+versions are available as Linux wheels, but the first actual Linux probe failed
+bitwise feature/score digests on all 100 warm references. Candidate pools,
+evidence, routes and all 101 ordered Top-20 outputs matched. A first-reference
+inspection found sub-`1e-15` array differences. The original same-host acceptance
+rule therefore failed and could not honestly be described as passing.
+
+**Decision:** Preserve the model, sealed references and exact same-host policy.
+After that observed failure, adopt a separate, explicitly approved portability
+policy: require exact pool/evidence/route/output equality and compare every
+feature and score with `rtol=atol=1e-12`, Windows as reference. Require identical
+array shape/dtype, finite values and no broadcasting or NaN equality. Generate
+private numerical reference arrays only when each original Windows trace first
+reproduces its sealed hash exactly. Pin their archive/metadata independently;
+never round values, substitute hashes or rewrite the bundle. Retain the failed
+bitwise outcome as a separate field in the successful portability receipt.
+
+Use a digest-pinned Linux/amd64 Python base, complete exact hashed wheel locks
+and a checksum-pinned OpenMP package. Build from a source-only allowlist and
+keep the model outside image layers. Run the original loopback launcher as a
+fixed non-root UID, with read-only root/model, dropped capabilities, bounded
+tmpfs/PIDs/CPU/memory and no network or published ports. Internal operator
+probes verify model/HTTP references, fail-closed startup, readiness and SIGTERM
+cleanup. Require matching source/installed runtime and original external model
+and quality pins before publishing non-overwriting evidence.
+Verify the actual Docker-exported context against allowed files and excluded
+canaries, create a missing private scratch parent, require confirmed absence
+after owned cleanup and reject invalid memory byte counts before budget checks.
+
+**Evidence and consequences:** The [container report](LINUX_CONTAINER.md) and
+[Linux receipt](../benchmarks/containers/linux_snapshot_boundary_validation_v1.json)
+record the specific Docker Desktop Linux backend, local image identity,
+numerical maxima, HTTP sample and resources. This is a disclosed criterion
+revision following an observed failure, not a blind test or universal platform
+equivalence. The 4 GiB cgroup limit accommodates the model but does not waive
+the 2 GiB serving RSS target. No public endpoint, native-host recovery,
+representative-load qualification, registry publication or controlled release
+is established. Full-fold model quality and inspected-fold limitations remain
+unchanged; deployment eligibility remains false.
+The earlier container receipt is preserved with its original source and bytes;
+it predates these context and verifier boundary checks.

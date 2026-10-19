@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-18
+**Updated:** 2026-10-19
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -418,6 +418,30 @@ child-process ownership and ignored private logs. Current model and HTTP code
 remain unchanged. The [test strategy](TESTING_AND_RELEASE_GATES.md) defines
 exact parity, explicit skip rules, platform/lifecycle scope and why functional
 success does not establish deployment eligibility or new quality results.
+
+## Isolated Linux runtime
+
+```text
+Allowlisted package/container source + exact hashed dependency wheels
+    -> pinned two-stage Linux/amd64 image (model stays outside the image)
+Original sealed bundle -> read-only /model mount + trusted external SHA
+    -> original package HTTP launcher, non-root, read-only root, network=none
+Producer-exact private arrays + sealed references
+    -> isolated model/HTTP probes -> non-overwriting container receipt
+```
+
+`containers/` supplies the build recipe, complete wheel locks, bounded internal
+readiness check and operator-only probes. `verify_linux_container.py` validates
+installed source/dependency identity, resource/isolation settings, all 101
+references, startup rejection and graceful cleanup. The runner also checks
+actual context-export canaries, creates missing private scratch storage,
+confirms owned container absence and validates memory telemetry. The source
+package and original bundle are unchanged. Candidate pools, evidence, routes and ordered
+outputs compare exactly; only feature/score portability uses the separately
+approved tolerance. The [container report](LINUX_CONTAINER.md) records the
+initial bitwise failure, numerical policy and measured scope. This Docker
+Desktop Linux configuration has no published endpoint; its 4 GiB resource cap
+does not revise the 2 GiB serving RSS target or establish release/load readiness.
 
 ## Model engineering and trade-offs
 

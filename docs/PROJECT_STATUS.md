@@ -1,8 +1,13 @@
 # Project status
 
-**Updated:** 2026-10-18
+**Updated:** 2026-10-19
 
-**Stage:** M20 adds a functional integration gate with separate unit, fitted
+**Stage:** M21 adds a pinned, non-root Linux/amd64 snapshot container with
+read-only artifact delivery and isolated real-bundle/HTTP qualification.
+Candidate/evidence/output equality remains exact; a separately approved
+cross-platform feature/score tolerance preserves the original same-host gate.
+It provides no public endpoint and does not waive the 2 GiB memory target.
+M20 adds a functional integration gate with separate unit, fitted
 HTTP-process and explicit real-bundle profiles, exact numerical/output parity,
 source/input identity checks and a non-overwriting validation receipt. It does
 not authorize deployment or recompute model quality. M19 adds tested local
@@ -53,6 +58,7 @@ diagnostics, not blind validation.
 | M18 observability | App-local Prometheus text export, bounded dimensions, owned JSON events, independent HTTP/worker outcomes, persistent cache events and failure-isolated RSS sampling |
 | M19 input and exposure | Pinned pre-ASGI connection/header guards, absolute body deadline, reader/rate/table bounds, local Host/Origin policy, optional shared bearer mode and safe denial telemetry |
 | M20 integration strategy | Unit and actually fitted child-process HTTP profiles, explicit isolated real-bundle parity, strict evidence checks and a source-pinned functional gate |
+| M21 Linux container | Digest/hash-pinned image inputs, non-root read-only execution, bounded resources, real cross-platform references, HTTP denials/recovery and SIGTERM cleanup |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -212,8 +218,9 @@ bundles remain outside Git; checksummed validation receipts are tracked.
 The [loader review](../benchmarks/artifacts/fold09_loader_v1.json) preserves that
 manifest, verifies the current reader against 101 exact traces and records
 unchanged prediction-code identity. OS/architecture differences now warn;
-Python major/minor and library compatibility remain enforced. Full Linux
-execution of the Windows-built snapshot is still unverified.
+Python major/minor and library compatibility remain enforced. The later
+[Linux qualification](LINUX_CONTAINER.md) separately checks this full snapshot;
+the original loader receipt does not provide that evidence.
 
 ## M16 local HTTP API
 
@@ -231,7 +238,8 @@ On Windows, launch-to-readiness was 20.61 seconds; 100 sequential warm calls
 had p95 231.36 ms and p99 303.02 ms. These are smoke measurements, not an SLA.
 Ready server RSS was 2.19 GiB, so the 2 GiB charter target remains unmet.
 This receipt precedes the optional cache/fallback extension below. Public
-deployment and Linux full-bundle parity remain unverified.
+deployment remains unimplemented. The later [container check](LINUX_CONTAINER.md)
+provides separate finite Linux evidence, with an explicit numerical tolerance.
 
 ## M17 bounded cache and overload fallback
 
@@ -312,9 +320,31 @@ HTTP parity pass. Fresh ready RSS is 2.19/2.23 GiB and sampled peaks are
 2.41/2.44 GiB for anonymous-off/bearer-on, so deployment eligibility remains false.
 Measured scope and the numerical/output policy are recorded in the strategy and receipt.
 
+## M21 isolated Linux container
+
+The [container report](LINUX_CONTAINER.md) and
+[receipt](../benchmarks/containers/linux_snapshot_boundary_validation_v1.json) verify the
+original snapshot in a pinned Linux/amd64 image on Docker Desktop. All 101
+pool/evidence/route/output references match exactly. Feature/score arrays pass
+the separately approved `rtol=atol=1e-12` portability policy, while bitwise warm
+digests differ; M20's original exact policy and receipt remain unchanged.
+The report discloses that the portability policy followed an observed bitwise
+failure, rather than describing that initial gate as passing.
+
+The runtime is non-root, uses read-only root/model mounts and explicit resource
+bounds, and has no network or published ports. Real HTTP reference/prefix and
+denial/recovery checks pass; invalid model startup fails and SIGTERM cleanup
+completes. The runner checks actual context-export canaries, supports a missing
+private scratch parent, requires confirmed container absence after cleanup and
+rejects invalid memory telemetry. The report records startup, 100-reference
+warm sequential client timing and serving RSS; these are not representative-load
+evidence. The 2 GiB memory budget remains unmet. Regression checks pass 832
+tests with one Windows symlink skip; real Linux qualification is recorded
+separately from those fixture/unit results. No deployment eligibility is claimed.
+
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines subsequent Linux reproduction, reliability and deployment
+The [roadmap](ROADMAP.md) defines controlled release/rollback, reliability and deployment
 work. Memory-budget compliance and concurrent-load objectives remain open.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
