@@ -1,0 +1,1070 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "verification": "isolated-linux-snapshot-v1",
+    "rtol": 1e-12,
+    "atol": 1e-12,
+    "reference_side": "Windows producer-exact arrays",
+    "equal_nan": false,
+    "exact_fields": [
+      "pool",
+      "output",
+      "evidence_sha256",
+      "route"
+    ],
+    "references": 101,
+    "warm_references": 100,
+    "cold_references": 1,
+    "scope": "finite cross-platform qualification; original same-host bitwise policy unchanged"
+  },
+  "started_utc": "2026-10-19T03:18:17.169872+00:00",
+  "completed_utc": "2026-10-19T03:20:53.108324+00:00",
+  "qualification_passed": true,
+  "deployment_eligible": false,
+  "identity": {
+    "files_sha256": {
+      ".dockerignore": "8bbbd0ed83e717ad350361c4ff3be3aea23ecd6416d00969d205ecd262855912",
+      ".gitattributes": "c2415188d3a951e9602ecf0b59cfdbe898a9d1f4dfb2d134381c632ac9ac299d",
+      "pyproject.toml": "301c7b87f4bbe2558e8b2c9ccece99851aff955dd8b275dc64b23c278fcf3ebb",
+      "scripts/verify_linux_container.py": "33227a2628cce346686dc6017df747b60834ab2f59f96a187920a317efcf0035",
+      "tests/unit/test_linux_container.py": "dbb351443507b2fbf2dfd221d7cda953eba3484f7860bed27bab4605d3300b82",
+      "containers/Dockerfile": "71ac19c822dffcd4ac87cf490ab5016ee32f8471f5969178c54dcf530e42b3ae",
+      "containers/runtime.lock": "895ad8583baae1bb0541c01c5d5b12a4b2d9e7b1eac3e3726d6687e4fe448e46",
+      "containers/build.lock": "2342b480712c177f590ce3aff9c8df0c303f85fccc5c71c42fe9062efe07983e",
+      "containers/probe.py": "e1c7f40f5fe1be862b6b15804695a9d474b3ac6222b56fadcd1d090bb5689484",
+      "containers/healthcheck.py": "7edd535ac48a298b462ff8047bb5d2062cab8ddb732cbb59eb16bee6e3dd1ed4",
+      "containers/qualification.py": "e98da02f959e27b677424bba82f7cff074d7ba1dc30aba175e6fb721ff041af4",
+      "scripts/release_validation.py": "fafeaf592e183d40528892e1bae90cd3592248ae287fea8de50b8116ca1a1ea7",
+      "scripts/verify_release.py": "6cea2b105ab918fe57d0e443f59326ddea98e871de7dac5b91fec7b59e3ded13",
+      "src/ecommerce_recsys/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ecommerce_recsys/artifacts/__init__.py": "a2c9d52b4d446d718d6b18c0e3033399a49744fd9c1b4eb0c43042ff913df115",
+      "src/ecommerce_recsys/artifacts/adapters.py": "c8ce94cc562405a22e7342cba6fc09d652aea64d197a499b8936fa707d8fe461",
+      "src/ecommerce_recsys/artifacts/contract.py": "f19cf49016a95b1da5eab2099610328f15df54bbe723ad3cb5b2e6fe3b0e06c2",
+      "src/ecommerce_recsys/artifacts/export.py": "ef9565b2c4a8f4b6b0bc5568278321c2999f9c1d4e1d5f0b0d4b20bbe7a4e375",
+      "src/ecommerce_recsys/artifacts/runtime.py": "1232c3058e6c98fd7f81d36a0e788a0ba4d232e6b73451eed5336a6ca885b5a0",
+      "src/ecommerce_recsys/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ecommerce_recsys/data/catalog.py": "7530cec7e7808f6d3c0aa0991839ff36ddaccf9aef45b98f17a035effb7caf4a",
+      "src/ecommerce_recsys/data/rolling_provenance.py": "dc2404d9917cac2c0dff1aacfb27317d08ddb66528c86423583fc95b3ee9a67f",
+      "src/ecommerce_recsys/data/schemas.py": "e21504fe1f6758711dd87e10e67175de80332c4185139d1444338c3293b5dc34",
+      "src/ecommerce_recsys/data/splitting.py": "54e2713c55614748a3fa5678d4a32ad1fbd7834fc154d55cbaf9ccddaa657dd4",
+      "src/ecommerce_recsys/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ecommerce_recsys/evaluation/benchmark.py": "683f70cc987c60914cad11e126ebf350c7af2bf30aa7b646b8df30f69f3fadfe",
+      "src/ecommerce_recsys/evaluation/candidates.py": "c61d7d2ee292e2d0d7aaaa55798a70f1e2d0c076f7de0be3c65f194fec69d82a",
+      "src/ecommerce_recsys/evaluation/latency.py": "b06b540285a936f7abaddafea8c385d041204eed6eb56c1ff0df3b88695fe1d0",
+      "src/ecommerce_recsys/evaluation/metrics.py": "e5d708d6f689d068cbbc70a6a7b89c17942d3ea7b386f88770569f96393aa4d2",
+      "src/ecommerce_recsys/evaluation/model_policy.py": "d9b7066cc703730309c4972a1013edf8a75540489f0155d5142fbf10b70d3522",
+      "src/ecommerce_recsys/evaluation/numeric_threads.py": "f00e0000c83f1576a282c8b4f99a14491816991c2609b338f9105f468ecbac47",
+      "src/ecommerce_recsys/evaluation/rolling_artifacts.py": "487adbf01bad394c675a96dad8292f0f33a6d5971f0a301d57d2fb6a413cfcbc",
+      "src/ecommerce_recsys/ranking/__init__.py": "b0ba8df94ccc4c5f5592c934c027047ca760529ba4a2bb44e534d95735d21810",
+      "src/ecommerce_recsys/ranking/dataset.py": "16cc0a370b72c1eabf96392c045bd811368408ee71dab0fed02b1fd073893a3d",
+      "src/ecommerce_recsys/ranking/diversity.py": "860195d12f0376f89ade363c9cb8d4e39e2b474fe529612a94d52102180b8c9f",
+      "src/ecommerce_recsys/recommendation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ecommerce_recsys/recommendation/bpr_educational.py": "95e1502dccb3d9fe67aa4bf987bc22dec24b0d90f7894c707683afda3d55890b",
+      "src/ecommerce_recsys/recommendation/category_popularity.py": "a26271a7ae00d9504124d473b29a6be9568d54711da1137e0a57612e86a9aca1",
+      "src/ecommerce_recsys/recommendation/item_knn.py": "42984a48e755aa05ea5625e5c49ff9497fc3bf4bebb5d5fa28dff682191c8454",
+      "src/ecommerce_recsys/recommendation/matrix_factorization.py": "e20c87e7ced1e942e08259b7eff30a0413ff3095db0c241760c6e9c3b1264004",
+      "src/ecommerce_recsys/recommendation/matrix_factorization_educational.py": "6b8575dd5462c61666e6faab7a884d36e872d0e71f8d72891859ac6aafe83ceb",
+      "src/ecommerce_recsys/recommendation/popularity.py": "c40c2e693314a6e9eb40e259026480544a52e628051d92ba3bd4c6bf3fd16559",
+      "src/ecommerce_recsys/recommendation/random_recommender.py": "65fff1a23bde6cd811cfe8489c6021da875dcc79d0aa7268a5af21e8378814d6",
+      "src/ecommerce_recsys/recommendation/recent_popularity.py": "e607bf5342500e1da0fb85a1f5e02a4e6f990a990f78bbd87c28948aa89acbd7",
+      "src/ecommerce_recsys/retrieval/__init__.py": "07c74e9c41248afdb6f58ce44d1208f8314a040d266890761f3746f657f81883",
+      "src/ecommerce_recsys/retrieval/base.py": "b3be4baf6b4cee92650a72e8583d2ced8e9dd0a8b54356119e9ec778f8c00b46",
+      "src/ecommerce_recsys/retrieval/category_retriever.py": "04d9ab4107281c00945498901cf46f9fffd43206fb25145fb84ce8ad6cffd053",
+      "src/ecommerce_recsys/retrieval/hybrid_candidates.py": "175677f6dc5cd303efc4e149d687eda412acea9aa75fa6663abde6798fc770b8",
+      "src/ecommerce_recsys/retrieval/item_knn_retriever.py": "51c3fcc408e017f2d5502cf2d10c40fd4733d9dd7341d7c4181f8e24b00bf7e8",
+      "src/ecommerce_recsys/retrieval/mf_retriever.py": "499912136931211e0fed759caacf12e303b02aa155ce7b373dfa0a250e250b80",
+      "src/ecommerce_recsys/retrieval/popularity_retriever.py": "d0f54a90dbc4bc301fd811debf3169baec20de304949e6532dc8f1ec34e804fa",
+      "src/ecommerce_recsys/retrieval/sequential.py": "83a18281ab84429f4643166d3d01222ff2350d2234064bad109af867d112a772",
+      "src/ecommerce_recsys/retrieval/two_tower.py": "6ae7b835bcd4636cf76837d20fba1630b9ddbf208d3bb30a45639ae760c18c4c",
+      "src/ecommerce_recsys/serving/__init__.py": "4ddd5b4f7a639985fca45d0ddf4d4d49d5a138cb189ac6fb7d07a0e7da07b2f1",
+      "src/ecommerce_recsys/serving/__main__.py": "b92d3541e34f461a63d07eb782fb98210ea9441597d8eae30941dcbcaf638610",
+      "src/ecommerce_recsys/serving/app.py": "a2fbace10bb7be6f4f2401094e58f73cf7d6ad89aa2bd76270b3099c28a4cf05",
+      "src/ecommerce_recsys/serving/boundary.py": "49187042e4604f63c18a489ed7a4ac98163679f58628b48f48fca2628ca1aac9",
+      "src/ecommerce_recsys/serving/cache.py": "605e8d29fb51e000525f6b4b0e74768123312da3a5785d78ec98389c38c829e4",
+      "src/ecommerce_recsys/serving/contracts.py": "003a6999246c70c94fdb76b70d612358b0d02be49f6267149ef89905b5b0d70b",
+      "src/ecommerce_recsys/serving/http_protocol.py": "42a331a3a16bc8a55956563822ad769adf093247868c486a88bd0ddad3c99354",
+      "src/ecommerce_recsys/serving/observability.py": "715710e90442b8c1e757359e9219b5ee330cea203e1cccd8d870ceb120deaf3f",
+      "src/ecommerce_recsys/serving/observation_boundary.py": "f8379cba46d84c36f89e69526f2135cbe3d8ad4f3d2e4c52f7dc292de15cc747",
+      "src/ecommerce_recsys/serving/rate_limit.py": "84bc977b83651edb7dc3f8da368e9613f17aba61e3a3c827930cdfbc51080c0a",
+      "src/ecommerce_recsys/serving/security.py": "6b1dea4c9d3c00b28239abb7c209f314bf3f8005241335306ecbce968226d76d",
+      "src/ecommerce_recsys/serving/security_boundary.py": "c51be563129d47a15d96e7e61f50d8456397591e331695a9c42b419e477d1adc",
+      "src/ecommerce_recsys/serving/service.py": "a4771f28ca737d45979c18ec1778c914c9f7b581fc2194c8a8d2dc698d436763"
+    },
+    "base_image": "python:3.13.15-slim-bookworm@sha256:3e2de9c40ca4e3d73240059f9d48baff27908f10293e985a2f382a0378e6df4a",
+    "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "quality_receipt_sha256": "12a954fb8535ff69ba767fde9b7c4c949f3aec421dbba995ba1a8137ad2098e8",
+    "numeric_reference_metadata_sha256": "aa747b23f5e7b1a18429e624dd545644b03787ab1f0ddfba12b94123941a6ff1",
+    "references_sha256": "83bd9e573027a95c7172b9ececf135f8d184347db525a9559d10adf454f5fe96"
+  },
+  "engine": {
+    "ServerVersion": "29.6.2",
+    "OSType": "linux",
+    "Architecture": "x86_64",
+    "KernelVersion": "6.18.33.2-microsoft-standard-WSL2",
+    "OperatingSystem": "Docker Desktop"
+  },
+  "numeric_reference": {
+    "schema_version": 1,
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "references_sha256": "83bd9e573027a95c7172b9ececf135f8d184347db525a9559d10adf454f5fe96",
+    "reference_order_sha256": "4c60b5b7212b58d1d3951ca628b1b549511d5f756ecfbb54b045533071f06c72",
+    "references": 101,
+    "exact_producer_parity": true,
+    "runtime": {
+      "python": "3.13.15",
+      "system": "Windows",
+      "machine": "AMD64",
+      "numpy": "2.5.2",
+      "scipy": "1.18.1",
+      "pandas": "2.3.3",
+      "pyarrow": "19.0.1",
+      "implicit": "0.7.3",
+      "threadpoolctl": "3.6.0"
+    },
+    "runtime_code_sha256": "274a6210a9d4a621dcbd608505a76c5a8a593df15acec117d8a7a767b711e4b0",
+    "inference_code_sha256": "275e4d65ca7bc0414f8ae61900949b6ac29a144c5d28b3cafcda6db4737220ce",
+    "archive_sha256": "32f4c8889083b7d784cb9361cedfdd174e159df6f22ba47853cfa30c4b4dcc96",
+    "payload_sha256": "f4f27860bd71b85ee490438528686eef6805f80a32a0a27c60a4469547413813"
+  },
+  "runtime": {
+    "uid": 10001,
+    "gid": 10001,
+    "system": "Linux",
+    "machine": "x86_64",
+    "numeric": {
+      "python": "3.13.15",
+      "system": "Linux",
+      "machine": "x86_64",
+      "numpy": "2.5.2",
+      "scipy": "1.18.1",
+      "pandas": "2.3.3",
+      "pyarrow": "19.0.1",
+      "implicit": "0.7.3",
+      "threadpoolctl": "3.6.0"
+    },
+    "reader_runtime_code_sha256": "274a6210a9d4a621dcbd608505a76c5a8a593df15acec117d8a7a767b711e4b0",
+    "packages": {
+      "pip": "26.2.1",
+      "ecommerce-recsys": "0.0.0",
+      "scipy": "1.18.1",
+      "h11": "0.16.0",
+      "tqdm": "4.70.1",
+      "python-dateutil": "2.9.0.post0",
+      "anyio": "4.15.1",
+      "idna": "3.20",
+      "pydantic": "2.13.5",
+      "pytz": "2026.5",
+      "annotated-doc": "0.0.5",
+      "psutil": "7.1.0",
+      "pandas": "2.3.3",
+      "numpy": "2.5.2",
+      "pyarrow": "19.0.1",
+      "fastapi": "0.143.2",
+      "pydantic-core": "2.46.5",
+      "typing-inspection": "0.4.4",
+      "opentelemetry-api": "1.45.1",
+      "starlette": "1.8.0",
+      "uvicorn": "0.54.0",
+      "threadpoolctl": "3.6.0",
+      "annotated-types": "0.8.0",
+      "implicit": "0.7.3",
+      "tzdata": "2026.5",
+      "click": "8.5.0",
+      "six": "1.17.0",
+      "typing-extensions": "4.16.0"
+    },
+    "package_sources_sha256": {
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifacts/__init__.py": "a2c9d52b4d446d718d6b18c0e3033399a49744fd9c1b4eb0c43042ff913df115",
+      "artifacts/adapters.py": "c8ce94cc562405a22e7342cba6fc09d652aea64d197a499b8936fa707d8fe461",
+      "artifacts/contract.py": "f19cf49016a95b1da5eab2099610328f15df54bbe723ad3cb5b2e6fe3b0e06c2",
+      "artifacts/export.py": "ef9565b2c4a8f4b6b0bc5568278321c2999f9c1d4e1d5f0b0d4b20bbe7a4e375",
+      "artifacts/runtime.py": "1232c3058e6c98fd7f81d36a0e788a0ba4d232e6b73451eed5336a6ca885b5a0",
+      "data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "data/catalog.py": "7530cec7e7808f6d3c0aa0991839ff36ddaccf9aef45b98f17a035effb7caf4a",
+      "data/rolling_provenance.py": "dc2404d9917cac2c0dff1aacfb27317d08ddb66528c86423583fc95b3ee9a67f",
+      "data/schemas.py": "e21504fe1f6758711dd87e10e67175de80332c4185139d1444338c3293b5dc34",
+      "data/splitting.py": "54e2713c55614748a3fa5678d4a32ad1fbd7834fc154d55cbaf9ccddaa657dd4",
+      "evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evaluation/benchmark.py": "683f70cc987c60914cad11e126ebf350c7af2bf30aa7b646b8df30f69f3fadfe",
+      "evaluation/candidates.py": "c61d7d2ee292e2d0d7aaaa55798a70f1e2d0c076f7de0be3c65f194fec69d82a",
+      "evaluation/latency.py": "b06b540285a936f7abaddafea8c385d041204eed6eb56c1ff0df3b88695fe1d0",
+      "evaluation/metrics.py": "e5d708d6f689d068cbbc70a6a7b89c17942d3ea7b386f88770569f96393aa4d2",
+      "evaluation/model_policy.py": "d9b7066cc703730309c4972a1013edf8a75540489f0155d5142fbf10b70d3522",
+      "evaluation/numeric_threads.py": "f00e0000c83f1576a282c8b4f99a14491816991c2609b338f9105f468ecbac47",
+      "evaluation/rolling_artifacts.py": "487adbf01bad394c675a96dad8292f0f33a6d5971f0a301d57d2fb6a413cfcbc",
+      "ranking/__init__.py": "b0ba8df94ccc4c5f5592c934c027047ca760529ba4a2bb44e534d95735d21810",
+      "ranking/dataset.py": "16cc0a370b72c1eabf96392c045bd811368408ee71dab0fed02b1fd073893a3d",
+      "ranking/diversity.py": "860195d12f0376f89ade363c9cb8d4e39e2b474fe529612a94d52102180b8c9f",
+      "recommendation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "recommendation/bpr_educational.py": "95e1502dccb3d9fe67aa4bf987bc22dec24b0d90f7894c707683afda3d55890b",
+      "recommendation/category_popularity.py": "a26271a7ae00d9504124d473b29a6be9568d54711da1137e0a57612e86a9aca1",
+      "recommendation/item_knn.py": "42984a48e755aa05ea5625e5c49ff9497fc3bf4bebb5d5fa28dff682191c8454",
+      "recommendation/matrix_factorization.py": "e20c87e7ced1e942e08259b7eff30a0413ff3095db0c241760c6e9c3b1264004",
+      "recommendation/matrix_factorization_educational.py": "6b8575dd5462c61666e6faab7a884d36e872d0e71f8d72891859ac6aafe83ceb",
+      "recommendation/popularity.py": "c40c2e693314a6e9eb40e259026480544a52e628051d92ba3bd4c6bf3fd16559",
+      "recommendation/random_recommender.py": "65fff1a23bde6cd811cfe8489c6021da875dcc79d0aa7268a5af21e8378814d6",
+      "recommendation/recent_popularity.py": "e607bf5342500e1da0fb85a1f5e02a4e6f990a990f78bbd87c28948aa89acbd7",
+      "retrieval/__init__.py": "07c74e9c41248afdb6f58ce44d1208f8314a040d266890761f3746f657f81883",
+      "retrieval/base.py": "b3be4baf6b4cee92650a72e8583d2ced8e9dd0a8b54356119e9ec778f8c00b46",
+      "retrieval/category_retriever.py": "04d9ab4107281c00945498901cf46f9fffd43206fb25145fb84ce8ad6cffd053",
+      "retrieval/hybrid_candidates.py": "175677f6dc5cd303efc4e149d687eda412acea9aa75fa6663abde6798fc770b8",
+      "retrieval/item_knn_retriever.py": "51c3fcc408e017f2d5502cf2d10c40fd4733d9dd7341d7c4181f8e24b00bf7e8",
+      "retrieval/mf_retriever.py": "499912136931211e0fed759caacf12e303b02aa155ce7b373dfa0a250e250b80",
+      "retrieval/popularity_retriever.py": "d0f54a90dbc4bc301fd811debf3169baec20de304949e6532dc8f1ec34e804fa",
+      "retrieval/sequential.py": "83a18281ab84429f4643166d3d01222ff2350d2234064bad109af867d112a772",
+      "retrieval/two_tower.py": "6ae7b835bcd4636cf76837d20fba1630b9ddbf208d3bb30a45639ae760c18c4c",
+      "serving/__init__.py": "4ddd5b4f7a639985fca45d0ddf4d4d49d5a138cb189ac6fb7d07a0e7da07b2f1",
+      "serving/__main__.py": "b92d3541e34f461a63d07eb782fb98210ea9441597d8eae30941dcbcaf638610",
+      "serving/app.py": "a2fbace10bb7be6f4f2401094e58f73cf7d6ad89aa2bd76270b3099c28a4cf05",
+      "serving/boundary.py": "49187042e4604f63c18a489ed7a4ac98163679f58628b48f48fca2628ca1aac9",
+      "serving/cache.py": "605e8d29fb51e000525f6b4b0e74768123312da3a5785d78ec98389c38c829e4",
+      "serving/contracts.py": "003a6999246c70c94fdb76b70d612358b0d02be49f6267149ef89905b5b0d70b",
+      "serving/http_protocol.py": "42a331a3a16bc8a55956563822ad769adf093247868c486a88bd0ddad3c99354",
+      "serving/observability.py": "715710e90442b8c1e757359e9219b5ee330cea203e1cccd8d870ceb120deaf3f",
+      "serving/observation_boundary.py": "f8379cba46d84c36f89e69526f2135cbe3d8ad4f3d2e4c52f7dc292de15cc747",
+      "serving/rate_limit.py": "84bc977b83651edb7dc3f8da368e9613f17aba61e3a3c827930cdfbc51080c0a",
+      "serving/security.py": "6b1dea4c9d3c00b28239abb7c209f314bf3f8005241335306ecbce968226d76d",
+      "serving/security_boundary.py": "c51be563129d47a15d96e7e61f50d8456397591e331695a9c42b419e477d1adc",
+      "serving/service.py": "a4771f28ca737d45979c18ec1778c914c9f7b581fc2194c8a8d2dc698d436763"
+    },
+    "scripts_available": false,
+    "training_directories_present": false,
+    "compiler_or_git_present": false,
+    "probe_sources_sha256": {
+      "qualification.py": "e98da02f959e27b677424bba82f7cff074d7ba1dc30aba175e6fb721ff041af4",
+      "healthcheck.py": "7edd535ac48a298b462ff8047bb5d2062cab8ddb732cbb59eb16bee6e3dd1ed4",
+      "probe.py": "e1c7f40f5fe1be862b6b15804695a9d474b3ac6222b56fadcd1d090bb5689484"
+    },
+    "runtime_lock_sha256": "895ad8583baae1bb0541c01c5d5b12a4b2d9e7b1eac3e3726d6687e4fe448e46"
+  },
+  "build_context": {
+    "canary_verified": true,
+    "allowed_files": [
+      "containers/Dockerfile",
+      "containers/build.lock",
+      "containers/healthcheck.py",
+      "containers/probe.py",
+      "containers/qualification.py",
+      "containers/runtime.lock",
+      "pyproject.toml",
+      "src/ecommerce_recsys/allowed.py",
+      "src/ecommerce_recsys/nested/allowed.py"
+    ],
+    "excluded_canaries": [
+      ".env",
+      ".git/config",
+      ".local/private.txt",
+      "artifacts/model.npy",
+      "containers/__pycache__/private.pyc",
+      "containers/private.env",
+      "data/raw/canary.csv",
+      "scripts/private.py",
+      "src/ecommerce_recsys/__pycache__/private.pyc",
+      "src/ecommerce_recsys/nested/private.env",
+      "src/ecommerce_recsys/private.env",
+      "tests/private.py"
+    ]
+  },
+  "container_cleanup_verified": true,
+  "resource_policy": {
+    "uid": 10001,
+    "gid": 10001,
+    "network": "none",
+    "published_ports": false,
+    "read_only_root": true,
+    "read_only_model": true,
+    "capabilities": "all dropped",
+    "no_new_privileges": true,
+    "pids_limit": 64,
+    "cpus": 2,
+    "memory_limit_bytes": 4294967296,
+    "memory_swap_limit_bytes": 4294967296,
+    "tmpfs_bytes": 16777216
+  },
+  "model": {
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "references_sha256": "83bd9e573027a95c7172b9ececf135f8d184347db525a9559d10adf454f5fe96",
+    "references": 101,
+    "warm_references": 100,
+    "cold_references": 1,
+    "policy": {
+      "verification": "isolated-linux-snapshot-v1",
+      "rtol": 1e-12,
+      "atol": 1e-12,
+      "reference_side": "Windows producer-exact arrays",
+      "equal_nan": false,
+      "exact_fields": [
+        "pool",
+        "output",
+        "evidence_sha256",
+        "route"
+      ],
+      "references": 101,
+      "warm_references": 100,
+      "cold_references": 1,
+      "scope": "finite cross-platform qualification; original same-host bitwise policy unchanged"
+    },
+    "qualification_passed": true,
+    "bitwise_parity": false,
+    "bitwise_mismatches": [
+      {
+        "reference_index": 0,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 1,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 2,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 3,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 4,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 5,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 6,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 7,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 8,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 9,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 10,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 11,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 12,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 13,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 14,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 15,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 16,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 17,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 18,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 19,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 20,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 21,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 22,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 23,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 24,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 25,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 26,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 27,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 28,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 29,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 30,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 31,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 32,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 33,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 34,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 35,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 36,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 37,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 38,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 39,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 40,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 41,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 42,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 43,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 44,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 45,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 46,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 47,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 48,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 49,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 50,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 51,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 52,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 53,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 54,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 55,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 56,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 57,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 58,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 59,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 60,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 61,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 62,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 63,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 64,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 65,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 66,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 67,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 68,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 69,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 70,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 71,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 72,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 73,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 74,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 75,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 76,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 77,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 78,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 79,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 80,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 81,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 82,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 83,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 84,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 85,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 86,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 87,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 88,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 89,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 90,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 91,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 92,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 93,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 94,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 95,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 96,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 97,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 98,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      },
+      {
+        "reference_index": 99,
+        "fields": [
+          "features_sha256",
+          "scores_sha256"
+        ]
+      }
+    ],
+    "array_errors": {
+      "features": {
+        "max_abs_error": 8.881784197001252e-16,
+        "max_error_over_allowed": 0.000177581422557283
+      },
+      "scores": {
+        "max_abs_error": 1.1102230246251565e-15,
+        "max_error_over_allowed": 0.0006630216074093322
+      }
+    },
+    "mismatches": [],
+    "load_seconds": 24.593182687999615,
+    "rss_after_references_bytes": 2383093760,
+    "reference_order_sha256": "4c60b5b7212b58d1d3951ca628b1b549511d5f756ecfbb54b045533071f06c72"
+  },
+  "http": {
+    "warm_references": 100,
+    "cold_references": 1,
+    "prefix_checks": 6,
+    "unknown_cold_checks": 1,
+    "denial_checks": 4,
+    "recovery_checks": 1,
+    "primary_calls": 109,
+    "request_ids": 115,
+    "exact_outputs": true,
+    "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+    "pacing_seconds": 0.26,
+    "warm_client_timing": {
+      "latency_samples": 100,
+      "latency_avg_ms": 82.99794760999703,
+      "latency_p50_ms": 67.29988450001656,
+      "latency_p95_ms": 230.6930576000923,
+      "latency_p99_ms": 308.4698582400279
+    },
+    "serving_rss_before_requests_bytes": 2429251584,
+    "serving_rss_after_requests_bytes": 2430423040,
+    "cgroup_memory_peak_bytes": 2552963072,
+    "cache_enabled": false,
+    "busy_policy": "reject",
+    "all_passed": true
+  },
+  "startup_to_healthy_seconds": 33.179771399999936,
+  "negative_startup": {
+    "bad_pin": true,
+    "missing": true,
+    "corrupt": true
+  },
+  "graceful_cleanup_events": 1,
+  "serving_rss_within_2gib": false,
+  "limits": [
+    "Isolated Docker Desktop Linux/amd64; no published port or public exposure.",
+    "Cross-platform policy approved after initial bitwise feature/score failure; old policy and references unchanged.",
+    "Finite 101-reference default cache-off/busy-reject sample; not fresh quality, representative load or SLA.",
+    "4GiB cgroup cap does not waive the 2GiB RSS target. Cgroup peak includes operator probes/cache.",
+    "Pinned inputs and local image content ID; not a bit-for-bit image rebuild or a published registry digest."
+  ],
+  "content_sha256": "80f6c3ffa4402e9911bce3578597afd6b3c247a6763a9e30f6a5bfa5cbd93d45"
+}
