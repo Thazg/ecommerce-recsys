@@ -1,0 +1,2 @@
+# Workflow validation for the controlled local release tooling.
+PyYAML==6.0.3
