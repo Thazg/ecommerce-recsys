@@ -216,6 +216,16 @@ Linux tests and original-bundle release/crash/rollback evidence. This remains
 network-isolated qualification, with no public traffic switch or deployment
 eligibility; the 2 GiB memory target remains unmet.
 
+## HTTP workload and capacity
+
+The unchanged Linux snapshot has a [fixed HTTP capacity assessment](docs/HTTP_CAPACITY_REPORT.md):
+four 150-second open-loop workloads and 2,550 measured arrivals. It separates
+warm/cold success latency, primed cache hits, worker busy rejection, quota
+rejection and dispatch cost. Successful responses preserve sealed outputs.
+Serving RSS remains above 2 GiB, so deployment eligibility stays false. This is
+constructed repeated-reference traffic on Docker Desktop, not production load
+or a maximum-throughput claim.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -237,6 +247,7 @@ eligibility; the 2 GiB memory target remains unmet.
 - [API hardening](docs/API_HARDENING.md): local access policy, connection/input budgets, request limits and source-pinned verification.
 - [Testing and functional gates](docs/TESTING_AND_RELEASE_GATES.md): unit and fitted-process profiles, explicit real-bundle parity and deployment boundaries.
 - [Linux snapshot container](docs/LINUX_CONTAINER.md): pinned build, read-only artifact delivery, isolated runtime and real cross-platform qualification.
+- [HTTP capacity assessment](docs/HTTP_CAPACITY_REPORT.md): fixed offered-load controls, latency/rejection/resource scopes, parity and remaining budget gates.
 - [Controlled release runbook](docs/RELEASE_WORKFLOW.md): CI profiles, private-runner prerequisites, immutable local release identities and verified recovery/rollback.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
