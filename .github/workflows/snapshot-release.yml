@@ -1,0 +1,127 @@
+name: Snapshot qualification
+
+on:
+  workflow_call:
+    inputs:
+      source_sha:
+        description: Reviewed current main SHA of Thazg/ecommerce-recsys
+        type: string
+        required: true
+      local_qualification_only:
+        description: Exercise isolated release/rollback; no production or registry publication
+        type: boolean
+        required: true
+
+    secrets:
+      source_read_token:
+        description: Read-only source contents and Actions metadata
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: snapshot-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.event.repository.private == true && github.repository != 'Thazg/ecommerce-recsys' && github.repository_owner == 'Thazg' && inputs.local_qualification_only == true
+    runs-on: [self-hosted, Windows, X64, snapshot-qualification]
+    environment: snapshot-qualification
+    timeout-minutes: 60
+    env:
+      SNAPSHOT_PYTHON: ${{ vars.SNAPSHOT_PYTHON }}
+      SNAPSHOT_BUNDLE: ${{ vars.SNAPSHOT_BUNDLE }}
+      SNAPSHOT_WORK_ROOT: ${{ vars.SNAPSHOT_WORK_ROOT }}
+      SNAPSHOT_SOURCE_SHA: ${{ inputs.source_sha }}
+      PYTHONPATH: ${{ github.workspace }}/src;${{ github.workspace }}
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+      PYTEST_ADDOPTS: ''
+      SNAPSHOT_MANIFEST_SHA256: 84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe
+    steps:
+      - name: Require a reviewed current source revision before checkout
+        env:
+          SNAPSHOT_SOURCE_TOKEN: ${{ secrets.source_read_token }}
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if (-not [IO.Path]::IsPathFullyQualified($env:SNAPSHOT_WORK_ROOT) -or $env:SNAPSHOT_WORK_ROOT -match '[\r\n]') { throw 'Missing absolute external recovery root' }
+          $workRoot = [IO.Path]::GetFullPath($env:SNAPSHOT_WORK_ROOT).TrimEnd('\', '/')
+          $checkout = [IO.Path]::GetFullPath($env:GITHUB_WORKSPACE).TrimEnd('\', '/')
+          if ($workRoot.Equals($checkout, [StringComparison]::OrdinalIgnoreCase) -or $workRoot.StartsWith($checkout + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Recovery storage must be outside checkout' }
+          if (-not [IO.Path]::IsPathFullyQualified($env:SNAPSHOT_PYTHON) -or -not (Test-Path -LiteralPath $env:SNAPSHOT_PYTHON -PathType Leaf)) { throw 'Missing absolute recovery path interpreter' }
+          if (-not [IO.Path]::IsPathFullyQualified($env:SNAPSHOT_BUNDLE)) { throw 'Missing absolute external model bundle' }
+          $workRoot = & $env:SNAPSHOT_PYTHON -c "from pathlib import Path; import sys; p=Path(sys.argv[1]).resolve(); w=Path(sys.argv[2]).resolve(); b=Path(sys.argv[3]).resolve(); e=Path(sys.executable).resolve(); assert not p.is_relative_to(w), 'Recovery storage resolves inside checkout'; assert b.is_dir() and not b.is_relative_to(w), 'Bundle must be outside the runner checkout'; assert not e.is_relative_to(w), 'Interpreter must be outside the runner checkout'; print(p)" $workRoot $checkout $env:SNAPSHOT_BUNDLE
+          if ($LASTEXITCODE -ne 0) { throw 'Unsafe resolved recovery root' }
+          $runRoot = Join-Path $workRoot ('github-' + $env:GITHUB_RUN_ID + '-' + $env:GITHUB_RUN_ATTEMPT)
+          if (Test-Path -LiteralPath $runRoot) { throw 'Qualification attempt directory already exists' }
+          New-Item -ItemType Directory -Path $runRoot -ErrorAction Stop | Out-Null
+          "SNAPSHOT_RUN_ROOT=$runRoot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          if ($env:SNAPSHOT_SOURCE_SHA -cnotmatch '^[0-9a-f]{40}$') { throw 'Expected an immutable source SHA' }
+          $headers = @{ Authorization = "Bearer $env:SNAPSHOT_SOURCE_TOKEN"; Accept = 'application/vnd.github+json' }
+          $remoteMain = Invoke-RestMethod -Uri 'https://api.github.com/repos/Thazg/ecommerce-recsys/git/ref/heads/main' -Headers $headers -MaximumRedirection 0 -TimeoutSec 15
+          if ($remoteMain.object.sha -cne $env:SNAPSHOT_SOURCE_SHA) { throw 'Source must match reviewed current main' }
+      - name: Checkout immutable main revision
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.source_read_token }}
+          repository: Thazg/ecommerce-recsys
+          ref: ${{ inputs.source_sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Require external original-producer environment and bundle
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if (-not (Test-Path -LiteralPath $env:SNAPSHOT_PYTHON -PathType Leaf)) { throw 'Missing snapshot interpreter' }
+          if (-not (Test-Path -LiteralPath $env:SNAPSHOT_BUNDLE -PathType Container)) { throw 'Missing external model bundle' }
+          & $env:SNAPSHOT_PYTHON -c "import sys, pathlib, implicit; assert sys.version_info[:3] == (3,13,15); assert pathlib.Path(sys.prefix).name == 'ecommerce-recsys'; import yaml, torch, faiss, httpx2, uvicorn, fastapi"
+          if ($LASTEXITCODE -ne 0) { throw 'Wrong or incomplete snapshot environment' }
+          & $env:SNAPSHOT_PYTHON -m pip check
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency integrity failed' }
+          & $env:SNAPSHOT_PYTHON -c "import os; from scripts.verify_release_workflow import require_idle_work_root, external_work_root; require_idle_work_root(os.environ['SNAPSHOT_WORK_ROOT']); external_work_root(os.environ['SNAPSHOT_RUN_ROOT'])"
+          if ($LASTEXITCODE -ne 0) { throw 'External recovery storage is unsafe or unfinished' }
+      - name: Verify workflow policy
+        env:
+          SNAPSHOT_SOURCE_TOKEN: ${{ secrets.source_read_token }}
+        shell: pwsh
+        run: |
+          & $env:SNAPSHOT_PYTHON scripts/check_release_workflows.py --require-source-ci $env:SNAPSHOT_SOURCE_SHA
+          if ($LASTEXITCODE -ne 0) { throw 'Workflow policy failed' }
+      - name: Verify original-producer functional profiles
+        shell: pwsh
+        run: |
+          & $env:SNAPSHOT_PYTHON -m ruff check .
+          if ($LASTEXITCODE -ne 0) { throw 'Lint failed' }
+          & $env:SNAPSHOT_PYTHON -m ruff format --check .
+          if ($LASTEXITCODE -ne 0) { throw 'Format failed' }
+          & $env:SNAPSHOT_PYTHON -m pytest tests/unit -q -o xfail_strict=true "--junitxml=$env:SNAPSHOT_RUN_ROOT/unit.xml"
+          if ($LASTEXITCODE -ne 0) { throw 'Unit regressions failed' }
+          & $env:SNAPSHOT_PYTHON -m pytest tests/integration -m 'not real_bundle' -q -o xfail_strict=true "--junitxml=$env:SNAPSHOT_RUN_ROOT/fixture.xml"
+          if ($LASTEXITCODE -ne 0) { throw 'Fitted process regressions failed' }
+          & $env:SNAPSHOT_PYTHON scripts/check_release_workflows.py --unit-junit "$env:SNAPSHOT_RUN_ROOT/unit.xml" --fixture-junit "$env:SNAPSHOT_RUN_ROOT/fixture.xml"
+          if ($LASTEXITCODE -ne 0) { throw 'Incomplete profile evidence' }
+      - name: Qualify actual Linux image and original bundle
+        shell: pwsh
+        run: |
+          & $env:SNAPSHOT_PYTHON scripts/verify_linux_container.py --bundle $env:SNAPSHOT_BUNDLE --manifest-sha256 $env:SNAPSHOT_MANIFEST_SHA256 --output "$env:SNAPSHOT_RUN_ROOT/linux-qualification.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Real Linux qualification failed' }
+      - name: Exercise immutable local release and rollback
+        shell: pwsh
+        run: |
+          $qualificationPin = (Get-FileHash -LiteralPath "$env:SNAPSHOT_RUN_ROOT/linux-qualification.json" -Algorithm SHA256).Hash.ToLowerInvariant()
+          & $env:SNAPSHOT_PYTHON scripts/verify_release_workflow.py --bundle $env:SNAPSHOT_BUNDLE --qualification "$env:SNAPSHOT_RUN_ROOT/linux-qualification.json" --qualification-sha256 $qualificationPin --output "$env:SNAPSHOT_RUN_ROOT/release-workflow.json" --work-root $env:SNAPSHOT_RUN_ROOT
+          if ($LASTEXITCODE -ne 0) { throw 'Local release exercise failed' }
+      - name: Upload completed qualification receipts only
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: snapshot-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ env.SNAPSHOT_RUN_ROOT }}/linux-qualification.json
+            ${{ env.SNAPSHOT_RUN_ROOT }}/release-workflow.json
+            ${{ env.SNAPSHOT_RUN_ROOT }}/unit.xml
+            ${{ env.SNAPSHOT_RUN_ROOT }}/fixture.xml
+          if-no-files-found: error
+          retention-days: 7
+          include-hidden-files: true

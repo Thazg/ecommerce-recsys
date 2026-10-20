@@ -2,43 +2,71 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
-    name: Test & Lint
-    runs-on: ubuntu-latest
-
+    name: Unit and fitted process gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Checkout immutable event revision
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          python-version: "3.13"
-
-      - name: Install project
-        run: python -m pip install -e ".[dev]" -r requirements/serving-test.txt
-
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13.15'
+      - name: Install hashed binary dependencies
+        run: >-
+          python -m pip install --require-hashes --only-binary=:all: -r requirements/ci-linux.txt
+      - name: Install package without resolving dependencies
+        run: python -m pip install --no-deps --no-build-isolation -e .
       - name: Check dependency integrity
         run: python -m pip check
-
-      - name: Verify service test dependencies
-        run: python -c "import fastapi, uvicorn, httpx2; from fastapi.testclient import TestClient"
-
+      - name: Require service and workflow test dependencies
+        run: python -c "import fastapi, uvicorn, httpx2, yaml, torch, faiss; from fastapi.testclient import TestClient"
+      - name: Verify workflow policy
+        run: python scripts/check_release_workflows.py
+      - name: Verify workflow schema and expressions
+        run: |
+          curl --fail --silent --show-error --location --output "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --status
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" -shellcheck= -pyflakes= -config-file .github/actionlint.yaml .github/workflows/ci.yml .github/workflows/snapshot-release.yml
       - name: Run Ruff lint
-        run: ruff check .
-
+        run: python -m ruff check .
       - name: Check Ruff formatting
-        run: ruff format --check .
-
+        run: python -m ruff format --check .
       - name: Run unit regressions
-        run: pytest tests/unit -q -o xfail_strict=true
-
+        run: python -m pytest tests/unit -q -o xfail_strict=true --junitxml=.local/ci/unit.xml
       - name: Run fitted snapshot process integration
-        run: pytest tests/integration -m "not real_bundle" -q -o xfail_strict=true
+        run: python -m pytest tests/integration -m "not real_bundle" -q -o xfail_strict=true --junitxml=.local/ci/fixture.xml
+      - name: Reject empty, failed or skipped profile evidence
+        run: python scripts/check_release_workflows.py --unit-junit .local/ci/unit.xml --fixture-junit .local/ci/fixture.xml
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: test-reports-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .local/ci/*.xml
+          if-no-files-found: error
+          retention-days: 7
+          include-hidden-files: true
