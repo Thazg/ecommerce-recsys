@@ -70,7 +70,7 @@ remains unchanged. A new current-tree functional run needs a fresh receipt path.
 Use Python 3.13 and install the declared service test dependencies:
 
 ```sh
-python -m pip install -e ".[dev]" -r requirements/serving-test.txt
+python -m pip install -e ".[dev]" -r requirements/serving-test.txt -r requirements/release-test.txt
 python -m pip check
 python -m pytest tests/unit -q -o xfail_strict=true
 python -m pytest tests/integration -m "not real_bundle" -q -o xfail_strict=true
@@ -188,3 +188,15 @@ The [roadmap](ROADMAP.md) separately defines container reproduction, controlled
 release/rollback and workload qualification. No image,
 registry publication, release tag, hot replacement or public service is created
 by this command.
+
+## Current CI and local release tooling
+
+The broader current tree additionally requires `requirements/release-test.txt`
+for workflow-policy tests. The [release runbook](RELEASE_WORKFLOW.md) defines the
+47-wheel Linux CPU lock, pinned Actions/actionlint, stricter current JUnit rules,
+local Linux reproduction and separately gated real-container/release lane.
+Current CI requires Torch/Faiss coverage rather than the original functional
+receipt's optional-experiment skip allowance. The old receipt and verifier stay
+unchanged; its explicit revision and evidence scope above still apply.
+The controlled local release exercise is separate from this original gate and
+from production deployment eligibility.

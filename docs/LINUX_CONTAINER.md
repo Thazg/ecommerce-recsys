@@ -220,13 +220,16 @@ CPU allocation and probe scopes differ. Earlier receipts remain unchanged.
 Linux qualification does not recompute recommendation accuracy or change the
 locked model policy. Historical full-fold quality remains in the
 [bundle report](MODEL_ARTIFACTS.md); folds 5–9 remain post-selection diagnostics.
-Controlled release/rollback, target-host failure recovery, representative load,
-memory optimization and public deployment remain separate gates.
+The separate [release controller](RELEASE_WORKFLOW.md) now exercises isolated
+local promotion, journal recovery and process-crash rollback using this qualified
+image. Target-host failure recovery, representative load, memory optimization
+and public deployment remain separate gates.
 
 ## Regression checks
 
 Use the `ecommerce-recsys` environment with the declared development and serving
-test dependencies:
+test dependencies, plus `requirements/release-test.txt` for current full-tree
+workflow tests:
 
 ```sh
 python -m pytest tests/unit tests/integration -m "not real_bundle" -q

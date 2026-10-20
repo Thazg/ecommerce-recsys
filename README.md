@@ -202,6 +202,20 @@ policy revision and measured limits. This isolated configuration has no
 published ports. It does not establish deployment eligibility, representative
 load capacity or compliance with the outstanding 2 GiB serving RSS target.
 
+## Controlled local release
+
+Hosted CI uses immutable Action pins, hashed CPU test dependencies and separate
+unit/fitted-process gates. A separate reusable workflow defines manual real-model
+qualification on a protected private runner; that remote lane is not configured
+or claimed as executed.
+
+The local release controller verifies an immutable candidate before replacing
+its active pointer, records incomplete operations and supports explicit recovery
+and rollback. The [release runbook](docs/RELEASE_WORKFLOW.md) records actual
+Linux tests and original-bundle release/crash/rollback evidence. This remains
+network-isolated qualification, with no public traffic switch or deployment
+eligibility; the 2 GiB memory target remains unmet.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -223,6 +237,7 @@ load capacity or compliance with the outstanding 2 GiB serving RSS target.
 - [API hardening](docs/API_HARDENING.md): local access policy, connection/input budgets, request limits and source-pinned verification.
 - [Testing and functional gates](docs/TESTING_AND_RELEASE_GATES.md): unit and fitted-process profiles, explicit real-bundle parity and deployment boundaries.
 - [Linux snapshot container](docs/LINUX_CONTAINER.md): pinned build, read-only artifact delivery, isolated runtime and real cross-platform qualification.
+- [Controlled release runbook](docs/RELEASE_WORKFLOW.md): CI profiles, private-runner prerequisites, immutable local release identities and verified recovery/rollback.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 
@@ -238,7 +253,7 @@ describes the source, schema and recorded input hashes. In a fresh checkout,
 prepare the shared rolling inputs and candidate reference with:
 
 ```sh
-python -m pip install -e ".[dev]" -r requirements/serving-test.txt
+python -m pip install -e ".[dev]" -r requirements/serving-test.txt -r requirements/release-test.txt
 python scripts/build_interactions.py
 python scripts/prepare_rolling_data.py
 python scripts/sweep_rolling.py --model item_knn
