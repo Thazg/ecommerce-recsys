@@ -1,0 +1,894 @@
+{
+  "schema_version": 1,
+  "assessment": "snapshot-http-capacity-v1",
+  "assessment_completed": true,
+  "functional_parity_passed": true,
+  "deployment_eligible": false,
+  "started_utc": "2026-10-20T09:26:37.095386+00:00",
+  "invocation_started_utc": "2026-10-20T09:26:37.091511+00:00",
+  "completed_utc": "2026-10-20T09:43:28.186583+00:00",
+  "identity": {
+    "files_sha256": {
+      "scripts/http_capacity_workload.py": "5e5e799753a27a8657b5474f2d249549bb6e4b305100e4c60bac69441d571464",
+      "scripts/benchmark_http_capacity.py": "cfd6bf4bc214d6b2ed70d19771cacf50bd5b906e59f5286905aa59dc43915725",
+      "tests/unit/test_http_capacity.py": "74d246f3ae7aaf29e76d4adc482cd5c0766fa9cfbae582d95a5c050eb63fa45d",
+      "tests/integration/test_capacity_process.py": "52867f44ab6b53e9622c75d2336534cf8ecfef427a12985bda400d9c5c810715"
+    },
+    "policy_sha256": "689d91636cda0ae688ee25857e6695716a84aadca511dd3b5b27674611541c73",
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+    "release_evidence_sha256": "7b37d58c41c34cc7011adcf3c0ed39e29512aaf91b1a97b893a689bbde86d55d",
+    "controller_files_lf_sha256": {
+      "scripts/snapshot_release.py": "6420833346be5e7118bb3e849419e87338f987de0a8d2e1499ad08cbe824d36e",
+      "scripts/verify_release_workflow.py": "c91eb3ff31e799fb622147b99d9868e73a0a64699ff749d740820aee1ee0d8fd",
+      "scripts/check_release_workflows.py": "a2c785140c552a5e6b55505ce900539dc0d42078facf219ba2155636618f64f9",
+      "scripts/verify_ci_profile.py": "b86afe6d5eb141f67019f9bfaa364f1e9736c0f38b3c07afabc6d3530c49fc6a",
+      "tests/unit/test_snapshot_release.py": "899edd99e12d56870bd2916a9579d146187d86b35cdbcbcf9eaddeda9e6e7eef",
+      "tests/unit/test_release_workflows.py": "509d683a5a8c8bc9284bbf61f35e82ee38468c44f25308f33c5424e8805c3035",
+      "tests/unit/test_ci_profile.py": "a2eb81414d1f21a68066c427eb233cf2b383739a41ce7e8044f6b27653708c6a",
+      "requirements/ci-linux.txt": "09793bd39c34bbe6ebc41e4597800944b84f7b682308589a0f5e40760bff7317",
+      "requirements/release-test.txt": "3f92fc37cebf614aeaca3f028c144a7cf5dea0b8953e584b59f02ff93053c7c9",
+      ".github/workflows/ci.yml": "10277b29d8cf16926ba159e6a3734adf24af30f43d10fe2d147c63c1867d713c",
+      ".github/workflows/snapshot-release.yml": "981c989283581d0f82e623ce923b795b3da51dbfeb4ebc3146e239c792d6d5f2",
+      ".github/actionlint.yaml": "0e72fe738a4633f7c1b708ea29b838a327ac530b84a706814ca2510bd94c2634"
+    },
+    "machine": {
+      "OSType": "linux",
+      "Architecture": "x86_64",
+      "NCPU": 12,
+      "MemTotal": 10427699200,
+      "KernelVersion": "6.18.33.2-microsoft-standard-WSL2",
+      "ServerVersion": "29.6.2",
+      "OperatingSystem": "Docker Desktop"
+    },
+    "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27"
+  },
+  "policy": {
+    "version": "snapshot-http-capacity-v1",
+    "duration_seconds": 150,
+    "warm_fraction": 0.8,
+    "k_mix": {
+      "20": 0.6,
+      "10": 0.2,
+      "5": 0.2
+    },
+    "seed": 42,
+    "arrival": "deterministic open-loop; no retries or hidden client queue",
+    "connection": "one new loopback TCP connection per attempt",
+    "reference_spacing_seconds": 0.26,
+    "settle_seconds": 3,
+    "timeout_seconds": 10,
+    "sample_seconds": 0.05,
+    "cache": {
+      "entries": 256,
+      "bytes": 1048576,
+      "ttl_seconds": 900
+    },
+    "busy_policy": "reject",
+    "security_rates": {
+      "peer_rps": 5,
+      "peer_burst": 10,
+      "global_rps": 10,
+      "global_burst": 20
+    },
+    "targets": {
+      "warm_p95_ms": 300,
+      "warm_p99_ms": 500,
+      "rss_bytes": 2147483648,
+      "error_fraction": 0.01,
+      "rejection_fraction": 0.01,
+      "dispatch_p99_ms": 10,
+      "minimum_warm_successes": 100
+    }
+  },
+  "cells": [
+    {
+      "cell": {
+        "name": "uncached-1rps",
+        "rate": 1,
+        "concurrency": 4,
+        "cached": false
+      },
+      "request_sequence_sha256": "5ef1ed0da79c88f7f1df037fe81848614f34d985a5f20f5c03bc2681dbd025d9",
+      "offered_cohorts": {
+        "warm": 120,
+        "cold": 30
+      },
+      "offered_k": {
+        "20": 90,
+        "10": 30,
+        "5": 30
+      },
+      "pre_references": 101,
+      "post_references": 101,
+      "parity_passed": true,
+      "telemetry_delta": {
+        "posts": 150.0,
+        "deliveries": 150.0,
+        "hits": 0,
+        "misses": 0,
+        "primary": 150.0,
+        "busy": 0,
+        "rate_limited": 0,
+        "observer_errors": 0.0
+      },
+      "summary": {
+        "offered": 150,
+        "attempted": 150,
+        "completed_http": 150,
+        "successes": 150,
+        "client_shed": 0,
+        "status_counts": {
+          "200": 150
+        },
+        "offered_rps": 1.0,
+        "completed_rps": 0.9999956039793246,
+        "success_rps": 0.9999956039793246,
+        "duration_seconds": 150,
+        "including_drain_seconds": 150.00065940600007,
+        "rejection_fraction": 0.0,
+        "transport_error_fraction": 0.0,
+        "cache_counts": {
+          "disabled": 150
+        },
+        "cohort_attempts": {
+          "warm": 120,
+          "cold": 30
+        },
+        "k_attempts": {
+          "20": 90,
+          "10": 30,
+          "5": 30
+        },
+        "latency": {
+          "warm_success": {
+            "http": {
+              "latency_samples": 120,
+              "latency_avg_ms": 74.96333407497104,
+              "latency_p50_ms": 61.627293500123415,
+              "latency_p95_ms": 220.31056090024776,
+              "latency_p99_ms": 235.00722056023278
+            },
+            "schedule_to_end": {
+              "latency_samples": 120,
+              "latency_avg_ms": 75.37093573329987,
+              "latency_p50_ms": 62.02791300006538,
+              "latency_p95_ms": 220.94667815013054,
+              "latency_p99_ms": 235.76360884010683
+            }
+          },
+          "cold_success": {
+            "http": {
+              "latency_samples": 30,
+              "latency_avg_ms": 10.695514366701294,
+              "latency_p50_ms": 9.14237899996806,
+              "latency_p95_ms": 18.63730245020177,
+              "latency_p99_ms": 21.643981640013408
+            },
+            "schedule_to_end": {
+              "latency_samples": 30,
+              "latency_avg_ms": 11.152652700002363,
+              "latency_p50_ms": 9.452909499941597,
+              "latency_p95_ms": 19.363405050103193,
+              "latency_p99_ms": 22.341555029961455
+            }
+          },
+          "warm_uncached": {
+            "http": {
+              "latency_samples": 120,
+              "latency_avg_ms": 74.96333407497104,
+              "latency_p50_ms": 61.627293500123415,
+              "latency_p95_ms": 220.31056090024776,
+              "latency_p99_ms": 235.00722056023278
+            },
+            "schedule_to_end": {
+              "latency_samples": 120,
+              "latency_avg_ms": 75.37093573329987,
+              "latency_p50_ms": 62.02791300006538,
+              "latency_p95_ms": 220.94667815013054,
+              "latency_p99_ms": 235.76360884010683
+            }
+          },
+          "warm_cache_hit": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          },
+          "rate_rejected": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          },
+          "busy_rejected": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          }
+        },
+        "dispatch": {
+          "latency_samples": 150,
+          "latency_avg_ms": 0.4175089933232812,
+          "latency_p50_ms": 0.364906999948289,
+          "latency_p95_ms": 0.7279666499471205,
+          "latency_p99_ms": 0.8052578699016519
+        },
+        "resources": {
+          "samples": 2972,
+          "sampled_server_cpu_seconds": 9.59,
+          "rss_max_bytes": 2430017536,
+          "first_sample_seconds": 0.0005028290001973801,
+          "last_sample_seconds": 149.99607353800002,
+          "largest_sample_gap_seconds": 0.05379999900014809,
+          "ready_rss_bytes": 2428899328,
+          "after_priming_rss_bytes": 2430017536,
+          "after_workload_rss_bytes": 2430017536,
+          "server_cpu_seconds": 9.59,
+          "driver_cpu_seconds": 1.0750137,
+          "driver_rss_bytes": 47984640
+        },
+        "targets": {
+          "enough_warm_successes": true,
+          "warm_http_p95": true,
+          "warm_http_p99": true,
+          "rss": false,
+          "errors": true,
+          "rejections": true,
+          "driver_adequate": true
+        },
+        "targets_met": false
+      },
+      "cgroup_memory_peak_bytes": 2556510208,
+      "startup_to_docker_healthy_seconds": 33.0586686000006,
+      "cleanup": {
+        "removed": true,
+        "graceful": true,
+        "prior_already_exited_abnormally": false,
+        "cleanup_events": 1
+      },
+      "started_utc": "2026-10-20T09:26:37.095386+00:00",
+      "completed_utc": "2026-10-20T09:30:52.009370+00:00"
+    },
+    {
+      "cell": {
+        "name": "uncached-4rps",
+        "rate": 4,
+        "concurrency": 8,
+        "cached": false
+      },
+      "request_sequence_sha256": "45537f72731da955f3f485202aa67039d2e3843687e1f951c5057fb404f64ebd",
+      "offered_cohorts": {
+        "warm": 480,
+        "cold": 120
+      },
+      "offered_k": {
+        "20": 360,
+        "10": 120,
+        "5": 120
+      },
+      "pre_references": 101,
+      "post_references": 101,
+      "parity_passed": true,
+      "telemetry_delta": {
+        "posts": 600.0,
+        "deliveries": 596.0,
+        "hits": 0,
+        "misses": 0,
+        "primary": 596.0,
+        "busy": 4.0,
+        "rate_limited": 0,
+        "observer_errors": 0.0
+      },
+      "summary": {
+        "offered": 600,
+        "attempted": 600,
+        "completed_http": 600,
+        "successes": 596,
+        "client_shed": 0,
+        "status_counts": {
+          "200": 596,
+          "503": 4
+        },
+        "offered_rps": 4.0,
+        "completed_rps": 3.999981776723026,
+        "success_rps": 3.973315231544872,
+        "duration_seconds": 150,
+        "including_drain_seconds": 150.00068337599987,
+        "rejection_fraction": 0.006666666666666667,
+        "transport_error_fraction": 0.0,
+        "cache_counts": {
+          "disabled": 596
+        },
+        "cohort_attempts": {
+          "warm": 480,
+          "cold": 120
+        },
+        "k_attempts": {
+          "20": 360,
+          "10": 120,
+          "5": 120
+        },
+        "latency": {
+          "warm_success": {
+            "http": {
+              "latency_samples": 477,
+              "latency_avg_ms": 72.99751177358154,
+              "latency_p50_ms": 61.24386300007245,
+              "latency_p95_ms": 218.36273599983542,
+              "latency_p99_ms": 240.56472952006519
+            },
+            "schedule_to_end": {
+              "latency_samples": 477,
+              "latency_avg_ms": 73.44368839614019,
+              "latency_p50_ms": 61.629694999737694,
+              "latency_p95_ms": 218.90232679979817,
+              "latency_p99_ms": 240.9386670798995
+            }
+          },
+          "cold_success": {
+            "http": {
+              "latency_samples": 119,
+              "latency_avg_ms": 13.306732226871699,
+              "latency_p50_ms": 8.333083000252373,
+              "latency_p95_ms": 21.95150730017303,
+              "latency_p99_ms": 140.88580798002926
+            },
+            "schedule_to_end": {
+              "latency_samples": 119,
+              "latency_avg_ms": 13.735562058746156,
+              "latency_p50_ms": 8.744702000058169,
+              "latency_p95_ms": 22.7645670000129,
+              "latency_p99_ms": 141.30787137988494
+            }
+          },
+          "warm_uncached": {
+            "http": {
+              "latency_samples": 477,
+              "latency_avg_ms": 72.99751177358154,
+              "latency_p50_ms": 61.24386300007245,
+              "latency_p95_ms": 218.36273599983542,
+              "latency_p99_ms": 240.56472952006519
+            },
+            "schedule_to_end": {
+              "latency_samples": 477,
+              "latency_avg_ms": 73.44368839614019,
+              "latency_p50_ms": 61.629694999737694,
+              "latency_p95_ms": 218.90232679979817,
+              "latency_p99_ms": 240.9386670798995
+            }
+          },
+          "warm_cache_hit": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          },
+          "rate_rejected": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          },
+          "busy_rejected": {
+            "http": {
+              "latency_samples": 4,
+              "latency_avg_ms": 7.896332000086659,
+              "latency_p50_ms": 3.7604635001571296,
+              "latency_p95_ms": 19.765978200257443,
+              "latency_p99_ms": 21.918640440262603
+            },
+            "schedule_to_end": {
+              "latency_samples": 4,
+              "latency_avg_ms": 8.18305799987229,
+              "latency_p50_ms": 4.006773999890356,
+              "latency_p95_ms": 20.12425244995483,
+              "latency_p99_ms": 22.298959289951195
+            }
+          }
+        },
+        "dispatch": {
+          "latency_samples": 600,
+          "latency_avg_ms": 0.4416731715878086,
+          "latency_p50_ms": 0.40454949999002565,
+          "latency_p95_ms": 0.7815550500936297,
+          "latency_p99_ms": 0.9541055199133551
+        },
+        "resources": {
+          "samples": 2974,
+          "sampled_server_cpu_seconds": 36.510000000000005,
+          "rss_max_bytes": 2430656512,
+          "first_sample_seconds": 0.00039142300011008047,
+          "last_sample_seconds": 149.96616735599991,
+          "largest_sample_gap_seconds": 0.052143533999696956,
+          "ready_rss_bytes": 2429452288,
+          "after_priming_rss_bytes": 2430656512,
+          "after_workload_rss_bytes": 2430656512,
+          "server_cpu_seconds": 36.510000000000005,
+          "driver_cpu_seconds": 1.4031570999999998,
+          "driver_rss_bytes": 48152576
+        },
+        "targets": {
+          "enough_warm_successes": true,
+          "warm_http_p95": true,
+          "warm_http_p99": true,
+          "rss": false,
+          "errors": true,
+          "rejections": true,
+          "driver_adequate": true
+        },
+        "targets_met": false
+      },
+      "cgroup_memory_peak_bytes": 2553802752,
+      "startup_to_docker_healthy_seconds": 33.50885819999985,
+      "cleanup": {
+        "removed": true,
+        "graceful": true,
+        "prior_already_exited_abnormally": false,
+        "cleanup_events": 1
+      },
+      "started_utc": "2026-10-20T09:30:52.350049+00:00",
+      "completed_utc": "2026-10-20T09:35:07.985129+00:00"
+    },
+    {
+      "cell": {
+        "name": "primed-cache-4rps",
+        "rate": 4,
+        "concurrency": 8,
+        "cached": true
+      },
+      "request_sequence_sha256": "45537f72731da955f3f485202aa67039d2e3843687e1f951c5057fb404f64ebd",
+      "offered_cohorts": {
+        "warm": 480,
+        "cold": 120
+      },
+      "offered_k": {
+        "20": 360,
+        "10": 120,
+        "5": 120
+      },
+      "pre_references": 101,
+      "post_references": 101,
+      "parity_passed": true,
+      "telemetry_delta": {
+        "posts": 600.0,
+        "deliveries": 600.0,
+        "hits": 600.0,
+        "misses": 0.0,
+        "primary": 0.0,
+        "busy": 0,
+        "rate_limited": 0,
+        "observer_errors": 0.0
+      },
+      "summary": {
+        "offered": 600,
+        "attempted": 600,
+        "completed_http": 600,
+        "successes": 600,
+        "client_shed": 0,
+        "status_counts": {
+          "200": 600
+        },
+        "offered_rps": 4.0,
+        "completed_rps": 3.9999786557405623,
+        "success_rps": 3.9999786557405623,
+        "duration_seconds": 150,
+        "including_drain_seconds": 150.00080041399997,
+        "rejection_fraction": 0.0,
+        "transport_error_fraction": 0.0,
+        "cache_counts": {
+          "hit": 600
+        },
+        "cohort_attempts": {
+          "warm": 480,
+          "cold": 120
+        },
+        "k_attempts": {
+          "20": 360,
+          "10": 120,
+          "5": 120
+        },
+        "latency": {
+          "warm_success": {
+            "http": {
+              "latency_samples": 480,
+              "latency_avg_ms": 2.4405127770999493,
+              "latency_p50_ms": 1.7811080001592927,
+              "latency_p95_ms": 5.826334500216034,
+              "latency_p99_ms": 6.353076139885159
+            },
+            "schedule_to_end": {
+              "latency_samples": 480,
+              "latency_avg_ms": 2.872606572964287,
+              "latency_p50_ms": 2.1636374999616237,
+              "latency_p95_ms": 6.57617274991935,
+              "latency_p99_ms": 7.209540159915377
+            }
+          },
+          "cold_success": {
+            "http": {
+              "latency_samples": 120,
+              "latency_avg_ms": 2.7771717166729104,
+              "latency_p50_ms": 1.7889040002501133,
+              "latency_p95_ms": 5.930591950004782,
+              "latency_p99_ms": 7.156203079912305
+            },
+            "schedule_to_end": {
+              "latency_samples": 120,
+              "latency_avg_ms": 3.259200875049828,
+              "latency_p50_ms": 2.1457074999489123,
+              "latency_p95_ms": 6.594240200092826,
+              "latency_p99_ms": 7.900313899904178
+            }
+          },
+          "warm_uncached": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          },
+          "warm_cache_hit": {
+            "http": {
+              "latency_samples": 480,
+              "latency_avg_ms": 2.4405127770999493,
+              "latency_p50_ms": 1.7811080001592927,
+              "latency_p95_ms": 5.826334500216034,
+              "latency_p99_ms": 6.353076139885159
+            },
+            "schedule_to_end": {
+              "latency_samples": 480,
+              "latency_avg_ms": 2.872606572964287,
+              "latency_p50_ms": 2.1636374999616237,
+              "latency_p95_ms": 6.57617274991935,
+              "latency_p99_ms": 7.209540159915377
+            }
+          },
+          "rate_rejected": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          },
+          "busy_rejected": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          }
+        },
+        "dispatch": {
+          "latency_samples": 600,
+          "latency_avg_ms": 0.4420808683668535,
+          "latency_p50_ms": 0.4051370001434407,
+          "latency_p95_ms": 0.8063140999183815,
+          "latency_p99_ms": 0.9576033199437006
+        },
+        "resources": {
+          "samples": 2973,
+          "sampled_server_cpu_seconds": 1.6799999999999997,
+          "rss_max_bytes": 2430046208,
+          "first_sample_seconds": 0.00027321600009599933,
+          "last_sample_seconds": 149.97888054800023,
+          "largest_sample_gap_seconds": 0.05238520500006416,
+          "ready_rss_bytes": 2429050880,
+          "after_priming_rss_bytes": 2430025728,
+          "after_workload_rss_bytes": 2430046208,
+          "server_cpu_seconds": 1.6899999999999977,
+          "driver_cpu_seconds": 1.4629130999999997,
+          "driver_rss_bytes": 48304128
+        },
+        "targets": {
+          "enough_warm_successes": true,
+          "warm_http_p95": true,
+          "warm_http_p99": true,
+          "rss": false,
+          "errors": true,
+          "rejections": true,
+          "driver_adequate": true
+        },
+        "targets_met": false
+      },
+      "cgroup_memory_peak_bytes": 2553208832,
+      "startup_to_docker_healthy_seconds": 33.1212330999997,
+      "cleanup": {
+        "removed": true,
+        "graceful": true,
+        "prior_already_exited_abnormally": false,
+        "cleanup_events": 1
+      },
+      "started_utc": "2026-10-20T09:35:08.306114+00:00",
+      "completed_utc": "2026-10-20T09:39:16.812139+00:00"
+    },
+    {
+      "cell": {
+        "name": "primed-cache-8rps",
+        "rate": 8,
+        "concurrency": 16,
+        "cached": true
+      },
+      "request_sequence_sha256": "03de0c21d57c84a3a9bd2a127420173164d736bdfbcdf01d40f844871323f25f",
+      "offered_cohorts": {
+        "warm": 960,
+        "cold": 240
+      },
+      "offered_k": {
+        "20": 720,
+        "10": 240,
+        "5": 240
+      },
+      "pre_references": 101,
+      "post_references": 101,
+      "parity_passed": true,
+      "telemetry_delta": {
+        "posts": 1200.0,
+        "deliveries": 759.0,
+        "hits": 759.0,
+        "misses": 0.0,
+        "primary": 0.0,
+        "busy": 0,
+        "rate_limited": 441.0,
+        "observer_errors": 0.0
+      },
+      "summary": {
+        "offered": 1200,
+        "attempted": 1200,
+        "completed_http": 1200,
+        "successes": 759,
+        "client_shed": 0,
+        "status_counts": {
+          "200": 759,
+          "429": 441
+        },
+        "offered_rps": 8.0,
+        "completed_rps": 7.999955425901698,
+        "success_rps": 5.059971806882824,
+        "duration_seconds": 150,
+        "including_drain_seconds": 150.00083576899988,
+        "rejection_fraction": 0.3675,
+        "transport_error_fraction": 0.0,
+        "cache_counts": {
+          "hit": 759
+        },
+        "cohort_attempts": {
+          "warm": 960,
+          "cold": 240
+        },
+        "k_attempts": {
+          "20": 720,
+          "10": 240,
+          "5": 240
+        },
+        "latency": {
+          "warm_success": {
+            "http": {
+              "latency_samples": 609,
+              "latency_avg_ms": 2.8522899162516264,
+              "latency_p50_ms": 1.8067060000248603,
+              "latency_p95_ms": 6.00117539997882,
+              "latency_p99_ms": 6.498191519713145
+            },
+            "schedule_to_end": {
+              "latency_samples": 609,
+              "latency_avg_ms": 3.3059462744293038,
+              "latency_p50_ms": 2.1997720000399568,
+              "latency_p95_ms": 6.684800199946039,
+              "latency_p99_ms": 7.278432760103896
+            }
+          },
+          "cold_success": {
+            "http": {
+              "latency_samples": 150,
+              "latency_avg_ms": 2.766253659968546,
+              "latency_p50_ms": 1.8851099998755672,
+              "latency_p95_ms": 5.974748200151224,
+              "latency_p99_ms": 6.442521319877414
+            },
+            "schedule_to_end": {
+              "latency_samples": 150,
+              "latency_avg_ms": 3.2095480868459467,
+              "latency_p50_ms": 2.1772740001324564,
+              "latency_p95_ms": 6.865928500246808,
+              "latency_p99_ms": 7.309605959981126
+            }
+          },
+          "warm_uncached": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          },
+          "warm_cache_hit": {
+            "http": {
+              "latency_samples": 609,
+              "latency_avg_ms": 2.8522899162516264,
+              "latency_p50_ms": 1.8067060000248603,
+              "latency_p95_ms": 6.00117539997882,
+              "latency_p99_ms": 6.498191519713145
+            },
+            "schedule_to_end": {
+              "latency_samples": 609,
+              "latency_avg_ms": 3.3059462744293038,
+              "latency_p50_ms": 2.1997720000399568,
+              "latency_p95_ms": 6.684800199946039,
+              "latency_p99_ms": 7.278432760103896
+            }
+          },
+          "rate_rejected": {
+            "http": {
+              "latency_samples": 441,
+              "latency_avg_ms": 1.9120441428879567,
+              "latency_p50_ms": 1.297976999921957,
+              "latency_p95_ms": 4.60275399927923,
+              "latency_p99_ms": 5.207892200451172
+            },
+            "schedule_to_end": {
+              "latency_samples": 441,
+              "latency_avg_ms": 2.326386592061198,
+              "latency_p50_ms": 1.6610930006208946,
+              "latency_p95_ms": 5.3149579998716945,
+              "latency_p99_ms": 5.949736000548003
+            }
+          },
+          "busy_rejected": {
+            "http": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            },
+            "schedule_to_end": {
+              "latency_samples": 0,
+              "latency_avg_ms": 0.0,
+              "latency_p50_ms": 0.0,
+              "latency_p95_ms": 0.0,
+              "latency_p99_ms": 0.0
+            }
+          }
+        },
+        "dispatch": {
+          "latency_samples": 1200,
+          "latency_avg_ms": 0.43791325520601276,
+          "latency_p50_ms": 0.3854775004583644,
+          "latency_p95_ms": 0.7962277997648924,
+          "latency_p99_ms": 1.0598398799174902
+        },
+        "resources": {
+          "samples": 2972,
+          "sampled_server_cpu_seconds": 3.0300000000000047,
+          "rss_max_bytes": 2430550016,
+          "first_sample_seconds": 0.00027621599974736455,
+          "last_sample_seconds": 149.96138004199975,
+          "largest_sample_gap_seconds": 0.05239763600002334,
+          "ready_rss_bytes": 2429878272,
+          "after_priming_rss_bytes": 2430525440,
+          "after_workload_rss_bytes": 2430554112,
+          "server_cpu_seconds": 3.0300000000000047,
+          "driver_cpu_seconds": 2.1342693,
+          "driver_rss_bytes": 48791552
+        },
+        "targets": {
+          "enough_warm_successes": true,
+          "warm_http_p95": true,
+          "warm_http_p99": true,
+          "rss": false,
+          "errors": true,
+          "rejections": false,
+          "driver_adequate": true
+        },
+        "targets_met": false
+      },
+      "cgroup_memory_peak_bytes": 2553982976,
+      "startup_to_docker_healthy_seconds": 33.27318319999995,
+      "cleanup": {
+        "removed": true,
+        "graceful": true,
+        "prior_already_exited_abnormally": false,
+        "cleanup_events": 1
+      },
+      "started_utc": "2026-10-20T09:39:17.188067+00:00",
+      "completed_utc": "2026-10-20T09:43:25.655014+00:00"
+    }
+  ],
+  "all_cell_targets_met": false,
+  "limits": [
+    "Constructed 100 warm/one cold snapshot contexts, repeated requests; not observed production traffic or new model quality.",
+    "Driver and service share a 2CPU/4GiB Docker Desktop Linux cgroup, network none; timings exclude external networks.",
+    "Primed cache is an explicit repeat-traffic benefit scenario; no production hit-rate or default-cache adoption claim.",
+    "Security quotas unchanged; 8rps intentionally exceeds the single-peer refill budget.",
+    "150-second cells assess only this finite grid; sustained/failure/load and native target-host qualification remain separate.",
+    "Performance targets do not replace memory, reliability or deployment gates. No public exposure or online evaluation."
+  ],
+  "content_sha256": "6e5c112c79cbd790f1de97e27d947254b3e6474632f8c977278527b7b495e250"
+}
