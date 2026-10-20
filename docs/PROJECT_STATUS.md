@@ -2,7 +2,13 @@
 
 **Updated:** 2026-10-20
 
-**Stage:** M22 adds pinned hosted CI profiles and an exercised isolated local
+**Stage:** M23 completes a fixed HTTP workload assessment of the unchanged
+Linux snapshot: four fresh-process 150-second cells, 2,550 measured arrivals
+and 808 pre/post reference checks. Outputs and telemetry reconcile; every cell
+removes its owned container gracefully. Constructed primed-cache and uncached
+traffic remain distinct. Serving RSS still exceeds 2 GiB; no production
+eligibility or maximum sustainable throughput is claimed.
+M22 adds pinned hosted CI profiles and an exercised isolated local
 release controller: immutable image/model/evidence identities, verified candidates,
 atomic active state, journal recovery and rollback after an active-process crash.
 The new real-qualification GitHub lane requires a protected private caller and
@@ -65,6 +71,7 @@ diagnostics, not blind validation.
 | M19 input and exposure | Pinned pre-ASGI connection/header guards, absolute body deadline, reader/rate/table bounds, local Host/Origin policy, optional shared bearer mode and safe denial telemetry |
 | M20 integration strategy | Unit and actually fitted child-process HTTP profiles, explicit isolated real-bundle parity, strict evidence checks and a source-pinned functional gate |
 | M21 Linux container | Digest/hash-pinned image inputs, non-root read-only execution, bounded resources, real cross-platform references, HTTP denials/recovery and SIGTERM cleanup |
+| M23 HTTP capacity | Four fixed open-loop workloads, per-outcome/cohort/cache timing, sampled resources, reference parity and checkpointed owned cleanup |
 | M22 controlled release | Hashed CPU CI lock, immutable Action pins, strict profile evidence, private real-lane prerequisites and actual local promotion/recovery/crash-rollback checks |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
@@ -353,13 +360,13 @@ separately from those fixture/unit results. No deployment eligibility is claimed
 
 The [release runbook](RELEASE_WORKFLOW.md) separates hosted fixture CI, a gated
 private real-qualification workflow and the observed local control exercise.
-The [current Linux CI receipt](../benchmarks/release/ci_linux_preflight_validation_v1.json)
+The [M22 Linux CI receipt](../benchmarks/release/ci_linux_preflight_validation_v1.json)
 records 946 unit and 7 fitted-process tests passed without skips. Windows passed
 945 unit and 7 fitted-process tests, plus one allowed symlink skip. These totals
 include 120 release-boundary/transaction cases; opt-in real-bundle execution is
 not counted in either fixture profile.
 
-The [current operational receipt](../benchmarks/release/release_workflow_preflight_validation_v1.json)
+The [release-control receipt](../benchmarks/release/release_workflow_preflight_validation_v1.json)
 uses the original image/model for two immutable release IDs. A, B and fresh
 rollback A each match all 101 HTTP references. B is killed while its postcommit
 retirement journal is still pending. Recovery preserves old A with explicit
@@ -379,10 +386,29 @@ model-quality comparison or host power-loss recovery. The initial and boundary
 M22 receipts remain historical with their original source/bytes. The new GitHub lane remains
 unconfigured and unobserved; production eligibility remains false.
 
+## M23 HTTP workload and capacity
+
+The [capacity report](HTTP_CAPACITY_REPORT.md) and
+[receipt](../benchmarks/performance/http_capacity_boundary_validation_v1.json) record the
+unchanged 2 CPU/4 GiB Linux image: cache off at 1/4 requests/s and explicitly
+primed cache at 4/8 requests/s, with 150-second windows. The workload repeatedly
+uses 100 known warm references and one cold context; it is not production
+traffic. Success, worker 503, quota 429 and client-shed denominators remain
+separate. The 4-request/s controls have identical request sequences.
+
+Both uncached cells met successful-warm p95/p99 targets. Every cell exceeded
+2 GiB RSS, so no tested point passes all gates. Uncached 4 requests/s also
+exceeded the rejection budget (16/600 worker-busy responses). No model, quota, cache-default
+or inference optimization was adopted. Regression profiles passed 1,011 unit + 9
+fitted tests on Windows (one allowed skip) and 1,012 unit + 9 fitted tests on Linux
+(no skips). M22 hosted CI
+[passed after publication](https://github.com/Thazg/ecommerce-recsys/actions/runs/39398828158);
+the private real-qualification lane remains unconfigured and unobserved.
+
 ## Next milestone
 
-M23 in the [roadmap](ROADMAP.md) defines a prospective workload-based capacity
-assessment. Representative traffic, memory-budget compliance, sustained/failure
+M24 in the [roadmap](ROADMAP.md) defines sustained/burst, failure and recovery
+validation with prospective workload thresholds. Representative traffic, memory-budget compliance, sustained/failure
 load, target-host recovery and deployment objectives remain open.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used

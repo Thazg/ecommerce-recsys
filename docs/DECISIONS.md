@@ -963,3 +963,38 @@ unconfigured and unobserved. Temporary dual-instance RAM needs, the unmet 2 GiB
 RSS target and representative-load/deployment gates remain explicit. Original
 model, service and upstream evidence remain unchanged; deployment eligibility
 stays false.
+
+## M23 — HTTP workload and capacity assessment
+
+### ADR-33 — Measure fixed offered-load scenarios before changing serving behavior
+
+**Status:** Accepted — fixed workload assessment implemented and measured;
+no model, security quota or default-cache change adopted.
+
+**Context:** Sequential parity receipts establish correctness on finite reference
+calls. They do not describe rejection rates, dispatch behavior or resource use
+at an offered request rate. Primed cache traffic and fast rejection can hide
+expensive inference when combined into one latency number. The existing 2 GiB
+memory target remains a release constraint.
+
+**Decision:** Freeze four 150-second open-loop cells before measurement:
+uncached 1/4 requests/s and primed-cache 4/8 requests/s, with bounded inflight
+work and a deterministic warm/cold/K mix. Preserve the qualified image, bundle,
+API and quota. Distinguish successful warm/cold and cache paths, 503 busy,
+429 rate-limit and client shedding. Require exact response/reference parity,
+service/client counter reconciliation, sampled server/client resources and
+graceful owned cleanup before checkpoint/publication. Bind source, policy,
+inputs and machine; refuse mixed resumes or overwritten evidence.
+
+**Evidence and consequences:** The [report](HTTP_CAPACITY_REPORT.md) and
+[receipt](../benchmarks/performance/http_capacity_boundary_validation_v1.json) cover
+2,550 measured arrivals plus 808 paced pre/post checks on 100 warm/one cold
+reference contexts. Both uncached cells met successful-warm latency targets,
+but all cells exceeded 2 GiB RSS; deployment eligibility remains false. The
+uncached 4-request/s repeat also exceeded the rejection gate (16/600 busy). Cache
+cells describe deliberately primed reuse, not production hit rate or faster
+model computation. The 8-request/s cell intentionally exceeds the peer refill
+quota. No maximum sustainable throughput, native-host qualification, statistical
+SLO, new accuracy or online business benefit is established. Optimization needs
+new prospective implementation/evidence and unchanged output/eligibility, or
+an explicit quality/cost policy.

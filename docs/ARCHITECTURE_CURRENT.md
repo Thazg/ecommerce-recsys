@@ -478,6 +478,25 @@ control exercise, strict CI profiles and their limits. Model/package sources and
 all upstream receipts remain unchanged. Network-isolated local pointers are not
 public traffic routing, distributed coordination or production deployment.
 
+## HTTP workload assessment
+
+The [capacity runner](../scripts/benchmark_http_capacity.py) owns separate
+instances of the unchanged qualified image. A
+[bounded driver](../scripts/http_capacity_workload.py) executes via stdin in each
+container, without adding scripts to the image or changing the package/service.
+It offers open-loop requests over internal loopback, validates sealed output
+prefixes and reconciles telemetry. Checkpoints advance only after verified
+graceful removal; source, policy, model and machine identity prevent mixed resumes.
+Live and resumed measurements share telemetry, throughput, sampling-coverage and
+traffic-denominator checks. The fixed scheduler rejects unsupported mix metadata.
+
+Driver and service share a 2 CPU/4 GiB cgroup. Serving PID 1 RSS/CPU, client
+resource cost, cgroup peak, success/rejection latency and dispatch timing have
+distinct scopes. All four cells preserve reference parity; the 2 GiB RSS gate
+remains unmet. Primed cache is an explicit repeat-traffic control. Defaults,
+security quotas and model behavior stay unchanged. The
+[report](HTTP_CAPACITY_REPORT.md) records results and finite-sample/host limits.
+
 ## Model engineering and trade-offs
 
 | Area | Current finding | Detail |
