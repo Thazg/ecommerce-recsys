@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "verification": "local-snapshot-release-workflow-v1",
+  "channel": "local-qualification",
+  "operational_passed": true,
+  "deployment_eligible": false,
+  "started_utc": "2026-10-19T14:49:04.769716+00:00",
+  "completed_utc": "2026-10-19T14:53:41.055080+00:00",
+  "identity": {
+    "files_lf_sha256": {
+      "scripts/snapshot_release.py": "176f2905d10532d985bc23b214c61e956c1352c848e1a201222707b9c69fba24",
+      "scripts/verify_release_workflow.py": "89d60380d7ff61e81344ff2896eaba4930f491c4c79991e006c404762f81f770",
+      "scripts/check_release_workflows.py": "e216c75f7bfb8330df9b23cb847eb94ad06d7ec83582d67cb1aa8faed094b3f1",
+      "scripts/verify_ci_profile.py": "79207d16d2e405d9c950fe44ce9905299421856175679634552b449e810c6cf0",
+      "tests/unit/test_snapshot_release.py": "d1e62ecfd082b28057cb71854b4109f01d089de56eaddbb0916c6f1aa1fecb29",
+      "tests/unit/test_release_workflows.py": "a629374ded1e49709fa6f59b6df1df74b4caf6717266ebcc755a32f805ccbb38",
+      "tests/unit/test_ci_profile.py": "5a165726d18fbaa37d27becb68679b79f38ff6469d22cb9f2ee36d7bf2ed8b77",
+      "requirements/ci-linux.txt": "09793bd39c34bbe6ebc41e4597800944b84f7b682308589a0f5e40760bff7317",
+      "requirements/release-test.txt": "3f92fc37cebf614aeaca3f028c144a7cf5dea0b8953e584b59f02ff93053c7c9",
+      ".github/workflows/ci.yml": "10277b29d8cf16926ba159e6a3734adf24af30f43d10fe2d147c63c1867d713c",
+      ".github/workflows/snapshot-release.yml": "a79a82a548a3fd294422dd2f8798dad208f02488b4a3b38c9cf18318187ffe13",
+      ".github/actionlint.yaml": "0e72fe738a4633f7c1b708ea29b838a327ac530b84a706814ca2510bd94c2634"
+    },
+    "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+    "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe"
+  },
+  "workflow_policy": {
+    "hosted": {
+      "private_caller_only": false,
+      "actions_pinned": 3,
+      "run_steps": 11
+    },
+    "real_qualification": {
+      "private_caller_only": true,
+      "actions_pinned": 2,
+      "run_steps": 6
+    }
+  },
+  "descriptors": {
+    "local-reference-a": {
+      "schema_version": 1,
+      "kind": "snapshot-release-v1",
+      "channel": "local-qualification",
+      "release_id": "local-reference-a",
+      "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+      "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+      "bundle_version": "retailrocket-fold09-v1",
+      "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+      "controller_sha256": "818751d89b99394b251ee38846ec927f6534ab777747b2669e33bd0e9f43bc8e",
+      "content_sha256": "80bd0bf36ac32cc505bacea1df25e4f9d1ce499ab5a90ebb68e773125828b460"
+    },
+    "local-reference-b": {
+      "schema_version": 1,
+      "kind": "snapshot-release-v1",
+      "channel": "local-qualification",
+      "release_id": "local-reference-b",
+      "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+      "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+      "bundle_version": "retailrocket-fold09-v1",
+      "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+      "controller_sha256": "818751d89b99394b251ee38846ec927f6534ab777747b2669e33bd0e9f43bc8e",
+      "content_sha256": "d22ea1e360a3d771a222640811ead370c1b86d787525d1534deda36da08b5ab0"
+    }
+  },
+  "initial": {
+    "state": {
+      "schema_version": 1,
+      "channel": "local-qualification",
+      "scope": "34ce25be030b3c24f03a11760623a435ffbf252c4df9504998b9e29af7a31b9d",
+      "generation": 1,
+      "active": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "e913718b54fbcd94870a9b656b2fa61c3fc55cb4cc2f3339b3ef6f437e5c6ab7",
+        "container_name": "recsys-release-34ce25be030b-009f6d0e8cc7",
+        "container_id": "241bebf53675ca7ef3e6462947f49fbeff8f4cff37dc016d105b38ddf9e44cc2"
+      },
+      "previous": null
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 80.03040851998776,
+        "latency_p50_ms": 64.736579500277,
+        "latency_p95_ms": 224.7095059996809,
+        "latency_p99_ms": 281.4306285696976
+      },
+      "serving_rss_before_requests_bytes": 2430013440,
+      "serving_rss_after_requests_bytes": 2430287872,
+      "cgroup_memory_peak_bytes": 2559569920,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "cleanup": null
+  },
+  "replacement": {
+    "state": {
+      "schema_version": 1,
+      "channel": "local-qualification",
+      "scope": "34ce25be030b3c24f03a11760623a435ffbf252c4df9504998b9e29af7a31b9d",
+      "generation": 2,
+      "active": {
+        "release_id": "local-reference-b",
+        "descriptor_sha256": "4c62465aa84183f1bebfec94aecfdec665dca6bc0b4c2668a5b9670491e1e662",
+        "container_name": "recsys-release-34ce25be030b-4b332f6baf89",
+        "container_id": "ef31dae6f247d47af6aae97a1123e5713bed7e42d00e1889f0fd07bd1fa53503"
+      },
+      "previous": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "e913718b54fbcd94870a9b656b2fa61c3fc55cb4cc2f3339b3ef6f437e5c6ab7"
+      }
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 76.61710568005219,
+        "latency_p50_ms": 64.18568100025368,
+        "latency_p95_ms": 215.86046305019406,
+        "latency_p99_ms": 237.37396616962596
+      },
+      "serving_rss_before_requests_bytes": 2429190144,
+      "serving_rss_after_requests_bytes": 2430070784,
+      "cgroup_memory_peak_bytes": 1781792768,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "cleanup": {
+      "removed": true,
+      "graceful": true,
+      "prior_already_exited_abnormally": false,
+      "cleanup_events": 1
+    }
+  },
+  "rollback": {
+    "state": {
+      "schema_version": 1,
+      "channel": "local-qualification",
+      "scope": "34ce25be030b3c24f03a11760623a435ffbf252c4df9504998b9e29af7a31b9d",
+      "generation": 3,
+      "active": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "e913718b54fbcd94870a9b656b2fa61c3fc55cb4cc2f3339b3ef6f437e5c6ab7",
+        "container_name": "recsys-release-34ce25be030b-2241640b18b3",
+        "container_id": "57f50ce871d1f8a30e5ae1bd562b5b92a52b3bb685e17f2f40dd2a60b63f9d76"
+      },
+      "previous": {
+        "release_id": "local-reference-b",
+        "descriptor_sha256": "4c62465aa84183f1bebfec94aecfdec665dca6bc0b4c2668a5b9670491e1e662"
+      }
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 75.41339089999383,
+        "latency_p50_ms": 61.82368300005692,
+        "latency_p95_ms": 234.6603425996818,
+        "latency_p99_ms": 283.6175314799313
+      },
+      "serving_rss_before_requests_bytes": 2400972800,
+      "serving_rss_after_requests_bytes": 2401087488,
+      "cgroup_memory_peak_bytes": 2526273536,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "cleanup": {
+      "removed": true,
+      "graceful": false,
+      "prior_already_exited_abnormally": true,
+      "cleanup_events": 0
+    }
+  },
+  "stop": {
+    "state": {
+      "schema_version": 1,
+      "channel": "local-qualification",
+      "scope": "34ce25be030b3c24f03a11760623a435ffbf252c4df9504998b9e29af7a31b9d",
+      "generation": 4,
+      "active": null,
+      "previous": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "e913718b54fbcd94870a9b656b2fa61c3fc55cb4cc2f3339b3ef6f437e5c6ab7"
+      }
+    },
+    "http": null,
+    "cleanup": {
+      "removed": true,
+      "graceful": true,
+      "prior_already_exited_abnormally": false,
+      "cleanup_events": 1
+    }
+  },
+  "rejected_qualification_preserved_active": true,
+  "rejected_observer_preserved_active": true,
+  "postcommit_journal_recovery_passed": true,
+  "rollback_restored_after_active_process_kill": true,
+  "owned_containers_remaining": 0,
+  "limits": [
+    "Two immutable release IDs use the same qualified image/model; control transitions, not a model comparison.",
+    "Readiness/retirement observer faults and an owned active-process SIGKILL; no model corruption or host/daemon power-loss test.",
+    "Local Docker Desktop Linux, network none, no public traffic switching or zero-downtime claim.",
+    "Original Linux qualification is upstream evidence; no new full-fold quality or blind data.",
+    "RAM budget remains unmet; representative load, target-host recovery and production rollout remain separate.",
+    "Workflow YAML/policy are locally validated; no GitHub run, private runner or environment protection was configured here."
+  ],
+  "content_sha256": "3b8657a873b0b86ff832992f8114a248dca14956b9e61e8cc8f31e07a77b5738"
+}

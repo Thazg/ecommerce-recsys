@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "verification": "local-snapshot-release-workflow-boundary-v1",
+  "channel": "local-qualification",
+  "operational_passed": true,
+  "deployment_eligible": false,
+  "started_utc": "2026-10-20T02:18:54.478730+00:00",
+  "completed_utc": "2026-10-20T02:22:57.636295+00:00",
+  "identity": {
+    "files_lf_sha256": {
+      "scripts/snapshot_release.py": "f931813472b0042cb96d57322370fdc99d1831cee8ee2ad0555d4a6b35785a02",
+      "scripts/verify_release_workflow.py": "bc902851ba04da56a56b56a1e3d7935416990ab1b5ca51269341acbd42624116",
+      "scripts/check_release_workflows.py": "db33ff36ded1e79dfa78b08d4fa6b990afbe3ddb5ad9667d159e7760c0ab3853",
+      "scripts/verify_ci_profile.py": "79207d16d2e405d9c950fe44ce9905299421856175679634552b449e810c6cf0",
+      "tests/unit/test_snapshot_release.py": "9644098b1e44311a294bfaf41bac76f2dc1e8bd47396538ef08e5e1731d36e52",
+      "tests/unit/test_release_workflows.py": "e2ffe7da31a681f454d44ae2201b6bb74e1992633f7397031fbe7f965e2bbce2",
+      "tests/unit/test_ci_profile.py": "5a165726d18fbaa37d27becb68679b79f38ff6469d22cb9f2ee36d7bf2ed8b77",
+      "requirements/ci-linux.txt": "09793bd39c34bbe6ebc41e4597800944b84f7b682308589a0f5e40760bff7317",
+      "requirements/release-test.txt": "3f92fc37cebf614aeaca3f028c144a7cf5dea0b8953e584b59f02ff93053c7c9",
+      ".github/workflows/ci.yml": "10277b29d8cf16926ba159e6a3734adf24af30f43d10fe2d147c63c1867d713c",
+      ".github/workflows/snapshot-release.yml": "2a7e78e47d737185017b4b2d110cda3989bb77c3716af83982954e750e784bb3",
+      ".github/actionlint.yaml": "0e72fe738a4633f7c1b708ea29b838a327ac530b84a706814ca2510bd94c2634"
+    },
+    "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+    "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe"
+  },
+  "workflow_policy": {
+    "hosted": {
+      "private_caller_only": false,
+      "actions_pinned": 3,
+      "run_steps": 11
+    },
+    "real_qualification": {
+      "private_caller_only": true,
+      "actions_pinned": 2,
+      "run_steps": 6
+    }
+  },
+  "descriptors": {
+    "local-reference-a": {
+      "schema_version": 1,
+      "kind": "snapshot-release-v1",
+      "channel": "local-qualification",
+      "release_id": "local-reference-a",
+      "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+      "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+      "bundle_version": "retailrocket-fold09-v1",
+      "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+      "controller_sha256": "1e181d529b165641542a5a89b6cfdad076a63f57dad0b5f51c73f21d83a3be3f",
+      "content_sha256": "776eec1bb21162bddb805ba1c947e945f60cdf7d16edc7561edd1fce1e1b12d5"
+    },
+    "local-reference-b": {
+      "schema_version": 1,
+      "kind": "snapshot-release-v1",
+      "channel": "local-qualification",
+      "release_id": "local-reference-b",
+      "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+      "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+      "bundle_version": "retailrocket-fold09-v1",
+      "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+      "controller_sha256": "1e181d529b165641542a5a89b6cfdad076a63f57dad0b5f51c73f21d83a3be3f",
+      "content_sha256": "061f3355fe30c26c9636679984962e07bb3e0fb6b32bee0bc8172d15c5c4f7ea"
+    }
+  },
+  "initial": {
+    "state": {
+      "schema_version": 2,
+      "channel": "local-qualification",
+      "scope": "64afbaf0f3a3eafaf36e5e27e1815830bed27fd2d8d9b298f2910c92de00c0a9",
+      "generation": 1,
+      "active": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "acc110c5c4c6f6cf4b872dcb7ba68dfedca6c6abef46f5bce146387bea5643c2",
+        "container_name": "recsys-release-64afbaf0f3a3-a9b9952cc062",
+        "container_id": "e66e22a1a2b2af3e138f573f202e203d5a7112105ca5001faeb494afeebdf2af"
+      },
+      "previous": null,
+      "retained": []
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 76.88677366000151,
+        "latency_p50_ms": 64.8889099999792,
+        "latency_p95_ms": 217.53482920001088,
+        "latency_p99_ms": 283.4387296299481
+      },
+      "serving_rss_before_requests_bytes": 2429329408,
+      "serving_rss_after_requests_bytes": 2430365696,
+      "cgroup_memory_peak_bytes": 2554482688,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "cleanup": null
+  },
+  "replacement": {
+    "state": {
+      "schema_version": 2,
+      "channel": "local-qualification",
+      "scope": "64afbaf0f3a3eafaf36e5e27e1815830bed27fd2d8d9b298f2910c92de00c0a9",
+      "generation": 2,
+      "active": {
+        "release_id": "local-reference-b",
+        "descriptor_sha256": "cdc5538786e5931e8e056a81174efb7ec737668df906022b26e411659b9dd2cb",
+        "container_name": "recsys-release-64afbaf0f3a3-7668e05ca29a",
+        "container_id": "129a5c98b48d19d188e51f3c1c8e23d0652aad0d279bafe30e2c1796e14ade68"
+      },
+      "previous": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "acc110c5c4c6f6cf4b872dcb7ba68dfedca6c6abef46f5bce146387bea5643c2"
+      },
+      "retained": []
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 73.29894094999929,
+        "latency_p50_ms": 61.65052849996755,
+        "latency_p95_ms": 217.42392200002598,
+        "latency_p99_ms": 241.8435814300296
+      },
+      "serving_rss_before_requests_bytes": 2429714432,
+      "serving_rss_after_requests_bytes": 2430787584,
+      "cgroup_memory_peak_bytes": 1775550464,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "recovery": {
+      "state": {
+        "schema_version": 2,
+        "channel": "local-qualification",
+        "scope": "64afbaf0f3a3eafaf36e5e27e1815830bed27fd2d8d9b298f2910c92de00c0a9",
+        "generation": 3,
+        "active": {
+          "release_id": "local-reference-b",
+          "descriptor_sha256": "cdc5538786e5931e8e056a81174efb7ec737668df906022b26e411659b9dd2cb",
+          "container_name": "recsys-release-64afbaf0f3a3-7668e05ca29a",
+          "container_id": "129a5c98b48d19d188e51f3c1c8e23d0652aad0d279bafe30e2c1796e14ade68"
+        },
+        "previous": {
+          "release_id": "local-reference-a",
+          "descriptor_sha256": "acc110c5c4c6f6cf4b872dcb7ba68dfedca6c6abef46f5bce146387bea5643c2"
+        },
+        "retained": [
+          {
+            "release_id": "local-reference-a",
+            "descriptor_sha256": "acc110c5c4c6f6cf4b872dcb7ba68dfedca6c6abef46f5bce146387bea5643c2",
+            "container_name": "recsys-release-64afbaf0f3a3-a9b9952cc062",
+            "container_id": "e66e22a1a2b2af3e138f573f202e203d5a7112105ca5001faeb494afeebdf2af"
+          }
+        ]
+      },
+      "committed": true,
+      "retirement_deferred": true,
+      "cleanup": null
+    }
+  },
+  "rollback": {
+    "state": {
+      "schema_version": 2,
+      "channel": "local-qualification",
+      "scope": "64afbaf0f3a3eafaf36e5e27e1815830bed27fd2d8d9b298f2910c92de00c0a9",
+      "generation": 4,
+      "active": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "acc110c5c4c6f6cf4b872dcb7ba68dfedca6c6abef46f5bce146387bea5643c2",
+        "container_name": "recsys-release-64afbaf0f3a3-9a3ecd88227d",
+        "container_id": "a145bea40ae1af1144a788d32711efa2c256f58e89f9af746ec64b4b05da1554"
+      },
+      "previous": {
+        "release_id": "local-reference-b",
+        "descriptor_sha256": "cdc5538786e5931e8e056a81174efb7ec737668df906022b26e411659b9dd2cb"
+      },
+      "retained": []
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 87.04136276999861,
+        "latency_p50_ms": 69.92935800002442,
+        "latency_p95_ms": 225.950083199956,
+        "latency_p99_ms": 283.171050460053
+      },
+      "serving_rss_before_requests_bytes": 2429874176,
+      "serving_rss_after_requests_bytes": 2430324736,
+      "cgroup_memory_peak_bytes": 1776451584,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "cleanup": {
+      "removed": true,
+      "graceful": false,
+      "prior_already_exited_abnormally": true,
+      "cleanup_events": 0,
+      "retained_cleanup": [
+        {
+          "removed": true,
+          "graceful": true,
+          "prior_already_exited_abnormally": false,
+          "cleanup_events": 1
+        }
+      ]
+    }
+  },
+  "stop": {
+    "state": {
+      "schema_version": 2,
+      "channel": "local-qualification",
+      "scope": "64afbaf0f3a3eafaf36e5e27e1815830bed27fd2d8d9b298f2910c92de00c0a9",
+      "generation": 5,
+      "active": null,
+      "previous": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "acc110c5c4c6f6cf4b872dcb7ba68dfedca6c6abef46f5bce146387bea5643c2"
+      },
+      "retained": []
+    },
+    "http": null,
+    "cleanup": {
+      "removed": true,
+      "graceful": true,
+      "prior_already_exited_abnormally": false,
+      "cleanup_events": 1
+    }
+  },
+  "rejected_qualification_preserved_active": true,
+  "rejected_observer_preserved_active": true,
+  "postcommit_journal_recovery_passed": true,
+  "rollback_restored_after_active_process_kill": true,
+  "compound_recovery_preserved_former_active": true,
+  "final_graceful_stop_verified": true,
+  "external_recovery_storage": true,
+  "owned_containers_remaining": 0,
+  "limits": [
+    "Two immutable release IDs use the same qualified image/model; control transitions, not a model comparison.",
+    "Readiness/retirement observer faults and an owned active-process SIGKILL; no model corruption or host/daemon power-loss test.",
+    "Local Docker Desktop Linux, network none, no public traffic switching or zero-downtime claim.",
+    "Original Linux qualification is upstream evidence; no new full-fold quality or blind data.",
+    "RAM budget remains unmet; representative load, target-host recovery and production rollout remain separate.",
+    "Workflow YAML/policy are locally validated; no GitHub run, private runner or environment protection was configured here."
+  ],
+  "content_sha256": "9b02f13cfedb04a02603e3c1a52e152607c69997b24b690ddbba156c07fb62bc"
+}

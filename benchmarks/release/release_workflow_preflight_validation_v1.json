@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "verification": "local-snapshot-release-workflow-acceptance-v1",
+  "channel": "local-qualification",
+  "operational_passed": true,
+  "deployment_eligible": false,
+  "started_utc": "2026-10-20T09:05:05.445507+00:00",
+  "completed_utc": "2026-10-20T09:09:35.708731+00:00",
+  "identity": {
+    "files_lf_sha256": {
+      "scripts/snapshot_release.py": "6420833346be5e7118bb3e849419e87338f987de0a8d2e1499ad08cbe824d36e",
+      "scripts/verify_release_workflow.py": "c91eb3ff31e799fb622147b99d9868e73a0a64699ff749d740820aee1ee0d8fd",
+      "scripts/check_release_workflows.py": "a2c785140c552a5e6b55505ce900539dc0d42078facf219ba2155636618f64f9",
+      "scripts/verify_ci_profile.py": "b86afe6d5eb141f67019f9bfaa364f1e9736c0f38b3c07afabc6d3530c49fc6a",
+      "tests/unit/test_snapshot_release.py": "899edd99e12d56870bd2916a9579d146187d86b35cdbcbcf9eaddeda9e6e7eef",
+      "tests/unit/test_release_workflows.py": "509d683a5a8c8bc9284bbf61f35e82ee38468c44f25308f33c5424e8805c3035",
+      "tests/unit/test_ci_profile.py": "a2eb81414d1f21a68066c427eb233cf2b383739a41ce7e8044f6b27653708c6a",
+      "requirements/ci-linux.txt": "09793bd39c34bbe6ebc41e4597800944b84f7b682308589a0f5e40760bff7317",
+      "requirements/release-test.txt": "3f92fc37cebf614aeaca3f028c144a7cf5dea0b8953e584b59f02ff93053c7c9",
+      ".github/workflows/ci.yml": "10277b29d8cf16926ba159e6a3734adf24af30f43d10fe2d147c63c1867d713c",
+      ".github/workflows/snapshot-release.yml": "981c989283581d0f82e623ce923b795b3da51dbfeb4ebc3146e239c792d6d5f2",
+      ".github/actionlint.yaml": "0e72fe738a4633f7c1b708ea29b838a327ac530b84a706814ca2510bd94c2634"
+    },
+    "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+    "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe"
+  },
+  "workflow_policy": {
+    "hosted": {
+      "private_caller_only": false,
+      "actions_pinned": 3,
+      "run_steps": 11
+    },
+    "real_qualification": {
+      "private_caller_only": true,
+      "actions_pinned": 2,
+      "run_steps": 6
+    }
+  },
+  "descriptors": {
+    "local-reference-a": {
+      "schema_version": 1,
+      "kind": "snapshot-release-v1",
+      "channel": "local-qualification",
+      "release_id": "local-reference-a",
+      "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+      "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+      "bundle_version": "retailrocket-fold09-v1",
+      "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+      "controller_sha256": "a828036c952d9a750c29ff8a9e8270764f0f7e397decb7e8e7599cdc94bdeef1",
+      "content_sha256": "4de8af9a5ebf5f5bd05788d92c83daf928083e23f424b346cc48ea1855587da3"
+    },
+    "local-reference-b": {
+      "schema_version": 1,
+      "kind": "snapshot-release-v1",
+      "channel": "local-qualification",
+      "release_id": "local-reference-b",
+      "image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+      "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+      "bundle_version": "retailrocket-fold09-v1",
+      "qualification_sha256": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+      "controller_sha256": "a828036c952d9a750c29ff8a9e8270764f0f7e397decb7e8e7599cdc94bdeef1",
+      "content_sha256": "bc8beb69dd24b42e0cc326152a24dd38191e35cb903739431e1059422830e4c0"
+    }
+  },
+  "initial": {
+    "state": {
+      "schema_version": 2,
+      "channel": "local-qualification",
+      "scope": "e22c8a91e31ebf6ef6f3e5d2d1b025ba394d058d1ee04c539cbabe8792b80a01",
+      "generation": 1,
+      "active": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "07f2b9f317523e4bb964cd6350ba8813b46c2ff5e4c485924f205761f79ed172",
+        "container_name": "recsys-release-e22c8a91e31e-2a5f45ad95e2",
+        "container_id": "496c472506a0259b88c45f571e95828ad0dd60ec7756cd6c3500db5b9618d909"
+      },
+      "previous": null,
+      "retained": []
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 91.05351472999018,
+        "latency_p50_ms": 77.52339749993098,
+        "latency_p95_ms": 228.64885215006998,
+        "latency_p99_ms": 303.73470308996775
+      },
+      "serving_rss_before_requests_bytes": 2428497920,
+      "serving_rss_after_requests_bytes": 2429186048,
+      "cgroup_memory_peak_bytes": 2736619520,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "cleanup": null
+  },
+  "replacement": {
+    "state": {
+      "schema_version": 2,
+      "channel": "local-qualification",
+      "scope": "e22c8a91e31ebf6ef6f3e5d2d1b025ba394d058d1ee04c539cbabe8792b80a01",
+      "generation": 2,
+      "active": {
+        "release_id": "local-reference-b",
+        "descriptor_sha256": "71382849c1181330cb1022587360f5dcefeda4d00ee7dc648e107e05e1142e94",
+        "container_name": "recsys-release-e22c8a91e31e-439aa0ee3253",
+        "container_id": "48b09ad76903e7aa34df70b8767e6c4b7ad2889ddde36224e19792d3f3063eb5"
+      },
+      "previous": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "07f2b9f317523e4bb964cd6350ba8813b46c2ff5e4c485924f205761f79ed172"
+      },
+      "retained": []
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 89.82897075996789,
+        "latency_p50_ms": 73.35554149995005,
+        "latency_p95_ms": 215.942105149952,
+        "latency_p99_ms": 327.58918428990006
+      },
+      "serving_rss_before_requests_bytes": 2430357504,
+      "serving_rss_after_requests_bytes": 2430763008,
+      "cgroup_memory_peak_bytes": 1776545792,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "recovery": {
+      "state": {
+        "schema_version": 2,
+        "channel": "local-qualification",
+        "scope": "e22c8a91e31ebf6ef6f3e5d2d1b025ba394d058d1ee04c539cbabe8792b80a01",
+        "generation": 3,
+        "active": {
+          "release_id": "local-reference-b",
+          "descriptor_sha256": "71382849c1181330cb1022587360f5dcefeda4d00ee7dc648e107e05e1142e94",
+          "container_name": "recsys-release-e22c8a91e31e-439aa0ee3253",
+          "container_id": "48b09ad76903e7aa34df70b8767e6c4b7ad2889ddde36224e19792d3f3063eb5"
+        },
+        "previous": {
+          "release_id": "local-reference-a",
+          "descriptor_sha256": "07f2b9f317523e4bb964cd6350ba8813b46c2ff5e4c485924f205761f79ed172"
+        },
+        "retained": [
+          {
+            "release_id": "local-reference-a",
+            "descriptor_sha256": "07f2b9f317523e4bb964cd6350ba8813b46c2ff5e4c485924f205761f79ed172",
+            "container_name": "recsys-release-e22c8a91e31e-2a5f45ad95e2",
+            "container_id": "496c472506a0259b88c45f571e95828ad0dd60ec7756cd6c3500db5b9618d909"
+          }
+        ]
+      },
+      "committed": true,
+      "retirement_deferred": true,
+      "cleanup": null
+    }
+  },
+  "rollback": {
+    "state": {
+      "schema_version": 2,
+      "channel": "local-qualification",
+      "scope": "e22c8a91e31ebf6ef6f3e5d2d1b025ba394d058d1ee04c539cbabe8792b80a01",
+      "generation": 4,
+      "active": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "07f2b9f317523e4bb964cd6350ba8813b46c2ff5e4c485924f205761f79ed172",
+        "container_name": "recsys-release-e22c8a91e31e-2aabd73b2adb",
+        "container_id": "60a24c2200c0814e59b5c6df279da20ca8a5b2edfb5203c6d1ea460d42aec29e"
+      },
+      "previous": {
+        "release_id": "local-reference-b",
+        "descriptor_sha256": "71382849c1181330cb1022587360f5dcefeda4d00ee7dc648e107e05e1142e94"
+      },
+      "retained": []
+    },
+    "http": {
+      "warm_references": 100,
+      "cold_references": 1,
+      "prefix_checks": 6,
+      "unknown_cold_checks": 1,
+      "denial_checks": 4,
+      "recovery_checks": 1,
+      "primary_calls": 109,
+      "request_ids": 115,
+      "exact_outputs": true,
+      "outputs_sha256": "54c7e12b8e63398224a83f6c0d815591342ee553afa6084c739a19cd12a7ec45",
+      "pacing_seconds": 0.26,
+      "warm_client_timing": {
+        "latency_samples": 100,
+        "latency_avg_ms": 80.3817626800128,
+        "latency_p50_ms": 67.07957449998503,
+        "latency_p95_ms": 220.3498647498918,
+        "latency_p99_ms": 277.1336621097592
+      },
+      "serving_rss_before_requests_bytes": 2429005824,
+      "serving_rss_after_requests_bytes": 2430197760,
+      "cgroup_memory_peak_bytes": 1780740096,
+      "cache_enabled": false,
+      "busy_policy": "reject",
+      "all_passed": true
+    },
+    "cleanup": {
+      "removed": true,
+      "graceful": false,
+      "prior_already_exited_abnormally": true,
+      "cleanup_events": 0,
+      "retained_cleanup": [
+        {
+          "removed": true,
+          "graceful": true,
+          "prior_already_exited_abnormally": false,
+          "cleanup_events": 1
+        }
+      ]
+    }
+  },
+  "stop": {
+    "state": {
+      "schema_version": 2,
+      "channel": "local-qualification",
+      "scope": "e22c8a91e31ebf6ef6f3e5d2d1b025ba394d058d1ee04c539cbabe8792b80a01",
+      "generation": 5,
+      "active": null,
+      "previous": {
+        "release_id": "local-reference-a",
+        "descriptor_sha256": "07f2b9f317523e4bb964cd6350ba8813b46c2ff5e4c485924f205761f79ed172"
+      },
+      "retained": []
+    },
+    "http": null,
+    "cleanup": {
+      "removed": true,
+      "graceful": true,
+      "prior_already_exited_abnormally": false,
+      "cleanup_events": 1
+    }
+  },
+  "rejected_qualification_preserved_active": true,
+  "invalid_descriptor_rejection": {
+    "descriptor_sha256": "2b1067ceab58a06fff4cd89040bf04c1ced94942c6d58f587534f55bbe9392cd",
+    "invalid_field": "manifest_sha256",
+    "reason": "descriptor_identity_mismatch",
+    "valid_content_checksum": true,
+    "active_pointer_unchanged": true,
+    "owned_names_unchanged": true,
+    "no_pending_journal": true,
+    "active_healthy": true
+  },
+  "rejected_descriptor_preserved_active": true,
+  "rejected_observer_preserved_active": true,
+  "postcommit_journal_recovery_passed": true,
+  "rollback_restored_after_active_process_kill": true,
+  "compound_recovery_preserved_former_active": true,
+  "final_graceful_stop_verified": true,
+  "external_recovery_storage": true,
+  "owned_containers_remaining": 0,
+  "limits": [
+    "Two immutable release IDs use the same qualified image/model; control transitions, not a model comparison.",
+    "Readiness/retirement observer faults and an owned active-process SIGKILL; no model corruption or host/daemon power-loss test.",
+    "Local Docker Desktop Linux, network none, no public traffic switching or zero-downtime claim.",
+    "Original Linux qualification is upstream evidence; no new full-fold quality or blind data.",
+    "RAM budget remains unmet; representative load, target-host recovery and production rollout remain separate.",
+    "Workflow YAML/policy are locally validated; no GitHub run, private runner or environment protection was configured here."
+  ],
+  "content_sha256": "8e2066029852f711e51c218bf9f84a6c1ea7c5ec65c66d9c26b9a9e0c68ad553"
+}
