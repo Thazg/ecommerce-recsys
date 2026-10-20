@@ -36,6 +36,13 @@ retain their original source identity and bytes. They predate compound-failure
 recovery, external workflow storage and mandatory final-drain evidence; they
 are historical checks, not evidence for the current implementation.
 
+After publication,
+[hosted CI completed successfully](https://github.com/Thazg/ecommerce-recsys/actions/runs/39398828158)
+for source `317105fe2c291a9a16c9a864dd958bf21dce1397`. Local receipts retain their
+original `github_execution_observed: false` fields; they are not rewritten as
+remote attestations. The private real-qualification lane remains unconfigured
+and unobserved.
+
 ## CI profiles
 
 The [hosted workflow](../.github/workflows/ci.yml) runs on pushes and pull
