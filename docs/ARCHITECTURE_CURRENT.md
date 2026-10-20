@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-19
+**Updated:** 2026-10-20
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -13,6 +13,10 @@ snapshot interface; public deployment and online evaluation are not implemented.
 The artifact layer now separates fitted offline snapshots from package-only
 inference. A separate service layer preserves that frozen inference code and
 provides optional bounded result caching and an explicit busy fallback.
+Separate host tooling now manages immutable isolated release descriptors,
+verified candidates, journal recovery and rollback. Hosted CI and a reusable
+private qualification lane remain separate from the model/service layers;
+the latter has not been configured or executed remotely.
 
 ```text
 Retailrocket raw CSV
@@ -153,7 +157,10 @@ development folds 1–4. All four predeclared ANN settings failed the paired p95
 speed gate on fold 1, so the pipeline still uses exact retrieval references; no
 ANN source is exposed through `src/ecommerce_recsys/retrieval/` or the hybrid
 candidate generator.
-Faiss is not a project dependency because Linux compatibility CI has not run.
+Faiss remains outside the core project and serving dependencies. The dedicated
+CPU test lock now includes it; local Linux CI reproduction runs the existing
+Faiss smoke tests. This does not change the feasibility no-go or establish a
+new GitHub-hosted compatibility run.
 The [ANN feasibility report](ANN_RETRIEVAL_REPORT.md) describes the evidence and limits.
 
 Published two-tower and ANN artifacts bind the source at commit
@@ -442,6 +449,34 @@ approved tolerance. The [container report](LINUX_CONTAINER.md) records the
 initial bitwise failure, numerical policy and measured scope. This Docker
 Desktop Linux configuration has no published endpoint; its 4 GiB resource cap
 does not revise the 2 GiB serving RSS target or establish release/load readiness.
+
+## Controlled local release
+
+Hosted CI checks pinned wheels/actions, workflow policy/schema, lint, unit and
+fitted-process profiles. The separately gated real lane requires a same-owner
+private manual caller, protected environment, trusted runner, exact current
+source SHA and a successful matching main CI attempt. These external settings
+have not been configured here.
+
+`snapshot_release.py` keeps immutable source/image/model/evidence-bound
+descriptors and an OS-owned store lock. It journals a reserved candidate before
+Docker create, verifies actual HTTP references before atomically publishing the
+active pointer, then retires the former active. Failed postcommit cleanup keeps
+an explicit recovery journal. If the target dies before that journal is
+recovered, recovery atomically retains former-instance ownership without
+removing it. Rollback verifies a fresh previous instance, then retires the dead
+target and retained instances. Abnormal retirement is not called graceful cleanup.
+Every release-verifier invocation requires external recovery storage. The
+workflow validates physical bundle/interpreter/recovery paths before checkout
+and blocks unfinished prior
+attempts. Semantic rejection of a checksum-valid descriptor with the wrong
+manifest leaves active state and container ownership unchanged. The CI policy
+also pins Python, dependency imports and the manifest value; its inventory
+covers build/test inputs rather than docs or generated gate receipts.
+Final success publication requires exactly one graceful cleanup event. The [release runbook](RELEASE_WORKFLOW.md) records the actual
+control exercise, strict CI profiles and their limits. Model/package sources and
+all upstream receipts remain unchanged. Network-isolated local pointers are not
+public traffic routing, distributed coordination or production deployment.
 
 ## Model engineering and trade-offs
 

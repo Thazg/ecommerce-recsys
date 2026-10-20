@@ -1,8 +1,14 @@
 # Project status
 
-**Updated:** 2026-10-19
+**Updated:** 2026-10-20
 
-**Stage:** M21 adds a pinned, non-root Linux/amd64 snapshot container with
+**Stage:** M22 adds pinned hosted CI profiles and an exercised isolated local
+release controller: immutable image/model/evidence identities, verified candidates,
+atomic active state, journal recovery and rollback after an active-process crash.
+The new real-qualification GitHub lane requires a protected private caller and
+runner; it has not been configured or executed remotely. Operational success
+does not establish deployment eligibility or waive the 2 GiB RSS budget.
+M21 adds a pinned, non-root Linux/amd64 snapshot container with
 read-only artifact delivery and isolated real-bundle/HTTP qualification.
 Candidate/evidence/output equality remains exact; a separately approved
 cross-platform feature/score tolerance preserves the original same-host gate.
@@ -59,6 +65,7 @@ diagnostics, not blind validation.
 | M19 input and exposure | Pinned pre-ASGI connection/header guards, absolute body deadline, reader/rate/table bounds, local Host/Origin policy, optional shared bearer mode and safe denial telemetry |
 | M20 integration strategy | Unit and actually fitted child-process HTTP profiles, explicit isolated real-bundle parity, strict evidence checks and a source-pinned functional gate |
 | M21 Linux container | Digest/hash-pinned image inputs, non-root read-only execution, bounded resources, real cross-platform references, HTTP denials/recovery and SIGTERM cleanup |
+| M22 controlled release | Hashed CPU CI lock, immutable Action pins, strict profile evidence, private real-lane prerequisites and actual local promotion/recovery/crash-rollback checks |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -342,10 +349,41 @@ evidence. The 2 GiB memory budget remains unmet. Regression checks pass 832
 tests with one Windows symlink skip; real Linux qualification is recorded
 separately from those fixture/unit results. No deployment eligibility is claimed.
 
+## M22 CI and controlled local release
+
+The [release runbook](RELEASE_WORKFLOW.md) separates hosted fixture CI, a gated
+private real-qualification workflow and the observed local control exercise.
+The [current Linux CI receipt](../benchmarks/release/ci_linux_preflight_validation_v1.json)
+records 946 unit and 7 fitted-process tests passed without skips. Windows passed
+945 unit and 7 fitted-process tests, plus one allowed symlink skip. These totals
+include 120 release-boundary/transaction cases; opt-in real-bundle execution is
+not counted in either fixture profile.
+
+The [current operational receipt](../benchmarks/release/release_workflow_preflight_validation_v1.json)
+uses the original image/model for two immutable release IDs. A, B and fresh
+rollback A each match all 101 HTTP references. B is killed while its postcommit
+retirement journal is still pending. Recovery preserves old A with explicit
+retained ownership; fresh rollback then verifies and retires both prior instances.
+A failed rollback candidate leaves retained instances untouched. Final success
+requires one graceful cleanup event and no remaining owned containers. A new
+scratch descriptor with a valid JSON checksum but the wrong manifest identity
+is rejected through activation; the pointer, journal, container inventory and
+active health remain unchanged. Wrong-pin and observer rejection checks remain
+separate. Every verifier call requires external recovery storage; the workflow
+checks physical paths before checkout and refuses unfinished prior runs. CI
+policy enforces the Python version, dependency imports and manifest pin. Its
+scoped inventory records build/test inputs, excluding docs and generated receipts.
+
+This is isolated local control verification, not public traffic routing, a
+model-quality comparison or host power-loss recovery. The initial and boundary
+M22 receipts remain historical with their original source/bytes. The new GitHub lane remains
+unconfigured and unobserved; production eligibility remains false.
+
 ## Next milestone
 
-The [roadmap](ROADMAP.md) defines controlled release/rollback, reliability and deployment
-work. Memory-budget compliance and concurrent-load objectives remain open.
+M23 in the [roadmap](ROADMAP.md) defines a prospective workload-based capacity
+assessment. Representative traffic, memory-budget compliance, sustained/failure
+load, target-host recovery and deployment objectives remain open.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
 as production model-selection claims.

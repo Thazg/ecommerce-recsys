@@ -1,6 +1,6 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-18
+**Updated:** 2026-10-20
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
@@ -897,3 +897,69 @@ is established. Full-fold model quality and inspected-fold limitations remain
 unchanged; deployment eligibility remains false.
 The earlier container receipt is preserved with its original source and bytes;
 it predates these context and verifier boundary checks.
+
+## M22 — CI and controlled local release
+
+### ADR-32 — Separate hosted checks, protected real qualification and local activation
+
+**Status:** Accepted — CI configuration, local release tooling and real control
+exercise implemented; remote runner/environment setup remains external.
+
+**Context:** Model parity and an isolated Linux container do not provide an
+immutable release identity or an exercised rollback procedure. Source CI can
+use small fitted fixtures; real qualification needs the original large bundle
+and trusted producer environment. Persistent self-hosted access must remain
+outside source-repository pull-request execution. The memory budget and workload
+qualification remain unmet, so this step cannot authorize production promotion.
+
+**Decision:** Pin official Actions to verified commit SHAs and Linux test wheels
+to exact versions/hashes, including CPU Torch/Faiss coverage. Check workflow
+schema/policy, dependencies, lint and explicit unit/fitted profiles. Reject
+softened failure handling and incomplete or unexpectedly skipped JUnit coverage.
+Upload selected reports only, with bounded retention. Keep a separate reusable
+real workflow restricted to a same-owner private manual caller on main, a
+protected environment and a dedicated trusted runner. Require the exact current
+source SHA and its latest successful matching CI attempt. Private source access
+uses an explicit read-only credential scoped to checkout and metadata checks;
+no credential, runner or environment is configured by this implementation.
+
+For local qualification, stage immutable descriptors binding source, image
+content ID, model manifest/version and externally pinned complete Linux evidence.
+Serialize operations with an OS-owned store lock. Journal the prior state and
+reserved candidate before Docker create, verify actual sealed HTTP references,
+then atomically replace the active pointer. Retire the former active only after
+commit and confirm removal before clearing the journal. Preserve recoverable
+postcommit failure state and reject ambiguous recovery. Rollback verifies a fresh
+previous instance, including when the active process has died; abnormal
+retirement must not be reported as successful graceful cleanup. If the target
+fails with a committed journal still pending, recovery records former instances
+as retained before clearing that journal; the next verified replacement owns
+and retires all retained entries. The exact deferred state is resumable after
+interruption. Private state/journal schema 2 enforces unique bounded ownership.
+Require external recovery storage for every verifier call. Keep workflow stores
+outside checkout after physical-path resolution, with fresh run/attempt
+directories and a preflight guard for unfinished runs. Enforce the exact Python
+version in both lanes, dependency-import step and manifest pin in workflow policy.
+Validate physical bundle/interpreter paths before checkout and exact JSON types
+for qualification flags and cleanup counts. Record CI
+build/test inputs separately from docs and generated gate receipts.
+Final success requires a proven graceful stop, not only an empty inventory.
+
+**Evidence and consequences:** The [runbook](RELEASE_WORKFLOW.md),
+[Linux CI receipt](../benchmarks/release/ci_linux_preflight_validation_v1.json) and
+[release exercise](../benchmarks/release/release_workflow_preflight_validation_v1.json)
+record source-bound local tests and actual original-bundle execution. Two release
+IDs deliberately use the same image/model; each successful activation repeats
+the same 101 references. Controlled observer failures, journal recovery,
+active-process termination before journal recovery and fresh rollback are
+exercised. Activation also rejects a new checksum-valid scratch descriptor with
+the wrong manifest identity, preserving active health, pointer, journal and
+container inventory. This is separate from wrong qualification-pin rejection.
+Initial and boundary M22 receipts retain their original source identity and
+bytes; the runbook distinguishes their earlier scope from the current checks. This is not a
+different-model quality result, public traffic transition, native-host recovery,
+zero-downtime guarantee or power-loss durability proof. The new GitHub lane is
+unconfigured and unobserved. Temporary dual-instance RAM needs, the unmet 2 GiB
+RSS target and representative-load/deployment gates remain explicit. Original
+model, service and upstream evidence remain unchanged; deployment eligibility
+stays false.
