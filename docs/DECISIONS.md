@@ -998,3 +998,38 @@ quota. No maximum sustainable throughput, native-host qualification, statistical
 SLO, new accuracy or online business benefit is established. Optimization needs
 new prospective implementation/evidence and unchanged output/eligibility, or
 an explicit quality/cost policy.
+
+## M24 — Load, failure and recovery
+
+### ADR-34 — Validate a fixed local fault matrix without changing the serving policy
+
+**Status:** Accepted — fixed local assessment completed; original model/image,
+service behavior, security quotas and cache defaults remain unchanged.
+
+**Context:** Short capacity cells do not establish sustained behavior, accepted
+work draining, invalid startup rejection or fresh recovery after a process crash.
+Fault injection can also obscure which conclusions come from the real model and
+which require event-controlled fixtures. The 2 GiB RSS target remains unmet.
+
+**Decision:** Freeze a 600-second steady workload, three burst/quiet cycles and
+180 seconds under 512 MiB additional driver occupancy. Use the unchanged isolated
+2 CPU/4 GiB image, deterministic references and bounded open-loop arrivals. Keep
+success, rejection, dispatch, server and driver resources separate. Verify real
+wire disconnect, observed in-flight SIGTERM and wrong/missing/corrupt startup
+inputs; verify task cancellation and model/executor faults with controlled fixtures.
+Run fresh same-model descriptor/observer rejection, dead-target journal recovery
+and rollback through the frozen release controller. Require complete reference,
+telemetry, sample, source/test provenance and owned-cleanup evidence before a
+checkpoint can advance or a non-overwriting receipt can be published. Compare
+Windows JUnit against exact current pytest identities, including parameter IDs;
+bind all test/configuration inputs and full counts in Linux CI evidence. Keep
+documentation revision history in Git outside the measurement identity.
+
+**Evidence and consequences:** The [report](SERVICE_RELIABILITY_REPORT.md) and
+[receipt](../benchmarks/reliability/service_resilience_boundary_validation_v1.json) cover
+the complete fixed matrix. Operational completion is separate from workload and
+resource targets; no deployment eligibility or budget revision is granted.
+A ten-minute constructed run is not a production soak/SLO. Memory occupancy is
+not actual OOM/CPU exhaustion, a wire disconnect is not proof of ASGI cancellation,
+and same-model isolated rollback is not public routing, native-host or power-loss
+recovery. Hosting decisions must retain these limits and address the RSS budget.

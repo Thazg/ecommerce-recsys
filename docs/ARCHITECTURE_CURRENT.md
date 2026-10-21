@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-20
+**Updated:** 2026-10-21
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -16,7 +16,10 @@ provides optional bounded result caching and an explicit busy fallback.
 Separate host tooling now manages immutable isolated release descriptors,
 verified candidates, journal recovery and rollback. Hosted CI and a reusable
 private qualification lane remain separate from the model/service layers;
-the latter has not been configured or executed remotely.
+the latter has not been configured or executed remotely. Separate local
+[load and recovery verification](SERVICE_RELIABILITY_REPORT.md) exercises the
+unchanged snapshot under fixed sustained/burst traffic, resource occupancy and
+lifecycle faults; it does not establish deployment eligibility.
 
 ```text
 Retailrocket raw CSV
@@ -496,6 +499,25 @@ distinct scopes. All four cells preserve reference parity; the 2 GiB RSS gate
 remains unmet. Primed cache is an explicit repeat-traffic control. Defaults,
 security quotas and model behavior stay unchanged. The
 [report](HTTP_CAPACITY_REPORT.md) records results and finite-sample/host limits.
+
+## Load and failure verification
+
+The [resilience verifier](../scripts/verify_service_resilience.py) orchestrates
+fresh owned instances of the unchanged image. Its
+[driver](../scripts/service_resilience_workload.py) uses pinned capacity helpers
+in a private namespace via stdin; no probe code or fault hook is installed in
+the model/service image. Fixed load phases share live/resume semantic checks.
+Source/policy/model/machine and full test evidence bind the external checkpoint.
+Windows JUnit must match exact collected test identities; Linux evidence binds
+the complete test/configuration source and full profile counts.
+
+Separate scenarios exercise wire disconnect, observed in-flight SIGTERM and
+readonly startup-file faults. Event-controlled tests prove cancelled-waiter and
+model/executor failure ownership. The frozen release controller runs a fresh
+same-model journal recovery/rollback exercise, with independently pinned child
+evidence. Each completed step requires exact owned cleanup. The
+[report](SERVICE_RELIABILITY_REPORT.md) separates measured targets from functional
+completion and retains the unmet 2 GiB RSS and target-host limitations.
 
 ## Model engineering and trade-offs
 

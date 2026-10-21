@@ -1,8 +1,14 @@
 # Project status
 
-**Updated:** 2026-10-20
+**Updated:** 2026-10-21
 
-**Stage:** M23 completes a fixed HTTP workload assessment of the unchanged
+**Stage:** M24 completes a fixed local load, failure and recovery matrix on the
+unchanged Linux snapshot: sustained/burst traffic, bounded memory occupancy,
+observed disconnect/in-flight SIGTERM, three startup-file rejections and fresh
+same-model release recovery/rollback. Full Windows/Linux gates and original-model
+parity pass. Workload/resource targets remain separate; deployment eligibility
+stays false and the 2 GiB RSS budget is not waived.
+M23 completes a fixed HTTP workload assessment of the unchanged
 Linux snapshot: four fresh-process 150-second cells, 2,550 measured arrivals
 and 808 pre/post reference checks. Outputs and telemetry reconcile; every cell
 removes its owned container gracefully. Constructed primed-cache and uncached
@@ -71,8 +77,9 @@ diagnostics, not blind validation.
 | M19 input and exposure | Pinned pre-ASGI connection/header guards, absolute body deadline, reader/rate/table bounds, local Host/Origin policy, optional shared bearer mode and safe denial telemetry |
 | M20 integration strategy | Unit and actually fitted child-process HTTP profiles, explicit isolated real-bundle parity, strict evidence checks and a source-pinned functional gate |
 | M21 Linux container | Digest/hash-pinned image inputs, non-root read-only execution, bounded resources, real cross-platform references, HTTP denials/recovery and SIGTERM cleanup |
-| M23 HTTP capacity | Four fixed open-loop workloads, per-outcome/cohort/cache timing, sampled resources, reference parity and checkpointed owned cleanup |
 | M22 controlled release | Hashed CPU CI lock, immutable Action pins, strict profile evidence, private real-lane prerequisites and actual local promotion/recovery/crash-rollback checks |
+| M23 HTTP capacity | Four fixed open-loop workloads, per-outcome/cohort/cache timing, sampled resources, reference parity and checkpointed owned cleanup |
+| M24 local reliability | Fixed sustained/burst/pressure workloads, witnessed lifecycle and startup faults, explicit fixture cancellation/failure tests and fresh journal-recovery/rollback evidence |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -401,15 +408,33 @@ Both uncached cells met successful-warm p95/p99 targets. Every cell exceeded
 exceeded the rejection budget (16/600 worker-busy responses). No model, quota, cache-default
 or inference optimization was adopted. Regression profiles passed 1,011 unit + 9
 fitted tests on Windows (one allowed skip) and 1,012 unit + 9 fitted tests on Linux
-(no skips). M22 hosted CI
-[passed after publication](https://github.com/Thazg/ecommerce-recsys/actions/runs/39398828158);
+(no skips). Hosted CI for the published M23 source `7449414`
+[passed after publication](https://github.com/Thazg/ecommerce-recsys/actions/runs/39439452790);
 the private real-qualification lane remains unconfigured and unobserved.
+
+## M24 load, failure and recovery
+
+The [reliability report](SERVICE_RELIABILITY_REPORT.md) and
+[completed receipt](../benchmarks/reliability/service_resilience_boundary_validation_v1.json)
+record all nine fixed steps. Eight load windows contain 1,080 offered arrivals;
+909 paced references, six post-burst recovery calls, one accepted termination
+response and a fresh three-candidate release exercise retain distinct scopes.
+Startup wrong-pin/missing-model/corrupt-overlay cases exit nonzero without
+readiness or OOM. Client disconnect recovers, and observed in-flight SIGTERM
+finishes the accepted sealed response before one graceful cleanup.
+
+Fixture cancellation/model/executor failures are separate from real-model
+observations. Full gates pass 1,072 Windows unit + 11 fitted cases (one allowed
+symlink skip) and 1,073 Linux unit + 11 fitted cases (no skips). Memory and load
+budgets are reported as outcomes; the 2 GiB RSS target remains unmet. No model,
+quota, image, cache-default or public-exposure change was adopted.
 
 ## Next milestone
 
-M24 in the [roadmap](ROADMAP.md) defines sustained/burst, failure and recovery
-validation with prospective workload thresholds. Representative traffic, memory-budget compliance, sustained/failure
-load, target-host recovery and deployment objectives remain open.
+M25 in the [roadmap](ROADMAP.md) defines a deployment design and cost decision
+using the measured resource, workload and recovery evidence. Representative
+production traffic, memory-budget compliance, longer load/failure envelopes,
+native target-host recovery and deployment objectives remain open.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
 as production model-selection claims.
