@@ -226,6 +226,16 @@ Serving RSS remains above 2 GiB, so deployment eligibility stays false. This is
 constructed repeated-reference traffic on Docker Desktop, not production load
 or a maximum-throughput claim.
 
+## Load, failure and recovery
+
+The [local reliability assessment](docs/SERVICE_RELIABILITY_REPORT.md) adds a
+10-minute sustained workload, fixed burst/recovery cycles, bounded memory
+occupancy and original-model disconnect/termination/startup checks. A fresh
+release exercise verifies dead-target recovery and rollback. Event-controlled
+fixture tests separately cover cancelled waiters and model/executor failures.
+The unchanged model/image remain isolated; operational completion does not
+waive the 2 GiB RSS target or establish production readiness.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -248,6 +258,7 @@ or a maximum-throughput claim.
 - [Testing and functional gates](docs/TESTING_AND_RELEASE_GATES.md): unit and fitted-process profiles, explicit real-bundle parity and deployment boundaries.
 - [Linux snapshot container](docs/LINUX_CONTAINER.md): pinned build, read-only artifact delivery, isolated runtime and real cross-platform qualification.
 - [HTTP capacity assessment](docs/HTTP_CAPACITY_REPORT.md): fixed offered-load controls, latency/rejection/resource scopes, parity and remaining budget gates.
+- [Local reliability assessment](docs/SERVICE_RELIABILITY_REPORT.md): sustained/burst load, resource occupancy, lifecycle faults and fresh recovery with explicit scope limits.
 - [Controlled release runbook](docs/RELEASE_WORKFLOW.md): CI profiles, private-runner prerequisites, immutable local release identities and verified recovery/rollback.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
