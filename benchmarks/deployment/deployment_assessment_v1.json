@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "assessment": "deployment-design-v1",
+  "checked_on": "2026-10-22",
+  "identity": {
+    "source_sha256": {
+      "scripts/assess_deployment.py": "10a7b2bf91214885e106472352531587b30e48928ec7f4a8c5d46b1a4fb048e2",
+      "tests/unit/test_deployment_assessment.py": "911ea8be8b5a0c299c9e89038d9797c73722485f2b35ea455edd17d9ca73d1b5"
+    },
+    "catalog_sha256": "27f91955b7d967ffafb0f11803e8b1fe027056ab6a56420724cf1d815a0a56c3",
+    "upstream_sha256": {
+      "benchmarks/artifacts/fold09_v1.json": "12a954fb8535ff69ba767fde9b7c4c949f3aec421dbba995ba1a8137ad2098e8",
+      "benchmarks/containers/linux_snapshot_boundary_validation_v1.json": "cdc11edf294a5ddd3d707fe7c3c565b2f53db1e0d5ecb43712174bddb05637ec",
+      "benchmarks/release/release_workflow_preflight_validation_v1.json": "7b37d58c41c34cc7011adcf3c0ed39e29512aaf91b1a97b893a689bbde86d55d",
+      "benchmarks/performance/http_capacity_boundary_validation_v1.json": "d239ecad08f244fb58b28cbdbf545f3db4789f5f36d1c9cbbb119a65d022aaf1",
+      "benchmarks/reliability/service_resilience_boundary_validation_v1.json": "ef0bc9b6b927a9ce70f24c96704d92a2db00df2c27fc0c3cbe91dd2eee1d0408"
+    },
+    "policy_sha256": "523220d8df87f05f38f9389a17ef7fd119662090c69f195203521d76f81cf863"
+  },
+  "policy": {
+    "version": "deployment-design-v1",
+    "preference": "free_first",
+    "current_mode": "existing_local_only",
+    "preferred_free_candidate": "oracle-a1-free",
+    "qualified_architecture": "amd64",
+    "charter_rss_bytes": 2147483648,
+    "container_reservation_bytes": 4294967296,
+    "host_reserve_bytes": 2147483648,
+    "retained_bundle_versions": 3,
+    "staging_bundle_copies": 1,
+    "planned_release": "maintenance_stop_start",
+    "provider_account_verified": false,
+    "target_host_qualified": false,
+    "public_exposure_approved": false
+  },
+  "measured_facts": {
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "qualified_image_id": "sha256:b70593c7965af2fad6b0ed86c551f5e5a183ebbae86c5741545690a37e73eb27",
+    "qualified_architecture": "amd64",
+    "observed_serving_rss_max_bytes": 2431037440,
+    "charter_rss_met": false,
+    "single_container_host_floor_bytes": 6442450944,
+    "dual_container_host_floor_bytes": 10737418240,
+    "bundle_component_bytes": 811265853,
+    "retained_and_staging_component_bytes": 3245063412,
+    "local_uncached_4rps_rejection_fraction": 0.02666666666666667,
+    "local_sustained_successes": 600
+  },
+  "options": [
+    {
+      "id": "do-basic-8gib",
+      "known_monthly_subtotal_usd_cents": 4800,
+      "zero_recurring_allowance_candidate": false,
+      "single_reservation_memory_fit": true,
+      "dual_reservation_memory_fit": false,
+      "architecture_matches_reference": true,
+      "all_in_bill_confirmed": false,
+      "provider_account_verified": false,
+      "target_host_qualified": false,
+      "deployment_eligible": false
+    },
+    {
+      "id": "existing-local",
+      "known_monthly_subtotal_usd_cents": 0,
+      "zero_recurring_allowance_candidate": false,
+      "single_reservation_memory_fit": null,
+      "dual_reservation_memory_fit": null,
+      "architecture_matches_reference": true,
+      "all_in_bill_confirmed": false,
+      "provider_account_verified": false,
+      "target_host_qualified": false,
+      "deployment_eligible": false
+    },
+    {
+      "id": "google-e2-micro-free",
+      "known_monthly_subtotal_usd_cents": 0,
+      "zero_recurring_allowance_candidate": true,
+      "single_reservation_memory_fit": false,
+      "dual_reservation_memory_fit": false,
+      "architecture_matches_reference": true,
+      "all_in_bill_confirmed": false,
+      "provider_account_verified": false,
+      "target_host_qualified": false,
+      "deployment_eligible": false
+    },
+    {
+      "id": "hf-cpu-basic-pro",
+      "known_monthly_subtotal_usd_cents": 900,
+      "zero_recurring_allowance_candidate": false,
+      "single_reservation_memory_fit": true,
+      "dual_reservation_memory_fit": true,
+      "architecture_matches_reference": false,
+      "all_in_bill_confirmed": false,
+      "provider_account_verified": false,
+      "target_host_qualified": false,
+      "deployment_eligible": false
+    },
+    {
+      "id": "oracle-a1-free",
+      "known_monthly_subtotal_usd_cents": 0,
+      "zero_recurring_allowance_candidate": true,
+      "single_reservation_memory_fit": true,
+      "dual_reservation_memory_fit": true,
+      "architecture_matches_reference": false,
+      "all_in_bill_confirmed": false,
+      "provider_account_verified": false,
+      "target_host_qualified": false,
+      "deployment_eligible": false
+    },
+    {
+      "id": "oracle-amd-micro-free",
+      "known_monthly_subtotal_usd_cents": 0,
+      "zero_recurring_allowance_candidate": true,
+      "single_reservation_memory_fit": false,
+      "dual_reservation_memory_fit": false,
+      "architecture_matches_reference": true,
+      "all_in_bill_confirmed": false,
+      "provider_account_verified": false,
+      "target_host_qualified": false,
+      "deployment_eligible": false
+    }
+  ],
+  "decision": {
+    "design_completed": true,
+    "execution_mode": "existing_local_only",
+    "preferred_free_investigation": "oracle-a1-free",
+    "approved_cloud_host": null,
+    "cloud_resource_created": false,
+    "budget_waiver": false,
+    "deployment_eligible": false,
+    "blockers": [
+      "serving_rss_exceeds_2gib_charter",
+      "target_host_and_architecture_unqualified",
+      "provider_account_capacity_and_free_allowances_unverified",
+      "public_tls_proxy_auth_and_rate_contract_unimplemented",
+      "private_artifact_registry_and_secret_delivery_unverified",
+      "target_host_workload_monitoring_and_restore_unverified"
+    ]
+  },
+  "limits": [
+    "Offline design arithmetic, not a host performance or deployment qualification.",
+    "Advertised allowances are dated, conditional and unverified for the operator's account.",
+    "Known USD subtotals exclude itemized variable costs; no all-in bill or spending cap is certified.",
+    "Host reservations differ from measured RSS; more RAM does not waive the 2GiB process target.",
+    "Model component storage excludes manifest overhead, images, OS, logs and provider billing units."
+  ],
+  "content_sha256": "383c47101b606dc0d8119578cd6fa6e5918644df37add7ad4505c6f0b51a7580"
+}
