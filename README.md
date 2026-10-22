@@ -1,6 +1,9 @@
 # E-commerce recommendation system
 
-A recommendation project built on the Retailrocket interaction dataset, with temporal offline evaluation and a local HTTP snapshot API. The repository contains data preparation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS, source-aware candidate retrieval, learned ranking and versioned inference snapshots with locked warm/cold routes. Public deployment and online evaluation are not implemented.
+A recommendation project built on the Retailrocket interaction dataset, with temporal offline evaluation and a local HTTP snapshot API. The repository contains data preparation, popularity baselines, ItemKNN, educational MF/BPR, implicit ALS, source-aware candidate retrieval, learned ranking and versioned inference snapshots with locked warm/cold routes. RecoLens provides a public static demo; full-model hosting and online evaluation remain open.
+
+**[Explore RecoLens](https://ecommerce-recsys.vercel.app/)** — browse five verified,
+precomputed model examples. The demo performs no live inference.
 
 ## Recommendation evaluation
 
@@ -248,10 +251,13 @@ without provisioning infrastructure or changing the recommendation service.
 
 ## Repository guide
 
-The [snapshot explorer](docs/SNAPSHOT_EXPLORER.md) provides a local static demo
-of five verified model-reference outputs, with learned/RRF ordering, Top-K and
-retrieval-source details. It browses precomputed historical results. Preview it
-with `python -m http.server 8765 --bind 127.0.0.1 --directory demo`.
+The [RecoLens snapshot explorer](docs/SNAPSHOT_EXPLORER.md) provides a
+[public static demo](https://ecommerce-recsys.vercel.app/) of five verified
+model-reference outputs, with learned/RRF ordering, Top-K and retrieval-source
+details. It browses precomputed historical results. The
+[hosting runbook](docs/STATIC_DEMO_DEPLOYMENT.md) separates static publication
+from full-model deployment. Preview locally with
+`python -m http.server 8765 --bind 127.0.0.1 --directory demo`.
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
 - [Benchmark report](docs/ROLLING_BENCHMARK_REPORT.md) and [result artifacts](benchmarks/rolling/): measured outcomes and per-fold data.

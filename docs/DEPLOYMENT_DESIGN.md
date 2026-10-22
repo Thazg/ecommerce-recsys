@@ -206,10 +206,12 @@ cloud demo would not establish new recommendation quality or business benefit.
 
 ### Static demonstration alternative
 
-The [snapshot explorer](SNAPSHOT_EXPLORER.md) provides a separate local preview
-using precomputed verified model outputs. It requires no cloud account and does
-not alter the dated hosting catalog/assessment. A future static host would serve
-frontend files only; full-model account eligibility, host selection, deployment
+The [RecoLens explorer](SNAPSHOT_EXPLORER.md) provides a separate
+[public static demo](https://ecommerce-recsys.vercel.app/) using precomputed
+verified model outputs. Its local preview requires no cloud account. The
+[static hosting runbook](STATIC_DEMO_DEPLOYMENT.md) records Vercel publication
+without altering the dated full-model hosting catalog/assessment. Only frontend
+files are hosted; full-model account eligibility, host selection, deployment
 and target-host verification remain unresolved.
 
 ### Offline assessment

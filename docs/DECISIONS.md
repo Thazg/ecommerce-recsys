@@ -1074,8 +1074,8 @@ operational evidence gain no cloud, availability or business-impact claim.
 
 ### ADR-36 — Separate a precomputed demo from full-model deployment
 
-**Status:** Accepted — local static explorer and verified finite export implemented;
-cloud publication and full-model target-host verification remain open.
+**Status:** Accepted — static explorer, verified finite export and Vercel
+publication implemented; full-model target-host verification remains open.
 
 **Context:** The original snapshot exceeds the 2 GiB memory target; no free cloud
 host is approved. An interface can explain existing outputs without loading
@@ -1088,7 +1088,10 @@ and implementation identities; exclude user IDs and targets. Show same-pool
 learned/RRF orders, Top-K prefixes and source ranks, using dataset codes rather
 than invented product metadata.
 
-Serve static files on loopback. Validate data before rendering; show failures
+Serve static files on loopback for local preview and publish only the reviewed
+static output to Vercel Hobby. Use an upload allowlist, same-origin security
+headers and explicit releases without a Git provider connection. Validate data
+before rendering; show failures
 explicitly, with no backend calls or live latency/health claims. Preserve the
 model/API, frozen evidence and memory budget. This does not complete M26/M27
 deployment/host qualification or establish online evaluation.
@@ -1100,7 +1103,11 @@ receipt/source/export identity without loading model state or rerunning quality.
 
 **Evidence and consequences:** The [contract](SNAPSHOT_EXPLORER.md),
 [example data](../demo/data/showcase_v1.json) and
-[local validation](../benchmarks/demo/showcase_validation_v1.json) document the
-sample and checks. Every selected warm profile has one seen item; examples do
-not represent activity strata or measure accuracy. Static hosting and external
-verification require a later authorized step.
+[original validation](../benchmarks/demo/showcase_validation_v1.json) document
+the sample and sealed-trace checks. The
+[current presentation record](../benchmarks/demo/showcase_presentation_validation_v1.json)
+binds the RecoLens interface and current documentation without refitting or
+re-exporting unchanged model outputs. The [hosting runbook](STATIC_DEMO_DEPLOYMENT.md)
+records publication and external verification separately. Every selected warm
+profile has one seen item; examples do not represent activity strata or measure
+accuracy. Static publication does not qualify the full model for deployment.

@@ -1,9 +1,11 @@
-# Snapshot recommendation explorer
+# RecoLens snapshot explorer
 
-The explorer is a local static demonstration of verified Retailrocket model
-outputs. It shows four returning-user profiles and one first-visit context from
-the immutable fold-9 snapshot. It makes no API calls and performs no model
-inference in the browser. Cloud publication is not implemented or verified.
+Explore [RecoLens](https://ecommerce-recsys.vercel.app/), a static demonstration
+of verified Retailrocket model outputs. It shows four returning-user profiles
+and one first-visit context from the immutable fold-9 snapshot. It makes no API
+calls and performs no model inference in the browser. The
+[hosting runbook](STATIC_DEMO_DEPLOYMENT.md) records static publication and its
+verification scope; the recommendation API remains local.
 
 ## Run locally
 
@@ -60,7 +62,7 @@ parents. Exporting examples cannot add files to the sealed bundle inventory.
 
 ```powershell
 python scripts/export_snapshot_demo.py --bundle artifacts/retailrocket-fold09-v1 --output .local/showcase-repeat.json
-python scripts/verify_snapshot_demo.py --check benchmarks/demo/showcase_validation_v1.json
+python scripts/verify_snapshot_demo.py --check benchmarks/demo/showcase_presentation_validation_v1.json
 pytest tests/unit/test_snapshot_demo.py tests/unit/test_snapshot_demo_verification.py
 node --test --test-isolation=none tests/web/test_snapshot_demo.mjs
 ```
@@ -77,8 +79,10 @@ downloadable data. This digest detects inconsistent content; it is not a signatu
 against someone able to replace both page and data. A static host still observes
 ordinary HTTP connection metadata; no hosting privacy guarantee is inferred.
 
-The [local validation record](../benchmarks/demo/showcase_validation_v1.json)
-pins public files and export identity. The public `--check` command verifies the
+The [current presentation record](../benchmarks/demo/showcase_presentation_validation_v1.json)
+pins public files and export identity. The
+[original validation](../benchmarks/demo/showcase_validation_v1.json) retains
+sealed-trace checks and the original interface identity. The public `--check` command verifies the
 receipt checksum, exact source inventory, current file fingerprints and exporter/
 inference identities without model loading. It checks recorded identity; it does
 not rerun test commands, browser review, sealed references or model quality.
@@ -94,23 +98,22 @@ Transport tests cover stalled headers/body, byte overflow, invalid UTF-8 and HTT
 errors. The directory-symlink regression may skip on Windows when the account
 lacks link privileges; the validation record reports that skip explicitly.
 Browser review covers controls, row expansion, keyboard operation and responsive
-layouts. No cloud-host check or new full-fold quality evaluation is claimed.
+layouts. External static-host checks are recorded separately; no new full-fold
+quality evaluation is claimed.
 
 ## Hosting boundary
 
-Only local preview is implemented. A later free static host such as Render would
-serve `demo/` without Python, a model bundle, database or secret. Account acceptance,
-configuration, TLS, headers and external probes need verification at that step.
-
-Render's [Free web-service compute](https://render.com/docs/compute-plans) has
-512 MB RAM, below the full model's approximately 2.26 GiB RSS. Publishing static
-files would not deploy the recommendation API or satisfy its memory target.
-See [Render limits](https://render.com/docs/free) and the
-[deployment design](DEPLOYMENT_DESIGN.md).
+Vercel serves the seven reviewed files under `demo/` without Python, a model
+bundle, database or runtime secret. The CLI upload is restricted by
+`.vercelignore`; root `vercel.json` declares static output and security headers.
+The [hosting runbook](STATIC_DEMO_DEPLOYMENT.md) identifies measured releases and
+public checks. Static publication does not deploy the recommendation API or
+satisfy its approximately 2.26 GiB process-memory requirement. See the separate
+[full-model deployment design](DEPLOYMENT_DESIGN.md).
 
 The [offline assessment](../benchmarks/deployment/deployment_assessment_v1.json)
 and hosting catalog remain unchanged dated design evidence. Full-model host
-selection, deployment and target-host verification remain open. Demo work can
-begin locally without marking those milestones complete. Later offline folds
+selection, deployment and target-host verification remain open. Static demo
+publication does not mark those milestones complete. Later offline folds
 remain post-selection diagnostics, not blind validation; these examples do not
 establish online benefit or production readiness.

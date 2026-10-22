@@ -1,0 +1,427 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-10-22T08:55:01.882126+00:00",
+  "scope": "Public static snapshot explorer; no inference service deployed",
+  "provider": "Vercel",
+  "observed_plan": "hobby",
+  "cli_version": "65.1.0",
+  "production_url": "https://ecommerce-recsys.vercel.app/",
+  "deployment_id": "dpl_DZj9QZxGcQYtiQxZHrVygWQUWfNX",
+  "deployment_url": "https://ecommerce-recsys-4udjclzga-thazg-s-projects.vercel.app",
+  "frontend_source_commit": "340e3332094789a2fa14c7362517852fe0219987",
+  "deployment_configuration_committed": false,
+  "git_provider_connected": false,
+  "model_or_raw_data_uploaded": false,
+  "source_file_sha256": {
+    ".gitignore": "88812c4291ead8e27fbe6f2fff83a26072d8a95f035da62a914fad4e7d286a80",
+    ".vercelignore": "d8ee1fcf28a04298f17abb23437c91279e9fa7a8d4fe54eb64e5a4fcf9d9383e",
+    "vercel.json": "c0e6ccf33bf699ee88f4b1238a0d0ba204551c10e93b18045b58e3f1845de289",
+    "docs/STATIC_DEMO_DEPLOYMENT.md": "84c4939f9604204fd9308f11fcf216c8cb5b78b76a2a281e59af8b70ca63cddd",
+    "tests/unit/test_static_demo_deployment.py": "b209d2a89958fce3c94a8994148f97c070f8eacddcd824a52c51acacb7627a35"
+  },
+  "upstream_demo_receipt": {
+    "path": "benchmarks/demo/showcase_validation_v1.json",
+    "sha256": "2b566c13d28834fbbae96741a255a8db17a11e611daec1db3c0225865eaa0a21"
+  },
+  "upload": {
+    "files": [
+      {
+        "path": "demo/app.js",
+        "size": 4217,
+        "sha256": "c67f9d2f9b31a75700f0e19014d8a8b1eb9e2871ccd9f5a780c001a004896701"
+      },
+      {
+        "path": "demo/data/showcase_v1.json",
+        "size": 63496,
+        "sha256": "d8fba3b831f0eed97298d94f99409a6b8db543f0c1668d48822b1e314a2ff95a"
+      },
+      {
+        "path": "demo/favicon.svg",
+        "size": 177,
+        "sha256": "566305eb2668a350d5df1bd698dfd3251286d336d4e0b198d03f4fc33d527c3c"
+      },
+      {
+        "path": "demo/index.html",
+        "size": 6311,
+        "sha256": "e5b6cca5c426987e78bdb8fbf55d01f3af6453c2281360ea62e5b5f0b1d5bf07"
+      },
+      {
+        "path": "demo/schema.mjs",
+        "size": 5587,
+        "sha256": "3b28a53d41361c09d76fc471263b9a63ca136fa3edb5289c5f03ec802d7a82d8"
+      },
+      {
+        "path": "demo/styles.css",
+        "size": 7559,
+        "sha256": "f383c5392035630ea0869c6a8c52c0f2729c1b46066ad8ba53ec95d02b41d687"
+      },
+      {
+        "path": "demo/transport.mjs",
+        "size": 2158,
+        "sha256": "f75f768e2f5e301d1efc8d2fc15b75527a6f59a10ba72fb9a669b24ee545b43b"
+      },
+      {
+        "path": "vercel.json",
+        "size": 875,
+        "sha256": "c0e6ccf33bf699ee88f4b1238a0d0ba204551c10e93b18045b58e3f1845de289"
+      }
+    ],
+    "file_count": 8,
+    "total_bytes": 90380
+  },
+  "http_checks": {
+    "public_without_auth": true,
+    "assets_matched": 7,
+    "private_paths_404": 8,
+    "https_redirect_verified": true,
+    "checks": [
+      {
+        "path": "index.html",
+        "status": 200,
+        "sha256": "e5b6cca5c426987e78bdb8fbf55d01f3af6453c2281360ea62e5b5f0b1d5bf07",
+        "size": 6311,
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate",
+          "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          "Content-Type": "text/html; charset=utf-8",
+          "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY"
+        }
+      },
+      {
+        "path": "styles.css",
+        "status": 200,
+        "sha256": "f383c5392035630ea0869c6a8c52c0f2729c1b46066ad8ba53ec95d02b41d687",
+        "size": 7559,
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate",
+          "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          "Content-Type": "text/css; charset=utf-8",
+          "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY"
+        }
+      },
+      {
+        "path": "app.js",
+        "status": 200,
+        "sha256": "c67f9d2f9b31a75700f0e19014d8a8b1eb9e2871ccd9f5a780c001a004896701",
+        "size": 4217,
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate",
+          "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          "Content-Type": "application/javascript; charset=utf-8",
+          "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY"
+        }
+      },
+      {
+        "path": "schema.mjs",
+        "status": 200,
+        "sha256": "3b28a53d41361c09d76fc471263b9a63ca136fa3edb5289c5f03ec802d7a82d8",
+        "size": 5587,
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate",
+          "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          "Content-Type": "application/javascript; charset=utf-8",
+          "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY"
+        }
+      },
+      {
+        "path": "transport.mjs",
+        "status": 200,
+        "sha256": "f75f768e2f5e301d1efc8d2fc15b75527a6f59a10ba72fb9a669b24ee545b43b",
+        "size": 2158,
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate",
+          "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          "Content-Type": "application/javascript; charset=utf-8",
+          "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY"
+        }
+      },
+      {
+        "path": "favicon.svg",
+        "status": 200,
+        "sha256": "566305eb2668a350d5df1bd698dfd3251286d336d4e0b198d03f4fc33d527c3c",
+        "size": 177,
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate",
+          "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          "Content-Type": "image/svg+xml",
+          "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY"
+        }
+      },
+      {
+        "path": "data/showcase_v1.json",
+        "status": 200,
+        "sha256": "d8fba3b831f0eed97298d94f99409a6b8db543f0c1668d48822b1e314a2ff95a",
+        "size": 63496,
+        "headers": {
+          "Cache-Control": "public, max-age=0, must-revalidate",
+          "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY"
+        }
+      },
+      {
+        "path": "/AGENTS.md",
+        "status": 404
+      },
+      {
+        "path": "/.local/",
+        "status": 404
+      },
+      {
+        "path": "/data/raw/events.csv",
+        "status": 404
+      },
+      {
+        "path": "/model_manifest.json",
+        "status": 404
+      },
+      {
+        "path": "/v1/recommendations",
+        "status": 404
+      },
+      {
+        "path": "/missing-asset.js",
+        "status": 404
+      },
+      {
+        "path": "/vercel.json",
+        "status": 404
+      },
+      {
+        "path": "/.env.local",
+        "status": 404
+      }
+    ]
+  },
+  "browser_checks": {
+    "checks": [
+      {
+        "profile": "profile-01",
+        "order": "learned",
+        "k": 5,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "learned",
+        "k": 10,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "learned",
+        "k": 20,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "rrf",
+        "k": 5,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "rrf",
+        "k": 10,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "rrf",
+        "k": 20,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "learned",
+        "k": 5,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "learned",
+        "k": 10,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "learned",
+        "k": 20,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "rrf",
+        "k": 5,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "rrf",
+        "k": 10,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "rrf",
+        "k": 20,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "learned",
+        "k": 5,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "learned",
+        "k": 10,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "learned",
+        "k": 20,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "rrf",
+        "k": 5,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "rrf",
+        "k": 10,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "rrf",
+        "k": 20,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "learned",
+        "k": 5,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "learned",
+        "k": 10,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "learned",
+        "k": 20,
+        "route": "Locked warm route",
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "rrf",
+        "k": 5,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "rrf",
+        "k": 10,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "rrf",
+        "k": 20,
+        "route": "Comparison ordering",
+        "passed": true
+      },
+      {
+        "profile": "cold-start",
+        "order": "recent",
+        "k": 5,
+        "route": "Locked cold route",
+        "passed": true
+      },
+      {
+        "profile": "cold-start",
+        "order": "recent",
+        "k": 10,
+        "route": "Locked cold route",
+        "passed": true
+      },
+      {
+        "profile": "cold-start",
+        "order": "recent",
+        "k": 20,
+        "route": "Locked cold route",
+        "passed": true
+      }
+    ],
+    "evidence_expansion_verified": true,
+    "captured_console_warnings_or_errors": [],
+    "mobile_viewport_checked": false
+  },
+  "local_policy_tests": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0
+  },
+  "rollback_exercised": false,
+  "full_model_deployment_eligible": false,
+  "limitations": [
+    "Precomputed five-example snapshot, not live inference.",
+    "Desktop checks only; narrow mobile viewport not exercised.",
+    "Initial deployment only; rollback not exercised.",
+    "Static hosting does not qualify full-model memory, latency or deployment."
+  ],
+  "content_sha256": "8fcb4fdb391b91e0716ad4d260fe9973221ec298ebdf362396869c3f3e7caec5"
+}

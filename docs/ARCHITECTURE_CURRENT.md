@@ -9,7 +9,7 @@ sequential order ablation failed its primary gate, so no source was adopted.
 A complete-policy runner has locked separate warm/cold offline routes from
 development folds 2–4 and completed all fixed diagnostics on folds 5–9.
 No ANN source has been adopted. The locked routes now have a local HTTP
-snapshot interface; public deployment and online evaluation are not implemented.
+snapshot interface; full-model public deployment and online evaluation remain open.
 The artifact layer now separates fitted offline snapshots from package-only
 inference. A separate service layer preserves that frozen inference code and
 provides optional bounded result caching and an explicit busy fallback.
@@ -23,12 +23,17 @@ lifecycle faults; it does not establish deployment eligibility. A separate
 [deployment assessment](DEPLOYMENT_DESIGN.md) now records the conditional hosting
 and cost decision; its proposed cloud/gateway components are not implemented.
 
-A separate [static explorer](SNAPSHOT_EXPLORER.md) projects five verified fold-9
+A separate [RecoLens explorer](SNAPSHOT_EXPLORER.md) projects five verified fold-9
 references into public JSON plus HTML/CSS/JavaScript. The offline exporter loads
 the original bundle, verifies sealed traces and removes user IDs. A loopback
-preview serves only `demo/`; the browser checks schema/content identity and
-switches stored outputs without calling the API. This is not a model server
-or a cloud deployment adapter.
+preview serves only `demo/`; Vercel hosts the same static output at
+[ecommerce-recsys.vercel.app](https://ecommerce-recsys.vercel.app/).
+The browser checks schema/content identity and switches stored outputs without
+calling the API. Root deployment configuration supplies security headers and
+disables automatic Git deployment. A CLI upload allowlist excludes all model,
+data and source files outside the seven static assets. See the
+[hosting runbook](STATIC_DEMO_DEPLOYMENT.md). This is not a model server or a
+full-model cloud deployment adapter.
 
 ```text
 Retailrocket raw CSV

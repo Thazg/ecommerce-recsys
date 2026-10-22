@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "verification": "local-static-snapshot-explorer-v1",
+  "verified_at_utc": "2026-10-22T09:52:39.395955+00:00",
+  "scope": "RecoLens static presentation and deployment preflight; hosted checks are recorded separately",
+  "model_manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+  "export_content_sha256": "637d950491e6e016322cf21df93688ff0c1b7dd17516d4e21d03e33bbe5f206a",
+  "files_sha256_lf": {
+    "README.md": "06bd514d461e6b563e6e0304c7b335467e23ad40d87ae842c7d102250eda0853",
+    "demo/app.js": "c67f9d2f9b31a75700f0e19014d8a8b1eb9e2871ccd9f5a780c001a004896701",
+    "demo/data/showcase_v1.json": "d8fba3b831f0eed97298d94f99409a6b8db543f0c1668d48822b1e314a2ff95a",
+    "demo/favicon.svg": "566305eb2668a350d5df1bd698dfd3251286d336d4e0b198d03f4fc33d527c3c",
+    "demo/index.html": "c20a2272761dbe09f1df9f2f273175806d4b26649e1f9bbd9d8d48aa6a6260a0",
+    "demo/schema.mjs": "3b28a53d41361c09d76fc471263b9a63ca136fa3edb5289c5f03ec802d7a82d8",
+    "demo/styles.css": "26d058518d2ea7381bc4a953a8dfca213c2173bc643c5651f7f7ad7ce84260e3",
+    "demo/transport.mjs": "f75f768e2f5e301d1efc8d2fc15b75527a6f59a10ba72fb9a669b24ee545b43b",
+    "docs/ARCHITECTURE_CURRENT.md": "2a998dde09610e591e5e5ada472f0c8f1ca2d65d071b52de7b9fb6677608d276",
+    "docs/DECISIONS.md": "59eccdb1761962aab29f98e5c45bedef7b82f2b8b81905a2a43cd00a355ac073",
+    "docs/DEPLOYMENT_DESIGN.md": "7a5659ebd594341b42f9f360a7fa3912abb53f4efe130366eba88944bb3f630c",
+    "docs/PROJECT_STATUS.md": "4cf71c72ddea649c6428072fe71fb51796b85ab37462ba974a967cafa8b75f5c",
+    "docs/SNAPSHOT_EXPLORER.md": "432fac3a9484da6866e323a8cf788020b320f9e89222b66504cbadf1d3547076",
+    "scripts/export_snapshot_demo.py": "82f769c22498fde17c59b4aed273da6656d0568efabd0da00c4bf58207a994ca",
+    "scripts/verify_snapshot_demo.py": "5bb37c72729ae72e470749aff491403a6d5decf3dbff76b707ea92ad91f4f9f9",
+    "tests/unit/test_snapshot_demo.py": "67d95277f46de5f15d80f8c21fa55e5b4ad59a32f4a12bc935e7a1a2950c37a3",
+    "tests/unit/test_snapshot_demo_verification.py": "a259c37186e05ae1896d7c4d5184389d93bdc129a0b263f962b8b023ffb0d8b9",
+    "tests/web/test_snapshot_demo.mjs": "44f076faa9fee6658d8e365a624f35f63a34af8056cac4e2d72a25183ccff989"
+  },
+  "deployment_files_sha256_lf": {
+    ".gitignore": "bb83216bfad145123f753da684e8805ac1bf9b8a5ce198109af644cce360b57c",
+    ".vercelignore": "d8ee1fcf28a04298f17abb23437c91279e9fa7a8d4fe54eb64e5a4fcf9d9383e",
+    "vercel.json": "c0e6ccf33bf699ee88f4b1238a0d0ba204551c10e93b18045b58e3f1845de289",
+    "tests/unit/test_static_demo_deployment.py": "9e1c5c7a04ec7bf6a4983926b0ad8d70456040a8b1c669bbd4f2607acc007837",
+    "docs/STATIC_DEMO_DEPLOYMENT.md": "85147b49ce590e5b20632b6f4a6045f94d274cc0f026170e73b2fbf32b89703d"
+  },
+  "source_byte_policy": "normalize CRLF to LF before SHA-256; canonical JSON content checked separately",
+  "predecessor": {
+    "path": "benchmarks/demo/showcase_validation_v1.json",
+    "sha256": "2b566c13d28834fbbae96741a255a8db17a11e611daec1db3c0225865eaa0a21"
+  },
+  "export_and_model_unchanged": true,
+  "model_reference_checks": "Original sealed-trace evidence inherited from the byte-identical export; no model fit or fresh quality evaluation",
+  "local_checks": {
+    "python_unit": {
+      "passed": 40,
+      "skipped": 1,
+      "allowed_skip": "Windows directory-symlink privilege unavailable",
+      "junit_sha256": "4c429a74d00c6f01222507953471e1abbf51caba753604a9c05c7ba409ddb9c1"
+    },
+    "javascript": {
+      "passed": 15,
+      "skipped": 0,
+      "output_sha256": "c138633006445b48e41dfdffd88e93c9e2d061b306cd6ed77fef2e66f8d57a5e"
+    },
+    "browser": {
+      "controls": [
+        {
+          "profile": "profile-01",
+          "order": "learned",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "profile-01",
+          "order": "learned",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "profile-01",
+          "order": "learned",
+          "k": 20,
+          "passed": true
+        },
+        {
+          "profile": "profile-01",
+          "order": "rrf",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "profile-01",
+          "order": "rrf",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "profile-01",
+          "order": "rrf",
+          "k": 20,
+          "passed": true
+        },
+        {
+          "profile": "profile-02",
+          "order": "learned",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "profile-02",
+          "order": "learned",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "profile-02",
+          "order": "learned",
+          "k": 20,
+          "passed": true
+        },
+        {
+          "profile": "profile-02",
+          "order": "rrf",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "profile-02",
+          "order": "rrf",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "profile-02",
+          "order": "rrf",
+          "k": 20,
+          "passed": true
+        },
+        {
+          "profile": "profile-03",
+          "order": "learned",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "profile-03",
+          "order": "learned",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "profile-03",
+          "order": "learned",
+          "k": 20,
+          "passed": true
+        },
+        {
+          "profile": "profile-03",
+          "order": "rrf",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "profile-03",
+          "order": "rrf",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "profile-03",
+          "order": "rrf",
+          "k": 20,
+          "passed": true
+        },
+        {
+          "profile": "profile-04",
+          "order": "learned",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "profile-04",
+          "order": "learned",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "profile-04",
+          "order": "learned",
+          "k": 20,
+          "passed": true
+        },
+        {
+          "profile": "profile-04",
+          "order": "rrf",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "profile-04",
+          "order": "rrf",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "profile-04",
+          "order": "rrf",
+          "k": 20,
+          "passed": true
+        },
+        {
+          "profile": "cold-start",
+          "order": "recent",
+          "k": 5,
+          "passed": true
+        },
+        {
+          "profile": "cold-start",
+          "order": "recent",
+          "k": 10,
+          "passed": true
+        },
+        {
+          "profile": "cold-start",
+          "order": "recent",
+          "k": 20,
+          "passed": true
+        }
+      ],
+      "mobile": {
+        "width": 375,
+        "overflow": false,
+        "wordmark_font_size": "32px"
+      },
+      "desktop": {
+        "wordmark_font_size": "40px",
+        "wordmark_font_weight": "600"
+      },
+      "footer": "\u00a9 2026 Nguyen Tam Thang"
+    },
+    "upload": {
+      "file_count": 8,
+      "bytes": 92833,
+      "files": [
+        "demo/app.js",
+        "demo/data/showcase_v1.json",
+        "demo/favicon.svg",
+        "demo/index.html",
+        "demo/schema.mjs",
+        "demo/styles.css",
+        "demo/transport.mjs",
+        "vercel.json"
+      ]
+    },
+    "ruff_check": true,
+    "ruff_format_check": true,
+    "full_repository_test_suite_rerun": false
+  },
+  "live_inference": false,
+  "cloud_deployed": false,
+  "deployment_eligible": false,
+  "content_sha256": "2292e778117ddb62a5e749b8e6e4a6ee6040c71b3d7d032bdea87b837941b336"
+}
