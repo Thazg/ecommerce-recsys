@@ -23,6 +23,13 @@ lifecycle faults; it does not establish deployment eligibility. A separate
 [deployment assessment](DEPLOYMENT_DESIGN.md) now records the conditional hosting
 and cost decision; its proposed cloud/gateway components are not implemented.
 
+A separate [static explorer](SNAPSHOT_EXPLORER.md) projects five verified fold-9
+references into public JSON plus HTML/CSS/JavaScript. The offline exporter loads
+the original bundle, verifies sealed traces and removes user IDs. A loopback
+preview serves only `demo/`; the browser checks schema/content identity and
+switches stored outputs without calling the API. This is not a model server
+or a cloud deployment adapter.
+
 ```text
 Retailrocket raw CSV
     -> build_interactions.py

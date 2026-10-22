@@ -204,6 +204,16 @@ cloud demo would not establish new recommendation quality or business benefit.
 
 ## Reproduction
 
+### Static demonstration alternative
+
+The [snapshot explorer](SNAPSHOT_EXPLORER.md) provides a separate local preview
+using precomputed verified model outputs. It requires no cloud account and does
+not alter the dated hosting catalog/assessment. A future static host would serve
+frontend files only; full-model account eligibility, host selection, deployment
+and target-host verification remain unresolved.
+
+### Offline assessment
+
 Run with the existing ecommerce-recsys environment and a clean copy of the
 published upstream receipts. No Retailrocket data, model fit, Docker daemon,
 cloud account, credentials or network access is needed for the assessor:

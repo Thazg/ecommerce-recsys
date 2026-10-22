@@ -1069,3 +1069,38 @@ conditional choice and arithmetic. Deployment eligibility remains false. A
 free-tier no-go retains local execution; paid options or model/budget changes
 require a new explicit decision. Existing offline diagnostics and local
 operational evidence gain no cloud, availability or business-impact claim.
+
+## Static snapshot explorer
+
+### ADR-36 — Separate a precomputed demo from full-model deployment
+
+**Status:** Accepted — local static explorer and verified finite export implemented;
+cloud publication and full-model target-host verification remain open.
+
+**Context:** The original snapshot exceeds the 2 GiB memory target; no free cloud
+host is approved. An interface can explain existing outputs without loading
+weights, provided it makes precomputed and live inference semantics explicit.
+
+**Decision:** Export four fixed warm reference positions and the explicit cold
+reference from the original verified bundle. Require exact sealed-trace parity,
+catalog/seen/evidence checks and a public-field allowlist. Bind model, reference
+and implementation identities; exclude user IDs and targets. Show same-pool
+learned/RRF orders, Top-K prefixes and source ranks, using dataset codes rather
+than invented product metadata.
+
+Serve static files on loopback. Validate data before rendering; show failures
+explicitly, with no backend calls or live latency/health claims. Preserve the
+model/API, frozen evidence and memory budget. This does not complete M26/M27
+deployment/host qualification or establish online evaluation.
+
+Keep demo exports outside the sealed input bundle. Bound static JSON loading by
+one header/body deadline and an actual-byte cap. Distinguish the RRF comparison
+from locked-route output. A package-environment verification command checks
+receipt/source/export identity without loading model state or rerunning quality.
+
+**Evidence and consequences:** The [contract](SNAPSHOT_EXPLORER.md),
+[example data](../demo/data/showcase_v1.json) and
+[local validation](../benchmarks/demo/showcase_validation_v1.json) document the
+sample and checks. Every selected warm profile has one seen item; examples do
+not represent activity strata or measure accuracy. Static hosting and external
+verification require a later authorized step.

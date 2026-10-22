@@ -2,6 +2,13 @@
 
 **Updated:** 2026-10-22
 
+A [local static explorer](SNAPSHOT_EXPLORER.md) now presents four fixed warm
+references and one cold context from the original fold-9 bundle. Exported traces
+match sealed references; the UI browses precomputed Top-K, same-pool learned/RRF
+order and retrieval evidence. This begins demo work locally; M26/M27 deployment
+and host verification remain open, and M28 is not published. No model, API,
+quality result or resource budget changed.
+
 **Stage:** M25 completes the deployment design and free-first cost assessment.
 The current execution mode remains local; OCI A1 Always Free is a conditional
 Arm investigation. The offline assessor pins model/container/release/capacity/

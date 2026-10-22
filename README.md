@@ -248,6 +248,11 @@ without provisioning infrastructure or changing the recommendation service.
 
 ## Repository guide
 
+The [snapshot explorer](docs/SNAPSHOT_EXPLORER.md) provides a local static demo
+of five verified model-reference outputs, with learned/RRF ordering, Top-K and
+retrieval-source details. It browses precomputed historical results. Preview it
+with `python -m http.server 8765 --bind 127.0.0.1 --directory demo`.
+
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
 - [Benchmark report](docs/ROLLING_BENCHMARK_REPORT.md) and [result artifacts](benchmarks/rolling/): measured outcomes and per-fold data.
 - [Current architecture](docs/ARCHITECTURE_CURRENT.md) and [project status](docs/PROJECT_STATUS.md): implemented components and next steps.
