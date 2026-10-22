@@ -46,12 +46,17 @@ must not be presented as a before/after comparison with rolling.
 ## Current checks versus historical records
 
 The documentation gate's receipt is
-`benchmarks/release/project_documentation_validation_v1.json`, in the
+`benchmarks/release/project_documentation_validation_v2.json`, in the
 [release evidence directory](../benchmarks/release/). It binds the current docs,
 checker/tests, unchanged static assets and historical evidence pins. It performs
 no network access, model load, code-block execution or quality recomputation.
 The [verification report](PROJECT_VERIFICATION_REPORT.md) separately states
 which dependency, CLI, test and preview checks were actually executed.
+
+The v2 record binds explicit legacy JSON checkout rules and their regression
+tests. The original v1 record retains its Windows source identity; its first
+Linux CI run exposed missing CRLF rules. Neither record changes historical
+metrics or relaxes raw evidence hashes.
 
 Preserve older receipt bytes. A receipt may have a valid original checksum while
 its source fingerprint intentionally differs from today's tree. Use its declared

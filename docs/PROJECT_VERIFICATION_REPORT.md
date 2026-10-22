@@ -46,6 +46,36 @@ bundle/demo directory-symlink tests and the new file-symlink boundary test.
 No unexpected skip was accepted. The new documentation module has 50 unit cases
 within that full profile: 49 pass and one explicit Windows privilege skip.
 
+### Cross-platform checkout correction
+
+The first [hosted Linux run](https://github.com/Thazg/ecommerce-recsys/actions/runs/39764204273)
+at source `48a814f5511863b8e426e79704011a4eebec02dc` failed one unit case:
+the raw hash of `benchmarks/baseline/baseline_v1.json` differed after checkout.
+It passed 1,210 unit cases; fitted integration was not reached in that run.
+The Windows execution table above describes the original pass, not Linux success.
+
+Sixteen legacy JSON inputs have LF Git blobs and CRLF published byte identities.
+Seven already had explicit CRLF checkout rules; nine relied on an older Windows
+working tree. The correction adds only the nine missing per-file rules to
+`.gitattributes`. Frozen JSON files, inventory pins and model code remain
+unchanged. Evidence hashes are still checked against exact raw bytes.
+
+Two regression cases check all sixteen legacy byte pins after real Git index
+checkout with `core.autocrlf=false` and each default `core.eol=lf`/`crlf`.
+The updated source and documentation receive a distinct v2 integrity record;
+the original v1 record is preserved. Hosted Linux confirmation requires a new
+authorized push and successful CI execution.
+
+After the correction, the Windows full unit profile passed **1,210 cases with
+the same three privilege skips**. The documentation module now includes 52
+cases: 51 passed and one privilege skip. Ruff lint/format passed. A private
+checkout reconstructed from Git blobs with `core.autocrlf=false` and
+`core.eol=lf` matched all 65 raw evidence pins and passed the isolated
+standard-library checker. That checkout check ran on Windows, not Linux.
+Its current inventory contains 43 documents, 544 local links, 15 fragments
+and 35 external links counted without fetching. Fitted integration, model
+benchmarks and hosted deployment were not rerun for this checkout-only fix.
+
 Checks include source/evidence drift, malformed/duplicate/nonfinite JSON,
 incomplete inventories, escaping or ambiguous paths, symlinks, missing headings,
 source-line bounds, duplicate/Unicode headings, fenced/inline-code exclusions,
@@ -76,7 +106,7 @@ The original RSS failure and inspected-fold disclosure remain explicit. See the
 ## Repeat the integrity check
 
 ```sh
-python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_validation_v1.json
+python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_validation_v2.json
 ```
 
 This command recomputes documentation/source identity and evidence byte pins.

@@ -10,6 +10,10 @@ The [verification report](PROJECT_VERIFICATION_REPORT.md) separates actual
 execution results from receipt integrity. This delivers the M29 documentation
 scope ahead of full-model deployment; M26/M27 remain open.
 
+The initial documentation CI run exposed a legacy JSON checkout-byte mismatch.
+Explicit CRLF rules and checkout regressions address the cause locally; hosted
+CI confirmation of the correction is pending publication.
+
 [RecoLens](https://ecommerce-recsys.vercel.app/) is a public static explorer of
 four fixed warm references and one cold context from the original fold-9 bundle.
 Exported traces match sealed references; the UI browses precomputed Top-K,

@@ -35,6 +35,12 @@ four fixed warm references, one cold example and narrow activity sample.
 
 This standard-library command has no network or model access:
 
+Use a Git checkout with the committed `.gitattributes` rules. Sixteen legacy
+JSON records have LF Git blobs but published CRLF byte identities; explicit
+per-file checkout rules restore those exact bytes on Windows and Linux,
+independently of `core.autocrlf`. A source archive that bypasses Git checkout
+conversion is not equivalent for this raw-byte verification profile.
+
 ```sh
 python scripts/verify_project_documentation.py
 ```
@@ -49,7 +55,7 @@ files, symlinks, unsafe paths, duplicate JSON keys and nonfinite numbers.
 To compare against the completed documentation record:
 
 ```sh
-python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_validation_v1.json
+python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_validation_v2.json
 ```
 
 After an intentional source or documentation change, write a new record using
