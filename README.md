@@ -287,75 +287,28 @@ Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT
 
 ## Reproduce
 
-Use Python 3.13 from the repository root. Download the
-[Retailrocket dataset](https://www.kaggle.com/datasets/retailrocket/ecommerce-dataset)
-and extract `events.csv`, `category_tree.csv`, `item_properties_part1.csv` and
-`item_properties_part2.csv` into `data/raw/`. Alternatively, with an authenticated
-Kaggle CLI, run `python scripts/download_data.py`. Verify the files with
-`python scripts/download_data.py --verify-only`. The [dataset card](docs/DATASET_CARD.md)
-describes the source, schema and recorded input hashes. In a fresh checkout,
-prepare the shared rolling inputs and candidate reference with:
+Start with the [reproduction guide](docs/REPRODUCIBILITY.md). It distinguishes
+static preview, current documentation checks, fitted synthetic API tests,
+private Retailrocket bundle verification and historical experiment rebuilds.
+The [evidence index](docs/EVIDENCE_INDEX.md) maps claims to their original
+artifacts and reports; the [operations runbook](docs/OPERATIONS_RUNBOOK.md)
+records supported lifecycle, failure and recovery boundaries.
+
+A clone contains everything needed for the static explorer and documentation
+integrity check. From the repository root:
 
 ```sh
-python -m pip install -e ".[dev]" -r requirements/serving-test.txt -r requirements/release-test.txt
-python scripts/build_interactions.py
-python scripts/prepare_rolling_data.py
-python scripts/sweep_rolling.py --model item_knn
-python scripts/sweep_rolling.py --model als
-python scripts/benchmark_rolling.py
-python scripts/benchmark_rolling_cold.py
-python scripts/benchmark_candidates.py
-pytest
-ruff check .
-ruff format --check .
+python scripts/verify_project_documentation.py
+python -m http.server 8765 --bind 127.0.0.1 --directory demo
 ```
 
-The raw CSVs and generated Parquet files are not committed. If they reside
-elsewhere, pass `--input-path` and `--raw-dir` to the preparation command, and
-`--input-path` to the sweep and benchmark commands. The manifest records
-SHA-256 hashes for the processed interactions, raw item properties, and each
-generated fold file; runners verify those hashes before resuming.
+Open `http://127.0.0.1:8765/` and stop the preview with Ctrl+C. The checker has
+no network or model access and never executes commands from Markdown.
+For Python development use the `ecommerce-recsys` Python 3.13 environment and
+the test requirements in the guide. Node tests run separately from pytest.
 
-The published M10/M11 artifacts bind an earlier source tree. Later package
-additions changed their broad source fingerprints without changing their
-original implementation. To regenerate the frozen ranking Parquet inputs, use a
-separate full-history checkout at Git revision
-`c80cebee3378ea9af7c9757802fa40e2c8594ae2` with the matching processed
-interactions and rolling fold files. Copy the matching frozen benchmark JSON
-from the current checkout as well: their byte serialization is part of the
-checksum chain. Then run:
-
-```sh
-python -m pip install -e ".[dev]"
-python scripts/build_ranking_dataset.py --artifact .local/ranking_rebuild_v1.json
-python scripts/verify_ranking_dataset.py --quality benchmarks/ranking/m10_quality_v1.json --output .local/ranking_rebuild_audit_v1.json
-```
-
-Use a fresh scratch checkpoint for a rebuild; the published checkpoint resumes
-only when its generated files already exist and match their hashes. The verifier
-above checks rebuilt Parquet against the frozen file hashes. Preserve published
-JSON, whose checksums also bind the original measured costs. A different runtime
-or serialization may require a separately named experiment rather than a
-byte-identical reproduction.
-
-With those verified M10 Parquet files and published M10/M11 JSON artifacts
-available, return to the current checkout and reinstall its editable package
-before running the category-aware experiment:
-
-```sh
-python -m pip install -e ".[dev]"
-python scripts/benchmark_diversity.py development
-python scripts/benchmark_diversity.py lock
-python scripts/benchmark_diversity.py diagnostic
-python scripts/benchmark_model_policy.py development
-python scripts/benchmark_model_policy.py lock
-python scripts/benchmark_model_policy.py diagnostic
-python scripts/verify_model_policy.py
-```
-
-The runner verifies the historical source revision and upstream hashes; it
-does not rewrite frozen artifacts. The [ranking dataset](docs/RANKING_DATASET_REPORT.md),
-[learned ranking](docs/LEARNED_RANKING_REPORT.md), [re-ranking](docs/DIVERSITY_RERANKING_REPORT.md),
-[offline policy](docs/MODEL_POLICY_REPORT.md)
-and [sequential](docs/SEQUENTIAL_RECOMMENDATION_REPORT.md) reports give each
-experiment's commands, artifact paths and scope.
+Raw CSVs, prepared Parquet, model factors and private numerical archives are
+outside Git. Historical source fingerprints require the recorded revisions
+and matching inputs; a green fixture test or current docs check does not
+recompute their quality. See the [verification report](docs/PROJECT_VERIFICATION_REPORT.md)
+for checks actually executed and remaining prerequisites.

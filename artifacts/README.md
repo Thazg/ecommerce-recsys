@@ -22,8 +22,10 @@ Use the manifest digest in the validation receipt as an external integrity pin
 when loading the corresponding version. The bundle is an offline historical
 snapshot, not a deployed service or a source of post-cutoff user updates.
 Loading requires compatible package inference code, Python major/minor and
-exact library versions. A different OS/architecture emits a warning; full
-Linux parity and resource validation remain outstanding. The separate
+exact library versions. A different OS/architecture emits a warning. Separate
+[Linux qualification](../docs/LINUX_CONTAINER.md) verifies the original snapshot
+under its declared tolerance and isolation; this is not universal platform
+compatibility or compliance with the failed 2 GiB memory target. The separate
 [loader verification](../benchmarks/artifacts/fold09_loader_v1.json) preserves
 the original manifest and records the current reader's reference parity.
 
