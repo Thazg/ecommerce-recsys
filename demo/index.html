@@ -3,19 +3,52 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Explore verified Retailrocket recommendation outputs, candidate sources and learned ranking on a historical model snapshot.">
+  <meta name="description" content="RecoLens explores verified Retailrocket recommendation outputs, candidate sources and learned ranking on a historical model snapshot.">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
-  <title>Retailrocket — Recommendation explorer</title>
+  <title>RecoLens — Recommendation explorer</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" type="module"></script>
 </head>
 <body>
+  <!--
+  Inline icons adapted from Lucide (https://lucide.dev).
+  ISC License
+  Copyright (c) 2026 Lucide Icons and Contributors
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+  Download and help icons derive from Feather; MIT License:
+  Copyright (c) 2013-present Cole Bemis
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  -->
   <a class="skip" href="#explorer">Skip to explorer</a>
   <header class="masthead wrap">
-    <a class="wordmark" href="./" aria-label="Retailrocket explorer home">retailrocket<span> / explorer</span></a>
-    <a href="#method">How it works <span aria-hidden="true">↗</span></a>
+    <a class="wordmark" href="./" aria-label="RecoLens home">RecoLens</a>
+    <a class="icon-link" href="#method"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>How it works</a>
   </header>
   <main>
     <section class="intro wrap" aria-labelledby="title">
@@ -23,7 +56,7 @@
         <p class="eyebrow">E-commerce recommendation study</p>
         <h1 id="title">From candidates<br>to recommendations.</h1>
         <p class="lede">Explore how source-aware retrieval and learned ranking shape a list of products for a historical shopping profile.</p>
-        <a class="primary" href="#explorer">Explore the snapshot <span aria-hidden="true">↓</span></a>
+        <a class="primary" href="#explorer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 10 5-10 5L2 8Z"/><path d="m2 12 10 5 10-5M2 16l10 5 10-5"/></svg>Explore the snapshot</a>
       </div>
       <aside class="snapshot-note" aria-label="Demo scope">
         <span class="note-label">Precomputed model outputs</span>
@@ -73,9 +106,9 @@
     <section class="lineage wrap" aria-labelledby="lineage-title">
       <div><h2 id="lineage-title">Traceable to the model.</h2><p>Exported outputs retain their snapshot identity. No model weights, raw user IDs, future targets or credentials are delivered to this page.</p></div>
       <dl><div><dt>Model version</dt><dd id="model-version">See example data</dd></div><div><dt>Training cutoff (UTC)</dt><dd id="cutoff">See example data</dd></div><div><dt>Manifest SHA-256</dt><dd id="manifest" class="hash">See example data</dd></div></dl>
-      <a href="data/showcase_v1.json" download>Download example data <span aria-hidden="true">↗</span></a>
+      <a class="icon-link" href="data/showcase_v1.json" download><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download example data</a>
     </section>
   </main>
-  <footer class="wrap"><span>Retailrocket recommendation study</span><span>Static showcase · Historical data · No live inference</span></footer>
+  <footer class="wrap"><span>© 2026 Nguyen Tam Thang</span></footer>
 </body>
 </html>

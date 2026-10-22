@@ -17,18 +17,19 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 va
 [hidden] { display: none !important; }
 a { color: var(--navy); text-underline-offset: 4px; }
 a:hover { text-decoration-thickness: 2px; }
+.icon-link { display: inline-flex; align-items: center; gap: 10px; }
+.icon { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
 .wrap { width: min(1200px, calc(100% - 96px)); margin-inline: auto; }
 .masthead { display: flex; align-items: center; justify-content: space-between; min-height: 100px; gap: 24px; }
-.wordmark { font-weight: 700; font-size: 22px; letter-spacing: -0.8px; text-decoration: none; }
-.wordmark span { color: var(--muted); font-weight: 400; }
+.wordmark { color: var(--navy); font-weight: 600; font-size: 40px; line-height: 1; letter-spacing: -1.5px; text-decoration: none; }
 .masthead > a:last-child { font-size: 14px; padding-block: 12px; }
 .intro { display: grid; grid-template-columns: 1fr 320px; align-items: end; gap: 72px; padding-block: 64px 88px; }
 .eyebrow { color: var(--muted); font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 24px; }
 h1, h2, h3, p { margin-top: 0; }
 h1 { font: 500 clamp(44px, 5.1vw, 70px)/1.05 var(--serif); letter-spacing: -2.6px; margin-bottom: 28px; }
 .lede { max-width: 550px; font-size: 18px; color: var(--muted); margin-bottom: 28px; }
-.primary { display: inline-flex; align-items: center; justify-content: space-between; min-height: 48px; gap: 32px; padding: 12px 22px; background: var(--navy); color: var(--surface); text-decoration: none; }
+.primary { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; gap: 10px; padding: 12px 22px; background: var(--navy); color: var(--surface); text-decoration: none; }
 .primary:hover { background: var(--ink); }
 .snapshot-note { padding: 28px; color: var(--surface); background: var(--navy); }
 .note-label { display: block; font-size: 13px; margin-bottom: 24px; }
@@ -76,7 +77,7 @@ details[open] .expand { transform: rotate(45deg); }
 .lineage dt { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
 .lineage dd { font-size: 14px; }
 .hash { overflow-wrap: anywhere; font-family: monospace; }
-.lineage > a { display: inline-block; padding-block: 12px; }
+.lineage > a { display: inline-flex; padding-block: 12px; }
 footer { display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 13px; padding-block: 40px; margin-top: 48px !important; }
 .notice { padding: 20px; background: var(--tint); margin-top: 24px; }
 .skip { position: absolute; left: 16px; top: -100px; background: var(--surface); padding: 12px; z-index: 1; }
@@ -95,8 +96,7 @@ footer { display: flex; justify-content: space-between; gap: 24px; color: var(--
 @media (max-width: 640px) {
   .wrap { width: calc(100% - 40px); }
   .masthead { min-height: 80px; gap: 12px; }
-  .wordmark { font-size: 19px; }
-  .wordmark span { display: none; }
+  .wordmark { font-size: 32px; }
   .intro { grid-template-columns: 1fr; padding-block: 36px 48px; gap: 32px; }
   h1 { font-size: clamp(35px, 8.8vw, 48px); letter-spacing: -1.4px; }
   .lede { font-size: 16px; }
