@@ -2,6 +2,14 @@
 
 **Updated:** 2026-10-22
 
+Release documentation is available through the [reproduction guide](REPRODUCIBILITY.md),
+[evidence index](EVIDENCE_INDEX.md) and [operations runbook](OPERATIONS_RUNBOOK.md).
+The standard-library documentation gate checks local links/fragments, current
+source, released demo assets and independently pinned historical evidence.
+The [verification report](PROJECT_VERIFICATION_REPORT.md) separates actual
+execution results from receipt integrity. This delivers the M29 documentation
+scope ahead of full-model deployment; M26/M27 remain open.
+
 [RecoLens](https://ecommerce-recsys.vercel.app/) is a public static explorer of
 four fixed warm references and one cold context from the original fold-9 bundle.
 Exported traces match sealed references; the UI browses precomputed Top-K,
@@ -11,7 +19,8 @@ boundary. M28 demo work is partially delivered; M26/M27 full-model deployment
 and target-host verification remain open. No model, API, quality result or
 resource budget changed.
 
-**Stage:** M25 completes the deployment design and free-first cost assessment.
+**Stage:** static demo and release documentation, with full-model hosting pending.
+M25 completed the deployment design and free-first cost assessment.
 Full-model execution remains local; OCI A1 Always Free is a conditional
 Arm investigation. The offline assessor pins model/container/release/capacity/
 reliability evidence and records resource arithmetic, dated cost assumptions and

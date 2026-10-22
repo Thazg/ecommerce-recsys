@@ -64,16 +64,18 @@ JSON policy check cannot establish provider behavior.
 Use the `ecommerce-recsys` environment:
 
 ```powershell
-python scripts/verify_snapshot_demo.py --check benchmarks/demo/showcase_presentation_validation_v1.json
+python scripts/verify_project_documentation.py
 pytest tests/unit/test_static_demo_deployment.py
 node --test --test-isolation=none tests/web/test_snapshot_demo.mjs
 ```
 
 The Python policy tests check static-only settings, response-header intent and
 upload exclusions using Git's ignore semantics with representative private and
-nested canaries. They also require the current presentation receipt and public
-inventory to match. The original export and hosting receipts remain historical
-evidence. Git-based tests do not replace the Vercel CLI dry-run: the CLI
+nested canaries. They also require the documentation inventory's released asset
+pins and public inventory to match. The original presentation/export and hosting
+receipts retain their original broader source identities; the
+[documentation gate](REPRODUCIBILITY.md#check-the-current-documentation) binds
+subsequent documentation changes. Git-based tests do not replace the Vercel CLI dry-run: the CLI
 must include exactly the seven demo files and `vercel.json` before publication.
 Directory exceptions omit trailing slashes so the reviewed CLI version includes
 the parent directories during traversal. No previous model/demo receipt is

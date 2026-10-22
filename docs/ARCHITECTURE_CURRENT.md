@@ -35,6 +35,15 @@ data and source files outside the seven static assets. See the
 [hosting runbook](STATIC_DEMO_DEPLOYMENT.md). This is not a model server or a
 full-model cloud deployment adapter.
 
+The standard-library `scripts/verify_project_documentation.py` checks the
+explicit release inventory, local Markdown targets/fragments and immutable
+evidence bytes without package/model imports or network access. It separately
+checks all seven assets against the released presentation and fingerprints
+current documentation/source. Historical receipts retain their original
+documentation identities. [Reproducibility](REPRODUCIBILITY.md), the
+[evidence index](EVIDENCE_INDEX.md) and [operations runbook](OPERATIONS_RUNBOOK.md)
+describe input tiers, producer revisions and operational limits.
+
 ```text
 Retailrocket raw CSV
     -> build_interactions.py

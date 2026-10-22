@@ -1111,3 +1111,37 @@ re-exporting unchanged model outputs. The [hosting runbook](STATIC_DEMO_DEPLOYME
 records publication and external verification separately. Every selected warm
 profile has one seen item; examples do not represent activity strata or measure
 accuracy. Static publication does not qualify the full model for deployment.
+
+## Release documentation and reproducibility
+
+### ADR-37 — Separate current documentation integrity from historical measurements
+
+**Status:** Accepted — reader guides and a standard-library documentation gate
+implemented; full-model hosting and target-host verification remain open.
+
+**Context:** Public model, service and static-host records bind particular source
+revisions. Editing a guide legitimately changes a broad source fingerprint, but
+cannot change the original measurement. Fresh clones also lack raw datasets,
+prepared files and fitted bundles; fixture success cannot substitute for those
+inputs or for real-model quality evidence.
+
+**Decision:** Provide separate entry points for static browsing, documentation
+integrity, fitted synthetic integration, private-bundle verification and
+historical experiment reproduction. Index existing JSON evidence using explicit
+independent byte pins; retain original files unchanged. Bind current public docs
+and checker/test sources in new deterministic, non-overwriting documentation
+receipts. Check local links and heading fragments and retain the exact released
+static asset pins, while treating earlier documentation hashes as historical.
+
+The checker uses only the Python standard library. It must never execute code
+blocks, call cloud APIs, load a model, fit data or recalculate quality. Missing,
+ambiguous or escaping paths, symlinks, changed evidence/assets and malformed
+inventory/JSON fail closed. External links are counted, not fetched. Publication
+does not certify directory-entry power-loss durability or unobserved runtime work.
+
+**Evidence and consequences:** The [reproduction guide](REPRODUCIBILITY.md),
+[evidence index](EVIDENCE_INDEX.md), [operations runbook](OPERATIONS_RUNBOOK.md)
+and [verification report](PROJECT_VERIFICATION_REPORT.md) state each profile's
+inputs, executed checks and limits. Static publication, source integrity and
+original quality retain distinct evidence. M29 documentation does not complete
+M26/M27, relax the memory budget or make inspected later folds blind validation.

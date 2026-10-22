@@ -62,7 +62,7 @@ parents. Exporting examples cannot add files to the sealed bundle inventory.
 
 ```powershell
 python scripts/export_snapshot_demo.py --bundle artifacts/retailrocket-fold09-v1 --output .local/showcase-repeat.json
-python scripts/verify_snapshot_demo.py --check benchmarks/demo/showcase_presentation_validation_v1.json
+python scripts/verify_project_documentation.py
 pytest tests/unit/test_snapshot_demo.py tests/unit/test_snapshot_demo_verification.py
 node --test --test-isolation=none tests/web/test_snapshot_demo.mjs
 ```
@@ -79,13 +79,16 @@ downloadable data. This digest detects inconsistent content; it is not a signatu
 against someone able to replace both page and data. A static host still observes
 ordinary HTTP connection metadata; no hosting privacy guarantee is inferred.
 
-The [current presentation record](../benchmarks/demo/showcase_presentation_validation_v1.json)
-pins public files and export identity. The
+The [released presentation record](../benchmarks/demo/showcase_presentation_validation_v1.json)
+pins the deployed public files, export identity and original documentation. The
 [original validation](../benchmarks/demo/showcase_validation_v1.json) retains
-sealed-trace checks and the original interface identity. The public `--check` command verifies the
-receipt checksum, exact source inventory, current file fingerprints and exporter/
-inference identities without model loading. It checks recorded identity; it does
-not rerun test commands, browser review, sealed references or model quality.
+sealed-trace checks and original interface identity. These receipts keep their
+historical documentation fingerprints. The current
+[documentation gate](REPRODUCIBILITY.md#check-the-current-documentation) checks
+the released asset pins, evidence bytes and evolving docs without loading the
+model. It does not rerun browser review, sealed references or model quality.
+To check an original broad demo receipt, use its original source checkout;
+do not update that receipt's SHA fields for later documentation changes.
 Unlisted files/directories and symlinks in the served `demo/` directory are
 rejected, so private material cannot silently expand the verified public inventory.
 Historical local prototypes are private scratch material, not published releases.
