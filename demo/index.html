@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore verified Retailrocket recommendation outputs, candidate sources and learned ranking on a historical model snapshot.">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>Retailrocket — Recommendation explorer</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip" href="#explorer">Skip to explorer</a>
+  <header class="masthead wrap">
+    <a class="wordmark" href="./" aria-label="Retailrocket explorer home">retailrocket<span> / explorer</span></a>
+    <a href="#method">How it works <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section class="intro wrap" aria-labelledby="title">
+      <div>
+        <p class="eyebrow">E-commerce recommendation study</p>
+        <h1 id="title">From candidates<br>to recommendations.</h1>
+        <p class="lede">Explore how source-aware retrieval and learned ranking shape a list of products for a historical shopping profile.</p>
+        <a class="primary" href="#explorer">Explore the snapshot <span aria-hidden="true">↓</span></a>
+      </div>
+      <aside class="snapshot-note" aria-label="Demo scope">
+        <span class="note-label">Precomputed model outputs</span>
+        <p>Real snapshot results.<br>No live inference.</p>
+        <span>Four returning-user examples and one first-visit example. No account or personal information required.</span>
+      </aside>
+    </section>
+
+    <section id="explorer" class="explorer wrap" aria-labelledby="explorer-title">
+      <div class="section-heading"><h2 id="explorer-title">Explore a profile</h2><span id="snapshot-date">Historical snapshot</span></div>
+      <noscript><p class="notice">JavaScript is needed to switch examples. These are precomputed historical outputs, not a live API. Read the methodology below or download the <a href="data/showcase_v1.json">verified example data</a>.</p></noscript>
+      <p id="load-status" class="notice" role="status">Loading verified example data…</p>
+      <div id="workspace" class="workspace" hidden>
+        <aside class="controls">
+          <label for="profile">Example profile</label>
+          <select id="profile"></select>
+          <p id="profile-summary" class="muted"></p>
+          <dl class="profile-stats">
+            <div><dt>Previously seen items</dt><dd id="history-count"></dd></div>
+            <div><dt>Eligible candidates</dt><dd id="pool-count"></dd></div>
+          </dl>
+          <label for="ordering">Ordering</label>
+          <select id="ordering"></select>
+          <label for="limit">Products shown</label>
+          <select id="limit"><option value="5">Top 5</option><option value="10" selected>Top 10</option><option value="20">Top 20</option></select>
+          <p id="order-description" class="muted"></p>
+          <p class="scope">Changes browse stored outputs; they do not send an inference request.</p>
+        </aside>
+        <div class="results">
+          <div class="results-heading"><h3 id="results-title">Recommendations</h3><span id="route"></span></div>
+          <p id="result-status" class="sr-only" role="status" aria-atomic="true"></p>
+          <ol id="products" class="products" aria-label="Ordered product recommendations"></ol>
+          <p class="result-footnote">Item and category codes are anonymized dataset identifiers. Product names, prices and images are not available. Expand a row to inspect retrieval sources.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="method wrap" aria-labelledby="method-title">
+      <div><p class="eyebrow">Reading the output</p><h2 id="method-title">One snapshot.<br>Two stages.</h2></div>
+      <div class="method-copy">
+        <article><h3>01 / Retrieve eligible products</h3><p>For returning users, ItemKNN, ALS, category popularity, recent popularity and global popularity contribute candidates. Reciprocal rank fusion (RRF) combines the source lists into a pool of up to 1,000 unseen items.</p></article>
+        <article><h3>02 / Compare the ordering</h3><p>The learned ranker reorders the same pool using source evidence and cutoff-time interaction features. Switch to RRF to inspect retrieval order. First-visit recommendations use the locked recent-popularity route.</p></article>
+        <article><h3>What these examples establish</h3><p>The five exported traces reproduce sealed model references exactly. The four fixed returning-user examples each have one previously seen item; this is not a representative activity sample or an accuracy estimate. Source ranks show where retrieval systems placed an item; they are not probabilities or causal explanations.</p></article>
+        <article><h3>Evaluation and service limits</h3><p>The separate nine-fold rolling benchmark uses chronological development and post-selection diagnostics. Folds 5–9 are not blind validation. The complete API remains local; measured serving memory exceeds the 2 GiB project target. This static showcase does not establish production readiness.</p></article>
+      </div>
+    </section>
+    <section class="lineage wrap" aria-labelledby="lineage-title">
+      <div><h2 id="lineage-title">Traceable to the model.</h2><p>Exported outputs retain their snapshot identity. No model weights, raw user IDs, future targets or credentials are delivered to this page.</p></div>
+      <dl><div><dt>Model version</dt><dd id="model-version">See example data</dd></div><div><dt>Training cutoff (UTC)</dt><dd id="cutoff">See example data</dd></div><div><dt>Manifest SHA-256</dt><dd id="manifest" class="hash">See example data</dd></div></dl>
+      <a href="data/showcase_v1.json" download>Download example data <span aria-hidden="true">↗</span></a>
+    </section>
+  </main>
+  <footer class="wrap"><span>Retailrocket recommendation study</span><span>Static showcase · Historical data · No live inference</span></footer>
+</body>
+</html>
