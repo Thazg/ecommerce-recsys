@@ -1,0 +1,383 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-10-22T10:01:34.144385+00:00",
+  "scope": "Public RecoLens static release; no inference service deployed",
+  "provider": "Vercel",
+  "observed_plan": "hobby",
+  "cli_version": "65.1.0",
+  "production_url": "https://ecommerce-recsys.vercel.app/",
+  "deployment_id": "dpl_2SnU74ZP2cKjya7UAdzA9jPAz2YW",
+  "deployment_url": "https://ecommerce-recsys-6us4v5902-thazg-s-projects.vercel.app",
+  "frontend_source_commit": "12ba0685ec8903e5cf99645473d369d0f1e5c3e8",
+  "deployment_configuration_committed": true,
+  "source_ci": {
+    "conclusion": "success",
+    "headSha": "12ba0685ec8903e5cf99645473d369d0f1e5c3e8",
+    "url": "https://github.com/Thazg/ecommerce-recsys/actions/runs/39759091576"
+  },
+  "git_provider_connected": false,
+  "model_or_raw_data_uploaded": false,
+  "source_file_sha256_lf": {
+    ".gitignore": "bb83216bfad145123f753da684e8805ac1bf9b8a5ce198109af644cce360b57c",
+    ".vercelignore": "d8ee1fcf28a04298f17abb23437c91279e9fa7a8d4fe54eb64e5a4fcf9d9383e",
+    "README.md": "06bd514d461e6b563e6e0304c7b335467e23ad40d87ae842c7d102250eda0853",
+    "demo/app.js": "c67f9d2f9b31a75700f0e19014d8a8b1eb9e2871ccd9f5a780c001a004896701",
+    "demo/data/showcase_v1.json": "d8fba3b831f0eed97298d94f99409a6b8db543f0c1668d48822b1e314a2ff95a",
+    "demo/favicon.svg": "566305eb2668a350d5df1bd698dfd3251286d336d4e0b198d03f4fc33d527c3c",
+    "demo/index.html": "c20a2272761dbe09f1df9f2f273175806d4b26649e1f9bbd9d8d48aa6a6260a0",
+    "demo/schema.mjs": "3b28a53d41361c09d76fc471263b9a63ca136fa3edb5289c5f03ec802d7a82d8",
+    "demo/styles.css": "26d058518d2ea7381bc4a953a8dfca213c2173bc643c5651f7f7ad7ce84260e3",
+    "demo/transport.mjs": "f75f768e2f5e301d1efc8d2fc15b75527a6f59a10ba72fb9a669b24ee545b43b",
+    "docs/ARCHITECTURE_CURRENT.md": "2a998dde09610e591e5e5ada472f0c8f1ca2d65d071b52de7b9fb6677608d276",
+    "docs/DECISIONS.md": "59eccdb1761962aab29f98e5c45bedef7b82f2b8b81905a2a43cd00a355ac073",
+    "docs/DEPLOYMENT_DESIGN.md": "7a5659ebd594341b42f9f360a7fa3912abb53f4efe130366eba88944bb3f630c",
+    "docs/PROJECT_STATUS.md": "4cf71c72ddea649c6428072fe71fb51796b85ab37462ba974a967cafa8b75f5c",
+    "docs/SNAPSHOT_EXPLORER.md": "432fac3a9484da6866e323a8cf788020b320f9e89222b66504cbadf1d3547076",
+    "docs/STATIC_DEMO_DEPLOYMENT.md": "85147b49ce590e5b20632b6f4a6045f94d274cc0f026170e73b2fbf32b89703d",
+    "scripts/export_snapshot_demo.py": "82f769c22498fde17c59b4aed273da6656d0568efabd0da00c4bf58207a994ca",
+    "scripts/verify_snapshot_demo.py": "5bb37c72729ae72e470749aff491403a6d5decf3dbff76b707ea92ad91f4f9f9",
+    "tests/unit/test_snapshot_demo.py": "67d95277f46de5f15d80f8c21fa55e5b4ad59a32f4a12bc935e7a1a2950c37a3",
+    "tests/unit/test_snapshot_demo_verification.py": "a259c37186e05ae1896d7c4d5184389d93bdc129a0b263f962b8b023ffb0d8b9",
+    "tests/unit/test_static_demo_deployment.py": "9e1c5c7a04ec7bf6a4983926b0ad8d70456040a8b1c669bbd4f2607acc007837",
+    "tests/web/test_snapshot_demo.mjs": "44f076faa9fee6658d8e365a624f35f63a34af8056cac4e2d72a25183ccff989",
+    "vercel.json": "c0e6ccf33bf699ee88f4b1238a0d0ba204551c10e93b18045b58e3f1845de289"
+  },
+  "presentation_receipt": {
+    "path": "benchmarks/demo/showcase_presentation_validation_v1.json",
+    "sha256": "c3fa7276e8bc6addc5ad8d476dbbc710fda55ef863d2ccd4329f2a92b647471f"
+  },
+  "previous_hosted_release": {
+    "path": "benchmarks/demo/static_hosting_validation_v1.json",
+    "sha256": "62e414a2ac549a294cadf6af1cf832eb76fddf18b23cc4df9fbbe5327f838b02",
+    "deployment_id": "dpl_DZj9QZxGcQYtiQxZHrVygWQUWfNX"
+  },
+  "upload": {
+    "file_count": 8,
+    "total_bytes": 92833,
+    "files": [
+      {
+        "path": "demo/app.js",
+        "size": 4217,
+        "sha256": "c67f9d2f9b31a75700f0e19014d8a8b1eb9e2871ccd9f5a780c001a004896701"
+      },
+      {
+        "path": "demo/data/showcase_v1.json",
+        "size": 63496,
+        "sha256": "d8fba3b831f0eed97298d94f99409a6b8db543f0c1668d48822b1e314a2ff95a"
+      },
+      {
+        "path": "demo/favicon.svg",
+        "size": 177,
+        "sha256": "566305eb2668a350d5df1bd698dfd3251286d336d4e0b198d03f4fc33d527c3c"
+      },
+      {
+        "path": "demo/index.html",
+        "size": 8611,
+        "sha256": "c20a2272761dbe09f1df9f2f273175806d4b26649e1f9bbd9d8d48aa6a6260a0"
+      },
+      {
+        "path": "demo/schema.mjs",
+        "size": 5587,
+        "sha256": "3b28a53d41361c09d76fc471263b9a63ca136fa3edb5289c5f03ec802d7a82d8"
+      },
+      {
+        "path": "demo/styles.css",
+        "size": 7712,
+        "sha256": "26d058518d2ea7381bc4a953a8dfca213c2173bc643c5651f7f7ad7ce84260e3"
+      },
+      {
+        "path": "demo/transport.mjs",
+        "size": 2158,
+        "sha256": "f75f768e2f5e301d1efc8d2fc15b75527a6f59a10ba72fb9a669b24ee545b43b"
+      },
+      {
+        "path": "vercel.json",
+        "size": 875,
+        "sha256": "c0e6ccf33bf699ee88f4b1238a0d0ba204551c10e93b18045b58e3f1845de289"
+      }
+    ]
+  },
+  "http_checks": {
+    "verified_at_utc": "2026-10-22T09:59:47.470465+00:00",
+    "source_commit": "12ba0685ec8903e5cf99645473d369d0f1e5c3e8",
+    "public_without_auth": true,
+    "assets_matched": 7,
+    "private_paths_404": 8,
+    "https_redirect_verified": true,
+    "checks": [
+      {
+        "path": "/",
+        "status": 200,
+        "bytes": 8611,
+        "sha256": "c20a2272761dbe09f1df9f2f273175806d4b26649e1f9bbd9d8d48aa6a6260a0",
+        "mime": "text/html",
+        "security_headers_match_configuration": true
+      },
+      {
+        "path": "/styles.css",
+        "status": 200,
+        "bytes": 7712,
+        "sha256": "26d058518d2ea7381bc4a953a8dfca213c2173bc643c5651f7f7ad7ce84260e3",
+        "mime": "text/css",
+        "security_headers_match_configuration": true
+      },
+      {
+        "path": "/app.js",
+        "status": 200,
+        "bytes": 4217,
+        "sha256": "c67f9d2f9b31a75700f0e19014d8a8b1eb9e2871ccd9f5a780c001a004896701",
+        "mime": "application/javascript",
+        "security_headers_match_configuration": true
+      },
+      {
+        "path": "/schema.mjs",
+        "status": 200,
+        "bytes": 5587,
+        "sha256": "3b28a53d41361c09d76fc471263b9a63ca136fa3edb5289c5f03ec802d7a82d8",
+        "mime": "application/javascript",
+        "security_headers_match_configuration": true
+      },
+      {
+        "path": "/transport.mjs",
+        "status": 200,
+        "bytes": 2158,
+        "sha256": "f75f768e2f5e301d1efc8d2fc15b75527a6f59a10ba72fb9a669b24ee545b43b",
+        "mime": "application/javascript",
+        "security_headers_match_configuration": true
+      },
+      {
+        "path": "/favicon.svg",
+        "status": 200,
+        "bytes": 177,
+        "sha256": "566305eb2668a350d5df1bd698dfd3251286d336d4e0b198d03f4fc33d527c3c",
+        "mime": "image/svg+xml",
+        "security_headers_match_configuration": true
+      },
+      {
+        "path": "/data/showcase_v1.json",
+        "status": 200,
+        "bytes": 63496,
+        "sha256": "d8fba3b831f0eed97298d94f99409a6b8db543f0c1668d48822b1e314a2ff95a",
+        "mime": "application/json",
+        "security_headers_match_configuration": true
+      },
+      {
+        "path": "/AGENTS.md",
+        "status": 404
+      },
+      {
+        "path": "/.local/",
+        "status": 404
+      },
+      {
+        "path": "/data/raw/events.csv",
+        "status": 404
+      },
+      {
+        "path": "/model_manifest.json",
+        "status": 404
+      },
+      {
+        "path": "/v1/recommendations",
+        "status": 404
+      },
+      {
+        "path": "/missing-asset.js",
+        "status": 404
+      },
+      {
+        "path": "/vercel.json",
+        "status": 404
+      },
+      {
+        "path": "/.env.local",
+        "status": 404
+      }
+    ]
+  },
+  "browser_checks": {
+    "checks": [
+      {
+        "profile": "profile-01",
+        "order": "learned",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "learned",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "learned",
+        "k": 20,
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "rrf",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "rrf",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "profile-01",
+        "order": "rrf",
+        "k": 20,
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "learned",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "learned",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "learned",
+        "k": 20,
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "rrf",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "rrf",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "profile-02",
+        "order": "rrf",
+        "k": 20,
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "learned",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "learned",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "learned",
+        "k": 20,
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "rrf",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "rrf",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "profile-03",
+        "order": "rrf",
+        "k": 20,
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "learned",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "learned",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "learned",
+        "k": 20,
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "rrf",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "rrf",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "profile-04",
+        "order": "rrf",
+        "k": 20,
+        "passed": true
+      },
+      {
+        "profile": "cold-start",
+        "order": "recent",
+        "k": 5,
+        "passed": true
+      },
+      {
+        "profile": "cold-start",
+        "order": "recent",
+        "k": 10,
+        "passed": true
+      },
+      {
+        "profile": "cold-start",
+        "order": "recent",
+        "k": 20,
+        "passed": true
+      }
+    ],
+    "mobile": {
+      "brand": "RecoLens",
+      "fontSize": "32px",
+      "overflow": false,
+      "width": 375
+    },
+    "evidence_expansion_verified": true,
+    "wordmark": "RecoLens",
+    "footer": "\u00a9 2026 Nguyen Tam Thang",
+    "captured_console_warnings_or_errors": []
+  },
+  "rollback_exercised": false,
+  "full_model_deployment_eligible": false,
+  "limitations": [
+    "Five precomputed examples, not live inference.",
+    "Browser checks do not establish accessibility certification or a workload SLO.",
+    "Prior deployment retained; rollback not exercised.",
+    "Static hosting does not qualify full-model memory, latency or deployment."
+  ],
+  "content_sha256": "5b122ff1c92a8089995bb370e5e89ea6960d9ad65295bcc01af043f37d1aeda8"
+}
