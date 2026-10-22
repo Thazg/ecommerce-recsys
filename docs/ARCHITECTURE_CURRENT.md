@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-21
+**Updated:** 2026-10-22
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -19,7 +19,9 @@ private qualification lane remain separate from the model/service layers;
 the latter has not been configured or executed remotely. Separate local
 [load and recovery verification](SERVICE_RELIABILITY_REPORT.md) exercises the
 unchanged snapshot under fixed sustained/burst traffic, resource occupancy and
-lifecycle faults; it does not establish deployment eligibility.
+lifecycle faults; it does not establish deployment eligibility. A separate
+[deployment assessment](DEPLOYMENT_DESIGN.md) now records the conditional hosting
+and cost decision; its proposed cloud/gateway components are not implemented.
 
 ```text
 Retailrocket raw CSV
@@ -518,6 +520,23 @@ same-model journal recovery/rollback exercise, with independently pinned child
 evidence. Each completed step requires exact owned cleanup. The
 [report](SERVICE_RELIABILITY_REPORT.md) separates measured targets from functional
 completion and retains the unmet 2 GiB RSS and target-host limitations.
+
+## Deployment decision boundary
+
+The [offline assessor](../scripts/assess_deployment.py) uses only bounded JSON
+inputs and standard-library arithmetic. Five immutable model/operational receipts,
+new source, a dated hosting catalog and policy bind a deterministic, non-overwriting
+assessment. It derives process RSS, component storage and container/host
+reservation floors, distinguishes known cost subtotals from unknown bills and
+retains explicit deployment blockers. It performs no networking, model loading,
+cloud-account action or service configuration change.
+
+Local execution remains current. A conditional free Arm host requires separate
+image/numerical and native-host qualification. The [design](DEPLOYMENT_DESIGN.md)
+specifies future private delivery, a gateway sharing the loopback API namespace,
+maintenance stop/start and off-host recovery requirements. None is a deployed
+adapter, public router or memory-budget waiver. The frozen M21-M24 qualification
+paths and their receipts remain unchanged.
 
 ## Model engineering and trade-offs
 

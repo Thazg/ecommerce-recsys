@@ -1,8 +1,16 @@
 # Project status
 
-**Updated:** 2026-10-21
+**Updated:** 2026-10-22
 
-**Stage:** M24 completes a fixed local load, failure and recovery matrix on the
+**Stage:** M25 completes the deployment design and free-first cost assessment.
+The current execution mode remains local; OCI A1 Always Free is a conditional
+Arm investigation. The offline assessor pins model/container/release/capacity/
+reliability evidence and records resource arithmetic, dated cost assumptions and
+deployment blockers. No cloud resources or public gateway were created, and no
+host is approved. Architecture, account, exposure, target-host and 2 GiB RSS
+gates remain open.
+
+M24 completes a fixed local load, failure and recovery matrix on the
 unchanged Linux snapshot: sustained/burst traffic, bounded memory occupancy,
 observed disconnect/in-flight SIGTERM, three startup-file rejections and fresh
 same-model release recovery/rollback. Full Windows/Linux gates and original-model
@@ -80,6 +88,7 @@ diagnostics, not blind validation.
 | M22 controlled release | Hashed CPU CI lock, immutable Action pins, strict profile evidence, private real-lane prerequisites and actual local promotion/recovery/crash-rollback checks |
 | M23 HTTP capacity | Four fixed open-loop workloads, per-outcome/cohort/cache timing, sampled resources, reference parity and checkpointed owned cleanup |
 | M24 local reliability | Fixed sustained/burst/pressure workloads, witnessed lifecycle and startup faults, explicit fixture cancellation/failure tests and fresh journal-recovery/rollback evidence |
+| M25 deployment design | Source-pinned offline hosting/resource/cost assessment, conditional free-tier choice and proposed delivery/exposure/recovery contract; no infrastructure provisioned |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -429,12 +438,28 @@ symlink skip) and 1,073 Linux unit + 11 fitted cases (no skips). Memory and load
 budgets are reported as outcomes; the 2 GiB RSS target remains unmet. No model,
 quota, image, cache-default or public-exposure change was adopted.
 
+## M25 deployment design and cost
+
+The [design](DEPLOYMENT_DESIGN.md), [hosting catalog](../benchmarks/deployment/hosting_options_v1.json)
+and [assessment](../benchmarks/deployment/deployment_assessment_v1.json) retain
+local-only execution and identify OCI Arm as a conditional free investigation.
+The known subtotals distinguish free allowances from paid memberships and hosts;
+account entitlement, actual capacity and all-in costs remain unverified.
+The planning floors are 6 GiB for one 4-GiB container plus host reserve and
+10 GiB for two such reservations. These do not revise the 2-GiB process target.
+
+Artifact/secrets delivery, TLS/gateway isolation, maintenance release/rollback
+and the target-host gate checklist are documented designs. They are not installed
+cloud components. The existing amd64 image, service, model and earlier evidence
+remain unchanged. The assessor needs no cloud credentials, Docker or model fit.
+
 ## Next milestone
 
-M25 in the [roadmap](ROADMAP.md) defines a deployment design and cost decision
-using the measured resource, workload and recovery evidence. Representative
-production traffic, memory-budget compliance, longer load/failure envelopes,
-native target-host recovery and deployment objectives remain open.
+M26 in the [roadmap](ROADMAP.md) defines controlled deployment. It requires an
+approved/available target, architecture and process-memory qualification,
+implemented exposure/delivery controls and explicit operator authorization.
+The current free-first decision does not approve provisioning or waive budgets.
+M27 retains external workload, telemetry and native target-host recovery checks.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
 as production model-selection claims.

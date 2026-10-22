@@ -1033,3 +1033,39 @@ A ten-minute constructed run is not a production soak/SLO. Memory occupancy is
 not actual OOM/CPU exhaustion, a wire disconnect is not proof of ASGI cancellation,
 and same-model isolated rollback is not public routing, native-host or power-loss
 recovery. Hosting decisions must retain these limits and address the RSS budget.
+
+## M25 — Deployment design and cost decision
+
+### ADR-35 — Keep local execution while evaluating conditional free hosting
+
+**Status:** Accepted — offline design and cost/resource assessment implemented;
+no cloud host approved or provisioned.
+
+**Context:** The qualified amd64 snapshot exceeds the 2-GiB process target and
+has only local reference-workload and isolated release evidence. Free compute
+allowances differ in memory, architecture, account conditions and subscription
+cost. A larger machine cannot establish readiness or waive the charter budget.
+
+**Decision:** Prefer recurring-free options. Keep current local execution and
+investigate OCI A1 Always Free only if actual entitlement/capacity and a separate
+Arm build/parity gate can be established. Record dated, source-linked known USD
+subtotals and exclusions; subscription-backed compute is a paid reference.
+Use a 4-GiB container reservation and 2-GiB unmeasured host reserve for planning,
+with maintenance stop/start as the default release design. Keep the existing
+RSS target, model, quotas, cache defaults and upstream receipts unchanged.
+
+An offline assessor pins five receipts plus new source/catalog/policy, validates
+shared identities and derives reproducible cost/resource/blocker output without
+cloud APIs or credentials. Public exposure needs a new bounded/authenticated TLS
+gateway and a supported loopback network-namespace contract. Artifact/secret
+delivery, target-host recovery, monitoring and external workload qualification
+require separate implementation and evidence. Free-account verification is not
+permission to upgrade an account, purchase a host or expose the service.
+
+**Evidence and consequences:** The [design](DEPLOYMENT_DESIGN.md),
+[catalog](../benchmarks/deployment/hosting_options_v1.json) and
+[assessment](../benchmarks/deployment/deployment_assessment_v1.json) record the
+conditional choice and arithmetic. Deployment eligibility remains false. A
+free-tier no-go retains local execution; paid options or model/budget changes
+require a new explicit decision. Existing offline diagnostics and local
+operational evidence gain no cloud, availability or business-impact claim.

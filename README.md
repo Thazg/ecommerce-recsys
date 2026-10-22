@@ -236,6 +236,16 @@ fixture tests separately cover cancelled waiters and model/executor failures.
 The unchanged model/image remain isolated; operational completion does not
 waive the 2 GiB RSS target or establish production readiness.
 
+## Deployment design
+
+The [deployment design](docs/DEPLOYMENT_DESIGN.md) evaluates hosting against the
+measured memory, workload and recovery limits. It retains local execution and
+identifies a conditional OCI Arm free-tier investigation. No cloud host is
+approved: architecture/target-host qualification, exposure and delivery controls,
+account eligibility and the unmet 2 GiB RSS target remain release gates.
+A source-pinned offline assessor reproduces the resource and dated cost decision
+without provisioning infrastructure or changing the recommendation service.
+
 ## Repository guide
 
 - [Rolling evaluation protocol](docs/ROLLING_EVALUATION_PROTOCOL.md): cohorts, time boundaries, selection rule, and validity limits.
@@ -260,6 +270,7 @@ waive the 2 GiB RSS target or establish production readiness.
 - [HTTP capacity assessment](docs/HTTP_CAPACITY_REPORT.md): fixed offered-load controls, latency/rejection/resource scopes, parity and remaining budget gates.
 - [Local reliability assessment](docs/SERVICE_RELIABILITY_REPORT.md): sustained/burst load, resource occupancy, lifecycle faults and fresh recovery with explicit scope limits.
 - [Controlled release runbook](docs/RELEASE_WORKFLOW.md): CI profiles, private-runner prerequisites, immutable local release identities and verified recovery/rollback.
+- [Deployment design and cost](docs/DEPLOYMENT_DESIGN.md): conditional free-host options, resource arithmetic, artifact/secrets delivery, exposure and remaining qualification gates.
 
 Earlier leave-last-out experiments remain in the [baseline](docs/BASELINE_REPORT.md) and [MF](docs/MF_EXPERIMENT_REPORT.md) reports as historical evidence. Their scores answer a different evaluation question and should not be compared directly with the rolling results.
 
