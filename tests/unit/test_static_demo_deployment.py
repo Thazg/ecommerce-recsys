@@ -143,11 +143,9 @@ def test_local_vercel_link_metadata_is_gitignored():
 
 
 def test_current_demo_inventory_and_provenance_are_verified():
-    from scripts.verify_snapshot_demo import verify
+    from scripts.verify_project_documentation import inspect_project
 
-    assert verify(ROOT, ROOT / "benchmarks/demo/showcase_presentation_validation_v1.json")[
-        "identity_verified"
-    ]
+    assert inspect_project(ROOT)["documentation_integrity_passed"]
     actual = {
         path.relative_to(ROOT).as_posix() for path in (ROOT / "demo").rglob("*") if path.is_file()
     }
