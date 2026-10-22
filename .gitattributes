@@ -10,8 +10,17 @@ requirements/*.txt text eol=lf
 # Preserve exact serialized artifact bytes used by checksum and selection-lock chains.
 benchmarks/**/*.json -text
 # Existing checksum chains use CRLF serialization for these frozen inputs.
+benchmarks/baseline/baseline_v1.json text eol=crlf
+benchmarks/item_knn/item_knn_v1.json text eol=crlf
+benchmarks/mf/als_experiments_v1.json text eol=crlf
+benchmarks/mf/als_final_v1.json text eol=crlf
+benchmarks/popularity/global_popularity_v1.json text eol=crlf
+benchmarks/popularity/recent_popularity_v1.json text eol=crlf
 benchmarks/rolling/als_sweep.json text eol=crlf
+benchmarks/rolling/cold.json text eol=crlf
 benchmarks/rolling/item_knn_sweep.json text eol=crlf
+benchmarks/rolling/manifest.json text eol=crlf
+benchmarks/rolling/results.json text eol=crlf
 benchmarks/ranking/m10_quality_v1.json text eol=crlf
 benchmarks/ranking/m10_feature_audit_v1.json text eol=crlf
 benchmarks/ranking/ranker_development_v1.json text eol=crlf

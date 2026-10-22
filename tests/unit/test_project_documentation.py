@@ -4,6 +4,7 @@ import copy
 import json
 import os
 import shutil
+import subprocess
 
 import pytest
 
@@ -231,6 +232,65 @@ def test_crlf_normalization_preserves_source_identity_but_not_evidence_pins(chec
     path = root / "README.md"
     path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
     assert before == release.inspect_project(root)
+
+
+@pytest.mark.parametrize("checkout_eol", ["lf", "crlf"])
+def test_git_checkout_preserves_legacy_evidence_byte_pins(tmp_path, checkout_eol):
+    # These published inputs have LF Git blobs and CRLF checksum identities.
+    names = (
+        "baseline/baseline_v1.json",
+        "item_knn/item_knn_v1.json",
+        "mf/als_experiments_v1.json",
+        "mf/als_final_v1.json",
+        "popularity/global_popularity_v1.json",
+        "popularity/recent_popularity_v1.json",
+        "ranking/m10_feature_audit_v1.json",
+        "ranking/m10_quality_v1.json",
+        "ranking/ranker_development_v1.json",
+        "ranking/ranker_diagnostic_v1.json",
+        "ranking/ranker_selection_lock_v1.json",
+        "rolling/als_sweep.json",
+        "rolling/cold.json",
+        "rolling/item_knn_sweep.json",
+        "rolling/manifest.json",
+        "rolling/results.json",
+    )
+    root = tmp_path / "git-checkout"
+    root.mkdir()
+
+    def git(*args):
+        subprocess.run(
+            [
+                "git",
+                "-c",
+                "core.autocrlf=false",
+                "-c",
+                f"core.eol={checkout_eol}",
+                "-c",
+                "core.safecrlf=false",
+                *args,
+            ],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            timeout=15,
+        )
+
+    git("init", "--quiet")
+    shutil.copyfile(release.ROOT / ".gitattributes", root / ".gitattributes")
+    pins = release.read_json(release.ROOT, release.INVENTORY)["evidence"]
+    for name in names:
+        relative = f"benchmarks/{name}"
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes((release.ROOT / relative).read_bytes().replace(b"\r\n", b"\n"))
+    git("add", "--", ".gitattributes", "benchmarks")
+    for name in names:
+        (root / "benchmarks" / name).unlink()
+    git("checkout-index", "--all", "--force")
+    for name in names:
+        relative = f"benchmarks/{name}"
+        assert release.sha(root, relative) == pins[relative], relative
 
 
 def test_publish_is_non_overwriting_and_cleans_pending_file(checkout):
