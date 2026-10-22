@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-22",
+  "currency": "USD",
+  "sources": {
+    "oracle-free": "https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm",
+    "google-free": "https://docs.cloud.google.com/free/docs/free-cloud-features",
+    "google-e2": "https://docs.cloud.google.com/compute/docs/general-purpose-machines#e2_shared-core",
+    "hf-spaces": "https://huggingface.co/docs/hub/en/spaces-overview",
+    "hf-pricing": "https://huggingface.co/pricing",
+    "do-pricing": "https://www.digitalocean.com/pricing/droplets"
+  },
+  "options": [
+    {
+      "id": "existing-local",
+      "label": "Existing qualified local snapshot",
+      "region": "Owned machine; local access",
+      "architecture": "amd64",
+      "ram_bytes": null,
+      "billing_class": "existing_local",
+      "monthly_components_cents": {"incremental_cloud_compute": 0},
+      "source_ids": [],
+      "conditions": ["Owned hardware and local runtime remain available"],
+      "exclusions": ["Hardware", "Electricity", "Internet", "Operator time"],
+      "risks": ["No hosted public endpoint", "No availability guarantee"]
+    },
+    {
+      "id": "oracle-a1-free",
+      "label": "OCI Ampere A1 Always Free, 2 OCPU / 12 GB",
+      "region": "Tenancy home region; capacity unconfirmed",
+      "architecture": "arm64",
+      "ram_bytes": 12000000000,
+      "billing_class": "conditional_free",
+      "monthly_components_cents": {"compute_within_allowance": 0, "boot_and_private_artifacts_within_allowance": 0},
+      "source_ids": ["oracle-free"],
+      "conditions": ["Always Free eligibility and remaining tenancy allowance verified", "Home-region capacity available", "No paid account upgrade or out-of-allowance resources", "Storage and transfer remain within verified free allowances"],
+      "exclusions": ["Overage", "Optional domain", "Taxes on any paid services", "Operator time"],
+      "risks": ["Arm image and numerical libraries unqualified", "Idle instances may be reclaimed", "Capacity is not reserved", "Account and billing eligibility unverified"]
+    },
+    {
+      "id": "oracle-amd-micro-free",
+      "label": "OCI AMD E2.1.Micro Always Free, 1 GB",
+      "region": "Tenancy home region; capacity unconfirmed",
+      "architecture": "amd64",
+      "ram_bytes": 1000000000,
+      "billing_class": "conditional_free",
+      "monthly_components_cents": {"compute_within_allowance": 0},
+      "source_ids": ["oracle-free"],
+      "conditions": ["Always Free eligibility, capacity and remaining allowances verified"],
+      "exclusions": ["Overage", "Optional domain", "Operator time"],
+      "risks": ["Insufficient memory for the unchanged snapshot", "Idle reclamation"]
+    },
+    {
+      "id": "google-e2-micro-free",
+      "label": "Google Compute Engine e2-micro free allowance, 1 GB",
+      "region": "Eligible US regions only",
+      "architecture": "amd64",
+      "ram_bytes": 1000000000,
+      "billing_class": "conditional_free",
+      "monthly_components_cents": {"compute_within_allowance": 0},
+      "source_ids": ["google-free", "google-e2"],
+      "conditions": ["Eligible billing account, region, disk and monthly usage verified"],
+      "exclusions": ["External IPv4", "Transfer overage", "Noneligible disks or regions", "Optional domain", "Taxes", "Operator time"],
+      "risks": ["Insufficient memory for the unchanged snapshot", "Fractional shared CPU", "Compute allowance is not an all-inclusive zero bill"]
+    },
+    {
+      "id": "hf-cpu-basic-pro",
+      "label": "Hugging Face Docker Space CPU Basic with personal PRO",
+      "region": "Provider assigned; unconfirmed",
+      "architecture": "unconfirmed",
+      "ram_bytes": 16000000000,
+      "billing_class": "subscription",
+      "monthly_components_cents": {"personal_pro_membership": 900, "cpu_basic_hourly_compute": 0},
+      "source_ids": ["hf-spaces", "hf-pricing"],
+      "conditions": ["Current paid membership and Space creation eligibility verified"],
+      "exclusions": ["Storage upgrades", "Hardware upgrades", "Taxes", "Operator time"],
+      "risks": ["Not a zero-subscription option", "Ephemeral disk and sleep/restart lifecycle", "Current network-none release controller is not a Spaces deployment adapter"]
+    },
+    {
+      "id": "do-basic-8gib",
+      "label": "DigitalOcean Basic Regular, 4 vCPU / 8 GiB",
+      "region": "Chosen region and plan availability unconfirmed",
+      "architecture": "amd64",
+      "ram_bytes": 8589934592,
+      "billing_class": "paid",
+      "monthly_components_cents": {"monthly_compute_cap_with_included_disk_and_transfer": 4800},
+      "source_ids": ["do-pricing"],
+      "conditions": ["Explicit paid-host approval and regional availability verified"],
+      "exclusions": ["Backup service", "Transfer overage", "Optional domain", "Taxes", "Operator time"],
+      "risks": ["Paid reference only", "Shared CPU does not transfer local latency results", "Insufficient for two 4 GiB reservations plus 2 GiB host reserve"]
+    }
+  ]
+}
