@@ -1,0 +1,2801 @@
+{
+  "schema_version": 1,
+  "mode": "precomputed_model_outputs",
+  "model": {
+    "version": "retailrocket-fold09-v1",
+    "manifest_sha256": "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe",
+    "cutoff_ms": 1441216678608,
+    "fold": 9
+  },
+  "provenance": {
+    "exporter_sha256_lf": "82f769c22498fde17c59b4aed273da6656d0568efabd0da00c4bf58207a994ca",
+    "inference_code_sha256": "275e4d65ca7bc0414f8ae61900949b6ac29a144c5d28b3cafcda6db4737220ce",
+    "sealed_references_sha256": "83bd9e573027a95c7172b9ececf135f8d184347db525a9559d10adf454f5fe96",
+    "selection": "fixed reference positions 0,25,50,75 plus cold; no target inspection",
+    "reference_trace_parity": true,
+    "examples": 5,
+    "quality_recomputed": false,
+    "live_inference": false
+  },
+  "profiles": [
+    {
+      "id": "profile-01",
+      "label": "Snapshot profile 01",
+      "cohort": "warm",
+      "route": "hybrid_learned",
+      "history_items": 1,
+      "candidate_count": 1000,
+      "orders": {
+        "learned": [
+          "379739",
+          "148545",
+          "460034",
+          "385261",
+          "109474",
+          "294620",
+          "33243",
+          "453487",
+          "167060",
+          "428065",
+          "365166",
+          "244756",
+          "47057",
+          "321667",
+          "98078",
+          "27159",
+          "107503",
+          "305177",
+          "27994",
+          "290749"
+        ],
+        "rrf": [
+          "257040",
+          "312728",
+          "315543",
+          "187946",
+          "247909",
+          "12217",
+          "461686",
+          "384302",
+          "219512",
+          "869",
+          "109618",
+          "320130",
+          "5411",
+          "231482",
+          "370653",
+          "441668",
+          "96924",
+          "7943",
+          "243355",
+          "190000"
+        ]
+      },
+      "items": [
+        {
+          "item_id": "257040",
+          "category_id": "683",
+          "retrieval_rank": 1,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 18
+            },
+            {
+              "source": "global_popularity",
+              "rank": 5
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 14
+            }
+          ]
+        },
+        {
+          "item_id": "312728",
+          "category_id": "1098",
+          "retrieval_rank": 2,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 15
+            },
+            {
+              "source": "global_popularity",
+              "rank": 21
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 34
+            }
+          ]
+        },
+        {
+          "item_id": "315543",
+          "category_id": "1279",
+          "retrieval_rank": 3,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 8
+            },
+            {
+              "source": "global_popularity",
+              "rank": 26
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 85
+            }
+          ]
+        },
+        {
+          "item_id": "187946",
+          "category_id": "1393",
+          "retrieval_rank": 4,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 1
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "item_id": "247909",
+          "category_id": "491",
+          "retrieval_rank": 5,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 1
+            },
+            {
+              "source": "global_popularity",
+              "rank": 52
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 82
+            }
+          ]
+        },
+        {
+          "item_id": "12217",
+          "category_id": "1375",
+          "retrieval_rank": 6,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 11
+            },
+            {
+              "source": "global_popularity",
+              "rank": 51
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 48
+            }
+          ]
+        },
+        {
+          "item_id": "461686",
+          "category_id": "1037",
+          "retrieval_rank": 7,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 2
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "item_id": "384302",
+          "category_id": "5",
+          "retrieval_rank": 8,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 528
+            },
+            {
+              "source": "global_popularity",
+              "rank": 10
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 6
+            }
+          ]
+        },
+        {
+          "item_id": "219512",
+          "category_id": "5",
+          "retrieval_rank": 9,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 7
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 3
+            }
+          ]
+        },
+        {
+          "item_id": "869",
+          "category_id": "1650",
+          "retrieval_rank": 10,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 16
+            },
+            {
+              "source": "global_popularity",
+              "rank": 66
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 46
+            }
+          ]
+        },
+        {
+          "item_id": "109618",
+          "category_id": "921",
+          "retrieval_rank": 11,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 6
+            },
+            {
+              "source": "global_popularity",
+              "rank": 62
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 83
+            }
+          ]
+        },
+        {
+          "item_id": "320130",
+          "category_id": "707",
+          "retrieval_rank": 12,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 17
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 4
+            }
+          ]
+        },
+        {
+          "item_id": "5411",
+          "category_id": "789",
+          "retrieval_rank": 13,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 3
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 21
+            }
+          ]
+        },
+        {
+          "item_id": "231482",
+          "category_id": "1051",
+          "retrieval_rank": 14,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 31
+            },
+            {
+              "source": "global_popularity",
+              "rank": 54
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 66
+            }
+          ]
+        },
+        {
+          "item_id": "370653",
+          "category_id": "82",
+          "retrieval_rank": 15,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 4
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 26
+            }
+          ]
+        },
+        {
+          "item_id": "441668",
+          "category_id": "1263",
+          "retrieval_rank": 16,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 14
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 13
+            }
+          ]
+        },
+        {
+          "item_id": "96924",
+          "category_id": "56",
+          "retrieval_rank": 17,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 9
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 19
+            }
+          ]
+        },
+        {
+          "item_id": "7943",
+          "category_id": "398",
+          "retrieval_rank": 18,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 262
+            },
+            {
+              "source": "global_popularity",
+              "rank": 11
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 43
+            }
+          ]
+        },
+        {
+          "item_id": "243355",
+          "category_id": "921",
+          "retrieval_rank": 19,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 2
+            },
+            {
+              "source": "global_popularity",
+              "rank": 110
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 159
+            }
+          ]
+        },
+        {
+          "item_id": "190000",
+          "category_id": "5",
+          "retrieval_rank": 20,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 30
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 5
+            }
+          ]
+        },
+        {
+          "item_id": "33243",
+          "category_id": "1135",
+          "retrieval_rank": 53,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 399
+            },
+            {
+              "source": "category_popularity",
+              "rank": 513
+            },
+            {
+              "source": "item_knn",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "item_id": "453487",
+          "category_id": "1135",
+          "retrieval_rank": 112,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 571
+            },
+            {
+              "source": "category_popularity",
+              "rank": 11
+            }
+          ]
+        },
+        {
+          "item_id": "27994",
+          "category_id": "1135",
+          "retrieval_rank": 114,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 137
+            },
+            {
+              "source": "category_popularity",
+              "rank": 35
+            }
+          ]
+        },
+        {
+          "item_id": "385261",
+          "category_id": "1135",
+          "retrieval_rank": 134,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 9
+            }
+          ]
+        },
+        {
+          "item_id": "107503",
+          "category_id": "1135",
+          "retrieval_rank": 148,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 13
+            }
+          ]
+        },
+        {
+          "item_id": "460034",
+          "category_id": "1135",
+          "retrieval_rank": 163,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 968
+            },
+            {
+              "source": "category_popularity",
+              "rank": 24
+            }
+          ]
+        },
+        {
+          "item_id": "379739",
+          "category_id": "1135",
+          "retrieval_rank": 165,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 18
+            }
+          ]
+        },
+        {
+          "item_id": "365166",
+          "category_id": "1135",
+          "retrieval_rank": 170,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 19
+            }
+          ]
+        },
+        {
+          "item_id": "148545",
+          "category_id": "1135",
+          "retrieval_rank": 181,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 22
+            }
+          ]
+        },
+        {
+          "item_id": "294620",
+          "category_id": "1135",
+          "retrieval_rank": 202,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 29
+            }
+          ]
+        },
+        {
+          "item_id": "109474",
+          "category_id": "1135",
+          "retrieval_rank": 269,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 47
+            }
+          ]
+        },
+        {
+          "item_id": "428065",
+          "category_id": "1135",
+          "retrieval_rank": 316,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 61
+            }
+          ]
+        },
+        {
+          "item_id": "305177",
+          "category_id": "1135",
+          "retrieval_rank": 350,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 71
+            }
+          ]
+        },
+        {
+          "item_id": "167060",
+          "category_id": "1135",
+          "retrieval_rank": 375,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 77
+            }
+          ]
+        },
+        {
+          "item_id": "27159",
+          "category_id": "1135",
+          "retrieval_rank": 387,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 81
+            }
+          ]
+        },
+        {
+          "item_id": "244756",
+          "category_id": "1135",
+          "retrieval_rank": 402,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 85
+            }
+          ]
+        },
+        {
+          "item_id": "47057",
+          "category_id": "1135",
+          "retrieval_rank": 440,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 95
+            }
+          ]
+        },
+        {
+          "item_id": "98078",
+          "category_id": "1135",
+          "retrieval_rank": 450,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 98
+            }
+          ]
+        },
+        {
+          "item_id": "321667",
+          "category_id": "1135",
+          "retrieval_rank": 517,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 115
+            }
+          ]
+        },
+        {
+          "item_id": "290749",
+          "category_id": "1135",
+          "retrieval_rank": 675,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 153
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-02",
+      "label": "Snapshot profile 02",
+      "cohort": "warm",
+      "route": "hybrid_learned",
+      "history_items": 1,
+      "candidate_count": 1000,
+      "orders": {
+        "learned": [
+          "41688",
+          "45487",
+          "181126",
+          "418849",
+          "386612",
+          "212756",
+          "25929",
+          "55466",
+          "459972",
+          "219361",
+          "52275",
+          "128054",
+          "222714",
+          "446040",
+          "110826",
+          "326771",
+          "151341",
+          "402879",
+          "323559",
+          "377266"
+        ],
+        "rrf": [
+          "257040",
+          "441852",
+          "7943",
+          "29196",
+          "190000",
+          "219512",
+          "441668",
+          "320130",
+          "96924",
+          "384302",
+          "187946",
+          "461686",
+          "65273",
+          "394678",
+          "438484",
+          "290999",
+          "231482",
+          "303715",
+          "5411",
+          "91755"
+        ]
+      },
+      "items": [
+        {
+          "item_id": "257040",
+          "category_id": "683",
+          "retrieval_rank": 1,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 11
+            },
+            {
+              "source": "global_popularity",
+              "rank": 5
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 14
+            }
+          ]
+        },
+        {
+          "item_id": "441852",
+          "category_id": "959",
+          "retrieval_rank": 2,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 4
+            },
+            {
+              "source": "global_popularity",
+              "rank": 35
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 9
+            }
+          ]
+        },
+        {
+          "item_id": "7943",
+          "category_id": "398",
+          "retrieval_rank": 3,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 1
+            },
+            {
+              "source": "global_popularity",
+              "rank": 11
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 43
+            }
+          ]
+        },
+        {
+          "item_id": "29196",
+          "category_id": "1265",
+          "retrieval_rank": 4,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 2
+            },
+            {
+              "source": "global_popularity",
+              "rank": 22
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 44
+            }
+          ]
+        },
+        {
+          "item_id": "190000",
+          "category_id": "5",
+          "retrieval_rank": 5,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 34
+            },
+            {
+              "source": "global_popularity",
+              "rank": 30
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 5
+            }
+          ]
+        },
+        {
+          "item_id": "219512",
+          "category_id": "5",
+          "retrieval_rank": 6,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 135
+            },
+            {
+              "source": "global_popularity",
+              "rank": 7
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 3
+            }
+          ]
+        },
+        {
+          "item_id": "441668",
+          "category_id": "1263",
+          "retrieval_rank": 7,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 58
+            },
+            {
+              "source": "global_popularity",
+              "rank": 14
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 13
+            }
+          ]
+        },
+        {
+          "item_id": "320130",
+          "category_id": "707",
+          "retrieval_rank": 8,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 115
+            },
+            {
+              "source": "global_popularity",
+              "rank": 17
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 4
+            }
+          ]
+        },
+        {
+          "item_id": "96924",
+          "category_id": "56",
+          "retrieval_rank": 9,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 100
+            },
+            {
+              "source": "global_popularity",
+              "rank": 9
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 19
+            }
+          ]
+        },
+        {
+          "item_id": "384302",
+          "category_id": "5",
+          "retrieval_rank": 10,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 237
+            },
+            {
+              "source": "global_popularity",
+              "rank": 10
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 6
+            }
+          ]
+        },
+        {
+          "item_id": "187946",
+          "category_id": "1393",
+          "retrieval_rank": 11,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 1
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "item_id": "461686",
+          "category_id": "1037",
+          "retrieval_rank": 12,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 2
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "item_id": "65273",
+          "category_id": "342",
+          "retrieval_rank": 13,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 120
+            },
+            {
+              "source": "global_popularity",
+              "rank": 31
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 10
+            }
+          ]
+        },
+        {
+          "item_id": "394678",
+          "category_id": "1589",
+          "retrieval_rank": 14,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 14
+            },
+            {
+              "source": "global_popularity",
+              "rank": 88
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 35
+            }
+          ]
+        },
+        {
+          "item_id": "438484",
+          "category_id": "1483",
+          "retrieval_rank": 15,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 28
+            },
+            {
+              "source": "global_popularity",
+              "rank": 82
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 23
+            }
+          ]
+        },
+        {
+          "item_id": "290999",
+          "category_id": "1192",
+          "retrieval_rank": 16,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 31
+            },
+            {
+              "source": "global_popularity",
+              "rank": 34
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 69
+            }
+          ]
+        },
+        {
+          "item_id": "231482",
+          "category_id": "1051",
+          "retrieval_rank": 17,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 22
+            },
+            {
+              "source": "global_popularity",
+              "rank": 54
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 66
+            }
+          ]
+        },
+        {
+          "item_id": "303715",
+          "category_id": "1650",
+          "retrieval_rank": 18,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 66
+            },
+            {
+              "source": "global_popularity",
+              "rank": 57
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 25
+            }
+          ]
+        },
+        {
+          "item_id": "5411",
+          "category_id": "789",
+          "retrieval_rank": 19,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 3
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 21
+            }
+          ]
+        },
+        {
+          "item_id": "91755",
+          "category_id": "48",
+          "retrieval_rank": 20,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 17
+            },
+            {
+              "source": "global_popularity",
+              "rank": 33
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 179
+            }
+          ]
+        },
+        {
+          "item_id": "128054",
+          "category_id": "863",
+          "retrieval_rank": 99,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "item_id": "326771",
+          "category_id": "863",
+          "retrieval_rank": 102,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "item_id": "151341",
+          "category_id": "863",
+          "retrieval_rank": 105,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 3
+            }
+          ]
+        },
+        {
+          "item_id": "219361",
+          "category_id": "863",
+          "retrieval_rank": 108,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 4
+            }
+          ]
+        },
+        {
+          "item_id": "41688",
+          "category_id": "863",
+          "retrieval_rank": 109,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 5
+            }
+          ]
+        },
+        {
+          "item_id": "222714",
+          "category_id": "863",
+          "retrieval_rank": 114,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 6
+            }
+          ]
+        },
+        {
+          "item_id": "386612",
+          "category_id": "863",
+          "retrieval_rank": 119,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 7
+            }
+          ]
+        },
+        {
+          "item_id": "52275",
+          "category_id": "863",
+          "retrieval_rank": 123,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 8
+            }
+          ]
+        },
+        {
+          "item_id": "402879",
+          "category_id": "863",
+          "retrieval_rank": 137,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 14
+            }
+          ]
+        },
+        {
+          "item_id": "45487",
+          "category_id": "863",
+          "retrieval_rank": 155,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 18
+            }
+          ]
+        },
+        {
+          "item_id": "110826",
+          "category_id": "863",
+          "retrieval_rank": 158,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 20
+            }
+          ]
+        },
+        {
+          "item_id": "25929",
+          "category_id": "863",
+          "retrieval_rank": 173,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 24
+            }
+          ]
+        },
+        {
+          "item_id": "323559",
+          "category_id": "863",
+          "retrieval_rank": 178,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 26
+            }
+          ]
+        },
+        {
+          "item_id": "418849",
+          "category_id": "863",
+          "retrieval_rank": 185,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 28
+            }
+          ]
+        },
+        {
+          "item_id": "446040",
+          "category_id": "863",
+          "retrieval_rank": 193,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 30
+            }
+          ]
+        },
+        {
+          "item_id": "181126",
+          "category_id": "863",
+          "retrieval_rank": 213,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 36
+            }
+          ]
+        },
+        {
+          "item_id": "212756",
+          "category_id": "863",
+          "retrieval_rank": 231,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 40
+            }
+          ]
+        },
+        {
+          "item_id": "377266",
+          "category_id": "863",
+          "retrieval_rank": 276,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 53
+            }
+          ]
+        },
+        {
+          "item_id": "459972",
+          "category_id": "863",
+          "retrieval_rank": 287,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 57
+            }
+          ]
+        },
+        {
+          "item_id": "55466",
+          "category_id": "863",
+          "retrieval_rank": 288,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 58
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-03",
+      "label": "Snapshot profile 03",
+      "cohort": "warm",
+      "route": "hybrid_learned",
+      "history_items": 1,
+      "candidate_count": 1000,
+      "orders": {
+        "learned": [
+          "265338",
+          "396336",
+          "281812",
+          "48213",
+          "102891",
+          "323194",
+          "241782",
+          "98467",
+          "65889",
+          "227653",
+          "333195",
+          "425374",
+          "269275",
+          "389216",
+          "29286",
+          "226089",
+          "305588",
+          "293666",
+          "344616",
+          "63682"
+        ],
+        "rrf": [
+          "247909",
+          "158666",
+          "133814",
+          "378637",
+          "102891",
+          "68000",
+          "400946",
+          "29196",
+          "66752",
+          "111530",
+          "187946",
+          "461686",
+          "359491",
+          "323194",
+          "305588",
+          "310318",
+          "219512",
+          "233734",
+          "225778",
+          "368060"
+        ]
+      },
+      "items": [
+        {
+          "item_id": "247909",
+          "category_id": "491",
+          "retrieval_rank": 1,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 3
+            },
+            {
+              "source": "category_popularity",
+              "rank": 3
+            },
+            {
+              "source": "global_popularity",
+              "rank": 52
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 82
+            }
+          ]
+        },
+        {
+          "item_id": "158666",
+          "category_id": "491",
+          "retrieval_rank": 2,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 15
+            },
+            {
+              "source": "category_popularity",
+              "rank": 4
+            },
+            {
+              "source": "global_popularity",
+              "rank": 58
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 56
+            }
+          ]
+        },
+        {
+          "item_id": "133814",
+          "category_id": "491",
+          "retrieval_rank": 3,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 1
+            },
+            {
+              "source": "category_popularity",
+              "rank": 2
+            },
+            {
+              "source": "global_popularity",
+              "rank": 38
+            }
+          ]
+        },
+        {
+          "item_id": "378637",
+          "category_id": "491",
+          "retrieval_rank": 4,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 2
+            },
+            {
+              "source": "category_popularity",
+              "rank": 7
+            },
+            {
+              "source": "global_popularity",
+              "rank": 107
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 144
+            }
+          ]
+        },
+        {
+          "item_id": "102891",
+          "category_id": "491",
+          "retrieval_rank": 5,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 16
+            },
+            {
+              "source": "category_popularity",
+              "rank": 61
+            },
+            {
+              "source": "item_knn",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "item_id": "68000",
+          "category_id": "491",
+          "retrieval_rank": 6,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 4
+            },
+            {
+              "source": "category_popularity",
+              "rank": 12
+            },
+            {
+              "source": "global_popularity",
+              "rank": 201
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 301
+            }
+          ]
+        },
+        {
+          "item_id": "400946",
+          "category_id": "1273",
+          "retrieval_rank": 7,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 12
+            },
+            {
+              "source": "global_popularity",
+              "rank": 39
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 29
+            }
+          ]
+        },
+        {
+          "item_id": "29196",
+          "category_id": "1265",
+          "retrieval_rank": 8,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 26
+            },
+            {
+              "source": "global_popularity",
+              "rank": 22
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 44
+            }
+          ]
+        },
+        {
+          "item_id": "66752",
+          "category_id": "48",
+          "retrieval_rank": 9,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 13
+            },
+            {
+              "source": "global_popularity",
+              "rank": 157
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 7
+            }
+          ]
+        },
+        {
+          "item_id": "111530",
+          "category_id": "1625",
+          "retrieval_rank": 10,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 54
+            },
+            {
+              "source": "global_popularity",
+              "rank": 13
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 36
+            }
+          ]
+        },
+        {
+          "item_id": "187946",
+          "category_id": "1393",
+          "retrieval_rank": 11,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 1
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "item_id": "461686",
+          "category_id": "1037",
+          "retrieval_rank": 12,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 2
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "item_id": "359491",
+          "category_id": "491",
+          "retrieval_rank": 13,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 505
+            },
+            {
+              "source": "category_popularity",
+              "rank": 5
+            },
+            {
+              "source": "global_popularity",
+              "rank": 64
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 91
+            }
+          ]
+        },
+        {
+          "item_id": "323194",
+          "category_id": "491",
+          "retrieval_rank": 14,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 7
+            },
+            {
+              "source": "category_popularity",
+              "rank": 14
+            },
+            {
+              "source": "global_popularity",
+              "rank": 274
+            }
+          ]
+        },
+        {
+          "item_id": "305588",
+          "category_id": "491",
+          "retrieval_rank": 15,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 5
+            },
+            {
+              "source": "category_popularity",
+              "rank": 15
+            },
+            {
+              "source": "global_popularity",
+              "rank": 310
+            }
+          ]
+        },
+        {
+          "item_id": "310318",
+          "category_id": "491",
+          "retrieval_rank": 16,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 6
+            },
+            {
+              "source": "category_popularity",
+              "rank": 22
+            },
+            {
+              "source": "global_popularity",
+              "rank": 409
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 534
+            }
+          ]
+        },
+        {
+          "item_id": "219512",
+          "category_id": "5",
+          "retrieval_rank": 17,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 7
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 3
+            }
+          ]
+        },
+        {
+          "item_id": "233734",
+          "category_id": "491",
+          "retrieval_rank": 18,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 11
+            },
+            {
+              "source": "category_popularity",
+              "rank": 17
+            },
+            {
+              "source": "global_popularity",
+              "rank": 355
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 788
+            }
+          ]
+        },
+        {
+          "item_id": "225778",
+          "category_id": "656",
+          "retrieval_rank": 19,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 20
+            },
+            {
+              "source": "global_popularity",
+              "rank": 67
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 38
+            }
+          ]
+        },
+        {
+          "item_id": "368060",
+          "category_id": "491",
+          "retrieval_rank": 20,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 89
+            },
+            {
+              "source": "category_popularity",
+              "rank": 10
+            },
+            {
+              "source": "global_popularity",
+              "rank": 181
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 129
+            }
+          ]
+        },
+        {
+          "item_id": "48213",
+          "category_id": "491",
+          "retrieval_rank": 92,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 32
+            },
+            {
+              "source": "category_popularity",
+              "rank": 80
+            }
+          ]
+        },
+        {
+          "item_id": "281812",
+          "category_id": "491",
+          "retrieval_rank": 131,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 59
+            },
+            {
+              "source": "category_popularity",
+              "rank": 91
+            }
+          ]
+        },
+        {
+          "item_id": "265338",
+          "category_id": "491",
+          "retrieval_rank": 173,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 107
+            },
+            {
+              "source": "category_popularity",
+              "rank": 82
+            }
+          ]
+        },
+        {
+          "item_id": "344616",
+          "category_id": "491",
+          "retrieval_rank": 209,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 119
+            },
+            {
+              "source": "category_popularity",
+              "rank": 107
+            }
+          ]
+        },
+        {
+          "item_id": "396336",
+          "category_id": "491",
+          "retrieval_rank": 211,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 189
+            },
+            {
+              "source": "category_popularity",
+              "rank": 75
+            }
+          ]
+        },
+        {
+          "item_id": "389216",
+          "category_id": "491",
+          "retrieval_rank": 228,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 164
+            },
+            {
+              "source": "category_popularity",
+              "rank": 94
+            }
+          ]
+        },
+        {
+          "item_id": "65889",
+          "category_id": "491",
+          "retrieval_rank": 288,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 57
+            }
+          ]
+        },
+        {
+          "item_id": "425374",
+          "category_id": "491",
+          "retrieval_rank": 342,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 71
+            }
+          ]
+        },
+        {
+          "item_id": "241782",
+          "category_id": "491",
+          "retrieval_rank": 448,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 102
+            }
+          ]
+        },
+        {
+          "item_id": "98467",
+          "category_id": "491",
+          "retrieval_rank": 483,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 111
+            }
+          ]
+        },
+        {
+          "item_id": "227653",
+          "category_id": "491",
+          "retrieval_rank": 494,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 114
+            }
+          ]
+        },
+        {
+          "item_id": "63682",
+          "category_id": "491",
+          "retrieval_rank": 518,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 925
+            },
+            {
+              "source": "category_popularity",
+              "rank": 159
+            }
+          ]
+        },
+        {
+          "item_id": "333195",
+          "category_id": "491",
+          "retrieval_rank": 706,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 176
+            }
+          ]
+        },
+        {
+          "item_id": "226089",
+          "category_id": "491",
+          "retrieval_rank": 794,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 199
+            }
+          ]
+        },
+        {
+          "item_id": "269275",
+          "category_id": "491",
+          "retrieval_rank": 818,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 207
+            }
+          ]
+        },
+        {
+          "item_id": "29286",
+          "category_id": "491",
+          "retrieval_rank": 900,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 233
+            }
+          ]
+        },
+        {
+          "item_id": "293666",
+          "category_id": "491",
+          "retrieval_rank": 989,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 261
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-04",
+      "label": "Snapshot profile 04",
+      "cohort": "warm",
+      "route": "hybrid_learned",
+      "history_items": 1,
+      "candidate_count": 1000,
+      "orders": {
+        "learned": [
+          "310264",
+          "104815",
+          "130822",
+          "389477",
+          "229135",
+          "377454",
+          "101186",
+          "215009",
+          "191355",
+          "253388",
+          "399825",
+          "315258",
+          "450889",
+          "385857",
+          "350964",
+          "145487",
+          "384985",
+          "289126",
+          "231317",
+          "334425"
+        ],
+        "rrf": [
+          "29100",
+          "187946",
+          "461686",
+          "219512",
+          "384302",
+          "257040",
+          "320130",
+          "5411",
+          "370653",
+          "441668",
+          "96924",
+          "190000",
+          "234255",
+          "310264",
+          "65273",
+          "151444",
+          "9877",
+          "441852",
+          "111530",
+          "298009"
+        ]
+      },
+      "items": [
+        {
+          "item_id": "29100",
+          "category_id": null,
+          "retrieval_rank": 1,
+          "sources": [
+            {
+              "source": "als",
+              "rank": 12
+            },
+            {
+              "source": "global_popularity",
+              "rank": 32
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 51
+            }
+          ]
+        },
+        {
+          "item_id": "187946",
+          "category_id": "1393",
+          "retrieval_rank": 2,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 1
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "item_id": "461686",
+          "category_id": "1037",
+          "retrieval_rank": 3,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 2
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "item_id": "219512",
+          "category_id": "5",
+          "retrieval_rank": 4,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 7
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 3
+            }
+          ]
+        },
+        {
+          "item_id": "384302",
+          "category_id": "5",
+          "retrieval_rank": 5,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 10
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 6
+            }
+          ]
+        },
+        {
+          "item_id": "257040",
+          "category_id": "683",
+          "retrieval_rank": 6,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 5
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 14
+            }
+          ]
+        },
+        {
+          "item_id": "320130",
+          "category_id": "707",
+          "retrieval_rank": 7,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 17
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 4
+            }
+          ]
+        },
+        {
+          "item_id": "5411",
+          "category_id": "789",
+          "retrieval_rank": 8,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 3
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 21
+            }
+          ]
+        },
+        {
+          "item_id": "370653",
+          "category_id": "82",
+          "retrieval_rank": 9,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 4
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 26
+            }
+          ]
+        },
+        {
+          "item_id": "441668",
+          "category_id": "1263",
+          "retrieval_rank": 10,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 14
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 13
+            }
+          ]
+        },
+        {
+          "item_id": "96924",
+          "category_id": "56",
+          "retrieval_rank": 11,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 9
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 19
+            }
+          ]
+        },
+        {
+          "item_id": "190000",
+          "category_id": "5",
+          "retrieval_rank": 12,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 30
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 5
+            }
+          ]
+        },
+        {
+          "item_id": "234255",
+          "category_id": "1051",
+          "retrieval_rank": 13,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 15
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 18
+            }
+          ]
+        },
+        {
+          "item_id": "310264",
+          "category_id": "1043",
+          "retrieval_rank": 14,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 47
+            },
+            {
+              "source": "item_knn",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "item_id": "65273",
+          "category_id": "342",
+          "retrieval_rank": 15,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 31
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 10
+            }
+          ]
+        },
+        {
+          "item_id": "151444",
+          "category_id": "656",
+          "retrieval_rank": 16,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 19
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 20
+            }
+          ]
+        },
+        {
+          "item_id": "9877",
+          "category_id": "858",
+          "retrieval_rank": 17,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 23
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 17
+            }
+          ]
+        },
+        {
+          "item_id": "441852",
+          "category_id": "959",
+          "retrieval_rank": 18,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 35
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 9
+            }
+          ]
+        },
+        {
+          "item_id": "111530",
+          "category_id": "1625",
+          "retrieval_rank": 19,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 13
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 36
+            }
+          ]
+        },
+        {
+          "item_id": "298009",
+          "category_id": "529",
+          "retrieval_rank": 20,
+          "sources": [
+            {
+              "source": "global_popularity",
+              "rank": 8
+            },
+            {
+              "source": "recent_popularity",
+              "rank": 47
+            }
+          ]
+        },
+        {
+          "item_id": "145487",
+          "category_id": "1043",
+          "retrieval_rank": 80,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "item_id": "289126",
+          "category_id": "1043",
+          "retrieval_rank": 84,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 3
+            }
+          ]
+        },
+        {
+          "item_id": "130822",
+          "category_id": "1043",
+          "retrieval_rank": 89,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 4
+            }
+          ]
+        },
+        {
+          "item_id": "450889",
+          "category_id": "1043",
+          "retrieval_rank": 92,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 5
+            }
+          ]
+        },
+        {
+          "item_id": "334425",
+          "category_id": "1043",
+          "retrieval_rank": 98,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 6
+            }
+          ]
+        },
+        {
+          "item_id": "377454",
+          "category_id": "1043",
+          "retrieval_rank": 106,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 8
+            }
+          ]
+        },
+        {
+          "item_id": "104815",
+          "category_id": "1043",
+          "retrieval_rank": 130,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 14
+            }
+          ]
+        },
+        {
+          "item_id": "215009",
+          "category_id": "1043",
+          "retrieval_rank": 137,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 16
+            }
+          ]
+        },
+        {
+          "item_id": "229135",
+          "category_id": "1043",
+          "retrieval_rank": 144,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 17
+            }
+          ]
+        },
+        {
+          "item_id": "385857",
+          "category_id": "1043",
+          "retrieval_rank": 164,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 22
+            }
+          ]
+        },
+        {
+          "item_id": "101186",
+          "category_id": "1043",
+          "retrieval_rank": 181,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 26
+            }
+          ]
+        },
+        {
+          "item_id": "191355",
+          "category_id": "1043",
+          "retrieval_rank": 206,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 32
+            }
+          ]
+        },
+        {
+          "item_id": "399825",
+          "category_id": "1043",
+          "retrieval_rank": 249,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 43
+            }
+          ]
+        },
+        {
+          "item_id": "253388",
+          "category_id": "1043",
+          "retrieval_rank": 317,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 61
+            }
+          ]
+        },
+        {
+          "item_id": "384985",
+          "category_id": "1043",
+          "retrieval_rank": 327,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 64
+            }
+          ]
+        },
+        {
+          "item_id": "350964",
+          "category_id": "1043",
+          "retrieval_rank": 352,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 72
+            }
+          ]
+        },
+        {
+          "item_id": "231317",
+          "category_id": "1043",
+          "retrieval_rank": 418,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 89
+            }
+          ]
+        },
+        {
+          "item_id": "315258",
+          "category_id": "1043",
+          "retrieval_rank": 516,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 115
+            }
+          ]
+        },
+        {
+          "item_id": "389477",
+          "category_id": "1043",
+          "retrieval_rank": 530,
+          "sources": [
+            {
+              "source": "category_popularity",
+              "rank": 118
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cold-start",
+      "label": "First visit",
+      "cohort": "cold",
+      "route": "recent_popularity",
+      "history_items": 0,
+      "candidate_count": 1000,
+      "orders": {
+        "recent": [
+          "187946",
+          "461686",
+          "219512",
+          "320130",
+          "190000",
+          "384302",
+          "66752",
+          "162139",
+          "441852",
+          "65273",
+          "248455",
+          "455183",
+          "441668",
+          "257040",
+          "215715",
+          "546",
+          "9877",
+          "234255",
+          "96924",
+          "151444"
+        ]
+      },
+      "items": [
+        {
+          "item_id": "187946",
+          "category_id": "1393",
+          "retrieval_rank": 1,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "item_id": "461686",
+          "category_id": "1037",
+          "retrieval_rank": 2,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "item_id": "219512",
+          "category_id": "5",
+          "retrieval_rank": 3,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 3
+            }
+          ]
+        },
+        {
+          "item_id": "320130",
+          "category_id": "707",
+          "retrieval_rank": 4,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 4
+            }
+          ]
+        },
+        {
+          "item_id": "190000",
+          "category_id": "5",
+          "retrieval_rank": 5,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 5
+            }
+          ]
+        },
+        {
+          "item_id": "384302",
+          "category_id": "5",
+          "retrieval_rank": 6,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 6
+            }
+          ]
+        },
+        {
+          "item_id": "66752",
+          "category_id": "48",
+          "retrieval_rank": 7,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 7
+            }
+          ]
+        },
+        {
+          "item_id": "162139",
+          "category_id": "862",
+          "retrieval_rank": 8,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 8
+            }
+          ]
+        },
+        {
+          "item_id": "441852",
+          "category_id": "959",
+          "retrieval_rank": 9,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 9
+            }
+          ]
+        },
+        {
+          "item_id": "65273",
+          "category_id": "342",
+          "retrieval_rank": 10,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 10
+            }
+          ]
+        },
+        {
+          "item_id": "248455",
+          "category_id": "1349",
+          "retrieval_rank": 11,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 11
+            }
+          ]
+        },
+        {
+          "item_id": "455183",
+          "category_id": "1051",
+          "retrieval_rank": 12,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 12
+            }
+          ]
+        },
+        {
+          "item_id": "441668",
+          "category_id": "1263",
+          "retrieval_rank": 13,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 13
+            }
+          ]
+        },
+        {
+          "item_id": "257040",
+          "category_id": "683",
+          "retrieval_rank": 14,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 14
+            }
+          ]
+        },
+        {
+          "item_id": "215715",
+          "category_id": "926",
+          "retrieval_rank": 15,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 15
+            }
+          ]
+        },
+        {
+          "item_id": "546",
+          "category_id": "1349",
+          "retrieval_rank": 16,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 16
+            }
+          ]
+        },
+        {
+          "item_id": "9877",
+          "category_id": "858",
+          "retrieval_rank": 17,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 17
+            }
+          ]
+        },
+        {
+          "item_id": "234255",
+          "category_id": "1051",
+          "retrieval_rank": 18,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 18
+            }
+          ]
+        },
+        {
+          "item_id": "96924",
+          "category_id": "56",
+          "retrieval_rank": 19,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 19
+            }
+          ]
+        },
+        {
+          "item_id": "151444",
+          "category_id": "656",
+          "retrieval_rank": 20,
+          "sources": [
+            {
+              "source": "recent_popularity",
+              "rank": 20
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "content_sha256": "637d950491e6e016322cf21df93688ff0c1b7dd17516d4e21d03e33bbe5f206a"
+}
