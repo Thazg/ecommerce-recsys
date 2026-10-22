@@ -1,0 +1,14 @@
+# Default deny; CLI uploads only the static application and deployment config.
+/*
+!/vercel.json
+!/demo
+/demo/*
+!/demo/index.html
+!/demo/styles.css
+!/demo/app.js
+!/demo/schema.mjs
+!/demo/transport.mjs
+!/demo/favicon.svg
+!/demo/data
+/demo/data/*
+!/demo/data/showcase_v1.json

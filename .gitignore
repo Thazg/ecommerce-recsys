@@ -19,6 +19,7 @@ htmlcov/
 # Local working notes and agent instructions
 .local/
 /AGENTS.md
+/.vercel/
 
 # Module implementation plans stay local
 docs/*_PLAN.md
@@ -53,3 +54,4 @@ data/processed/*
 *.parquet.tmp
 *.zip
 *.tar.gz
+/.env.local
