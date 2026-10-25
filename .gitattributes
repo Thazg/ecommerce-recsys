@@ -3,6 +3,9 @@
 *.py text eol=lf
 # Optional dependency files are also bound by HTTP verification receipts.
 requirements/*.txt text eol=lf
+# README badge and screenshot bytes are pinned by documentation verification.
+/docs/assets/*.svg text eol=lf
+/docs/assets/*.png -text
 # Container source/lock bytes are part of Linux qualification identity.
 /.dockerignore text eol=lf
 /containers/Dockerfile text eol=lf

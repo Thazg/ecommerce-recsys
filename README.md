@@ -1,14 +1,36 @@
-# E-commerce Recommendation System
+<h1 align="center">E-commerce Recommendation System</h1>
 
-A recommendation system for discovering relevant products from implicit shopping
-behavior across **2.76 million Retailrocket events**.
+<p align="center">
+  Chronological evaluation, hybrid retrieval, and learned ranking on Retailrocket.
+</p>
+
+<p align="center">
+  <a href="https://www.python.org/"><img src="docs/assets/python.svg" alt="Python 3.13"></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="docs/assets/framework.svg" alt="FastAPI"></a>
+  <a href="https://github.com/Thazg/ecommerce-recsys/actions/workflows/ci.yml"><img src="docs/assets/ci.svg" alt="CI on GitHub Actions"></a>
+  <a href="LICENSE"><img src="docs/assets/license.svg" alt="MIT License"></a>
+</p>
+
+<p align="center">
+  <a href="https://ecommerce-recsys.vercel.app/">Model explorer</a> &nbsp;|&nbsp;
+  <a href="https://shoprecome.vercel.app/">Shopping demo</a> &nbsp;|&nbsp;
+  <a href="#measured-results">Results</a> &nbsp;|&nbsp;
+  <a href="#how-it-works">Architecture</a>
+</p>
+
+[![RecoMe shopping demo with a sample product catalog, category tiles and the recommendation entry point](docs/assets/recome-shopping.png)](https://shoprecome.vercel.app/)
+
+<p align="center"><em>RecoMe is a browser-side shopping illustration, independent of the Retailrocket model.</em></p>
+
+## Project highlights
 
 I built this project as an end-to-end machine learning system covering data
 preparation, chronological evaluation, hybrid retrieval, learned ranking, model
-packaging, API serving, observability, CI, and release verification. Model and
-runtime decisions are backed by benchmarks.
+packaging, API serving, observability, CI, and release verification across
+**2.76 million Retailrocket events**. Model and runtime decisions are backed by
+benchmarks.
 
-**Project highlights:** Learned ranking improved **HR@20 by 41.7% relative to RRF**
+Learned ranking improved **HR@20 by 41.7% relative to RRF**
 on the same candidate pool across **59,323 warm user-windows**. The local FastAPI
 service preserved **101/101 reference outputs** before and after restart, with
 **1.499 GiB maximum loaded RSS** in the fixed Windows workload. Quality figures
@@ -58,7 +80,7 @@ availability ceiling for the downstream ranker.
 The no-ALS ablation has slightly higher candidate recall. The locked serving
 reference instead follows a development rule prioritizing complete-policy
 Top-20 accuracy. Retrieval recall, ranking accuracy and operating cost are
-separate decisions. [Retrieval report](docs/CANDIDATE_RETRIEVAL_REPORT.md) ·
+separate decisions. [Retrieval report](docs/CANDIDATE_RETRIEVAL_REPORT.md) |
 [Policy trade-offs](docs/MODEL_POLICY_REPORT.md)
 
 **Evaluation boundary:** all quality figures above use 59,323 warm user-windows
@@ -112,7 +134,7 @@ feedback; unobserved products are not treated as confirmed dislikes.
 
 Across nine folds, the benchmark contains **90,107 warm user-window targets**
 and **1,262,289 cold targets**. These full-protocol totals differ from the
-five-fold quality denominator above. [Dataset and assumptions](docs/DATASET_CARD.md) ·
+five-fold quality denominator above. [Dataset and assumptions](docs/DATASET_CARD.md) |
 [Rolling protocol](docs/ROLLING_EVALUATION_PROTOCOL.md)
 
 ### Retrieval and learned ranking
@@ -176,7 +198,7 @@ worker. Cache is off by default; optional TTL/LRU caching and an explicitly
 attributed overload fallback have separate limits and failure rules.
 Structured events and metrics separate HTTP completion, worker outcomes,
 cache behavior and resource measurements.
-[Bundle contract](docs/MODEL_ARTIFACTS.md) · [API contract](docs/RECOMMENDATION_API.md) ·
+[Bundle contract](docs/MODEL_ARTIFACTS.md) | [API contract](docs/RECOMMENDATION_API.md) |
 [Observability](docs/OBSERVABILITY.md)
 
 ### Testing and release engineering
@@ -193,7 +215,7 @@ CI uses immutable Action pins and hashed Linux CPU dependencies. Separate
 network-isolated exercises cover candidate verification, release activation,
 journal recovery, rollback and owned cleanup. The protected remote
 real-qualification lane remains unconfigured; the published exercise evidence
-is local. [Testing strategy](docs/TESTING_AND_RELEASE_GATES.md) ·
+is local. [Testing strategy](docs/TESTING_AND_RELEASE_GATES.md) |
 [Release workflow](docs/RELEASE_WORKFLOW.md)
 
 ## Repository layout
