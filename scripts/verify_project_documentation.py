@@ -11,11 +11,12 @@ import os
 import re
 import tempfile
 import unicodedata
+from html.parser import HTMLParser
 from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-INVENTORY = "benchmarks/release/documentation_inventory_publication_v1.json"
+INVENTORY = "benchmarks/release/documentation_inventory_readme_hero_v1.json"
 PRESENTATION = "benchmarks/demo/showcase_presentation_validation_v1.json"
 SCRIPT = "scripts/verify_project_documentation.py"
 TEST = "tests/unit/test_project_documentation.py"
@@ -200,6 +201,25 @@ def heading_ids(text: str) -> set[str]:
     return ids
 
 
+class HTMLReferences(HTMLParser):
+    """Collect explicit HTML links and images alongside Markdown references."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.targets = []
+
+    def handle_starttag(self, tag, attrs):
+        field = {"a": "href", "img": "src"}.get(tag)
+        if field is None:
+            return
+        values = [value for name, value in attrs if name == field]
+        if len(values) > 1 or any(
+            value is None or (tag == "img" and not value.strip()) for value in values
+        ):
+            raise ValueError("Ambiguous HTML documentation reference.")
+        self.targets.extend(values)
+
+
 def check_links(root: Path, documents: list[str]) -> dict:
     links = fragments = external = 0
     cache: dict[str, set[str]] = {}
@@ -212,6 +232,10 @@ def check_links(root: Path, documents: list[str]) -> dict:
             raise ValueError(f"Invalid UTF-8 document: {name}") from exc
         targets = [match[1] for match in LINK.finditer(body)]
         targets += [match[1] for match in REFERENCE.finditer(body)]
+        html_links = HTMLReferences()
+        html_links.feed(body)
+        html_links.close()
+        targets += html_links.targets
         for target in targets:
             target = html.unescape(target.strip("<>"))
             parsed = urlsplit(target)
@@ -273,7 +297,7 @@ def inspect_project(root: Path = ROOT, inventory: str = INVENTORY) -> dict:
     policy = read_json(root, inventory)
     sealed(policy)
     if (
-        set(policy)
+        set(policy) - {"documentation_assets"}
         != {
             "schema_version",
             "scope",
@@ -299,6 +323,33 @@ def inspect_project(root: Path = ROOT, inventory: str = INVENTORY) -> dict:
     if SCRIPT not in sources or TEST not in sources:
         raise ValueError("Documentation verifier and tests must be source-bound.")
     evidence, assets = pin_map(policy["evidence"]), pin_map(policy["static_assets"])
+    documentation_assets = (
+        pin_map(policy["documentation_assets"]) if "documentation_assets" in policy else {}
+    )
+    for name, pin in documentation_assets.items():
+        if not name.startswith("docs/assets/") or PurePosixPath(name).suffix not in {
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".webp",
+            ".svg",
+        }:
+            raise ValueError("Documentation assets must be local images in docs/assets.")
+        if sha(root, name) != pin:
+            raise ValueError(f"Documentation asset fingerprint differs: {name}")
+    if documentation_assets:
+        allowed_dirs = {
+            str(parent)
+            for name in documentation_assets
+            for parent in PurePosixPath(name).parents
+            if str(parent).startswith("docs/assets")
+        }
+        for path in safe_path(root, "docs/assets", directory=True).rglob("*"):
+            name = path.relative_to(root).as_posix()
+            if path.is_symlink() or name not in (
+                allowed_dirs if path.is_dir() else documentation_assets
+            ):
+                raise ValueError("Unexpected documentation asset inventory entry.")
     if PRESENTATION not in evidence or set(assets) != ASSETS:
         raise ValueError("Incomplete presentation evidence or static asset inventory.")
     for name, pin in evidence.items():
@@ -330,6 +381,7 @@ def inspect_project(root: Path = ROOT, inventory: str = INVENTORY) -> dict:
         "sources_sha256_lf": {name: sha(root, name, normalize=True) for name in sources},
         "evidence_sha256": evidence,
         "static_assets_sha256_lf": assets,
+        "documentation_assets_sha256": documentation_assets,
         "links": check_links(root, documents),
         "network_accessed": False,
         "markdown_commands_executed": False,

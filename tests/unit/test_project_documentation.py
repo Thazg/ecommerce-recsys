@@ -214,6 +214,88 @@ def test_inline_code_comments_and_escaped_brackets_are_not_links(checkout):
     assert release.inspect_project(root)["links"]["local_links"] == 1
 
 
+def test_centered_html_links_and_images_are_checked_and_byte_pinned(checkout):
+    root, policy = checkout
+    asset = root / "docs/assets/preview.png"
+    asset.parent.mkdir(parents=True)
+    asset.write_bytes(b"\x89PNG\r\n\x1a\nfixture\r\n")
+    policy["documentation_assets"] = {
+        "docs/assets/preview.png": release.sha(root, "docs/assets/preview.png")
+    }
+    seal(root / release.INVENTORY, policy)
+    (root / "README.md").write_text(
+        '<h1 align="center">Project</h1>\n'
+        '<p align="center"><a href="docs/guide.md#setup">Guide</a> | '
+        '<a href="https://example.org/?a=1&amp;b=2">Demo</a></p>\n'
+        '<img src="docs/assets/preview.png" alt="Actual application preview">\n',
+        encoding="utf-8",
+    )
+    result = release.inspect_project(root)
+    assert result["links"] == {"local_links": 2, "fragments": 1, "external_links_not_fetched": 1}
+    assert result["documentation_assets_sha256"] == policy["documentation_assets"]
+    # Image pins use raw bytes; changing only CRLF bytes must still fail.
+    asset.write_bytes(asset.read_bytes().replace(b"\r\n", b"\n"))
+    with pytest.raises(ValueError, match="Documentation asset fingerprint"):
+        release.inspect_project(root)
+
+
+@pytest.mark.parametrize(
+    "markup",
+    [
+        '<img src="docs/assets/missing.svg">',
+        '<img src="../outside.png">',
+        '<a href="docs/guide.md#missing">Guide</a>',
+        '<a href="javascript:alert">Unsafe</a>',
+        '<a href="docs/guide.md" href="missing.md">Ambiguous</a>',
+        "<img src>",
+        '<img src="">',
+    ],
+)
+def test_html_references_cannot_hide_missing_or_unsafe_targets(checkout, markup):
+    root, _ = checkout
+    (root / "README.md").write_text(markup, encoding="utf-8")
+    with pytest.raises(ValueError):
+        release.inspect_project(root)
+
+
+def test_html_examples_in_code_and_comments_are_not_followed(checkout):
+    root, _ = checkout
+    (root / "README.md").write_text(
+        '```html\n<img src="missing.png">\n```\n'
+        '`<a href="missing.md">example</a>`\n'
+        '<!-- <img src="private.png"> -->\n'
+        '<a href="docs/guide.md#setup">Guide</a>\n',
+        encoding="utf-8",
+    )
+    assert release.inspect_project(root)["links"]["local_links"] == 1
+
+
+@pytest.mark.parametrize("fault", ["extra_file", "empty_directory", "outside", "non_image"])
+def test_documentation_image_inventory_rejects_unreviewed_entries(checkout, fault):
+    root, policy = checkout
+    asset = root / "docs/assets/badge.svg"
+    asset.parent.mkdir(parents=True)
+    asset.write_text('<svg xmlns="http://www.w3.org/2000/svg"/>', encoding="utf-8")
+    policy["documentation_assets"] = {
+        "docs/assets/badge.svg": release.sha(root, "docs/assets/badge.svg")
+    }
+    if fault == "extra_file":
+        (asset.parent / "unreviewed.svg").write_text("unreviewed", encoding="utf-8")
+    elif fault == "empty_directory":
+        (asset.parent / "unreviewed").mkdir()
+    elif fault == "outside":
+        policy["documentation_assets"] = {"demo/styles.css": release.sha(root, "demo/styles.css")}
+    else:
+        script = asset.parent / "private.py"
+        script.write_text("private", encoding="utf-8")
+        policy["documentation_assets"] = {
+            "docs/assets/private.py": release.sha(root, "docs/assets/private.py")
+        }
+    seal(root / release.INVENTORY, policy)
+    with pytest.raises(ValueError, match="Documentation assets|documentation asset inventory"):
+        release.inspect_project(root)
+
+
 def test_duplicate_and_unicode_heading_fragments():
     assert release.heading_ids("# Setup\n# Setup\n# Setup-1\n# Café & API\n") == {
         "setup",
