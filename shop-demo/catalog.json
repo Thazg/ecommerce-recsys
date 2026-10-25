@@ -1,0 +1,1644 @@
+{
+  "schema": "recolens-shopping-v1",
+  "source": "https://dummyjson.com/docs/products",
+  "sourceRepository": "https://github.com/Ovi/DummyJSON",
+  "retrievedOn": "2026-10-23",
+  "currency": "USD",
+  "groups": [
+    {
+      "id": "tech",
+      "label": "Technology"
+    },
+    {
+      "id": "accessories",
+      "label": "Tech accessories"
+    },
+    {
+      "id": "men",
+      "label": "Men's fashion"
+    },
+    {
+      "id": "women",
+      "label": "Women's fashion"
+    },
+    {
+      "id": "care",
+      "label": "Beauty & care"
+    },
+    {
+      "id": "home",
+      "label": "Home & living"
+    },
+    {
+      "id": "kitchen",
+      "label": "Kitchen"
+    },
+    {
+      "id": "sport",
+      "label": "Sports"
+    },
+    {
+      "id": "food",
+      "label": "Groceries"
+    },
+    {
+      "id": "style",
+      "label": "Watches & eyewear"
+    }
+  ],
+  "products": [
+    {
+      "id": "121",
+      "title": "iPhone 5s",
+      "description": "The iPhone 5s is a classic smartphone known for its compact design and advanced features during its release. While it's an older model, it still provides a reliable user experience.",
+      "group": "tech",
+      "category": "smartphones",
+      "categoryLabel": "Smartphones",
+      "price": 199.99,
+      "tags": [
+        "smartphones",
+        "apple"
+      ],
+      "brand": "Apple",
+      "image": "images/121.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/smartphones/iphone-5s/thumbnail.webp"
+    },
+    {
+      "id": "99",
+      "title": "Amazon Echo Plus",
+      "description": "The Amazon Echo Plus is a smart speaker with built-in Alexa voice control. It features premium sound quality and serves as a hub for controlling smart home devices.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 99.99,
+      "tags": [
+        "electronics",
+        "smart speakers"
+      ],
+      "brand": "Amazon",
+      "image": "images/99.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/amazon-echo-plus/thumbnail.webp"
+    },
+    {
+      "id": "83",
+      "title": "Blue & Black Check Shirt",
+      "description": "The Blue & Black Check Shirt is a stylish and comfortable men's shirt featuring a classic check pattern. Made from high-quality fabric, it's suitable for both casual and semi-formal occasions.",
+      "group": "men",
+      "category": "mens-shirts",
+      "categoryLabel": "Men's shirts",
+      "price": 29.99,
+      "tags": [
+        "clothing",
+        "men's shirts"
+      ],
+      "brand": "Fashion Trends",
+      "image": "images/83.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/thumbnail.webp"
+    },
+    {
+      "id": "172",
+      "title": "Blue Women's Handbag",
+      "description": "The Blue Women's Handbag is a stylish and spacious accessory for everyday use. With a vibrant blue color and multiple compartments, it combines fashion and functionality.",
+      "group": "women",
+      "category": "womens-bags",
+      "categoryLabel": "Handbags",
+      "price": 49.99,
+      "tags": [
+        "fashion accessories",
+        "handbags"
+      ],
+      "brand": "Fashionista",
+      "image": "images/172.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-bags/blue-women's-handbag/thumbnail.webp"
+    },
+    {
+      "id": "1",
+      "title": "Essence Mascara Lash Princess",
+      "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+      "group": "care",
+      "category": "beauty",
+      "categoryLabel": "Makeup",
+      "price": 9.99,
+      "tags": [
+        "beauty",
+        "mascara"
+      ],
+      "brand": "Essence",
+      "image": "images/1.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+    },
+    {
+      "id": "11",
+      "title": "Annibale Colombo Bed",
+      "description": "The Annibale Colombo Bed is a luxurious and elegant bed frame, crafted with high-quality materials for a comfortable and stylish bedroom.",
+      "group": "home",
+      "category": "furniture",
+      "categoryLabel": "Furniture",
+      "price": 1899.99,
+      "tags": [
+        "furniture",
+        "beds"
+      ],
+      "brand": "Annibale Colombo",
+      "image": "images/11.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp"
+    },
+    {
+      "id": "48",
+      "title": "Bamboo Spatula",
+      "description": "The Bamboo Spatula is a versatile kitchen tool made from eco-friendly bamboo. Ideal for flipping, stirring, and serving various dishes.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 7.99,
+      "tags": [
+        "kitchen tools",
+        "utensils"
+      ],
+      "brand": "",
+      "image": "images/48.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/bamboo-spatula/thumbnail.webp"
+    },
+    {
+      "id": "137",
+      "title": "American Football",
+      "description": "The American Football is a classic ball used in American football games. It is designed for throwing and catching, making it an essential piece of equipment for the sport.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 19.99,
+      "tags": [
+        "sports equipment",
+        "american football"
+      ],
+      "brand": "",
+      "image": "images/137.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/american-football/thumbnail.webp"
+    },
+    {
+      "id": "16",
+      "title": "Apple",
+      "description": "Fresh and crisp apples, perfect for snacking or incorporating into various recipes.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 1.99,
+      "tags": [
+        "fruits"
+      ],
+      "brand": "",
+      "image": "images/16.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/apple/thumbnail.webp"
+    },
+    {
+      "id": "93",
+      "title": "Brown Leather Belt Watch",
+      "description": "The Brown Leather Belt Watch is a stylish timepiece with a classic design. Featuring a genuine leather strap and a sleek dial, it adds a touch of sophistication to your look.",
+      "group": "style",
+      "category": "mens-watches",
+      "categoryLabel": "Men's watches",
+      "price": 89.99,
+      "tags": [
+        "watches",
+        "leather watches"
+      ],
+      "brand": "Fashion Timepieces",
+      "image": "images/93.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/thumbnail.webp"
+    },
+    {
+      "id": "78",
+      "title": "Apple MacBook Pro 14 Inch Space Grey",
+      "description": "The MacBook Pro 14 Inch in Space Grey is a powerful and sleek laptop, featuring Apple's M1 Pro chip for exceptional performance and a stunning Retina display.",
+      "group": "tech",
+      "category": "laptops",
+      "categoryLabel": "Laptops",
+      "price": 1999.99,
+      "tags": [
+        "laptops",
+        "apple"
+      ],
+      "brand": "Apple",
+      "image": "images/78.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp"
+    },
+    {
+      "id": "100",
+      "title": "Apple Airpods",
+      "description": "The Apple Airpods offer a seamless wireless audio experience. With easy pairing, high-quality sound, and Siri integration, they are perfect for on-the-go listening.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 129.99,
+      "tags": [
+        "electronics",
+        "wireless earphones"
+      ],
+      "brand": "Apple",
+      "image": "images/100.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods/thumbnail.webp"
+    },
+    {
+      "id": "88",
+      "title": "Nike Air Jordan 1 Red And Black",
+      "description": "The Nike Air Jordan 1 in Red and Black is an iconic basketball sneaker known for its stylish design and high-performance features, making it a favorite among sneaker enthusiasts and athletes.",
+      "group": "men",
+      "category": "mens-shoes",
+      "categoryLabel": "Men's shoes",
+      "price": 149.99,
+      "tags": [
+        "footwear",
+        "athletic shoes"
+      ],
+      "brand": "Nike",
+      "image": "images/88.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shoes/nike-air-jordan-1-red-and-black/thumbnail.webp"
+    },
+    {
+      "id": "177",
+      "title": "Black Women's Gown",
+      "description": "The Black Women's Gown is an elegant and timeless evening gown. With a sleek black design, it's perfect for formal events and special occasions, exuding sophistication and style.",
+      "group": "women",
+      "category": "womens-dresses",
+      "categoryLabel": "Dresses",
+      "price": 129.99,
+      "tags": [
+        "clothing",
+        "gowns"
+      ],
+      "brand": "",
+      "image": "images/177.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-dresses/black-women's-gown/thumbnail.webp"
+    },
+    {
+      "id": "6",
+      "title": "Calvin Klein CK One",
+      "description": "CK One by Calvin Klein is a classic unisex fragrance, known for its fresh and clean scent. It's a versatile fragrance suitable for everyday wear.",
+      "group": "care",
+      "category": "fragrances",
+      "categoryLabel": "Fragrances",
+      "price": 49.99,
+      "tags": [
+        "fragrances",
+        "perfumes"
+      ],
+      "brand": "Calvin Klein",
+      "image": "images/6.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/thumbnail.webp"
+    },
+    {
+      "id": "43",
+      "title": "Decoration Swing",
+      "description": "The Decoration Swing is a charming addition to your home decor. Crafted with intricate details, it adds a touch of elegance and whimsy to any room.",
+      "group": "home",
+      "category": "home-decoration",
+      "categoryLabel": "Home decor",
+      "price": 59.99,
+      "tags": [
+        "home decor",
+        "swing"
+      ],
+      "brand": "",
+      "image": "images/43.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/home-decoration/decoration-swing/thumbnail.webp"
+    },
+    {
+      "id": "49",
+      "title": "Black Aluminium Cup",
+      "description": "The Black Aluminium Cup is a stylish and durable cup suitable for both hot and cold beverages. Its sleek black design adds a modern touch to your drinkware collection.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 5.99,
+      "tags": [
+        "drinkware",
+        "cups"
+      ],
+      "brand": "",
+      "image": "images/49.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/thumbnail.webp"
+    },
+    {
+      "id": "138",
+      "title": "Baseball Ball",
+      "description": "The Baseball Ball is a standard baseball used in baseball games. It features a durable leather cover and is designed for pitching, hitting, and fielding in the game of baseball.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 8.99,
+      "tags": [
+        "sports equipment",
+        "baseball"
+      ],
+      "brand": "",
+      "image": "images/138.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/baseball-ball/thumbnail.webp"
+    },
+    {
+      "id": "17",
+      "title": "Beef Steak",
+      "description": "High-quality beef steak, great for grilling or cooking to your preferred level of doneness.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 12.99,
+      "tags": [
+        "meat"
+      ],
+      "brand": "",
+      "image": "images/17.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/beef-steak/thumbnail.webp"
+    },
+    {
+      "id": "190",
+      "title": "IWC Ingenieur Automatic Steel",
+      "description": "The IWC Ingenieur Automatic Steel watch is a durable and sophisticated timepiece. With a stainless steel case and automatic movement, it combines precision and style for watch enthusiasts.",
+      "group": "style",
+      "category": "womens-watches",
+      "categoryLabel": "Women's watches",
+      "price": 4999.99,
+      "tags": [
+        "watches",
+        "luxury watches"
+      ],
+      "brand": "IWC",
+      "image": "images/190.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-watches/iwc-ingenieur-automatic-steel/thumbnail.webp"
+    },
+    {
+      "id": "159",
+      "title": "iPad Mini 2021 Starlight",
+      "description": "The iPad Mini 2021 in Starlight is a compact and powerful tablet from Apple. Featuring a stunning Retina display, powerful A-series chip, and a sleek design, it offers a premium tablet experience.",
+      "group": "tech",
+      "category": "tablets",
+      "categoryLabel": "Tablets",
+      "price": 499.99,
+      "tags": [
+        "electronics",
+        "tablets"
+      ],
+      "brand": "Apple",
+      "image": "images/159.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/tablets/ipad-mini-2021-starlight/thumbnail.webp"
+    },
+    {
+      "id": "101",
+      "title": "Apple AirPods Max Silver",
+      "description": "The Apple AirPods Max in Silver are premium over-ear headphones with high-fidelity audio, adaptive EQ, and active noise cancellation. Experience immersive sound in style.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 549.99,
+      "tags": [
+        "electronics",
+        "over-ear headphones"
+      ],
+      "brand": "Apple",
+      "image": "images/101.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods-max-silver/thumbnail.webp"
+    },
+    {
+      "id": "84",
+      "title": "Gigabyte Aorus Men Tshirt",
+      "description": "The Gigabyte Aorus Men Tshirt is a cool and casual shirt for gaming enthusiasts. With the Aorus logo and sleek design, it's perfect for expressing your gaming style.",
+      "group": "men",
+      "category": "mens-shirts",
+      "categoryLabel": "Men's shirts",
+      "price": 24.99,
+      "tags": [
+        "clothing",
+        "men's t-shirts"
+      ],
+      "brand": "Gigabyte",
+      "image": "images/84.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/thumbnail.webp"
+    },
+    {
+      "id": "185",
+      "title": "Black & Brown Slipper",
+      "description": "The Black & Brown Slipper is a comfortable and stylish choice for casual wear. Featuring a blend of black and brown colors, it adds a touch of sophistication to your relaxation.",
+      "group": "women",
+      "category": "womens-shoes",
+      "categoryLabel": "Women's shoes",
+      "price": 19.99,
+      "tags": [
+        "footwear",
+        "slippers"
+      ],
+      "brand": "Comfort Trends",
+      "image": "images/185.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-shoes/black-&-brown-slipper/thumbnail.webp"
+    },
+    {
+      "id": "118",
+      "title": "Attitude Super Leaves Hand Soap",
+      "description": "Attitude Super Leaves Hand Soap is a natural and nourishing hand soap enriched with the goodness of super leaves. It cleanses and moisturizes your hands, leaving them feeling fresh and soft.",
+      "group": "care",
+      "category": "skin-care",
+      "categoryLabel": "Skin care",
+      "price": 8.99,
+      "tags": [
+        "personal care",
+        "hand soap"
+      ],
+      "brand": "Attitude",
+      "image": "images/118.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/skin-care/attitude-super-leaves-hand-soap/thumbnail.webp"
+    },
+    {
+      "id": "12",
+      "title": "Annibale Colombo Sofa",
+      "description": "The Annibale Colombo Sofa is a sophisticated and comfortable seating option, featuring exquisite design and premium upholstery for your living room.",
+      "group": "home",
+      "category": "furniture",
+      "categoryLabel": "Furniture",
+      "price": 2499.99,
+      "tags": [
+        "furniture",
+        "sofas"
+      ],
+      "brand": "Annibale Colombo",
+      "image": "images/12.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/thumbnail.webp"
+    },
+    {
+      "id": "50",
+      "title": "Black Whisk",
+      "description": "The Black Whisk is a kitchen essential for whisking and beating ingredients. Its ergonomic handle and sleek design make it a practical and stylish tool.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 9.99,
+      "tags": [
+        "kitchen tools",
+        "utensils"
+      ],
+      "brand": "",
+      "image": "images/50.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-whisk/thumbnail.webp"
+    },
+    {
+      "id": "139",
+      "title": "Baseball Glove",
+      "description": "The Baseball Glove is a protective glove worn by baseball players. It is designed to catch and field the baseball, providing players with comfort and control during the game.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 24.99,
+      "tags": [
+        "sports equipment",
+        "baseball"
+      ],
+      "brand": "",
+      "image": "images/139.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/baseball-glove/thumbnail.webp"
+    },
+    {
+      "id": "18",
+      "title": "Cat Food",
+      "description": "Nutritious cat food formulated to meet the dietary needs of your feline friend.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 8.99,
+      "tags": [
+        "pet supplies",
+        "cat food"
+      ],
+      "brand": "",
+      "image": "images/18.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/cat-food/thumbnail.webp"
+    },
+    {
+      "id": "154",
+      "title": "Black Sun Glasses",
+      "description": "The Black Sun Glasses are a classic and stylish choice, featuring a sleek black frame and tinted lenses. They provide both UV protection and a fashionable look.",
+      "group": "style",
+      "category": "sunglasses",
+      "categoryLabel": "Sunglasses",
+      "price": 29.99,
+      "tags": [
+        "eyewear",
+        "sunglasses"
+      ],
+      "brand": "Fashion Shades",
+      "image": "images/154.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp"
+    },
+    {
+      "id": "122",
+      "title": "iPhone 6",
+      "description": "The iPhone 6 is a stylish and capable smartphone with a larger display and improved performance. It introduced new features and design elements, making it a popular choice in its time.",
+      "group": "tech",
+      "category": "smartphones",
+      "categoryLabel": "Smartphones",
+      "price": 299.99,
+      "tags": [
+        "smartphones",
+        "apple"
+      ],
+      "brand": "Apple",
+      "image": "images/122.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/smartphones/iphone-6/thumbnail.webp"
+    },
+    {
+      "id": "102",
+      "title": "Apple Airpower Wireless Charger",
+      "description": "The Apple AirPower Wireless Charger provides a convenient way to charge your compatible Apple devices wirelessly. Simply place your devices on the charging mat for effortless charging.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 79.99,
+      "tags": [
+        "electronics",
+        "wireless chargers"
+      ],
+      "brand": "Apple",
+      "image": "images/102.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpower-wireless-charger/thumbnail.webp"
+    },
+    {
+      "id": "89",
+      "title": "Nike Baseball Cleats",
+      "description": "Nike Baseball Cleats are designed for maximum traction and performance on the baseball field. They provide stability and support for players during games and practices.",
+      "group": "men",
+      "category": "mens-shoes",
+      "categoryLabel": "Men's shoes",
+      "price": 79.99,
+      "tags": [
+        "footwear",
+        "sports cleats"
+      ],
+      "brand": "Nike",
+      "image": "images/89.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shoes/nike-baseball-cleats/thumbnail.webp"
+    },
+    {
+      "id": "162",
+      "title": "Blue Frock",
+      "description": "The Blue Frock is a charming and stylish dress for various occasions. With a vibrant blue color and a comfortable design, it adds a touch of elegance to your wardrobe.",
+      "group": "women",
+      "category": "tops",
+      "categoryLabel": "Women's tops",
+      "price": 29.99,
+      "tags": [
+        "clothing",
+        "dresses"
+      ],
+      "brand": "",
+      "image": "images/162.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/tops/blue-frock/thumbnail.webp"
+    },
+    {
+      "id": "2",
+      "title": "Eyeshadow Palette with Mirror",
+      "description": "The Eyeshadow Palette with Mirror offers a versatile range of eyeshadow shades for creating stunning eye looks. With a built-in mirror, it's convenient for on-the-go makeup application.",
+      "group": "care",
+      "category": "beauty",
+      "categoryLabel": "Makeup",
+      "price": 19.99,
+      "tags": [
+        "beauty",
+        "eyeshadow"
+      ],
+      "brand": "Glamour Beauty",
+      "image": "images/2.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/thumbnail.webp"
+    },
+    {
+      "id": "44",
+      "title": "Family Tree Photo Frame",
+      "description": "The Family Tree Photo Frame is a sentimental and stylish way to display your cherished family memories. With multiple photo slots, it tells the story of your loved ones.",
+      "group": "home",
+      "category": "home-decoration",
+      "categoryLabel": "Home decor",
+      "price": 29.99,
+      "tags": [
+        "home decor",
+        "photo frame"
+      ],
+      "brand": "",
+      "image": "images/44.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/home-decoration/family-tree-photo-frame/thumbnail.webp"
+    },
+    {
+      "id": "51",
+      "title": "Boxed Blender",
+      "description": "The Boxed Blender is a powerful and compact blender perfect for smoothies, shakes, and more. Its convenient design and multiple functions make it a versatile kitchen appliance.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 39.99,
+      "tags": [
+        "kitchen appliances",
+        "blenders"
+      ],
+      "brand": "",
+      "image": "images/51.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/boxed-blender/thumbnail.webp"
+    },
+    {
+      "id": "140",
+      "title": "Basketball",
+      "description": "The Basketball is a standard ball used in basketball games. It is designed for dribbling, shooting, and passing in the game of basketball, suitable for both indoor and outdoor play.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 14.99,
+      "tags": [
+        "sports equipment",
+        "basketball"
+      ],
+      "brand": "",
+      "image": "images/140.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/basketball/thumbnail.webp"
+    },
+    {
+      "id": "19",
+      "title": "Chicken Meat",
+      "description": "Fresh and tender chicken meat, suitable for various culinary preparations.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 9.99,
+      "tags": [
+        "meat"
+      ],
+      "brand": "",
+      "image": "images/19.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/chicken-meat/thumbnail.webp"
+    },
+    {
+      "id": "182",
+      "title": "Green Crystal Earring",
+      "description": "The Green Crystal Earring is a dazzling accessory that features a vibrant green crystal. With a classic design, it adds a touch of elegance to your ensemble, perfect for formal or special occasions.",
+      "group": "style",
+      "category": "womens-jewellery",
+      "categoryLabel": "Jewellery",
+      "price": 29.99,
+      "tags": [
+        "fashion accessories",
+        "earrings"
+      ],
+      "brand": "",
+      "image": "images/182.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-jewellery/green-crystal-earring/thumbnail.webp"
+    },
+    {
+      "id": "79",
+      "title": "Asus Zenbook Pro Dual Screen Laptop",
+      "description": "The Asus Zenbook Pro Dual Screen Laptop is a high-performance device with dual screens, providing productivity and versatility for creative professionals.",
+      "group": "tech",
+      "category": "laptops",
+      "categoryLabel": "Laptops",
+      "price": 1799.99,
+      "tags": [
+        "laptops"
+      ],
+      "brand": "Asus",
+      "image": "images/79.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/thumbnail.webp"
+    },
+    {
+      "id": "103",
+      "title": "Apple HomePod Mini Cosmic Grey",
+      "description": "The Apple HomePod Mini in Cosmic Grey is a compact smart speaker that delivers impressive audio and integrates seamlessly with the Apple ecosystem for a smart home experience.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 99.99,
+      "tags": [
+        "electronics",
+        "smart speakers"
+      ],
+      "brand": "Apple",
+      "image": "images/103.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-homepod-mini-cosmic-grey/thumbnail.webp"
+    },
+    {
+      "id": "85",
+      "title": "Man Plaid Shirt",
+      "description": "The Man Plaid Shirt is a timeless and versatile men's shirt with a classic plaid pattern. Its comfortable fit and casual style make it a wardrobe essential for various occasions.",
+      "group": "men",
+      "category": "mens-shirts",
+      "categoryLabel": "Men's shirts",
+      "price": 34.99,
+      "tags": [
+        "clothing",
+        "men's shirts"
+      ],
+      "brand": "Classic Wear",
+      "image": "images/85.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/thumbnail.webp"
+    },
+    {
+      "id": "173",
+      "title": "Heshe Women's Leather Bag",
+      "description": "The Heshe Women's Leather Bag is a luxurious and high-quality leather bag for the sophisticated woman. With a timeless design and durable craftsmanship, it's a versatile accessory.",
+      "group": "women",
+      "category": "womens-bags",
+      "categoryLabel": "Handbags",
+      "price": 129.99,
+      "tags": [
+        "fashion accessories",
+        "leather bags"
+      ],
+      "brand": "Heshe",
+      "image": "images/173.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-bags/heshe-women's-leather-bag/thumbnail.webp"
+    },
+    {
+      "id": "7",
+      "title": "Chanel Coco Noir Eau De",
+      "description": "Coco Noir by Chanel is an elegant and mysterious fragrance, featuring notes of grapefruit, rose, and sandalwood. Perfect for evening occasions.",
+      "group": "care",
+      "category": "fragrances",
+      "categoryLabel": "Fragrances",
+      "price": 129.99,
+      "tags": [
+        "fragrances",
+        "perfumes"
+      ],
+      "brand": "Chanel",
+      "image": "images/7.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/thumbnail.webp"
+    },
+    {
+      "id": "13",
+      "title": "Bedside Table African Cherry",
+      "description": "The Bedside Table in African Cherry is a stylish and functional addition to your bedroom, providing convenient storage space and a touch of elegance.",
+      "group": "home",
+      "category": "furniture",
+      "categoryLabel": "Furniture",
+      "price": 299.99,
+      "tags": [
+        "furniture",
+        "bedside tables"
+      ],
+      "brand": "Furniture Co.",
+      "image": "images/13.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/furniture/bedside-table-african-cherry/thumbnail.webp"
+    },
+    {
+      "id": "52",
+      "title": "Carbon Steel Wok",
+      "description": "The Carbon Steel Wok is a versatile cooking pan suitable for stir-frying, sautéing, and deep frying. Its sturdy construction ensures even heat distribution for delicious meals.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 29.99,
+      "tags": [
+        "cookware",
+        "woks"
+      ],
+      "brand": "",
+      "image": "images/52.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/carbon-steel-wok/thumbnail.webp"
+    },
+    {
+      "id": "141",
+      "title": "Basketball Rim",
+      "description": "The Basketball Rim is a sturdy hoop and net assembly mounted on a basketball backboard. It provides a target for shooting and scoring in the game of basketball.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 39.99,
+      "tags": [
+        "sports equipment",
+        "basketball"
+      ],
+      "brand": "",
+      "image": "images/141.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/basketball-rim/thumbnail.webp"
+    },
+    {
+      "id": "20",
+      "title": "Cooking Oil",
+      "description": "Versatile cooking oil suitable for frying, sautéing, and various culinary applications.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 4.99,
+      "tags": [
+        "cooking essentials"
+      ],
+      "brand": "",
+      "image": "images/20.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/cooking-oil/thumbnail.webp"
+    },
+    {
+      "id": "94",
+      "title": "Longines Master Collection",
+      "description": "The Longines Master Collection is an elegant and refined watch known for its precision and craftsmanship. With a timeless design, it's a symbol of luxury and sophistication.",
+      "group": "style",
+      "category": "mens-watches",
+      "categoryLabel": "Men's watches",
+      "price": 1499.99,
+      "tags": [
+        "watches",
+        "luxury watches"
+      ],
+      "brand": "Longines",
+      "image": "images/94.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-watches/longines-master-collection/thumbnail.webp"
+    },
+    {
+      "id": "160",
+      "title": "Samsung Galaxy Tab S8 Plus Grey",
+      "description": "The Samsung Galaxy Tab S8 Plus in Grey is a high-performance Android tablet by Samsung. With a large AMOLED display, powerful processor, and S Pen support, it's ideal for productivity and entertainment.",
+      "group": "tech",
+      "category": "tablets",
+      "categoryLabel": "Tablets",
+      "price": 599.99,
+      "tags": [
+        "electronics",
+        "tablets"
+      ],
+      "brand": "Samsung",
+      "image": "images/160.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/tablets/samsung-galaxy-tab-s8-plus-grey/thumbnail.webp"
+    },
+    {
+      "id": "104",
+      "title": "Apple iPhone Charger",
+      "description": "The Apple iPhone Charger is a high-quality charger designed for fast and efficient charging of your iPhone. Ensure your device stays powered up and ready to go.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 19.99,
+      "tags": [
+        "electronics",
+        "chargers"
+      ],
+      "brand": "Apple",
+      "image": "images/104.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-iphone-charger/thumbnail.webp"
+    },
+    {
+      "id": "90",
+      "title": "Puma Future Rider Trainers",
+      "description": "The Puma Future Rider Trainers offer a blend of retro style and modern comfort. Perfect for casual wear, these trainers provide a fashionable and comfortable option for everyday use.",
+      "group": "men",
+      "category": "mens-shoes",
+      "categoryLabel": "Men's shoes",
+      "price": 89.99,
+      "tags": [
+        "footwear",
+        "casual shoes"
+      ],
+      "brand": "Puma",
+      "image": "images/90.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shoes/puma-future-rider-trainers/thumbnail.webp"
+    },
+    {
+      "id": "178",
+      "title": "Corset Leather With Skirt",
+      "description": "The Corset Leather With Skirt is a bold and edgy ensemble that combines a stylish corset with a matching skirt. Ideal for fashion-forward individuals, it makes a statement at any event.",
+      "group": "women",
+      "category": "womens-dresses",
+      "categoryLabel": "Dresses",
+      "price": 89.99,
+      "tags": [
+        "clothing",
+        "corsets",
+        "skirts"
+      ],
+      "brand": "",
+      "image": "images/178.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-dresses/corset-leather-with-skirt/thumbnail.webp"
+    },
+    {
+      "id": "119",
+      "title": "Olay Ultra Moisture Shea Butter Body Wash",
+      "description": "Olay Ultra Moisture Shea Butter Body Wash is a luxurious body wash that hydrates and nourishes your skin with the moisturizing power of shea butter. Enjoy a rich lather and silky-smooth skin.",
+      "group": "care",
+      "category": "skin-care",
+      "categoryLabel": "Skin care",
+      "price": 12.99,
+      "tags": [
+        "personal care",
+        "body wash"
+      ],
+      "brand": "Olay",
+      "image": "images/119.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/skin-care/olay-ultra-moisture-shea-butter-body-wash/thumbnail.webp"
+    },
+    {
+      "id": "45",
+      "title": "House Showpiece Plant",
+      "description": "The House Showpiece Plant is an artificial plant that brings a touch of nature to your home without the need for maintenance. It adds greenery and style to any space.",
+      "group": "home",
+      "category": "home-decoration",
+      "categoryLabel": "Home decor",
+      "price": 39.99,
+      "tags": [
+        "home decor",
+        "artificial plants"
+      ],
+      "brand": "",
+      "image": "images/45.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/home-decoration/house-showpiece-plant/thumbnail.webp"
+    },
+    {
+      "id": "53",
+      "title": "Chopping Board",
+      "description": "The Chopping Board is an essential kitchen accessory for food preparation. Made from durable material, it provides a safe and hygienic surface for cutting and chopping.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 12.99,
+      "tags": [
+        "kitchen tools",
+        "cutting boards"
+      ],
+      "brand": "",
+      "image": "images/53.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/chopping-board/thumbnail.webp"
+    },
+    {
+      "id": "142",
+      "title": "Cricket Ball",
+      "description": "The Cricket Ball is a hard leather ball used in the sport of cricket. It is bowled and batted in the game, and its hardness and seam contribute to the dynamics of cricket play.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 12.99,
+      "tags": [
+        "sports equipment",
+        "cricket"
+      ],
+      "brand": "",
+      "image": "images/142.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-ball/thumbnail.webp"
+    },
+    {
+      "id": "21",
+      "title": "Cucumber",
+      "description": "Crisp and hydrating cucumbers, ideal for salads, snacks, or as a refreshing side.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 1.49,
+      "tags": [
+        "vegetables"
+      ],
+      "brand": "",
+      "image": "images/21.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/cucumber/thumbnail.webp"
+    },
+    {
+      "id": "191",
+      "title": "Rolex Cellini Moonphase",
+      "description": "The Rolex Cellini Moonphase watch is a masterpiece of horology. Featuring a moon phase complication, it showcases the craftsmanship and elegance that Rolex is renowned for.",
+      "group": "style",
+      "category": "womens-watches",
+      "categoryLabel": "Women's watches",
+      "price": 15999.99,
+      "tags": [
+        "watches",
+        "luxury watches"
+      ],
+      "brand": "Rolex",
+      "image": "images/191.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-watches/rolex-cellini-moonphase/thumbnail.webp"
+    },
+    {
+      "id": "123",
+      "title": "iPhone 13 Pro",
+      "description": "The iPhone 13 Pro is a cutting-edge smartphone with a powerful camera system, high-performance chip, and stunning display. It offers advanced features for users who demand top-notch technology.",
+      "group": "tech",
+      "category": "smartphones",
+      "categoryLabel": "Smartphones",
+      "price": 1099.99,
+      "tags": [
+        "smartphones",
+        "apple"
+      ],
+      "brand": "Apple",
+      "image": "images/123.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/thumbnail.webp"
+    },
+    {
+      "id": "105",
+      "title": "Apple MagSafe Battery Pack",
+      "description": "The Apple MagSafe Battery Pack is a portable and convenient way to add extra battery life to your MagSafe-compatible iPhone. Attach it magnetically for a secure connection.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 99.99,
+      "tags": [
+        "electronics",
+        "power banks"
+      ],
+      "brand": "Apple",
+      "image": "images/105.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-magsafe-battery-pack/thumbnail.webp"
+    },
+    {
+      "id": "86",
+      "title": "Man Short Sleeve Shirt",
+      "description": "The Man Short Sleeve Shirt is a breezy and stylish option for warm days. With a comfortable fit and short sleeves, it's perfect for a laid-back yet polished look.",
+      "group": "men",
+      "category": "mens-shirts",
+      "categoryLabel": "Men's shirts",
+      "price": 19.99,
+      "tags": [
+        "clothing",
+        "men's shirts"
+      ],
+      "brand": "Casual Comfort",
+      "image": "images/86.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/thumbnail.webp"
+    },
+    {
+      "id": "186",
+      "title": "Calvin Klein Heel Shoes",
+      "description": "Calvin Klein Heel Shoes are elegant and sophisticated, designed for formal occasions. With a classic design and high-quality materials, they complement your stylish ensemble.",
+      "group": "women",
+      "category": "womens-shoes",
+      "categoryLabel": "Women's shoes",
+      "price": 79.99,
+      "tags": [
+        "footwear",
+        "heel shoes"
+      ],
+      "brand": "Calvin Klein",
+      "image": "images/186.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-shoes/calvin-klein-heel-shoes/thumbnail.webp"
+    },
+    {
+      "id": "3",
+      "title": "Powder Canister",
+      "description": "The Powder Canister is a finely milled setting powder designed to set makeup and control shine. With a lightweight and translucent formula, it provides a smooth and matte finish.",
+      "group": "care",
+      "category": "beauty",
+      "categoryLabel": "Makeup",
+      "price": 14.99,
+      "tags": [
+        "beauty",
+        "face powder"
+      ],
+      "brand": "Velvet Touch",
+      "image": "images/3.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/beauty/powder-canister/thumbnail.webp"
+    },
+    {
+      "id": "14",
+      "title": "Knoll Saarinen Executive Conference Chair",
+      "description": "The Knoll Saarinen Executive Conference Chair is a modern and ergonomic chair, perfect for your office or conference room with its timeless design.",
+      "group": "home",
+      "category": "furniture",
+      "categoryLabel": "Furniture",
+      "price": 499.99,
+      "tags": [
+        "furniture",
+        "office chairs"
+      ],
+      "brand": "Knoll",
+      "image": "images/14.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/furniture/knoll-saarinen-executive-conference-chair/thumbnail.webp"
+    },
+    {
+      "id": "54",
+      "title": "Citrus Squeezer Yellow",
+      "description": "The Citrus Squeezer in Yellow is a handy tool for extracting juice from citrus fruits. Its vibrant color adds a cheerful touch to your kitchen gadgets.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 8.99,
+      "tags": [
+        "kitchen tools",
+        "juicers"
+      ],
+      "brand": "",
+      "image": "images/54.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/citrus-squeezer-yellow/thumbnail.webp"
+    },
+    {
+      "id": "143",
+      "title": "Cricket Bat",
+      "description": "The Cricket Bat is an essential piece of cricket equipment used by batsmen to hit the cricket ball. It is made of wood and comes in various sizes and designs.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 29.99,
+      "tags": [
+        "sports equipment",
+        "cricket"
+      ],
+      "brand": "",
+      "image": "images/143.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-bat/thumbnail.webp"
+    },
+    {
+      "id": "22",
+      "title": "Dog Food",
+      "description": "Specially formulated dog food designed to provide essential nutrients for your canine companion.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 10.99,
+      "tags": [
+        "pet supplies",
+        "dog food"
+      ],
+      "brand": "",
+      "image": "images/22.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/dog-food/thumbnail.webp"
+    },
+    {
+      "id": "155",
+      "title": "Classic Sun Glasses",
+      "description": "The Classic Sun Glasses offer a timeless design with a neutral frame and UV-protected lenses. These sunglasses are versatile and suitable for various occasions.",
+      "group": "style",
+      "category": "sunglasses",
+      "categoryLabel": "Sunglasses",
+      "price": 24.99,
+      "tags": [
+        "eyewear",
+        "sunglasses"
+      ],
+      "brand": "Fashion Shades",
+      "image": "images/155.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/thumbnail.webp"
+    },
+    {
+      "id": "80",
+      "title": "Huawei Matebook X Pro",
+      "description": "The Huawei Matebook X Pro is a slim and stylish laptop with a high-resolution touchscreen display, offering a premium experience for users on the go.",
+      "group": "tech",
+      "category": "laptops",
+      "categoryLabel": "Laptops",
+      "price": 1399.99,
+      "tags": [
+        "laptops"
+      ],
+      "brand": "Huawei",
+      "image": "images/80.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/thumbnail.webp"
+    },
+    {
+      "id": "106",
+      "title": "Apple Watch Series 4 Gold",
+      "description": "The Apple Watch Series 4 in Gold is a stylish and advanced smartwatch with features like heart rate monitoring, fitness tracking, and a beautiful Retina display.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 349.99,
+      "tags": [
+        "electronics",
+        "smartwatches"
+      ],
+      "brand": "Apple",
+      "image": "images/106.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-watch-series-4-gold/thumbnail.webp"
+    },
+    {
+      "id": "91",
+      "title": "Sports Sneakers Off White & Red",
+      "description": "The Sports Sneakers in Off White and Red combine style and functionality, making them a fashionable choice for sports enthusiasts. The red and off-white color combination adds a bold and energetic touch.",
+      "group": "men",
+      "category": "mens-shoes",
+      "categoryLabel": "Men's shoes",
+      "price": 119.99,
+      "tags": [
+        "footwear",
+        "athletic shoes"
+      ],
+      "brand": "Off White",
+      "image": "images/91.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shoes/sports-sneakers-off-white-&-red/thumbnail.webp"
+    },
+    {
+      "id": "163",
+      "title": "Girl Summer Dress",
+      "description": "The Girl Summer Dress is a cute and breezy dress designed for warm weather. With playful patterns and lightweight fabric, it's perfect for keeping cool and stylish during the summer.",
+      "group": "women",
+      "category": "tops",
+      "categoryLabel": "Women's tops",
+      "price": 19.99,
+      "tags": [
+        "clothing",
+        "girls' dresses"
+      ],
+      "brand": "",
+      "image": "images/163.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/tops/girl-summer-dress/thumbnail.webp"
+    },
+    {
+      "id": "8",
+      "title": "Dior J'adore",
+      "description": "J'adore by Dior is a luxurious and floral fragrance, known for its blend of ylang-ylang, rose, and jasmine. It embodies femininity and sophistication.",
+      "group": "care",
+      "category": "fragrances",
+      "categoryLabel": "Fragrances",
+      "price": 89.99,
+      "tags": [
+        "fragrances",
+        "perfumes"
+      ],
+      "brand": "Dior",
+      "image": "images/8.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/thumbnail.webp"
+    },
+    {
+      "id": "46",
+      "title": "Plant Pot",
+      "description": "The Plant Pot is a stylish container for your favorite plants. With a sleek design, it complements your indoor or outdoor garden, adding a modern touch to your plant display.",
+      "group": "home",
+      "category": "home-decoration",
+      "categoryLabel": "Home decor",
+      "price": 14.99,
+      "tags": [
+        "home decor",
+        "plant accessories"
+      ],
+      "brand": "",
+      "image": "images/46.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/home-decoration/plant-pot/thumbnail.webp"
+    },
+    {
+      "id": "55",
+      "title": "Egg Slicer",
+      "description": "The Egg Slicer is a convenient tool for slicing boiled eggs evenly. It's perfect for salads, sandwiches, and other dishes where sliced eggs are desired.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 6.99,
+      "tags": [
+        "kitchen tools",
+        "slicers"
+      ],
+      "brand": "",
+      "image": "images/55.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/egg-slicer/thumbnail.webp"
+    },
+    {
+      "id": "144",
+      "title": "Cricket Helmet",
+      "description": "The Cricket Helmet is a protective headgear worn by cricket players, especially batsmen and wicketkeepers. It provides protection against fast bowling and bouncers.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 44.99,
+      "tags": [
+        "sports equipment",
+        "cricket"
+      ],
+      "brand": "",
+      "image": "images/144.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-helmet/thumbnail.webp"
+    },
+    {
+      "id": "23",
+      "title": "Eggs",
+      "description": "Fresh eggs, a versatile ingredient for baking, cooking, or breakfast.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 2.99,
+      "tags": [
+        "dairy"
+      ],
+      "brand": "",
+      "image": "images/23.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/eggs/thumbnail.webp"
+    },
+    {
+      "id": "183",
+      "title": "Green Oval Earring",
+      "description": "The Green Oval Earring is a stylish and versatile accessory with a unique oval shape. Whether for casual or dressy occasions, its green hue and contemporary design make it a standout piece.",
+      "group": "style",
+      "category": "womens-jewellery",
+      "categoryLabel": "Jewellery",
+      "price": 24.99,
+      "tags": [
+        "fashion accessories",
+        "earrings"
+      ],
+      "brand": "",
+      "image": "images/183.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-jewellery/green-oval-earring/thumbnail.webp"
+    },
+    {
+      "id": "161",
+      "title": "Samsung Galaxy Tab White",
+      "description": "The Samsung Galaxy Tab in White is a sleek and versatile Android tablet. With a vibrant display, long-lasting battery, and a range of features, it offers a great user experience for various tasks.",
+      "group": "tech",
+      "category": "tablets",
+      "categoryLabel": "Tablets",
+      "price": 349.99,
+      "tags": [
+        "electronics",
+        "tablets"
+      ],
+      "brand": "Samsung",
+      "image": "images/161.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/tablets/samsung-galaxy-tab-white/thumbnail.webp"
+    },
+    {
+      "id": "107",
+      "title": "Beats Flex Wireless Earphones",
+      "description": "The Beats Flex Wireless Earphones offer a comfortable and versatile audio experience. With magnetic earbuds and up to 12 hours of battery life, they are ideal for everyday use.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 49.99,
+      "tags": [
+        "electronics",
+        "wireless earphones"
+      ],
+      "brand": "Beats",
+      "image": "images/107.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/beats-flex-wireless-earphones/thumbnail.webp"
+    },
+    {
+      "id": "87",
+      "title": "Men Check Shirt",
+      "description": "The Men Check Shirt is a classic and versatile shirt featuring a stylish check pattern. Suitable for various occasions, it adds a smart and polished touch to your wardrobe.",
+      "group": "men",
+      "category": "mens-shirts",
+      "categoryLabel": "Men's shirts",
+      "price": 27.99,
+      "tags": [
+        "clothing",
+        "men's shirts"
+      ],
+      "brand": "Urban Chic",
+      "image": "images/87.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shirts/men-check-shirt/thumbnail.webp"
+    },
+    {
+      "id": "174",
+      "title": "Prada Women Bag",
+      "description": "The Prada Women Bag is an iconic designer bag that exudes elegance and luxury. Crafted with precision and featuring the Prada logo, it's a statement piece for fashion enthusiasts.",
+      "group": "women",
+      "category": "womens-bags",
+      "categoryLabel": "Handbags",
+      "price": 599.99,
+      "tags": [
+        "fashion accessories",
+        "designer bags"
+      ],
+      "brand": "Prada",
+      "image": "images/174.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-bags/prada-women-bag/thumbnail.webp"
+    },
+    {
+      "id": "120",
+      "title": "Vaseline Men Body and Face Lotion",
+      "description": "Vaseline Men Body and Face Lotion is a specially formulated lotion designed to provide long-lasting moisture to men's skin. It absorbs quickly and helps keep the skin hydrated and healthy.",
+      "group": "care",
+      "category": "skin-care",
+      "categoryLabel": "Skin care",
+      "price": 9.99,
+      "tags": [
+        "personal care",
+        "body lotion"
+      ],
+      "brand": "Vaseline",
+      "image": "images/120.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/skin-care/vaseline-men-body-and-face-lotion/thumbnail.webp"
+    },
+    {
+      "id": "15",
+      "title": "Wooden Bathroom Sink With Mirror",
+      "description": "The Wooden Bathroom Sink with Mirror is a unique and stylish addition to your bathroom, featuring a wooden sink countertop and a matching mirror.",
+      "group": "home",
+      "category": "furniture",
+      "categoryLabel": "Furniture",
+      "price": 799.99,
+      "tags": [
+        "furniture",
+        "bathroom"
+      ],
+      "brand": "Bath Trends",
+      "image": "images/15.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/furniture/wooden-bathroom-sink-with-mirror/thumbnail.webp"
+    },
+    {
+      "id": "56",
+      "title": "Electric Stove",
+      "description": "The Electric Stove provides a portable and efficient cooking solution. Ideal for small kitchens or as an additional cooking surface for various culinary needs.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 49.99,
+      "tags": [
+        "kitchen appliances",
+        "cooktops"
+      ],
+      "brand": "",
+      "image": "images/56.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/electric-stove/thumbnail.webp"
+    },
+    {
+      "id": "145",
+      "title": "Cricket Wicket",
+      "description": "The Cricket Wicket is a set of three stumps and two bails, forming a wicket used in the sport of cricket. Batsmen aim to protect the wicket while scoring runs.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 29.99,
+      "tags": [
+        "sports equipment",
+        "cricket"
+      ],
+      "brand": "",
+      "image": "images/145.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-wicket/thumbnail.webp"
+    },
+    {
+      "id": "24",
+      "title": "Fish Steak",
+      "description": "Quality fish steak, suitable for grilling, baking, or pan-searing.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 14.99,
+      "tags": [
+        "seafood"
+      ],
+      "brand": "",
+      "image": "images/24.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/fish-steak/thumbnail.webp"
+    },
+    {
+      "id": "95",
+      "title": "Rolex Cellini Date Black Dial",
+      "description": "The Rolex Cellini Date with Black Dial is a classic and prestigious watch. With a black dial and date complication, it exudes sophistication and is a symbol of Rolex's heritage.",
+      "group": "style",
+      "category": "mens-watches",
+      "categoryLabel": "Men's watches",
+      "price": 8999.99,
+      "tags": [
+        "watches",
+        "luxury watches"
+      ],
+      "brand": "Rolex",
+      "image": "images/95.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-date-black-dial/thumbnail.webp"
+    },
+    {
+      "id": "124",
+      "title": "iPhone X",
+      "description": "The iPhone X is a flagship smartphone featuring a bezel-less OLED display, facial recognition technology (Face ID), and impressive performance. It represents a milestone in iPhone design and innovation.",
+      "group": "tech",
+      "category": "smartphones",
+      "categoryLabel": "Smartphones",
+      "price": 899.99,
+      "tags": [
+        "smartphones",
+        "apple"
+      ],
+      "brand": "Apple",
+      "image": "images/124.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/smartphones/iphone-x/thumbnail.webp"
+    },
+    {
+      "id": "108",
+      "title": "iPhone 12 Silicone Case with MagSafe Plum",
+      "description": "The iPhone 12 Silicone Case with MagSafe in Plum is a stylish and protective case designed for the iPhone 12. It features MagSafe technology for easy attachment of accessories.",
+      "group": "accessories",
+      "category": "mobile-accessories",
+      "categoryLabel": "Tech accessories",
+      "price": 29.99,
+      "tags": [
+        "electronics",
+        "phone accessories"
+      ],
+      "brand": "Apple",
+      "image": "images/108.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mobile-accessories/iphone-12-silicone-case-with-magsafe-plum/thumbnail.webp"
+    },
+    {
+      "id": "92",
+      "title": "Sports Sneakers Off White Red",
+      "description": "Another variant of the Sports Sneakers in Off White Red, featuring a unique design. These sneakers offer style and comfort for casual occasions.",
+      "group": "men",
+      "category": "mens-shoes",
+      "categoryLabel": "Men's shoes",
+      "price": 109.99,
+      "tags": [
+        "footwear",
+        "casual shoes"
+      ],
+      "brand": "Off White",
+      "image": "images/92.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/mens-shoes/sports-sneakers-off-white-red/thumbnail.webp"
+    },
+    {
+      "id": "179",
+      "title": "Corset With Black Skirt",
+      "description": "The Corset With Black Skirt is a chic and versatile outfit that pairs a fashionable corset with a classic black skirt. It offers a trendy and coordinated look for various occasions.",
+      "group": "women",
+      "category": "womens-dresses",
+      "categoryLabel": "Dresses",
+      "price": 79.99,
+      "tags": [
+        "clothing",
+        "corsets",
+        "skirts"
+      ],
+      "brand": "",
+      "image": "images/179.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-dresses/corset-with-black-skirt/thumbnail.webp"
+    },
+    {
+      "id": "4",
+      "title": "Red Lipstick",
+      "description": "The Red Lipstick is a classic and bold choice for adding a pop of color to your lips. With a creamy and pigmented formula, it provides a vibrant and long-lasting finish.",
+      "group": "care",
+      "category": "beauty",
+      "categoryLabel": "Makeup",
+      "price": 12.99,
+      "tags": [
+        "beauty",
+        "lipstick"
+      ],
+      "brand": "Chic Cosmetics",
+      "image": "images/4.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/beauty/red-lipstick/thumbnail.webp"
+    },
+    {
+      "id": "47",
+      "title": "Table Lamp",
+      "description": "The Table Lamp is a functional and decorative lighting solution for your living space. With a modern design, it provides both ambient and task lighting, enhancing the atmosphere.",
+      "group": "home",
+      "category": "home-decoration",
+      "categoryLabel": "Home decor",
+      "price": 49.99,
+      "tags": [
+        "home decor",
+        "lighting"
+      ],
+      "brand": "",
+      "image": "images/47.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/home-decoration/table-lamp/thumbnail.webp"
+    },
+    {
+      "id": "57",
+      "title": "Fine Mesh Strainer",
+      "description": "The Fine Mesh Strainer is a versatile tool for straining liquids and sifting dry ingredients. Its fine mesh ensures efficient filtering for smooth cooking and baking.",
+      "group": "kitchen",
+      "category": "kitchen-accessories",
+      "categoryLabel": "Kitchen essentials",
+      "price": 9.99,
+      "tags": [
+        "kitchen tools",
+        "strainers"
+      ],
+      "brand": "",
+      "image": "images/57.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/kitchen-accessories/fine-mesh-strainer/thumbnail.webp"
+    },
+    {
+      "id": "146",
+      "title": "Feather Shuttlecock",
+      "description": "The Feather Shuttlecock is used in the sport of badminton. It features natural feathers and is designed for high-speed play, providing stability and accuracy during matches.",
+      "group": "sport",
+      "category": "sports-accessories",
+      "categoryLabel": "Sports equipment",
+      "price": 5.99,
+      "tags": [
+        "sports equipment",
+        "badminton"
+      ],
+      "brand": "",
+      "image": "images/146.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/sports-accessories/feather-shuttlecock/thumbnail.webp"
+    },
+    {
+      "id": "25",
+      "title": "Green Bell Pepper",
+      "description": "Fresh and vibrant green bell pepper, perfect for adding color and flavor to your dishes.",
+      "group": "food",
+      "category": "groceries",
+      "categoryLabel": "Groceries",
+      "price": 1.29,
+      "tags": [
+        "vegetables"
+      ],
+      "brand": "",
+      "image": "images/25.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/groceries/green-bell-pepper/thumbnail.webp"
+    },
+    {
+      "id": "192",
+      "title": "Rolex Datejust Women",
+      "description": "The Rolex Datejust Women's watch is an iconic timepiece designed for women. With a timeless design and a date complication, it offers both elegance and functionality.",
+      "group": "style",
+      "category": "womens-watches",
+      "categoryLabel": "Women's watches",
+      "price": 10999.99,
+      "tags": [
+        "watches",
+        "luxury watches",
+        "women's watches"
+      ],
+      "brand": "Rolex",
+      "image": "images/192.webp",
+      "imageSource": "https://cdn.dummyjson.com/product-images/womens-watches/rolex-datejust-women/thumbnail.webp"
+    }
+  ]
+}

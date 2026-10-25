@@ -1,0 +1,606 @@
+{
+  "provider": "DummyJSON",
+  "retrievedOn": "2026-10-23",
+  "images": [
+    {
+      "path": "images/121.webp",
+      "source": "https://cdn.dummyjson.com/product-images/smartphones/iphone-5s/thumbnail.webp",
+      "bytes": 2058,
+      "sha256": "3b49f4fd7c49d5dfbb845173106ada8e917fb76a88a1bbbfbfe56fb65862ac7b"
+    },
+    {
+      "path": "images/99.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/amazon-echo-plus/thumbnail.webp",
+      "bytes": 11410,
+      "sha256": "54a9ee8df1d35d6985af2fc5b8ea6561ec5450aae534c32815a2e8bd3dd7d7f8"
+    },
+    {
+      "path": "images/83.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/thumbnail.webp",
+      "bytes": 17630,
+      "sha256": "bf4d7ff6fa1db050d157a5f0a4ff75cd0fa28071bc482030881b0be4f4d4468f"
+    },
+    {
+      "path": "images/172.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-bags/blue-women's-handbag/thumbnail.webp",
+      "bytes": 8020,
+      "sha256": "3af925bbd65951b9ab688abfb49727035356853d0344f0820f0abeca69fd6704"
+    },
+    {
+      "path": "images/1.webp",
+      "source": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp",
+      "bytes": 10112,
+      "sha256": "edae2ba3346733d72bacf662342af7a4c3217bc71e0d4c046afa51c4668f9ea8"
+    },
+    {
+      "path": "images/11.webp",
+      "source": "https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp",
+      "bytes": 8230,
+      "sha256": "175d5bb8a34b139939f2a0ddef3dd1278e6fe9050c520b1f088c46b4d0702bdd"
+    },
+    {
+      "path": "images/48.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/bamboo-spatula/thumbnail.webp",
+      "bytes": 4600,
+      "sha256": "ff3d338311c55e3265454d545b5c860e18d8c2a0a35881f93a4298b1542659af"
+    },
+    {
+      "path": "images/137.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/american-football/thumbnail.webp",
+      "bytes": 9870,
+      "sha256": "d4007050a59ded9aba29f81af0b34ec88fb4a7857496b29b33d87c971bcb118a"
+    },
+    {
+      "path": "images/16.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/apple/thumbnail.webp",
+      "bytes": 9578,
+      "sha256": "b4d7c3cf608d2f98ca9c6e1a44776e93cd6c4a14757f42000dd60b6908d1b4c1"
+    },
+    {
+      "path": "images/93.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/thumbnail.webp",
+      "bytes": 11122,
+      "sha256": "87bfe13018bccc1505c322c130cb063bb7662524c7af1d0c2279d6cd26884a79"
+    },
+    {
+      "path": "images/78.webp",
+      "source": "https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp",
+      "bytes": 5870,
+      "sha256": "6ff0f9c45641b29cff89a5bac1071546b9ba34731990a6e1ab3dbc799b680c48"
+    },
+    {
+      "path": "images/100.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods/thumbnail.webp",
+      "bytes": 7074,
+      "sha256": "8360ac0c6a1985ccdbf331cffde70756227c91d8ea026024338f5f290dbdab87"
+    },
+    {
+      "path": "images/88.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shoes/nike-air-jordan-1-red-and-black/thumbnail.webp",
+      "bytes": 11822,
+      "sha256": "cfb6ef928baee120886e633e4ba47e52f8b6cc977ce4323923d34dc177316c15"
+    },
+    {
+      "path": "images/177.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-dresses/black-women's-gown/thumbnail.webp",
+      "bytes": 12950,
+      "sha256": "ef78500c07cde7f3aeae730af666d1b76e7cb53fb548f882f4e2ac924222a470"
+    },
+    {
+      "path": "images/6.webp",
+      "source": "https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/thumbnail.webp",
+      "bytes": 4018,
+      "sha256": "ab0abf2583ea0c15cf812cb7f6496e19d50635307ad0a6a5dbe375bca5f3b77b"
+    },
+    {
+      "path": "images/43.webp",
+      "source": "https://cdn.dummyjson.com/product-images/home-decoration/decoration-swing/thumbnail.webp",
+      "bytes": 17560,
+      "sha256": "305e9881b5eead84ff3d481a9373d5580b5159dac9bebc6f89d9523ed3648c12"
+    },
+    {
+      "path": "images/49.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/thumbnail.webp",
+      "bytes": 7688,
+      "sha256": "0884e6db920f5c55c333f4f34ee3b8445c48b4218f836a9243c0d0dde4d9d486"
+    },
+    {
+      "path": "images/138.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/baseball-ball/thumbnail.webp",
+      "bytes": 8326,
+      "sha256": "0bebbb1b469afc9ee46985fb1909a6b6d61f137a7e24f13e9a63b9661b67112e"
+    },
+    {
+      "path": "images/17.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/beef-steak/thumbnail.webp",
+      "bytes": 7062,
+      "sha256": "c65958a7cea3559544dcd3a454c93957c1fd21227cabe3226361a938d874fff8"
+    },
+    {
+      "path": "images/190.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-watches/iwc-ingenieur-automatic-steel/thumbnail.webp",
+      "bytes": 8554,
+      "sha256": "cda4f040e870a7d853b336a64e3cd27fcf3d8fe4fbfea1fe1d602e7b97e08ef6"
+    },
+    {
+      "path": "images/159.webp",
+      "source": "https://cdn.dummyjson.com/product-images/tablets/ipad-mini-2021-starlight/thumbnail.webp",
+      "bytes": 8944,
+      "sha256": "fdcedb1ab1593070fbd57693df3b98e6af19f61642ca95f52a8143c2e0466f44"
+    },
+    {
+      "path": "images/101.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods-max-silver/thumbnail.webp",
+      "bytes": 11962,
+      "sha256": "bba633c5ddb0c0697d45246b2dbf097f022cf93ab16461052c68643ca9bcaf02"
+    },
+    {
+      "path": "images/84.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/thumbnail.webp",
+      "bytes": 9948,
+      "sha256": "7cc1c12a72e7f19c731f93ec73bd2f21a400402a0b728c2212bf5e3754603716"
+    },
+    {
+      "path": "images/185.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-shoes/black-&-brown-slipper/thumbnail.webp",
+      "bytes": 9500,
+      "sha256": "b519c96199f10bcff61fa8ed52f408c1c44ce25b8fbfee67cc467230fb10cbf1"
+    },
+    {
+      "path": "images/118.webp",
+      "source": "https://cdn.dummyjson.com/product-images/skin-care/attitude-super-leaves-hand-soap/thumbnail.webp",
+      "bytes": 8058,
+      "sha256": "0a5b599738d1018558946a6a117185f66d0f60f8fc6d16fe4c7a715c69b00e1c"
+    },
+    {
+      "path": "images/12.webp",
+      "source": "https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/thumbnail.webp",
+      "bytes": 8740,
+      "sha256": "9f8aec1788eac3488e345d952804b9ab62135261781366d97a5d889f4ed36c8e"
+    },
+    {
+      "path": "images/50.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-whisk/thumbnail.webp",
+      "bytes": 9246,
+      "sha256": "43bac1d993d19f7ccd176c6fa5accaa32d3c94d8687d8bd5a0b322b0d2283573"
+    },
+    {
+      "path": "images/139.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/baseball-glove/thumbnail.webp",
+      "bytes": 9728,
+      "sha256": "68e4c232502f1b502fa6cc27171a2ab530e7478d78215ef6aa01a458d86808cb"
+    },
+    {
+      "path": "images/18.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/cat-food/thumbnail.webp",
+      "bytes": 12346,
+      "sha256": "e7809f8fbcac8cc9a3fd2343b930128a703c31e1ede8dc122733fa33da715c9a"
+    },
+    {
+      "path": "images/154.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp",
+      "bytes": 8400,
+      "sha256": "d2a6d4ac3ad81953246a82971e822c7c96b2d69a4e7fc055eaa71b0b7e8a2b00"
+    },
+    {
+      "path": "images/122.webp",
+      "source": "https://cdn.dummyjson.com/product-images/smartphones/iphone-6/thumbnail.webp",
+      "bytes": 2612,
+      "sha256": "59084b200e126120514048d414e3817f5ab7c2cb33549c7df4a8215b849ab857"
+    },
+    {
+      "path": "images/102.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpower-wireless-charger/thumbnail.webp",
+      "bytes": 5426,
+      "sha256": "4a18c90866f0ba09b174a8d3806cc7ca679799029f5b888b022b0e4426a04c97"
+    },
+    {
+      "path": "images/89.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shoes/nike-baseball-cleats/thumbnail.webp",
+      "bytes": 13060,
+      "sha256": "44f01abd7e4c898d773746e8d784f8131112dbae58f9ea637a42200a7ba6088b"
+    },
+    {
+      "path": "images/162.webp",
+      "source": "https://cdn.dummyjson.com/product-images/tops/blue-frock/thumbnail.webp",
+      "bytes": 10938,
+      "sha256": "8dd7d73704d4eb4446099dedd27eeeaa3331fe63370b871d5f208ced95d8bc6e"
+    },
+    {
+      "path": "images/2.webp",
+      "source": "https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/thumbnail.webp",
+      "bytes": 7000,
+      "sha256": "609143ca67b7a4197ed6275819a9c797220530ec9682a609431241294f85b5b7"
+    },
+    {
+      "path": "images/44.webp",
+      "source": "https://cdn.dummyjson.com/product-images/home-decoration/family-tree-photo-frame/thumbnail.webp",
+      "bytes": 10536,
+      "sha256": "e3f0ad47e974f33009ef8cd40db110eaacbaf8ed6f723ce6b70c4489e4999619"
+    },
+    {
+      "path": "images/51.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/boxed-blender/thumbnail.webp",
+      "bytes": 11748,
+      "sha256": "2dc15b7d4af3bb736756e174ed9adeb434beee06c4a0c79d8a33ae7cee23d376"
+    },
+    {
+      "path": "images/140.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/basketball/thumbnail.webp",
+      "bytes": 8830,
+      "sha256": "0194fb8cbe1783ba32d903622a42413092fba4cd0390d673c5db697b93c8e8a3"
+    },
+    {
+      "path": "images/19.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/chicken-meat/thumbnail.webp",
+      "bytes": 7732,
+      "sha256": "8380aaaa985ada9a915b47fda7c0b95adb56ccd1be5ecb91c0423d3d5148dcaa"
+    },
+    {
+      "path": "images/182.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-jewellery/green-crystal-earring/thumbnail.webp",
+      "bytes": 5944,
+      "sha256": "3d4b797e3329a3120c1813ce4084bf7b38bdf44b5116e41171a0b0d646159df5"
+    },
+    {
+      "path": "images/79.webp",
+      "source": "https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/thumbnail.webp",
+      "bytes": 10006,
+      "sha256": "31743e0e89497a1f08c419739581e0b230519398ffe18bc4c88fd9b71f143b95"
+    },
+    {
+      "path": "images/103.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-homepod-mini-cosmic-grey/thumbnail.webp",
+      "bytes": 11244,
+      "sha256": "cf7c732c6344ca05f1c371189d776a0f71ebd3553f73f0b4fba5d2fec7af2231"
+    },
+    {
+      "path": "images/85.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/thumbnail.webp",
+      "bytes": 13584,
+      "sha256": "c2d098aee38b4440b66c2edf08352356c69402a8e2d4c8067c9e6f431e25631f"
+    },
+    {
+      "path": "images/173.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-bags/heshe-women's-leather-bag/thumbnail.webp",
+      "bytes": 9386,
+      "sha256": "fa66aeda5ee5a0d38d4cb8cdcb11afefff7c4d1ccbb9204f366055028797e25b"
+    },
+    {
+      "path": "images/7.webp",
+      "source": "https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/thumbnail.webp",
+      "bytes": 5856,
+      "sha256": "d16552eb409dcbde97181b2674ab5b923b9dbf36f1f82a444c649afacab8ec8e"
+    },
+    {
+      "path": "images/13.webp",
+      "source": "https://cdn.dummyjson.com/product-images/furniture/bedside-table-african-cherry/thumbnail.webp",
+      "bytes": 9006,
+      "sha256": "ff268dc53b3dfbc9963e99589076b4f00c8dddebb9a58bcec510b804150b4ba0"
+    },
+    {
+      "path": "images/52.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/carbon-steel-wok/thumbnail.webp",
+      "bytes": 8352,
+      "sha256": "eec9ee37d19d53abbb949d0afc98b110285d5e5521c6ae9b06227b50ab8b0dd8"
+    },
+    {
+      "path": "images/141.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/basketball-rim/thumbnail.webp",
+      "bytes": 19546,
+      "sha256": "ab5e817a1ab061e196c271a638df2f682225016f445ee47cb55acafa0e03c656"
+    },
+    {
+      "path": "images/20.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/cooking-oil/thumbnail.webp",
+      "bytes": 7994,
+      "sha256": "a793149b790fc5198d8c2c5a452bff4cfb1982192b362951548137bcf974e950"
+    },
+    {
+      "path": "images/94.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-watches/longines-master-collection/thumbnail.webp",
+      "bytes": 9720,
+      "sha256": "a105e882d52d383e6fdc0f3c30eb2233932250f25b7e941ec756e7214883be46"
+    },
+    {
+      "path": "images/160.webp",
+      "source": "https://cdn.dummyjson.com/product-images/tablets/samsung-galaxy-tab-s8-plus-grey/thumbnail.webp",
+      "bytes": 5126,
+      "sha256": "9ad87ce555fd39d217d623489747afc34cdbbbf889207a3f3c536a76e2b4fd17"
+    },
+    {
+      "path": "images/104.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-iphone-charger/thumbnail.webp",
+      "bytes": 7458,
+      "sha256": "54f5fe2167dfa8803cdba416565bf0a5d05cb5af0557870b78f282df778fc831"
+    },
+    {
+      "path": "images/90.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shoes/puma-future-rider-trainers/thumbnail.webp",
+      "bytes": 12668,
+      "sha256": "391e5fc95d1da6a982a40a9659b1f4f263e10a7ace346a6ac2ed1a3888c8ef47"
+    },
+    {
+      "path": "images/178.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-dresses/corset-leather-with-skirt/thumbnail.webp",
+      "bytes": 7546,
+      "sha256": "fc4ecaadc14119b8daf0477bfaa342a926a5b8f90a708e4449fac18c8be5562d"
+    },
+    {
+      "path": "images/119.webp",
+      "source": "https://cdn.dummyjson.com/product-images/skin-care/olay-ultra-moisture-shea-butter-body-wash/thumbnail.webp",
+      "bytes": 7540,
+      "sha256": "1b2873f1d55163b44628e4c51565e5448369a808d9d78e9be56bfa8d7800e1be"
+    },
+    {
+      "path": "images/45.webp",
+      "source": "https://cdn.dummyjson.com/product-images/home-decoration/house-showpiece-plant/thumbnail.webp",
+      "bytes": 13204,
+      "sha256": "96af930e76cdccc796b15bdb2c9a15680fa0a0f48b336e0d8baac6f7b096bce5"
+    },
+    {
+      "path": "images/53.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/chopping-board/thumbnail.webp",
+      "bytes": 6764,
+      "sha256": "d03d1c4a02317f241fcf8cba89054853e19505bc619784e61283fa1f9dbb361c"
+    },
+    {
+      "path": "images/142.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-ball/thumbnail.webp",
+      "bytes": 9816,
+      "sha256": "f8298fbfbf22d8a11fc1867f97d0a46323326694be9f1d1e9568f2fda40e9423"
+    },
+    {
+      "path": "images/21.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/cucumber/thumbnail.webp",
+      "bytes": 7764,
+      "sha256": "139d15ab0d79a4a1a87f26054a851023b8c78b5107ad34022e93a8f1fcc9b098"
+    },
+    {
+      "path": "images/191.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-watches/rolex-cellini-moonphase/thumbnail.webp",
+      "bytes": 11282,
+      "sha256": "c88a5b0ef3f08bcb6cfbc086cb3824bc0c1764de80e2465b5f53ffbfed21eecb"
+    },
+    {
+      "path": "images/123.webp",
+      "source": "https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/thumbnail.webp",
+      "bytes": 4552,
+      "sha256": "e22bb762b52564758d59dfa2e8f03d7dde475c696a05d66d249cd05f6fe69e06"
+    },
+    {
+      "path": "images/105.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-magsafe-battery-pack/thumbnail.webp",
+      "bytes": 4964,
+      "sha256": "81697a51e99f2fdf44e1df058eb1c878fd6755fa69c772f5c2ba0e0335ba13e3"
+    },
+    {
+      "path": "images/86.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/thumbnail.webp",
+      "bytes": 16610,
+      "sha256": "411ae5d50c401c74a74f12802e3f559001f53a43604273f029aa5cb3ee5636b2"
+    },
+    {
+      "path": "images/186.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-shoes/calvin-klein-heel-shoes/thumbnail.webp",
+      "bytes": 9844,
+      "sha256": "47952abb3540d12bd31730264fa3efc02d7f11e1241040d6a20debd22cb71d88"
+    },
+    {
+      "path": "images/3.webp",
+      "source": "https://cdn.dummyjson.com/product-images/beauty/powder-canister/thumbnail.webp",
+      "bytes": 6612,
+      "sha256": "d625018dc297c0f4c0720b95c1fb66888232ff02bc94b5e11617fdb27e178461"
+    },
+    {
+      "path": "images/14.webp",
+      "source": "https://cdn.dummyjson.com/product-images/furniture/knoll-saarinen-executive-conference-chair/thumbnail.webp",
+      "bytes": 13156,
+      "sha256": "01dace766a17bbd31f15090e0cd39d6bd0650eab38bb7fc967413040b5912151"
+    },
+    {
+      "path": "images/54.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/citrus-squeezer-yellow/thumbnail.webp",
+      "bytes": 10210,
+      "sha256": "78cb02ec95d4396d518960de5b7b941cc6c3df904c865cf5e5deb6034659e7eb"
+    },
+    {
+      "path": "images/143.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-bat/thumbnail.webp",
+      "bytes": 6486,
+      "sha256": "cc9ed00edc701643abba37df7163e8a2b19f8f0cc9b0df4c69ab3a74ee3a1b19"
+    },
+    {
+      "path": "images/22.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/dog-food/thumbnail.webp",
+      "bytes": 12834,
+      "sha256": "db534669cc3445c42ed727f44a37bdbcb0659899ff17ae26197d3bab6448cf98"
+    },
+    {
+      "path": "images/155.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/thumbnail.webp",
+      "bytes": 10912,
+      "sha256": "0c6612c61834bc2fa507fd4144a87fa816ce9137bba36576a7fc0ec715e6b0cb"
+    },
+    {
+      "path": "images/80.webp",
+      "source": "https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/thumbnail.webp",
+      "bytes": 5568,
+      "sha256": "418300c5902c32078a8dbdc7a975781990a57f6e1080226dc2834db57a6be4b2"
+    },
+    {
+      "path": "images/106.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-watch-series-4-gold/thumbnail.webp",
+      "bytes": 9774,
+      "sha256": "fb2eb2e7ed9629910307669fe371dcfee052b843a531fbcdeefb28f5d2955d25"
+    },
+    {
+      "path": "images/91.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shoes/sports-sneakers-off-white-&-red/thumbnail.webp",
+      "bytes": 6740,
+      "sha256": "ed8d07a5b4e86d4ad9c1c61a5b22b38d1a03264e1cf0f7442b708bd27b0a752e"
+    },
+    {
+      "path": "images/163.webp",
+      "source": "https://cdn.dummyjson.com/product-images/tops/girl-summer-dress/thumbnail.webp",
+      "bytes": 11768,
+      "sha256": "c6f2ec1420588ed868c44a422c98b04abb3b086b57a652f3bf395106806d177b"
+    },
+    {
+      "path": "images/8.webp",
+      "source": "https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/thumbnail.webp",
+      "bytes": 5748,
+      "sha256": "d9711b5e9d675be3ee9218cd3ee5e32cba54ccb64df1a04f17c8f6e022adc4b4"
+    },
+    {
+      "path": "images/46.webp",
+      "source": "https://cdn.dummyjson.com/product-images/home-decoration/plant-pot/thumbnail.webp",
+      "bytes": 12284,
+      "sha256": "215f61ff54018d49bed93d26a915e174f9c2fcc808d9d5e23712def7c9791a58"
+    },
+    {
+      "path": "images/55.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/egg-slicer/thumbnail.webp",
+      "bytes": 14786,
+      "sha256": "1a5113f6ff25a6435225f5ce33fa2c1f3fef4c3c58a7d54af262bfbe0f490291"
+    },
+    {
+      "path": "images/144.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-helmet/thumbnail.webp",
+      "bytes": 12866,
+      "sha256": "be36e364758007c0e73e911f39717f089f73d0056632ccabd1a6f41782e7e722"
+    },
+    {
+      "path": "images/23.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/eggs/thumbnail.webp",
+      "bytes": 8374,
+      "sha256": "d8a97a6361af589dbece68171c2c0ff09658af731417f4bde6ffbd98a76a2b56"
+    },
+    {
+      "path": "images/183.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-jewellery/green-oval-earring/thumbnail.webp",
+      "bytes": 8708,
+      "sha256": "5d76f6a1cee6f8620a72a036a1c18672c1e0bf8758053cd7c788784303879dc8"
+    },
+    {
+      "path": "images/161.webp",
+      "source": "https://cdn.dummyjson.com/product-images/tablets/samsung-galaxy-tab-white/thumbnail.webp",
+      "bytes": 10140,
+      "sha256": "34164f32de7eea394bae19db57e28e19e7800261986eb5b9e23603d83dddda36"
+    },
+    {
+      "path": "images/107.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/beats-flex-wireless-earphones/thumbnail.webp",
+      "bytes": 9522,
+      "sha256": "6b4f962a60dfba030908c3fc7b6e818730506be6ca03f00b0477cc0d5bc82ccd"
+    },
+    {
+      "path": "images/87.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shirts/men-check-shirt/thumbnail.webp",
+      "bytes": 14126,
+      "sha256": "003d5e9c3bac65f95e33b850729b08aba4a9d9083e13ddd2dd1a700f79db494c"
+    },
+    {
+      "path": "images/174.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-bags/prada-women-bag/thumbnail.webp",
+      "bytes": 7560,
+      "sha256": "34bcfa72ff9beced4dc99a690cb1524e1da4ebdd1b11de3d09980942c8354ea1"
+    },
+    {
+      "path": "images/120.webp",
+      "source": "https://cdn.dummyjson.com/product-images/skin-care/vaseline-men-body-and-face-lotion/thumbnail.webp",
+      "bytes": 9504,
+      "sha256": "860df806c4336dcf23c2e923ad462825b9c48441ff8e62e372428a92864c1df3"
+    },
+    {
+      "path": "images/15.webp",
+      "source": "https://cdn.dummyjson.com/product-images/furniture/wooden-bathroom-sink-with-mirror/thumbnail.webp",
+      "bytes": 7530,
+      "sha256": "4989481c2b79b52fbbabfba26deb9b5b307b70e89f135468e2767982df389632"
+    },
+    {
+      "path": "images/56.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/electric-stove/thumbnail.webp",
+      "bytes": 4464,
+      "sha256": "7ce01c639feb8f7a123841be2363498ebc68a008d49964038b42518945f5ec72"
+    },
+    {
+      "path": "images/145.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-wicket/thumbnail.webp",
+      "bytes": 10220,
+      "sha256": "65dfd5772b25bff7cc4d21dab146c574c2e9e09b93af9d53b682a512eec2b982"
+    },
+    {
+      "path": "images/24.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/fish-steak/thumbnail.webp",
+      "bytes": 8732,
+      "sha256": "e7f06d96c22a666908254acf327c5dd449a4761d61ec275e3fbfd371db4a4505"
+    },
+    {
+      "path": "images/95.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-date-black-dial/thumbnail.webp",
+      "bytes": 11386,
+      "sha256": "bf31c6428033663a9358ae3c7b72ead995d4f9b92562cb6d9a860e27a38004e8"
+    },
+    {
+      "path": "images/124.webp",
+      "source": "https://cdn.dummyjson.com/product-images/smartphones/iphone-x/thumbnail.webp",
+      "bytes": 3218,
+      "sha256": "dada6b09c82afb364998d686a5954888bf659b72a4428cf2af7da3bde7d0587c"
+    },
+    {
+      "path": "images/108.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mobile-accessories/iphone-12-silicone-case-with-magsafe-plum/thumbnail.webp",
+      "bytes": 4730,
+      "sha256": "795296ce7f21273fc1b222d6e33638022f3cdba40443397fdb15c6da21c6f08a"
+    },
+    {
+      "path": "images/92.webp",
+      "source": "https://cdn.dummyjson.com/product-images/mens-shoes/sports-sneakers-off-white-red/thumbnail.webp",
+      "bytes": 10598,
+      "sha256": "b783088e7a222a9e41a28ebaefc3346d4e9578ff95ade7b2f3f6db7a53097317"
+    },
+    {
+      "path": "images/179.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-dresses/corset-with-black-skirt/thumbnail.webp",
+      "bytes": 6450,
+      "sha256": "1675fd1b848e5efbfb54333c5489add896ba93a431169baeab1174e56ee6b8ca"
+    },
+    {
+      "path": "images/4.webp",
+      "source": "https://cdn.dummyjson.com/product-images/beauty/red-lipstick/thumbnail.webp",
+      "bytes": 7806,
+      "sha256": "8f54ad2fe4167fcc1521b2ee161140a7d85c3a848dafdef61b1ea85d30a63c50"
+    },
+    {
+      "path": "images/47.webp",
+      "source": "https://cdn.dummyjson.com/product-images/home-decoration/table-lamp/thumbnail.webp",
+      "bytes": 8360,
+      "sha256": "218bcebf9ea3037731e404493db73e72978176258ee1020e0b7b285c3c3f8ddd"
+    },
+    {
+      "path": "images/57.webp",
+      "source": "https://cdn.dummyjson.com/product-images/kitchen-accessories/fine-mesh-strainer/thumbnail.webp",
+      "bytes": 11480,
+      "sha256": "b8a59420943931fe79b000f422fc41a104ff80e7c99072b9b9223a2099276bd0"
+    },
+    {
+      "path": "images/146.webp",
+      "source": "https://cdn.dummyjson.com/product-images/sports-accessories/feather-shuttlecock/thumbnail.webp",
+      "bytes": 10190,
+      "sha256": "51f9b80c6a58fdfda99941c605551d24dfb26c30f4307b8a04642dd9a5d7cfbc"
+    },
+    {
+      "path": "images/25.webp",
+      "source": "https://cdn.dummyjson.com/product-images/groceries/green-bell-pepper/thumbnail.webp",
+      "bytes": 10266,
+      "sha256": "d7103ed98e6e5f9992c1b6190331bc8293657874b41e5343a833efa554fbfce9"
+    },
+    {
+      "path": "images/192.webp",
+      "source": "https://cdn.dummyjson.com/product-images/womens-watches/rolex-datejust-women/thumbnail.webp",
+      "bytes": 10202,
+      "sha256": "b63b752ac5b891581e00737e03bceb9213693c611ce6ffe0aba6b0da0331fafe"
+    }
+  ]
+}
