@@ -10,9 +10,11 @@ inputs and establish different things.
 | Level | Inputs | Result | Does not establish |
 | :--- | :--- | :--- | :--- |
 | Static explorer | Checkout and Python 3.13 | Browse five stored model examples locally | Live inference or current product information |
+| Shopping illustration | Checkout and a static HTTP server | Try views/hearts/ratings on 100 photographed sample products | Trained Retailrocket inference or evaluated recommendation quality |
 | Documentation integrity | Checkout and Python standard library | Links, fragments, evidence pins and released demo assets match | External URL availability, fresh tests or model quality |
 | Unit and fitted integration | Installed package and optional test dependencies | Current code tests; synthetic models actually fit, export, load and serve | Retailrocket accuracy, original bundle identity or full-model memory |
 | Real snapshot | Original external bundle, trusted manifest pin and compatible numerical environment | Explicit producer/reference regression parity | New full-fold quality, blind validation or public deployment |
+| Local release | Original bundle and compatible Windows environment | Indexed HTTP parity, fixed local workload/resources, telemetry and same-port stop/restart | Linux load qualification, production traffic/SLO or public model hosting |
 | Historical experiment reproduction | Correct Git revision, source datasets, prepared inputs and original environment | Re-run a particular experiment under its original contract | Compatibility with every later checkout or byte-identical timings |
 
 ## Browse without datasets or a model
@@ -31,6 +33,12 @@ No Kaggle credentials, cloud account, model files or package install are needed
 for this profile. The [explorer contract](SNAPSHOT_EXPLORER.md) explains its
 four fixed warm references, one cold example and narrow activity sample.
 
+For a product-oriented interactive example, use the separate
+[RecoMe shopping illustration](https://shoprecome.vercel.app/), documented in
+the [shopping guide](SHOPPING_DEMONSTRATION.md). Its local static server
+uses `shop-demo/` on port 8766. No dataset or model is required; its browser
+policy is independent of the verified historical outputs.
+
 ## Check the current documentation
 
 This standard-library command has no network or model access:
@@ -46,7 +54,7 @@ python scripts/verify_project_documentation.py
 ```
 
 It validates the explicit
-[documentation inventory](../benchmarks/release/documentation_inventory_v1.json),
+[documentation inventory](../benchmarks/release/documentation_inventory_publication_v1.json),
 local Markdown links and heading fragments, pinned historical JSON bytes and the
 seven released static assets. External links are counted, not fetched. The
 verifier never runs commands copied from Markdown. It rejects unknown static
@@ -55,7 +63,7 @@ files, symlinks, unsafe paths, duplicate JSON keys and nonfinite numbers.
 To compare against the completed documentation record:
 
 ```sh
-python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_validation_v2.json
+python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_publication_validation_v1.json
 ```
 
 After an intentional source or documentation change, write a new record using
@@ -73,13 +81,16 @@ verification report and original measured receipts.
 
 ## Install and test the Python project
 
-Use the existing `ecommerce-recsys` environment. For a new checkout, the declared
-development baseline is Python 3.13; the qualified producer uses 3.13.15.
+The tested Windows baseline is a Conda Python 3.13.15 interpreter. Create a
+separate environment for current-source tests; keep the original bundle producer
+environment unchanged. From the repository root:
 
-```sh
-conda env create -f environment.yml
-conda activate ecommerce-recsys
-python -m pip install -e ".[dev]" -r requirements/serving-test.txt -r requirements/release-test.txt
+```powershell
+conda create -n ecommerce-recsys-dev --override-channels -c conda-forge python=3.13.15 pip --no-default-packages
+conda activate ecommerce-recsys-dev
+$env:PYTHONNOUSERSITE = "1"
+python -m pip install --require-hashes --only-binary=:all: -r requirements/development-windows.txt
+python -m pip install --no-deps --no-build-isolation -e .
 python -m pip check
 python -c "import implicit, fastapi, uvicorn, httpx2, yaml, torch, faiss"
 python -m ruff check .
@@ -87,13 +98,25 @@ python -m ruff format --check .
 python -m pytest tests/unit -q
 python -m pytest tests/integration -m "not real_bundle" -q
 node --test --test-isolation=none tests/web/test_snapshot_demo.mjs
+node --test --test-isolation=none tests/web/test_shopping_demo.mjs
 ```
 
-Skip `conda env create` when the environment already exists. Native wheels and
-package availability are platform-specific; ANN's historical Windows build
-failure is documented in the [ANN report](ANN_RETRIEVAL_REPORT.md). The hashed
-Linux CI lock in `requirements/ci-linux.txt` is for the pinned Linux CPU lane,
-not a Windows install recipe. The fitted-process tests bind loopback ports and
+The [Windows lock](../requirements/development-windows.txt) pins 48 CPU wheels,
+including optional Torch/Faiss, service clients and workflow test dependencies.
+It was installed and tested in a fresh Conda prefix against an independent
+source export. It is a development/test lock, not a replacement for the sealed
+bundle's numerical compatibility contract. On Linux/amd64, install the existing
+hashed [CI lock](../requirements/ci-linux.txt) instead, then use the same editable
+install and test commands, with `PYTHONNOUSERSITE=1` exported in the shell.
+Disabling user-site imports prevents unrelated user packages from satisfying
+the environment's dependencies. Windows and Linux wheel hashes differ.
+
+Use the real Conda interpreter for Windows process-ownership and RSS checks.
+A Windows `venv` launcher may proxy a separate interpreter process; killing its
+launcher PID does not qualify child ownership. That profile is not supported by
+these Windows lifecycle checks. Native wheels and package availability are
+platform-specific; ANN's historical Windows build failure is documented in the
+[ANN report](ANN_RETRIEVAL_REPORT.md). The fitted-process tests bind loopback ports and
 create small synthetic snapshots in temporary directories. They do not need
 Retailrocket data, the private full bundle, Docker or cloud credentials.
 
@@ -103,6 +126,11 @@ as evidence that a skipped profile passed. See the
 [functional gate contract](TESTING_AND_RELEASE_GATES.md) for explicit real-bundle
 opt-in and the [verification report](PROJECT_VERIFICATION_REPORT.md) for commands
 actually executed in this documentation pass.
+
+For the current local-inference delivery, use the
+[local demonstration guide](LOCAL_DEMONSTRATION.md). Its explicit launcher selects
+the indexed reader, while the original API launcher and historical receipts
+retain their original reader identities.
 
 ## Run the original local snapshot
 
@@ -142,6 +170,7 @@ outputs, preserving every frozen JSON file and its serialization.
 | Rolling and candidate experiments | Shared cutoff-time catalogs, manifest-bound data and development-only selection; inspected folds 5–9 remain diagnostic |
 | Exact Two-Tower and ANN v1 | Reproduce at `7b27f141f8d1a331bc4ebe0e924db59eeeef9e42`; semantic script renames change fingerprints |
 | Ranking dataset | Rebuild source at `c80cebee3378ea9af7c9757802fa40e2c8594ae2`, with matching prepared folds and current frozen M10/M11 JSON bytes |
+| Completed model-policy provenance | Verify from a source-compatible checkout, such as `30e685babbdeec682084830f23834a6141a18f9a`; the historical package-wide fingerprint rejects subsequent educational-model changes as well as serving changes |
 | Original functional gate | Source-bound record at `d8e4a31`; it is not a receipt for all later tests/docs |
 | Current static presentation | Released assets/export are pinned separately from the evolving documentation; no model refit is needed for a docs-only change |
 
@@ -153,8 +182,13 @@ quality, HTTP parity and current-checkout integrity are separate claims.
 
 ## Remaining release limits
 
-The public release is a static demo; the API remains local. Full-model hosting,
-native target-host recovery and external workload verification remain open.
-The approximately 2.26 GiB serving RSS exceeds the 2 GiB target. No clean-room
-installation, newly blind evaluation, live cloud API, production workload SLO
-or business impact is certified by the documentation gate.
+The release combines local loopback inference with two independent public
+static demonstrations. The [selected Windows indexed-reader profile](LOCAL_RELEASE_REPORT.md)
+passes its declared local workload, lifecycle and 2 GiB loaded-RSS targets.
+The original Linux reader's approximately 2.26 GiB result remains a historical
+budget failure; the new reader has not received Linux load qualification.
+Cloud model hosting is outside the required scope. The fresh Windows dependency
+installation and fitted tests are recorded separately in the
+[verification report](PROJECT_VERIFICATION_REPORT.md). The documentation gate
+does not certify environment installation, host power-loss recovery, newly blind
+evaluation, public model hosting, a production workload SLO or business impact.
