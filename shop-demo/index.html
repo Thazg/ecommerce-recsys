@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Discover your taste with RecoMe: explore 100 sample products, save favorites, rate items and get personalized suggestions in your browser.">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <title>RecoMe — Discover your next favorite</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=ff1b333755">
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#catalog">Skip to products</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" aria-label="RecoMe, back to top">RecoMe<span class="brand-dot" aria-hidden="true"></span></a>
+      <form class="search-form" role="search">
+        <label class="sr-only" for="search">Search products, brands or categories</label>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
+        <input id="search" type="search" placeholder="What are you looking for?" autocomplete="off" maxlength="100">
+        <button type="button" id="clear-search" aria-label="Clear search" hidden>×</button>
+      </form>
+      <button class="preferences-button" id="preferences-button" type="button">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/></svg>
+        <span>Your preferences</span><span id="preference-count" class="count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        
+        <h1 id="hero-title">Find your<br>favorites.</h1>
+        <p>Explore a little. Save what you like.<br>Find more that fits your taste.</p>
+        <button class="button primary" id="hero-recommend" type="button">Get recommendations</button>
+      </div>
+      <div class="hero-collection" aria-label="A selection from the catalog">
+        <button class="hero-tile tile-one" type="button" data-collection="accessories" aria-label="Explore tech accessories" disabled><span>Everyday tech</span><img id="hero-tech" alt="" width="260" height="260"></button>
+        <button class="hero-tile tile-two" type="button" data-collection="men" aria-label="Explore men's fashion" disabled><span>Wear your style</span><img id="hero-fashion" alt="" width="240" height="240"></button>
+        <button class="hero-tile tile-three" type="button" data-collection="home" aria-label="Explore home and living" disabled><span>Make it home</span><img id="hero-home" alt="" width="240" height="240"></button>
+      </div>
+    </section>
+
+    <div class="intro-line wrap">
+      <span><span class="demo-dot" aria-hidden="true"></span> Interactive demo · 100 sample products · Not a store</span>
+      <button class="text-button" id="how-button" type="button">How recommendations work</button>
+    </div>
+
+    <section class="recommendation-section wrap" id="recommendations" aria-labelledby="recommendation-title" hidden>
+      <div class="section-heading">
+        <div><h2 id="recommendation-title" tabindex="-1">More to your taste.</h2><p id="recommendation-description"></p></div>
+        <button class="button secondary" id="refresh-recommend" type="button">Refresh recommendations</button>
+      </div>
+      <p id="stale-notice" class="notice" hidden>Your preferences have changed. Select “Refresh recommendations” to update your results.</p>
+      <div class="product-grid recommendation-grid" id="recommendation-grid"></div>
+      <p class="empty-state" id="recommendation-empty" hidden>You have explored the entire catalog. Clear your preferences to start again.</p>
+    </section>
+
+    <section class="catalog-section wrap" id="catalog" aria-labelledby="catalog-title">
+      <div class="section-heading catalog-heading">
+        <div><h2 id="catalog-title" tabindex="-1">Explore the collection</h2></div>
+        <p class="catalog-count" id="catalog-count">Loading the catalog…</p>
+      </div>
+      <div class="catalog-toolbar">
+        <div class="category-list" id="categories" role="group" aria-label="Filter by category"></div>
+        <div class="sort-label">
+          <label for="sort">Sort by</label>
+          <span class="sort-control">
+            <select id="sort"><option value="discovery">Discovery</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="liked">Saved</option></select>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="product-grid" id="product-grid" aria-busy="true"></div>
+      <div class="empty-state" id="catalog-empty" hidden><h3>No products found</h3><p>Try another search or clear your filters to explore more.</p><button class="button secondary" id="clear-filters" type="button">Clear filters</button></div>
+      <div class="load-more"><button class="button secondary" id="load-more" type="button" hidden>Show 20 more products</button><p id="visible-count"></p></div>
+      <p id="load-error" class="notice error" role="alert" hidden>We could not load the catalog. Please reload the page to try again.</p>
+    </section>
+
+    <section class="closing-note wrap"><h2>Your taste. Your own.</h2><p>No sign-in needed. Your preferences stay in this browser session.<br>A personalization illustration, independent of the Retailrocket model.</p><a href="THIRD_PARTY_NOTICES.txt" target="_blank" rel="noopener">Sample images & data: DummyJSON</a></section>
+  </main>
+
+  <footer class="wrap"><span>© 2026 Nguyen Tam Thang</span></footer>
+
+  <dialog id="product-dialog" aria-labelledby="product-title"><button class="close-button" id="close-product" aria-label="Close product details" type="button">×</button><div id="product-detail"></div></dialog>
+  <dialog id="preferences-dialog" aria-labelledby="preferences-title"><button class="close-button" id="close-preferences" aria-label="Close preferences" type="button">×</button><div class="dialog-copy"><h2 id="preferences-title">Your preferences</h2><p id="preferences-summary"></p><div id="preference-list"></div><p class="privacy-note" id="storage-notice">Stored only in this tab session. Your activity is not sent to a server.</p><div class="dialog-actions"><button class="button secondary" id="reset-preferences" type="button">Clear all preferences</button><button class="button primary" id="preferences-recommend" type="button">Get recommendations</button></div></div></dialog>
+  <dialog id="how-dialog" aria-labelledby="how-title"><button class="close-button" id="close-how" aria-label="Close explanation" type="button">×</button><div class="dialog-copy"><h2 id="how-title">From your taste to your next find.</h2><ol class="how-steps"><li><strong>Explore and choose</strong><p>Opening a product adds a light signal. Saving it or rating it 4–5 stars shows interest; 1–2 stars signals a poor fit.</p></li><li><strong>Find common ground</strong><p>Suggestions use categories, related groups, content tags and price range. Likes carry more weight than views. Three stars is neutral.</p></li><li><strong>Discover 12 new picks</strong><p>Products you have viewed, saved or rated are excluded. Each group gets up to six places when alternatives are available.</p></li></ol><p class="privacy-note">Runs entirely in your browser with a sample catalog. It does not use the Retailrocket model, other shoppers’ data or benchmark accuracy. Without preference signals, results are discovery picks, not personalized recommendations. USD prices are illustrative, not offers.</p><button class="button primary" id="understood" type="button">Start exploring</button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="wrap notice">Enable JavaScript to browse the catalog and try interactive recommendations. No sign-in is required.</p></noscript>
+</body>
+</html>
