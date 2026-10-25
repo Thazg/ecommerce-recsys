@@ -124,7 +124,7 @@ are outside the verified release claims.
 ## Repeat documentation integrity
 
 ```sh
-python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_publication_validation_v1.json
+python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_layout_validation_v1.json
 ```
 
 The [inventory](../benchmarks/release/documentation_inventory_publication_v1.json)

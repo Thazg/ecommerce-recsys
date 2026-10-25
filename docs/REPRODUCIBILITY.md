@@ -63,7 +63,7 @@ files, symlinks, unsafe paths, duplicate JSON keys and nonfinite numbers.
 To compare against the completed documentation record:
 
 ```sh
-python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_publication_validation_v1.json
+python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_layout_validation_v1.json
 ```
 
 After an intentional source or documentation change, write a new record using

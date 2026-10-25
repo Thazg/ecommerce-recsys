@@ -18,7 +18,7 @@ NODE_ACTION = "249970729cb0ef3589644e2896645e5dc5ba9c38"
 SCANNER_VERSION = "8.30.1"
 SCANNER_SHA256 = "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
 NODE_TESTS = "node --test --test-isolation=none tests/web/test_snapshot_demo.mjs tests/web/test_shopping_demo.mjs"
-DOC_CHECK = "python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_publication_validation_v1.json"
+DOC_CHECK = "python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_layout_validation_v1.json"
 INSTALL = f'''curl --fail --silent --show-error --location --connect-timeout 15 --max-time 120 --output "$RUNNER_TEMP/gitleaks.tar.gz" https://github.com/gitleaks/gitleaks/releases/download/v{SCANNER_VERSION}/gitleaks_{SCANNER_VERSION}_linux_x64.tar.gz
 echo "{SCANNER_SHA256}  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check --status
 tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
