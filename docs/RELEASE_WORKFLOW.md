@@ -45,6 +45,16 @@ and unobserved.
 
 ## CI profiles
 
+The separate [publication workflow](../.github/workflows/publication.yml) adds
+Node 24.16.0 tests for both static demos, an isolated standard-library check of
+the current documentation receipt and checksum-pinned Gitleaks 8.30.1 scans of
+reachable Git history and checkout contents. It uses hosted runners, read-only
+contents permission and immutable Action pins. The existing hosted Python gate
+checks this workflow's policy and includes it in actionlint validation.
+These definitions do not configure the private real-qualification lane. Local
+preflight results and observed GitHub executions are recorded separately in the
+[verification report](PROJECT_VERIFICATION_REPORT.md).
+
 The [hosted workflow](../.github/workflows/ci.yml) runs on pushes and pull
 requests targeting `main`, using Ubuntu 24.04 and Python 3.13.15. It has
 read-only contents permission, a deadline and per-ref cancellation. Official

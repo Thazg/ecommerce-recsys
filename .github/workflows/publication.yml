@@ -1,0 +1,51 @@
+name: Publication checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publication-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  public:
+    name: Static demos, documentation and secrets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout immutable event revision
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13.15'
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.16.0'
+          package-manager-cache: false
+      - name: Install checksum-pinned scanner
+        run: |
+          curl --fail --silent --show-error --location --connect-timeout 15 --max-time 120 --output "$RUNNER_TEMP/gitleaks.tar.gz" https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check --status
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
+          mkdir -p .local
+          : > .local/secret-scan-ignore
+      - name: Scan complete reachable history
+        run: '"$RUNNER_TEMP/gitleaks" git --log-opts=--all --config .gitleaks.toml --gitleaks-ignore-path .local/secret-scan-ignore --ignore-gitleaks-allow --redact=100 --no-banner --no-color --timeout=120 .'
+      - name: Scan checkout contents
+        run: '"$RUNNER_TEMP/gitleaks" dir --config .gitleaks.toml --gitleaks-ignore-path .local/secret-scan-ignore --ignore-gitleaks-allow --redact=100 --no-banner --no-color --timeout=120 .'
+      - name: Test both static demos
+        run: node --test --test-isolation=none tests/web/test_snapshot_demo.mjs tests/web/test_shopping_demo.mjs
+      - name: Verify current documentation receipt
+        run: python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_publication_validation_v1.json

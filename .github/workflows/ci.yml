@@ -45,12 +45,14 @@ jobs:
         run: python -c "import fastapi, uvicorn, httpx2, yaml, torch, faiss; from fastapi.testclient import TestClient"
       - name: Verify workflow policy
         run: python scripts/check_release_workflows.py
+      - name: Verify publication workflow policy
+        run: python scripts/check_public_workflow.py
       - name: Verify workflow schema and expressions
         run: |
           curl --fail --silent --show-error --location --output "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
           echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --status
           tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
-          "$RUNNER_TEMP/actionlint" -shellcheck= -pyflakes= -config-file .github/actionlint.yaml .github/workflows/ci.yml .github/workflows/snapshot-release.yml
+          "$RUNNER_TEMP/actionlint" -shellcheck= -pyflakes= -config-file .github/actionlint.yaml .github/workflows/ci.yml .github/workflows/snapshot-release.yml .github/workflows/publication.yml
       - name: Run Ruff lint
         run: python -m ruff check .
       - name: Check Ruff formatting

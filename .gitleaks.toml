@@ -1,0 +1,14 @@
+title = "Recommendation project secret scanning"
+
+[extend]
+useDefault = true
+
+# These exact fields are independently pinned provenance hashes, not API keys.
+# Other keys, values, paths and detector rules remain subject to default scanning.
+[[allowlists]]
+description = "SHA-256 entries for verified API source and OpenAPI provenance"
+targetRules = ["generic-api-key"]
+condition = "AND"
+regexTarget = "line"
+paths = ['''(?:^|[\\/])benchmarks[\\/](?:(?:release|serving)[\\/][^\\/]+|deployment[\\/](?:local_demonstration_validation_v1|local_release(?:_boundary|_maintenance)?_validation_v1))\.json$''']
+regexes = ['''^\s*"(?:docs/(?:API_HARDENING|RECOMMENDATION_API)\.md|scripts/verify_recommendation_api\.py|tests/unit/test_(?:api_hardening|api_verification|recommendation_api)\.py|openapi_sha256)"\s*:\s*"[0-9a-f]{64}",?\s*$''']
