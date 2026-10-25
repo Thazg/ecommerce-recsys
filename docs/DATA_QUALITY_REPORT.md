@@ -2,9 +2,10 @@
 
 **Project:** Production E-Commerce Recommendation Platform
 **Repository:** `ecommerce-recsys`
-**Document Version:** `v1.0.0`
+**Document Version:** `v1.0.1`
 **Status:** Accepted
 **Date:** 2026-09-05
+**Updated:** 2026-10-24 — ingestion validation; dataset statistics unchanged.
 **Milestone:** Milestone 2 — Data Quality, EDA, and Interaction Semantics
 
 **Evaluation scope:** The activity distribution below describes the raw dataset. The [rolling benchmark](ROLLING_EVALUATION_PROTOCOL.md) evaluates returning users with at least one earlier interaction and reports first-time users separately.
@@ -26,6 +27,14 @@ Key conclusions:
 ---
 
 ## 2. Dataset Scale and Invariants
+
+The interaction builder validates raw fields before normalization or output.
+Visitor/item IDs must be non-negative signed 64-bit integers; timestamps must
+be positive integer milliseconds. Only `view`, `addtocart` and `transaction`
+events are accepted. Transaction IDs may be null, otherwise they must be
+non-negative signed 64-bit integers. Integer fields are read as text before
+validation to preserve precision. Invalid input is rejected before an output
+file is created or replaced; valid repeated events are retained.
 
 * Total Interaction Events: 2,756,101
 * Unique Users (`user_id`): 1,407,580

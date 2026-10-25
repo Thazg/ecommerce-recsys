@@ -11,12 +11,45 @@ from pathlib import Path
 
 import pandas as pd
 
+from ecommerce_recsys.data.schemas import EventType
+
+
+def _validate_events(df: pd.DataFrame) -> None:
+    """Validate the raw integer contract before normalization or persistence."""
+    required = {"timestamp", "visitorid", "event", "itemid", "transactionid"}
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing required event columns: {sorted(missing)}")
+    if df.empty:
+        raise ValueError("Events must not be empty.")
+
+    for column in ("timestamp", "visitorid", "itemid", "transactionid"):
+        values = df[column]
+        if column == "transactionid":
+            values = values.dropna()
+        if not values.str.fullmatch(r"[0-9]+").fillna(False).all():
+            raise ValueError(f"{column} must contain non-negative integers without nulls.")
+        try:
+            df[column] = df[column].astype("Int64" if column == "transactionid" else "int64")
+        except (ValueError, TypeError, OverflowError) as error:
+            raise ValueError(f"{column} must fit in a signed 64-bit integer.") from error
+
+    if (df["timestamp"] <= 0).any():
+        raise ValueError("timestamp must contain positive integer milliseconds.")
+    if not df["event"].isin([event.value for event in EventType]).all():
+        raise ValueError("event must be view, addtocart or transaction, without nulls.")
+
 
 def process_interactions(events_path: Path, output_path: Path) -> pd.DataFrame:
     """Read raw events, sort chronologically, format canonical columns, and save Parquet."""
     print(f"\n[1/3] Processing interactions from {events_path.resolve()} ...")
     t0 = time.time()
-    df = pd.read_csv(events_path)
+    # Preserve integer text exactly: nullable IDs must not round through float64.
+    df = pd.read_csv(
+        events_path,
+        dtype=dict.fromkeys(("timestamp", "visitorid", "itemid", "transactionid"), "string"),
+    )
+    _validate_events(df)
 
     # 1. Sort strictly by timestamp ascending
     df = df.sort_values("timestamp", ascending=True).reset_index(drop=True)
