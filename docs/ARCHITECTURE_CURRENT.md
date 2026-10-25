@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-22
+**Updated:** 2026-10-25
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -9,7 +9,8 @@ sequential order ablation failed its primary gate, so no source was adopted.
 A complete-policy runner has locked separate warm/cold offline routes from
 development folds 2–4 and completed all fixed diagnostics on folds 5–9.
 No ANN source has been adopted. The locked routes now have a local HTTP
-snapshot interface; full-model public deployment and online evaluation remain open.
+snapshot interface. Backend execution is local; public model hosting is outside
+the release scope and evaluation remains offline.
 The artifact layer now separates fitted offline snapshots from package-only
 inference. A separate service layer preserves that frozen inference code and
 provides optional bounded result caching and an explicit busy fallback.
@@ -17,11 +18,15 @@ Separate host tooling now manages immutable isolated release descriptors,
 verified candidates, journal recovery and rollback. Hosted CI and a reusable
 private qualification lane remain separate from the model/service layers;
 the latter has not been configured or executed remotely. Separate local
+publication checks cover both static demos, documentation identity and secret
+scanning; they do not modify model qualification or expose inference. Separate local
 [load and recovery verification](SERVICE_RELIABILITY_REPORT.md) exercises the
 unchanged snapshot under fixed sustained/burst traffic, resource occupancy and
 lifecycle faults; it does not establish deployment eligibility. A separate
 [deployment assessment](DEPLOYMENT_DESIGN.md) now records the conditional hosting
-and cost decision; its proposed cloud/gateway components are not implemented.
+and cost decision; its proposed cloud/gateway components are historical design
+options outside the current local release scope. [ADR-40](DECISIONS.md#adr-40--define-a-local-backend-release-with-public-static-demonstrations)
+records this scope decision without changing earlier measurements.
 
 A separate [RecoLens explorer](SNAPSHOT_EXPLORER.md) projects five verified fold-9
 references into public JSON plus HTML/CSS/JavaScript. The offline exporter loads
@@ -34,6 +39,34 @@ disables automatic Git deployment. A CLI upload allowlist excludes all model,
 data and source files outside the seven static assets. See the
 [hosting runbook](STATIC_DEMO_DEPLOYMENT.md). This is not a model server or a
 full-model cloud deployment adapter.
+
+The current [local demonstration](LOCAL_DEMONSTRATION.md) adds an explicit
+`scripts.serve_local_snapshot` entry point. Its indexed reader stores aggregate
+features in read-only columns and sparse affinity rows, reusing the original
+context/retrieval/ranking methods. The original default loader, model files and
+service code are preserved. A separate source-pinned HTTP probe checks complete
+finite-reference output parity and owned process cleanup. The public RecoLens
+assets remain unchanged and do not communicate with the local API.
+
+The [local release verifier](LOCAL_RELEASE_REPORT.md) exercises that explicit
+indexed-reader launcher with an inherited, parent-owned control pipe. It requests
+the existing application drain without adding an HTTP control endpoint. Fresh
+same-port processes verify 101 sealed outputs, fixed sustained/burst traffic,
+external RSS samples and telemetry; wrong manifest startup is rejected. The
+completed Windows profile meets all declared local targets. Historical Linux
+container/load evidence remains separate and is not updated by this result.
+Control EOF reaches the service stop transition during startup. The verifier
+tracks child reaping separately from log state, enforces absolute socket
+deadlines and rejects contradictory resource/time summaries before acceptance.
+
+A separate [shopping illustration](SHOPPING_DEMONSTRATION.md) lives under
+`shop-demo/`. It serves a 100-product photographed sample catalog, captures
+view/heart/rating signals in tab session storage and calculates an explained
+content-based list in JavaScript. It has no model/API dependency. All pictures
+are bundled with source and hash records. A separate Vercel Hobby project serves
+these 108 static assets at [shoprecome.vercel.app](https://shoprecome.vercel.app/),
+with no build step, backend or Git deployment connection. It is separate from
+the original seven-asset snapshot explorer and Retailrocket quality evidence.
 
 The standard-library `scripts/verify_project_documentation.py` checks the
 explicit release inventory, local Markdown targets/fragments and immutable

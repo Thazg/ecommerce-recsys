@@ -1,6 +1,28 @@
 # Project status
 
-**Updated:** 2026-10-22
+**Updated:** 2026-10-25
+
+The current delivery is [local model inference plus a public static illustration](LOCAL_DEMONSTRATION.md).
+An explicit loopback launcher selects an opt-in indexed reader, retaining the
+original model, API guards and default launcher. The [memory assessment](SNAPSHOT_MEMORY_REPORT.md)
+records 101/101 exact same-host traces and lower Windows package-reader RSS.
+The separate local HTTP check covers 101 outputs, six prefixes and eight denials.
+Backend cloud hosting is outside the release scope under
+[ADR-40](DECISIONS.md#adr-40--define-a-local-backend-release-with-public-static-demonstrations).
+M26/M27 now cover controlled local operation and local release verification.
+The [local release assessment](LOCAL_RELEASE_REPORT.md) completes the selected
+Windows indexed-reader profile: finite HTTP parity, fixed load, resources,
+telemetry and clean same-version stop/restart. All seven declared targets pass.
+This is scoped local acceptance, without a production or public-inference claim.
+Current boundary evidence includes pre-startup EOF without readiness, bounded
+HTTP I/O, retryable owned cleanup and strict receipt/resource reconciliation.
+
+A separate [RecoMe shopping illustration](https://shoprecome.vercel.app/) is public:
+100 photographed sample products, view/heart/rating signals, session
+preferences and twelve explained content-based suggestions. It runs entirely
+in the browser and uses no Retailrocket weights or benchmark claims. The public
+Vercel snapshot explorer remains unchanged. The [shopping guide](SHOPPING_DEMONSTRATION.md)
+records the separate static release; neither site hosts model inference.
 
 Release documentation is available through the [reproduction guide](REPRODUCIBILITY.md),
 [evidence index](EVIDENCE_INDEX.md) and [operations runbook](OPERATIONS_RUNBOOK.md).
@@ -8,28 +30,39 @@ The standard-library documentation gate checks local links/fragments, current
 source, released demo assets and independently pinned historical evidence.
 The [verification report](PROJECT_VERIFICATION_REPORT.md) separates actual
 execution results from receipt integrity. This delivers the M29 documentation
-scope ahead of full-model deployment; M26/M27 remain open.
+scope. M26/M27 are complete for the revised local profile, with a separate
+source-bound [receipt](../benchmarks/deployment/local_release_maintenance_validation_v1.json).
 
-The initial documentation CI run exposed a legacy JSON checkout-byte mismatch.
-Explicit CRLF rules and checkout regressions address the cause locally; hosted
-CI confirmation of the correction is pending publication.
+A separate [publication workflow](../.github/workflows/publication.yml) defines
+both JavaScript suites, standard-library documentation verification and pinned
+secret scanning. Current local checks use an independent source export and a
+fresh Windows Conda installation with hashed dependencies. These local results
+do not imply that the new workflow has executed on GitHub; see the
+[verification report](PROJECT_VERIFICATION_REPORT.md).
+
+The initial documentation CI checkout-byte mismatch was corrected with explicit
+CRLF rules. [Linux CI at `30e685b`](https://github.com/Thazg/ecommerce-recsys/actions/runs/39766736448)
+passed 1,213 unit and 11 fitted integration cases. That run precedes the indexed
+local-demonstration additions; it is not Linux qualification of the new reader.
 
 [RecoLens](https://ecommerce-recsys.vercel.app/) is a public static explorer of
 four fixed warm references and one cold context from the original fold-9 bundle.
 Exported traces match sealed references; the UI browses precomputed Top-K,
 same-pool learned/RRF order and retrieval evidence. The
 [hosting runbook](STATIC_DEMO_DEPLOYMENT.md) records the static publication
-boundary. M28 demo work is partially delivered; M26/M27 full-model deployment
-and target-host verification remain open. No model, API, quality result or
+boundary. Together with the published RecoMe shopping illustration, this delivers
+the revised M28 static-demonstration scope. No model, API, quality result or
 resource budget changed.
 
-**Stage:** static demo and release documentation, with full-model hosting pending.
+**Stage:** local inference and public static demonstrations; cloud model hosting
+is outside the required release scope. The selected local release profile passes.
 M25 completed the deployment design and free-first cost assessment.
 Full-model execution remains local; OCI A1 Always Free is a conditional
 Arm investigation. The offline assessor pins model/container/release/capacity/
 reliability evidence and records resource arithmetic, dated cost assumptions and
 deployment blockers. No full-model cloud host or public API gateway is approved.
-Architecture, account, exposure, target-host and 2 GiB RSS gates remain open.
+The dated cloud investigation remains historical design evidence. Local runtime
+resource and reliability gates, including the 2 GiB RSS target, remain applicable.
 
 M24 completes a fixed local load, failure and recovery matrix on the
 unchanged Linux snapshot: sustained/burst traffic, bounded memory occupancy,
@@ -110,6 +143,9 @@ diagnostics, not blind validation.
 | M23 HTTP capacity | Four fixed open-loop workloads, per-outcome/cohort/cache timing, sampled resources, reference parity and checkpointed owned cleanup |
 | M24 local reliability | Fixed sustained/burst/pressure workloads, witnessed lifecycle and startup faults, explicit fixture cancellation/failure tests and fresh journal-recovery/rollback evidence |
 | M25 deployment design | Source-pinned offline hosting/resource/cost assessment, conditional free-tier choice and proposed delivery/exposure/recovery contract; no infrastructure provisioned |
+| M26 local operation | Pinned indexed-reader loopback launcher, readiness/access controls, private-pipe drain, owned cleanup and clean same-port restart |
+| M27 local verification | 101 exact outputs before/after restart, fixed sustained/burst traffic, telemetry reconciliation, sampled serving RSS and rejected wrong-pin startup; seven declared local targets pass |
+| M28 public demonstrations | RecoLens stored model examples and independent RecoMe browser-side shopping illustration on separate static Vercel projects |
 | Reproducibility | Fixed seeds, numerical thread control, resumable checkpoints, source and fold SHA-256 verification, CI |
 
 The [architecture overview](ARCHITECTURE_CURRENT.md) describes the code paths. The [evaluation protocol](ROLLING_EVALUATION_PROTOCOL.md) defines the cohorts and eligibility rules.
@@ -474,13 +510,21 @@ and the target-host gate checklist are documented designs. They are not installe
 cloud components. The existing amd64 image, service, model and earlier evidence
 remain unchanged. The assessor needs no cloud credentials, Docker or model fit.
 
-## Next milestone
+## Local release acceptance
 
-M26 in the [roadmap](ROADMAP.md) defines controlled deployment. It requires an
-approved/available target, architecture and process-memory qualification,
-implemented exposure/delivery controls and explicit operator authorization.
-The current free-first decision does not approve provisioning or waive budgets.
-M27 retains external workload, telemetry and native target-host recovery checks.
+The current delivery follows
+[ADR-40](DECISIONS.md#adr-40--define-a-local-backend-release-with-public-static-demonstrations).
+M26/M27 in the [roadmap](ROADMAP.md) require a reproducible local launcher,
+pinned model/runtime, readiness/access controls, resource/load reporting and
+verified owned stop/restart or recovery for the selected implementation.
+The [completed assessment](LOCAL_RELEASE_REPORT.md) qualifies the indexed reader
+for the fixed Windows loopback profile. All seven targets pass, including loaded
+RSS below 2 GiB, successful warm latency, steady completion and recovery.
+Earlier container/load evidence covers the original reader and retains its
+original memory failure. Neither result establishes Linux load qualification of
+the indexed runtime, host power-loss recovery or a production workload SLO.
+Cloud model hosting is optional future work, outside this release. A future
+public service would require explicit authorization and new exposure/host gates.
 Independent confirmation of the current model choices requires a later
 untouched time period; the existing post-selection results should not be used
 as production model-selection claims.
