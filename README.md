@@ -1,23 +1,31 @@
-# E-commerce recommendation system
+# E-commerce Recommendation System
 
-A recommendation pipeline built on **2.76 million Retailrocket events**, from
-chronological offline evaluation to hybrid retrieval, learned ranking and a
-verified local FastAPI service. Retrieval quality, ranking gains and runtime
-reliability are measured separately.
+A recommendation system for discovering relevant products from implicit shopping
+behavior across **2.76 million Retailrocket events**.
 
-**Python 3.13 · NumPy/SciPy · pandas/Parquet · implicit ALS · FastAPI · Docker · GitHub Actions**
+I built this project as an end-to-end machine learning system covering data
+preparation, chronological evaluation, hybrid retrieval, learned ranking, model
+packaging, API serving, observability, CI, and release verification. Model and
+runtime decisions are backed by benchmarks.
 
-[Results](#measured-results) · [Architecture](#how-it-works) ·
-[API](#model-artifacts-and-api) · [Reproduce](#reproduce)
+**Project highlights:** Learned ranking improved **HR@20 by 41.7% relative to RRF**
+on the same candidate pool across **59,323 warm user-windows**. The local FastAPI
+service preserved **101/101 reference outputs** before and after restart, with
+**1.499 GiB maximum loaded RSS** in the fixed Windows workload. Quality figures
+are post-selection diagnostics on inspected rolling folds 5–9.
 
-## Try the demos
+## Live demos
 
-| Demo | What you can explore |
-| :--- | :--- |
-| **[RecoLens — model explorer](https://ecommerce-recsys.vercel.app/)** | Five precomputed examples from the actual Retailrocket model, with learned/RRF ordering and retrieval-source evidence. |
-| **[RecoMe — shopping illustration](https://shoprecome.vercel.app/)** | Browse 100 photographed sample products, express preferences and receive explained browser-side suggestions. Its policy is independent of the Retailrocket model. |
+- **[RecoLens — model explorer](https://ecommerce-recsys.vercel.app/):** Explore
+  five stored examples from the actual Retailrocket model, compare learned/RRF
+  ordering, and inspect retrieval-source evidence.
+- **[RecoMe — shopping illustration](https://shoprecome.vercel.app/):** Browse
+  100 photographed sample products, express preferences, and receive explained
+  browser-side suggestions from a separate illustrative policy.
 
-The model API runs locally. Neither public website calls the backend.
+> Both websites run without a hosted model API. RecoLens displays precomputed
+> model outputs; RecoMe computes suggestions in the browser. Full-model inference
+> runs locally.
 
 ## Measured results
 
