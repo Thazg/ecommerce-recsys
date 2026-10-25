@@ -2,7 +2,7 @@
 
 Use this index to locate the evidence supporting a claim before comparing
 models or interpreting a passing operational check. The machine-readable
-[inventory](../benchmarks/release/documentation_inventory_publication_v1.json) pins existing
+[inventory](../benchmarks/release/documentation_inventory_readme_hero_v1.json) pins existing
 JSON files without changing their bytes. Its integrity check does not recompute
 their metrics or certify that their producer environment matches today's tree.
 
@@ -49,7 +49,7 @@ must not be presented as a before/after comparison with rolling.
 ## Current checks versus historical records
 
 The documentation gate's current receipt is
-`benchmarks/release/project_documentation_readme_layout_validation_v1.json`, in the
+`benchmarks/release/project_documentation_readme_hero_validation_v1.json`, in the
 [release evidence directory](../benchmarks/release/). It binds current documents,
 source, unchanged static assets and independent historical evidence pins.
 The checker makes no network requests, executes no Markdown commands and loads

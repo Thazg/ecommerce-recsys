@@ -54,16 +54,22 @@ python scripts/verify_project_documentation.py
 ```
 
 It validates the explicit
-[documentation inventory](../benchmarks/release/documentation_inventory_publication_v1.json),
+[documentation inventory](../benchmarks/release/documentation_inventory_readme_hero_v1.json),
 local Markdown links and heading fragments, pinned historical JSON bytes and the
 seven released static assets. External links are counted, not fetched. The
 verifier never runs commands copied from Markdown. It rejects unknown static
 files, symlinks, unsafe paths, duplicate JSON keys and nonfinite numbers.
 
+README links and images are checked in both Markdown and explicit HTML. The
+locally stored badge SVGs and RecoMe screenshot have separate raw-byte pins;
+they do not alter the frozen seven-file RecoLens deployment. The CI badge links
+to GitHub Actions and labels the automation provider, rather than declaring a
+fixed passing status.
+
 To compare against the completed documentation record:
 
 ```sh
-python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_layout_validation_v1.json
+python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_hero_validation_v1.json
 ```
 
 After an intentional source or documentation change, write a new record using

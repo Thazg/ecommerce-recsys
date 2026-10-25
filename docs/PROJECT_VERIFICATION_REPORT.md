@@ -124,10 +124,10 @@ are outside the verified release claims.
 ## Repeat documentation integrity
 
 ```sh
-python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_layout_validation_v1.json
+python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_hero_validation_v1.json
 ```
 
-The [inventory](../benchmarks/release/documentation_inventory_publication_v1.json)
+The [inventory](../benchmarks/release/documentation_inventory_readme_hero_v1.json)
 and completed receipt pin current documentation/source, released assets and
 independent historical evidence. The checker uses no network, executes no
 Markdown commands and fits or loads no model. It counts external links without

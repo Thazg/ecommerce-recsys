@@ -48,4 +48,4 @@ jobs:
       - name: Test both static demos
         run: node --test --test-isolation=none tests/web/test_snapshot_demo.mjs tests/web/test_shopping_demo.mjs
       - name: Verify current documentation receipt
-        run: python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_layout_validation_v1.json
+        run: python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_hero_validation_v1.json
