@@ -5,13 +5,23 @@
 | Surface | Current use | Ownership and limits |
 | :--- | :--- | :--- |
 | [RecoLens](https://ecommerce-recsys.vercel.app/) | Public static demonstration | Seven files on Vercel; precomputed examples, no runtime secrets or API |
+| [RecoMe](https://shoprecome.vercel.app/) | Public interactive shopping illustration | Static sample catalog and browser-side content-based suggestions; independent of Retailrocket inference |
 | Local static preview | Inspect reviewed UI/data changes | Serve `demo/` on loopback; stop the terminal's owned server with Ctrl+C |
 | Local snapshot API | Exercise the original bundle and service contract | One process/active inference worker; pinned bundle, optional bounded cache; approximately 2.26 GiB RSS |
+| Indexed local demonstration | Explicit opt-in inference using the same model | [Local guide](LOCAL_DEMONSTRATION.md); separate Windows reader-memory and HTTP-parity evidence |
+| Qualified local profile | Exercise indexed-reader HTTP parity, resources, fixed workload and same-port stop/restart | [Local release report](LOCAL_RELEASE_REPORT.md); Windows loopback only, no production SLO |
 | Isolated Linux qualification | Reproduce an explicitly scoped container gate | External bundle/archive, Docker and declared resource limits; no public ports |
 
 Full-model cloud operations are not implemented. This runbook does not turn
 the local release controller into a cloud router or approve a host/budget.
 For commands and prerequisites start with [reproducibility](REPRODUCIBILITY.md).
+
+The selected portfolio delivery keeps inference local and uses RecoLens for
+public illustration. It creates no cloud compute, public API or automatic wake-up
+path. Follow [ADR-38](DECISIONS.md#adr-38--deliver-local-inference-with-a-static-public-illustration)
+for the original delivery choice. [ADR-40](DECISIONS.md#adr-40--define-a-local-backend-release-with-public-static-demonstrations)
+sets local backend operation as the release boundary; cloud hosting is optional
+future work and is not an acceptance requirement.
 
 ## Before changing or publishing a release
 
@@ -78,4 +88,8 @@ environment and substantial fitting time, and a fresh version must be verified.
 The existing [release workflow](RELEASE_WORKFLOW.md) exercises isolated local
 same-model rollback and crash recovery. Native-host/daemon power-loss recovery,
 cloud routing, alert delivery, external load and an RTO/RPO remain unqualified.
-M26/M27 remain open; static demo availability does not close them.
+M26/M27 require local operation and verification for the selected runtime;
+static demo availability does not satisfy backend checks. Earlier isolated
+container evidence does not qualify a changed indexed reader under load.
+The [current local assessment](LOCAL_RELEASE_REPORT.md) supplies separate evidence
+for the Windows indexed HTTP profile and owned same-version stop/restart.

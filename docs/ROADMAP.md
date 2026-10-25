@@ -7,11 +7,17 @@ the [current architecture](ARCHITECTURE_CURRENT.md) describes existing component
 
 ## Release scope
 
-The initial release serves personalized recommendations for known snapshot
-users and an explicit cold-user route through an API and public demo. Every
-response identifies its model version and historical cutoff. The demo explains
-stored user context and the dataset's anonymized product identifiers; it does
-not imply live inventory, current product metadata or continuously updated users.
+The release provides a loopback-only API for known snapshot users and an explicit
+cold-user route on an operator's local machine. Every API response identifies
+its model version and historical cutoff. Public static demonstrations provide
+two separate experiences: stored Retailrocket outputs with anonymized product
+identifiers, and an interactive sample storefront with browser-side content-based
+suggestions. Their semantics and data sources must remain explicit.
+
+Cloud model hosting, public API access and continuous backend availability are
+outside this release scope. M26 and M27 qualify local operation and verification;
+M28 publishes independent static demonstrations. A future public backend requires
+a separate scope decision, access contract and target-host qualification.
 
 Similar-item recommendations and request-time session/history updates are
 conditional extensions. Each needs its own input, eligibility, evaluation and
@@ -85,9 +91,9 @@ milestones deepen coverage rather than postpone those controls.
 | M23 | Workload-based performance and capacity assessment | Reproducible HTTP workload with predefined traffic mix/concurrency, latency/error/admission metrics, resource measurements and quality parity after optimization |
 | M24 | Load, failure and recovery validation | Sustained/burst and resource-pressure tests, dependency/model failures, cancellation/drain behavior and recovery/rollback checks against predefined thresholds |
 | M25 | Deployment design and cost decision | Hosting/resource choice justified by M21–M24 evidence, monthly cost estimate, artifact/secrets delivery, exposure controls and rollback/runbook design |
-| M26 | Controlled deployment | Version-pinned image and model, health/readiness, resource limits, access controls, monitoring and verified rollback on the selected host |
-| M27 | Post-deployment verification | Target-host output parity, external HTTP probes, representative smoke/load checks, telemetry and recovery verification with recorded release identities |
-| M28 | Public demo | Explainable known-user/cold flows, visible snapshot/model semantics, clear busy/degraded/error behavior, bounded usage and no real user data collection requirement |
+| M26 | Controlled local operation | Pinned model and compatible runtime, supported loopback launcher, health/readiness, local access controls, resource reporting, monitoring and verified stop/restart or rollback on the operator's machine |
+| M27 | Local release verification | Source-bound output parity, loopback HTTP checks, representative local smoke/load, telemetry and recovery evidence for the selected runtime; preserve resource failures and distinguish historical from current measurements |
+| M28 | Public static demonstrations | Explainable stored warm/cold model examples plus an independent interactive sample storefront; explicit precomputed/browser-policy semantics, safe static publication and clear loading/error behavior without a public model API |
 | M29 | Release documentation and reproducibility | Verified setup/run commands, architecture, evidence index, operational runbook, trade-offs, cost and limitations with working links |
 
 ### Continuous resource checks
@@ -110,11 +116,12 @@ throughput, all outcomes and cache hit/miss scopes separately. Fast rejections
 or cached calls must not conceal slow inference or an unacceptable rejection
 rate. A small sequential smoke sample cannot establish a service objective.
 
-Public deployment requires these resource and reliability gates to pass on the
-target environment. An unmet budget needs optimization or an evidence-backed
+Local release acceptance requires these resource and reliability gates to pass
+for the selected local runtime and workload. An unmet budget needs optimization or an evidence-backed
 budget/scope revision recorded in [decisions](DECISIONS.md) before release
 acceptance. A larger host does not by itself revise the declared memory budget.
 CI with mocked model fixtures does not establish Linux real-bundle parity.
+Static publication alone cannot satisfy backend resource or reliability gates.
 
 ## Evaluation and evidence rules
 

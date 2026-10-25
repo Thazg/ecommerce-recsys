@@ -1,11 +1,14 @@
 # Architecture and engineering decisions
 
-**Updated:** 2026-10-20
+**Updated:** 2026-10-24
 
 This log records decisions applied to the implemented milestones. Records are
 grouped by milestone and numbered sequentially from ADR-01. Each record
 states the choice, its rationale, the implementation evidence and its limitations.
 Planned work is tracked in the [roadmap](ROADMAP.md).
+Later records can supersede earlier release requirements without changing their
+historical evidence. ADR-40 defines the current local-backend release scope;
+earlier references to required cloud hosting describe the previous scope.
 
 ## M0 — Project foundation
 
@@ -1145,3 +1148,143 @@ and [verification report](PROJECT_VERIFICATION_REPORT.md) state each profile's
 inputs, executed checks and limits. Static publication, source integrity and
 original quality retain distinct evidence. M29 documentation does not complete
 M26/M27, relax the memory budget or make inspected later folds blind validation.
+
+## Local demonstration delivery
+
+### ADR-38 — Deliver local inference with a static public illustration
+
+**Status:** Accepted — local inference and a public illustrative demo are the
+delivery choice. ADR-40 supersedes its deferred-cloud roadmap requirement;
+implementation and evidence below retain their original scope.
+
+**Context:** The sealed model's resource and access requirements exceed the
+verified zero-cost hosting options. The public RecoLens frontend already offers
+five understandable examples without requiring a model service to stay online.
+An independently measured indexed reader reduces local object overhead while
+preserving exact finite-reference predictions.
+
+**Decision:** Run the complete model on the operator's local machine through an
+explicit loopback-only launcher. Keep the existing RecoLens deployment as a
+static illustration with precomputed-output disclosure. Preserve the original
+default API launcher, model policy, private bundle, public assets and historical
+evidence. Record indexed-reader memory and new local HTTP verification separately.
+No public tunnel, cloud resource, account-permission expansion or browser-held
+backend credential is introduced.
+
+**Evidence and consequences:** The [local guide](LOCAL_DEMONSTRATION.md),
+[memory assessment](SNAPSHOT_MEMORY_REPORT.md) and
+[HTTP record](../benchmarks/deployment/local_demonstration_validation_v1.json)
+describe the implemented scope. Public visitors can inspect examples while the
+operator's machine is off. The public page does not start or contact local
+inference. Full-model cloud deployment, target-host/load validation and online
+quality remain open; the original roadmap gates are not marked complete by a
+static demonstration or local smoke check.
+
+## Interactive product illustration
+
+### ADR-39 — Separate shopper interactions from historical model evidence
+
+**Status:** Accepted — shopping illustration implemented and published as RecoMe;
+its static release is separate from the snapshot explorer.
+
+**Context:** Anonymized Retailrocket IDs do not identify product names or
+photographs. A newcomer can understand personalization more directly by choosing
+recognizable products, but invented metadata on real model outputs would
+misrepresent the dataset.
+
+**Decision:** Provide a separate static storefront with 100 photographed
+sample products from DummyJSON. Use views, hearts and explicit ratings to
+calculate deterministic, explained content-based suggestions within the browser.
+Keep session data local, allow removal/reset, label unpersonalized discovery
+and distinguish the illustrative policy from the trained model. Retain source,
+license and per-image hashes; make no sale, review or conversion claim.
+
+Preserve the original snapshot explorer, model/API code and benchmark bytes.
+The shopping demo does not attach fake metadata to Retailrocket IDs, train a
+new model or establish benchmark quality. Static publication requires a
+separate reviewed release; it does not complete full-model cloud deployment.
+
+**Evidence and consequences:** The [guide](SHOPPING_DEMONSTRATION.md),
+[catalog](../shop-demo/catalog.json), [image records](../shop-demo/image_sources.json)
+and [functional tests](../tests/web/test_shopping_demo.mjs) describe the
+sample and implemented behavior. The [local model API](LOCAL_DEMONSTRATION.md)
+continues to provide actual historical-snapshot inference independently.
+
+## Local backend release scope
+
+### ADR-40 — Define a local backend release with public static demonstrations
+
+**Status:** Accepted — 2026-10-24. Supersedes the cloud-hosting requirement for
+the initial release in ADR-35/38 and the original M26/M27 roadmap scope.
+
+**Context:** The project already provides real snapshot inference on an
+operator's machine, a public explorer of verified stored outputs and a separate
+interactive shopping illustration. A continuously hosted model API is not
+required for the selected portfolio delivery.
+
+**Decision:** Keep the backend on loopback, with an independently pinned model,
+compatible environment, readiness, access controls and owned process lifecycle.
+Define M26 as controlled local operation and M27 as local release verification.
+Keep M28 as independent static demonstrations: RecoLens browses stored model
+examples; RecoMe computes illustrative content-based suggestions in the browser.
+Neither frontend contacts the local model or starts it when visited.
+
+Public backend access, cloud compute, external API load and continuous backend
+availability are outside this release. Any later public model service needs a
+new access/exposure contract and host-specific qualification. Preserve historical
+cloud designs, receipts and deployment-eligibility fields as evidence of their
+original criteria; do not relabel old failures as passes.
+
+**Evidence and consequences:** The [local guide](LOCAL_DEMONSTRATION.md),
+[reader-memory report](SNAPSHOT_MEMORY_REPORT.md) and
+[shopping release](../benchmarks/demo/shopping_hosting_validation_v1.json)
+support separate local-inference and static-publication claims. Changing the
+scope does not establish new runtime/load/recovery evidence or waive the
+2 GiB process-memory target. The indexed reader's Windows package measurements
+and finite HTTP parity do not certify current full-service load or Linux memory.
+M26/M27 acceptance must map the selected local runtime to its actual evidence.
+Online quality, production availability and blind confirmation remain unclaimed.
+
+## Controlled local operation and verification
+
+### ADR-41 — Qualify the indexed HTTP runtime with owned process control and a fixed local workload
+
+**Status:** Accepted — Windows local assessment completed; all seven prospective
+targets pass within its fixed reference-workload scope.
+
+**Context:** Package-reader RSS and finite HTTP output checks do not establish
+HTTP memory under load or clean process restart. Background Windows workers
+cannot rely on console signals for an independently observed application drain.
+
+**Decision:** Add opt-in inherited stdin-pipe control to the explicit local
+launcher, retaining its normal foreground behavior. Stop/EOF requests the
+existing Uvicorn shutdown and service cleanup; no HTTP administrative route,
+new model policy, cache default, quota or public bind is introduced. Reject
+non-pipe control input and scope cleanup to the owned child.
+
+Verify all 101 sealed outputs on two fresh same-port processes, six K-prefix
+checks and eight denials. Freeze a 120-arrival, 1/s local warm/cold sample,
+32-arrival, 16/s intentional overload and bounded recovery before measurement.
+Measure serving RSS externally, distinguish startup/loaded phases and separate
+successful warm/cold latency from rejections. Reconcile client, HTTP, delivery
+and worker counts. Require complete ownership cleanup and wrong-pin startup
+rejection before exclusive source/input/environment-bound receipt publication.
+Preserve failed target outcomes; compute local acceptance from integrity and
+the declared targets without changing historical evidence.
+
+**Evidence and consequences:** The [local report](LOCAL_RELEASE_REPORT.md) and
+[receipt](../benchmarks/deployment/local_release_maintenance_validation_v1.json) complete
+M26/M27 for this Windows indexed-reader profile. The existing charter targets
+pass at the measured workload. This does not revise earlier Linux memory
+failures, qualify the indexed reader on Linux, measure in-flight graceful drain,
+exercise different-version rollback or establish a production workload/SLO.
+Reference contexts remain a narrow finite sample. Cloud/public model hosting
+remains outside scope and no online recommendation-quality claim is added.
+
+The current boundary verification also requires startup EOF to publish no ready
+event, reaping state independent of log closure, absolute HTTP deadlines and
+cross-scope consistency for resource/time summaries. Missing/unknown fields and
+numeric booleans fail the receipt contract. Fitted startup-race and fault-I/O
+regressions support these controls. The initial local-release receipt and its
+source identity remain historical; the numerical policy and seven target
+thresholds are unchanged.

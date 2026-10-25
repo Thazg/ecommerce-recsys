@@ -2,6 +2,13 @@
 
 ## Decision and implementation boundary
 
+The release now targets a local backend with public static demonstrations,
+as recorded in [ADR-40](DECISIONS.md#adr-40--define-a-local-backend-release-with-public-static-demonstrations).
+Cloud hosting is outside the required scope. The provider comparison, proposed
+cloud architecture and cloud gates below preserve the earlier dated design;
+they are not requirements to complete the local release. Published assessment
+bytes and original resource failures remain unchanged.
+
 The current execution mode remains **local only**, with no new cloud subscription
 or resource. The preferred zero-recurring-compute-cost investigation is OCI
 Ampere A1 Always Free, conditional on actual account eligibility, capacity and
@@ -14,6 +21,11 @@ The [offline assessor](../scripts/assess_deployment.py),
 implement the decision and resource/cost arithmetic. They do not call a cloud
 API, use credentials, reserve capacity, install a proxy or provision resources.
 The following target architecture and runbook are a design for subsequent work.
+
+The current delivery follows [ADR-38](DECISIONS.md#adr-38--deliver-local-inference-with-a-static-public-illustration):
+real inference stays local and RecoLens supplies a public static illustration.
+The hosting comparison below preserves its dated assessment; cloud deployment
+remains deferred. See the [local demonstration guide](LOCAL_DEMONSTRATION.md).
 
 ## Evidence used
 
