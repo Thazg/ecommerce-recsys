@@ -120,6 +120,8 @@ class EducationalMatrixFactorization:
         )
 
     def fit(self, interactions: pd.DataFrame) -> "EducationalMatrixFactorization":
+        """Fit from scratch; any failed attempt disables prediction until a successful fit."""
+        self._fitted = False
         required_columns = {"user_id", "item_id"}
 
         if not required_columns.issubset(interactions.columns):
@@ -128,6 +130,8 @@ class EducationalMatrixFactorization:
 
         if interactions.empty:
             raise ValueError("Interactions must not be empty.")
+        if interactions[["user_id", "item_id"]].isna().any().any():
+            raise ValueError("Interaction identifiers must not be null.")
 
         interactions = interactions.copy()
         interactions["user_id"] = interactions["user_id"].astype(str)
@@ -219,7 +223,7 @@ class EducationalMatrixFactorization:
     def predict(self, user_id: object, item_id: object) -> float:
         user_id = str(user_id)
         item_id = str(item_id)
-        if self._user_factors is None or self._item_factors is None:
+        if not self._fitted or self._user_factors is None or self._item_factors is None:
             raise RuntimeError("Model has not been fitted.")
 
         if user_id not in self._user_to_index:
@@ -240,7 +244,7 @@ class EducationalMatrixFactorization:
 
     def recommend(self, user_id: object, k: int) -> list[object]:
         user_id = str(user_id)
-        if self._user_factors is None or self._item_factors is None:
+        if not self._fitted or self._user_factors is None or self._item_factors is None:
             raise RuntimeError("Model has not been fitted.")
 
         if k <= 0:

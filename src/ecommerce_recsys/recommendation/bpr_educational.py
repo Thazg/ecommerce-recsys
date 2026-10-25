@@ -124,6 +124,8 @@ class EducationalBPR:
         return pd.DataFrame(triplets)
 
     def fit(self, interactions: pd.DataFrame) -> "EducationalBPR":
+        """Fit from scratch; any failed attempt disables prediction until a successful fit."""
+        self._fitted = False
         required_columns = {"user_id", "item_id"}
 
         if not required_columns.issubset(interactions.columns):
@@ -132,6 +134,8 @@ class EducationalBPR:
 
         if interactions.empty:
             raise ValueError("interactions must not be empty")
+        if interactions[["user_id", "item_id"]].isna().any().any():
+            raise ValueError("Interaction identifiers must not be null.")
 
         interactions = interactions.copy()
         interactions["user_id"] = interactions["user_id"].astype(str)

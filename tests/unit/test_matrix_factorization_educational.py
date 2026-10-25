@@ -121,10 +121,7 @@ def test_initialize_factors_is_reproducible() -> None:
 def test_predict_returns_dot_product(
     interactions: pd.DataFrame,
 ) -> None:
-    model = EducationalMatrixFactorization(factors=2)
-
-    model._build_mappings(interactions)
-    model._initialize_factors(n_users=3, n_items=3)
+    model = EducationalMatrixFactorization(factors=2, epochs=1).fit(interactions)
 
     assert model._user_factors is not None
     assert model._item_factors is not None
@@ -140,10 +137,7 @@ def test_predict_returns_dot_product(
 def test_predict_rejects_unknown_user(
     interactions: pd.DataFrame,
 ) -> None:
-    model = EducationalMatrixFactorization()
-
-    model._build_mappings(interactions)
-    model._initialize_factors(n_users=3, n_items=3)
+    model = EducationalMatrixFactorization(epochs=1).fit(interactions)
 
     with pytest.raises(ValueError, match="Unknown user_id"):
         model.predict("unknown_user", "i1")
@@ -152,10 +146,7 @@ def test_predict_rejects_unknown_user(
 def test_predict_rejects_unknown_item(
     interactions: pd.DataFrame,
 ) -> None:
-    model = EducationalMatrixFactorization()
-
-    model._build_mappings(interactions)
-    model._initialize_factors(n_users=3, n_items=3)
+    model = EducationalMatrixFactorization(epochs=1).fit(interactions)
 
     with pytest.raises(ValueError, match="Unknown item_id"):
         model.predict("u1", "unknown_item")
@@ -333,8 +324,7 @@ def test_update_factors_moves_prediction_toward_target(
         regularization=0.0,
     )
 
-    model._build_mappings(interactions)
-    model._initialize_factors(n_users=3, n_items=3)
+    model.fit(interactions)
 
     assert model._user_factors is not None
     assert model._item_factors is not None

@@ -18,6 +18,13 @@ The milestone has three complementary objectives:
 
 The project deliberately separates educational implementations from the library-backed recommender. The educational models prioritize readability and understanding, while the ALS implementation uses the `implicit` library for scalable model training.
 
+Both educational models require the latest `fit` call to complete successfully
+before `predict` or `recommend` is available. Starting a new fit invalidates the
+previous ready state; validation, sampling or training failure leaves prediction
+disabled until a successful fit. Null training identifiers are rejected before
+string normalization. This lifecycle contract is separate from the library-backed
+ALS model used by the selected serving policy.
+
 This historical M6 selection uses the validation split, followed by a run of
 the selected model on the historical test split. Earlier baseline experiments
 had already used that test population; it is not an untouched confirmation set.

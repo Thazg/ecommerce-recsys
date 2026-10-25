@@ -370,6 +370,13 @@ ruff format --check .
 Run from the repository root with the Python 3.13 ecommerce-recsys environment
 and verified upstream ranking Parquet available. The reproduction steps for
 those frozen inputs are in the ranking dataset and learned-ranking reports.
+The historical guard pins every package file present at the ranking source
+revision, including educational recommenders outside the selected route.
+Use a compatible full-history checkout, such as
+`30e685babbdeec682084830f23834a6141a18f9a`, for the completed provenance check.
+Later educational fit-lifecycle changes correctly make this guard reject the
+current tree. They do not revise the frozen policy results; do not substitute
+new SHA fields or weaken the historical guard.
 Use the [README reproduction guide](../README.md#reproduce) for the recorded
 historical source checkout, byte-preserved JSON and scratch checkpoint steps.
 
