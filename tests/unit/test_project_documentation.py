@@ -72,6 +72,23 @@ def test_standard_library_check_needs_no_model_git_or_raw_data(checkout):
     assert not (root / ".git").exists()
 
 
+@pytest.mark.parametrize("bad", ["\u00e2\u20ac\u201d", "\u00c3\u00a2", "\ufffd"])
+def test_legal_utf8_with_corrupted_presentation_is_rejected(checkout, bad):
+    root, _ = checkout
+    path = root / "docs/guide.md"
+    path.write_text("# Guide\n\n## Setup\n\n" + bad, encoding="utf-8")
+    with pytest.raises(ValueError, match="Corrupted UTF-8"):
+        release.inspect_project(root)
+
+
+def test_valid_unicode_punctuation_keeps_readable_heading_links(checkout):
+    root, _ = checkout
+    (root / "docs/guide.md").write_text(
+        "# Guide\n\n## Setup\n\nBudget \u2264 2 GiB; folds 1\u20134.\n", encoding="utf-8"
+    )
+    assert release.inspect_project(root)["documentation_integrity_passed"]
+
+
 @pytest.mark.parametrize("field", ["schema_version", "scope", "constraints", "foreign"])
 def test_inventory_scope_and_plain_types_are_not_coerced(checkout, field):
     root, policy = checkout

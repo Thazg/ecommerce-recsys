@@ -2,7 +2,7 @@
 
 Use this index to locate the evidence supporting a claim before comparing
 models or interpreting a passing operational check. The machine-readable
-[inventory](../benchmarks/release/documentation_inventory_v1.json) pins existing
+[inventory](../benchmarks/release/documentation_inventory_publication_v1.json) pins existing
 JSON files without changing their bytes. Its integrity check does not recompute
 their metrics or certify that their producer environment matches today's tree.
 
@@ -33,6 +33,8 @@ must not be presented as a before/after comparison with rolling.
 | Layer | Primary evidence | Boundary |
 | :--- | :--- | :--- |
 | Bundle | [Full fold-9 reconciliation](../benchmarks/artifacts/fold09_v1.json), [reader references](../benchmarks/artifacts/fold09_loader_v1.json); [contract](MODEL_ARTIFACTS.md) | Historical quality versus finite reader verification; model files are outside Git |
+| Indexed reader | [Memory assessment](../benchmarks/deployment/snapshot_memory_validation_v1.json); [report](SNAPSHOT_MEMORY_REPORT.md) | Same-host Windows package RSS and 101 exact traces; no new Linux/HTTP memory qualification |
+| Local illustration delivery | [Local HTTP record](../benchmarks/deployment/local_demonstration_validation_v1.json); [guide](LOCAL_DEMONSTRATION.md) | Indexed-reader loopback output/prefix/denial checks and owned cleanup; public site remains static |
 | Current HTTP boundary | [Hardening receipt](../benchmarks/serving/hardening_boundary_validation_v1.json); [API](RECOMMENDATION_API.md), [security](API_HARDENING.md) | Local parity/denials; no public API, per-user authorization or SLA |
 | Cache and telemetry | [Cache state](../benchmarks/serving/cache_state_validation_v1.json), [observability lifecycle](../benchmarks/serving/observability_lifecycle_validation_v1.json) | Finite constructed repeats and scoped counters; earlier boundary identities remain historical |
 | Functional integration | [Integration receipt](../benchmarks/release/integration_boundary_validation_v1.json); [strategy](TESTING_AND_RELEASE_GATES.md) | Specific source revision; fixture, real-model and historical-quality evidence are separate |
@@ -42,23 +44,39 @@ must not be presented as a before/after comparison with rolling.
 | Reliability | [Resilience boundary](../benchmarks/reliability/service_resilience_boundary_validation_v1.json); [report](SERVICE_RELIABILITY_REPORT.md) | Fixed local fault matrix; not native-host/power-loss or production availability evidence |
 | Full-model hosting design | [Assessment](../benchmarks/deployment/deployment_assessment_v1.json), [dated catalog](../benchmarks/deployment/hosting_options_v1.json); [design](DEPLOYMENT_DESIGN.md) | Offline free-first design; no approved inference host or memory-budget waiver |
 | RecoLens static release | [Presentation](../benchmarks/demo/showcase_presentation_validation_v1.json), [hosted release](../benchmarks/demo/static_hosting_validation_v2.json); [runbook](STATIC_DEMO_DEPLOYMENT.md) | Seven frontend/data assets, 27 UI combinations and public HTTP checks; no live inference |
+| Indexed local release | [Local qualification](../benchmarks/deployment/local_release_maintenance_validation_v1.json); [report](LOCAL_RELEASE_REPORT.md) | Two 101-output passes, fixed Windows workload/resources, telemetry and owned same-port stop/restart; no public API or production SLO |
 
 ## Current checks versus historical records
 
-The documentation gate's receipt is
-`benchmarks/release/project_documentation_validation_v2.json`, in the
-[release evidence directory](../benchmarks/release/). It binds the current docs,
-checker/tests, unchanged static assets and historical evidence pins. It performs
-no network access, model load, code-block execution or quality recomputation.
-The [verification report](PROJECT_VERIFICATION_REPORT.md) separately states
-which dependency, CLI, test and preview checks were actually executed.
+The documentation gate's current receipt is
+`benchmarks/release/project_documentation_publication_validation_v1.json`, in the
+[release evidence directory](../benchmarks/release/). It binds current documents,
+source, unchanged static assets and independent historical evidence pins.
+The checker makes no network requests, executes no Markdown commands and loads
+or fits no model. The [verification report](PROJECT_VERIFICATION_REPORT.md)
+records separately executed checks and their limitations.
 
-The v2 record binds explicit legacy JSON checkout rules and their regression
-tests. The original v1 record retains its Windows source identity; its first
-Linux CI run exposed missing CRLF rules. Neither record changes historical
-metrics or relaxes raw evidence hashes.
+Historical receipts retain their exact original bytes and source identities.
+A valid historical checksum does not imply that its source matches the current
+checkout. Use the declared producer revision for reproduction; do not replace
+old SHA fields to accommodate later code. Sixteen legacy JSON inputs require
+the explicit checkout rules in `.gitattributes`, as described in the
+[reproduction guide](REPRODUCIBILITY.md).
 
-Preserve older receipt bytes. A receipt may have a valid original checksum while
-its source fingerprint intentionally differs from today's tree. Use its declared
-producer revision to reproduce it. Do not edit SHA fields, label a historical
-check as current, or treat an integrity check as independent quality evidence.
+The [publication workflow](../.github/workflows/publication.yml) defines hosted
+checks for both static demos, current documentation integrity and secret
+scanning of reachable history and checkout contents. Its policy retains default
+secret detectors and permits only reviewed, line/path-scoped provenance hashes.
+Local verification and GitHub execution remain separate evidence.
+
+The [publication preflight](../benchmarks/release/publication_preflight_validation_v1.json)
+records an independent Windows source export, a hashed 48-wheel Conda test
+installation, 1,400 passing unit cases, 14 fitted integration cases and 25 Node
+cases. Three named Windows symlink-privilege skips remain explicit. Its source
+identity excludes evolving docs/generated receipts; the documentation receipt
+binds those separately. The proposed hosted workflow has not yet executed.
+
+The [security policy](../SECURITY.md) describes reporting and the supported
+loopback boundary. RecoLens uses stored snapshot outputs; RecoMe uses a separate
+browser policy. Neither static release establishes a public recommendation API,
+new model accuracy, representative production traffic or a serving SLA.

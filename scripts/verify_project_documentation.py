@@ -15,7 +15,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-INVENTORY = "benchmarks/release/documentation_inventory_v1.json"
+INVENTORY = "benchmarks/release/documentation_inventory_publication_v1.json"
 PRESENTATION = "benchmarks/demo/showcase_presentation_validation_v1.json"
 SCRIPT = "scripts/verify_project_documentation.py"
 TEST = "tests/unit/test_project_documentation.py"
@@ -205,7 +205,7 @@ def check_links(root: Path, documents: list[str]) -> dict:
     cache: dict[str, set[str]] = {}
     for name in documents:
         try:
-            body = markdown_body(read_bytes(root, name).decode("utf-8"))
+            body = markdown_body(document_text(root, name))
             body = re.sub(r"<!--[\s\S]*?-->", "", body)
             body = re.sub(r"(?<!`)(`+)(?!`)[\s\S]*?(?<!`)\1(?!`)", "", body)
         except UnicodeError as exc:
@@ -244,7 +244,7 @@ def check_links(root: Path, documents: list[str]) -> dict:
             fragment = unquote(parsed.fragment)
             if destination.suffix.lower() == ".md":
                 if relative not in cache:
-                    cache[relative] = heading_ids(read_bytes(root, relative).decode("utf-8"))
+                    cache[relative] = heading_ids(document_text(root, relative))
                 if fragment not in cache[relative]:
                     raise ValueError(f"Broken heading fragment: {name} -> {target}")
             elif destination.is_file() and re.fullmatch(r"L[1-9]\d*(?:-L[1-9]\d*)?", fragment):
@@ -256,6 +256,16 @@ def check_links(root: Path, documents: list[str]) -> dict:
                 raise ValueError(f"Unsupported documentation fragment in {name}")
             fragments += 1
     return {"local_links": links, "fragments": fragments, "external_links_not_fetched": external}
+
+
+def document_text(root: Path, name: str) -> str:
+    text = read_bytes(root, name).decode("utf-8")
+    if any(
+        marker in text
+        for marker in ("\ufffd", "\u00e2\u20ac", "\u00e2\u2030", "\u00e2\u2020", "\u00c3\u00a2")
+    ):
+        raise ValueError(f"Corrupted UTF-8 presentation in document: {name}")
+    return text
 
 
 def inspect_project(root: Path = ROOT, inventory: str = INVENTORY) -> dict:
