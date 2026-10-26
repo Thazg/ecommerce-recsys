@@ -2,9 +2,9 @@
 
 **Project:** Offline E-Commerce Recommendation System
 **Repository:** `ecommerce-recsys`
-**Document Version:** `v0.2.1`
+**Document Version:** `v0.2.2`
 **Status:** Accepted Primary Dataset
-**Last Updated:** 2026-10-06
+**Last Updated:** 2026-10-26
 **Milestone:** Milestone 1 — Dataset Selection and Data Contract
 
 ---
@@ -71,7 +71,7 @@ The raw dataset contains the following files:
 
 ## 4. Key Metrics and Characteristics
 
-* Total Interactions: ~2.75 million
+* Total Interactions: 2,756,101
 * Unique Users (`visitorid`): 1,407,580
 * Unique Items (`itemid`): 235,061
 * Event Distribution:
@@ -95,7 +95,9 @@ The raw dataset contains the following files:
 
 3. Reproduction cost:
    - The interaction log is manageable locally, while the item-property CSVs and nine-fold model sweeps require substantially more storage and computation.
-   - CI covers unit tests and static checks; the full benchmark uses separately obtained raw data and saved, content-hashed artifacts.
+   - CI covers unit tests, static checks and fitted synthetic process integration;
+     the full Retailrocket benchmark uses separately obtained raw data and saved,
+     content-hashed artifacts.
 
 ## 6. Benchmark input provenance
 
@@ -115,5 +117,5 @@ Historical leave-last-out and rolling results use different eligibility rules;
 their scores are not interchangeable. See the
 [protocol and metric glossary](METRICS_AND_PROTOCOLS.md).
 
-Document revision 0.2.1 clarifies the benchmark provenance and comparison
-boundaries. The logical schema is specified by [data contract 0.2.1](DATA_CONTRACT.md).
+Document revision 0.2.2 clarifies event totals and CI scope. Benchmark provenance
+and the logical schema remain specified by [data contract 0.2.1](DATA_CONTRACT.md).

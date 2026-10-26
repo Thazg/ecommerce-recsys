@@ -203,9 +203,9 @@ cache behavior and resource measurements.
 
 ### Testing and release engineering
 
-The recorded Windows checks pass **1,400 unit tests** and **14 fitted-process
-integration tests**, with three Windows symlink-privilege skips. Integration
-fixtures actually fit, export, reload and serve small models. Current-source
+The [recorded Linux CI](https://github.com/Thazg/ecommerce-recsys/actions/runs/40246851260)
+passes **1,416 unit tests** and **14 fitted-process integration tests**, with
+no skips. Integration fixtures actually fit, export, reload and serve small models. Current-source
 checks also use an independent source export and fresh Conda dependency install.
 Real Retailrocket
 bundle qualification is a separate explicit profile; missing real inputs fail
@@ -267,6 +267,11 @@ Raw CSVs, prepared datasets and generated model files stay outside Git.
 The delivery is a local snapshot API plus two public static demonstrations.
 Public model hosting, request-time history updates, online business impact and
 independent confirmation on a previously unseen period are outside its claims.
+
+## Contributing
+
+See the [contribution guide](CONTRIBUTING.md) for setup, validation and the rules
+for changing benchmarks, dependencies and verified artifacts.
 
 ## License
 
