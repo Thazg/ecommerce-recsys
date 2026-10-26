@@ -16,7 +16,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-INVENTORY = "benchmarks/release/documentation_inventory_public_readiness_v1.json"
+INVENTORY = "benchmarks/release/documentation_inventory_dependency_controls_v1.json"
 PRESENTATION = "benchmarks/demo/showcase_presentation_validation_v1.json"
 SCRIPT = "scripts/verify_project_documentation.py"
 TEST = "tests/unit/test_project_documentation.py"

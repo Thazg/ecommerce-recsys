@@ -128,11 +128,18 @@ are outside the verified release claims.
 
 ## Repeat documentation integrity
 
+The [dependency advisory assessment](../SECURITY.md#dependency-advisory-assessment)
+records ten open Dependabot alerts in the pinned Windows/Linux locks. It
+distinguishes the unaffected Python Arrow path from the remaining test/build
+tooling risks and their operating restrictions. Hosted pytest now uses a fresh
+owner-only temporary parent; this mitigation does not upgrade the vulnerable
+package versions or certify a vulnerability-free environment.
+
 ```sh
-python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_public_readiness_validation_v1.json
+python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_dependency_controls_validation_v1.json
 ```
 
-The [inventory](../benchmarks/release/documentation_inventory_public_readiness_v1.json)
+The [inventory](../benchmarks/release/documentation_inventory_dependency_controls_v1.json)
 and completed receipt pin current documentation/source, released assets and
 independent historical evidence. The checker uses no network, executes no
 Markdown commands and fits or loads no model. It counts external links without
