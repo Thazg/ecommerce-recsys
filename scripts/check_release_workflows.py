@@ -27,6 +27,10 @@ ACTIONLINT_SHA256 = "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b34
 PYTHON_VERSION = "3.13.15"
 MANIFEST_SHA256 = "84ddc7b2e34b92728164f60346e2115cdcc07415af72aed60859c78ffbb5aabe"
 DEPENDENCY_IMPORT = 'python -c "import fastapi, uvicorn, httpx2, yaml, torch, faiss; from fastapi.testclient import TestClient"'
+PYTEST_TEMP_SETUP = """umask 077
+test_root="$(mktemp -d "$RUNNER_TEMP/pytest.XXXXXXXX")"
+printf 'TMPDIR=%s\\n' "$test_root" >> "$GITHUB_ENV"
+"""
 PRIVATE_IF = "github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.event.repository.private == true && github.repository != 'Thazg/ecommerce-recsys' && github.repository_owner == 'Thazg' && inputs.local_qualification_only == true"
 
 
@@ -312,12 +316,16 @@ def validate(data, *, private=False):
             "python scripts/check_release_workflows.py",
             "python -m ruff check .",
             "python -m ruff format --check .",
+            PYTEST_TEMP_SETUP,
             "python -m pytest tests/unit -q -o xfail_strict=true --junitxml=.local/ci/unit.xml",
             'python -m pytest tests/integration -m "not real_bundle" -q -o xfail_strict=true --junitxml=.local/ci/fixture.xml',
             "python scripts/check_release_workflows.py --unit-junit .local/ci/unit.xml --fixture-junit .local/ci/fixture.xml",
         ]
         if any(command not in commands for command in required):
             raise ValueError("Missing or weakened hosted CI gate.")
+        first_test = next(i for i, command in enumerate(commands) if "-m pytest " in command)
+        if commands.index(PYTEST_TEMP_SETUP) >= first_test:
+            raise ValueError("Private temporary storage must precede every pytest invocation.")
         if not any(
             "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz"
             in command

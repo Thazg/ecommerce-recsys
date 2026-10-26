@@ -57,6 +57,11 @@ jobs:
         run: python -m ruff check .
       - name: Check Ruff formatting
         run: python -m ruff format --check .
+      - name: Isolate test temporary storage
+        run: |
+          umask 077
+          test_root="$(mktemp -d "$RUNNER_TEMP/pytest.XXXXXXXX")"
+          printf 'TMPDIR=%s\n' "$test_root" >> "$GITHUB_ENV"
       - name: Run unit regressions
         run: python -m pytest tests/unit -q -o xfail_strict=true --junitxml=.local/ci/unit.xml
       - name: Run fitted snapshot process integration

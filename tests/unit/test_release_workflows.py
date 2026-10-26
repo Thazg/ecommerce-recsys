@@ -257,6 +257,21 @@ def test_qualified_runtime_and_model_identity_are_required(change):
         policy.validate(data, private=private)
 
 
+@pytest.mark.parametrize("change", ["missing", "shared", "late"])
+def test_hosted_pytest_uses_private_temporary_storage(change):
+    data = policy.read(policy.ROOT / ".github/workflows/ci.yml")
+    steps = data["jobs"]["test"]["steps"]
+    setup = next(step for step in steps if step.get("run") == policy.PYTEST_TEMP_SETUP)
+    if change == "shared":
+        setup["run"] = 'echo "TMPDIR=/tmp" >> "$GITHUB_ENV"\n'
+    else:
+        steps.remove(setup)
+        if change == "late":
+            steps.append(setup)
+    with pytest.raises(ValueError):
+        policy.validate(data)
+
+
 @pytest.mark.parametrize("change", ["bundle", "interpreter", "patch"])
 def test_private_lane_protects_inputs_before_checkout(change):
     data = policy.read(policy.ROOT / ".github/workflows/snapshot-release.yml")
