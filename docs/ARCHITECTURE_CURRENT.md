@@ -1,6 +1,6 @@
 # Current architecture
 
-**Updated:** 2026-10-25
+**Updated:** 2026-10-26
 **State:** offline pipeline, recommendation evaluation, hybrid candidate generation,
 exact Two-Tower retrieval, an ANN feasibility no-go and causal ranking
 data for development folds 1–4. A learned ranker, category-aware re-ranker
@@ -17,7 +17,7 @@ provides optional bounded result caching and an explicit busy fallback.
 Separate host tooling now manages immutable isolated release descriptors,
 verified candidates, journal recovery and rollback. Hosted CI and a reusable
 private qualification lane remain separate from the model/service layers;
-the latter has not been configured or executed remotely. Separate local
+the latter has not been configured or executed remotely. Separate hosted
 publication checks cover both static demos, documentation identity and secret
 scanning; they do not modify model qualification or expose inference. Separate local
 [load and recovery verification](SERVICE_RELIABILITY_REPORT.md) exercises the

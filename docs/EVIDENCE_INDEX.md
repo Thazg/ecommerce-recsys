@@ -2,7 +2,7 @@
 
 Use this index to locate the evidence supporting a claim before comparing
 models or interpreting a passing operational check. The machine-readable
-[inventory](../benchmarks/release/documentation_inventory_readme_hero_v1.json) pins existing
+[inventory](../benchmarks/release/documentation_inventory_public_readiness_v1.json) pins existing
 JSON files without changing their bytes. Its integrity check does not recompute
 their metrics or certify that their producer environment matches today's tree.
 
@@ -49,7 +49,7 @@ must not be presented as a before/after comparison with rolling.
 ## Current checks versus historical records
 
 The documentation gate's current receipt is
-`benchmarks/release/project_documentation_readme_hero_validation_v1.json`, in the
+`benchmarks/release/project_documentation_public_readiness_validation_v1.json`, in the
 [release evidence directory](../benchmarks/release/). It binds current documents,
 source, unchanged static assets and independent historical evidence pins.
 The checker makes no network requests, executes no Markdown commands and loads
@@ -74,7 +74,11 @@ records an independent Windows source export, a hashed 48-wheel Conda test
 installation, 1,400 passing unit cases, 14 fitted integration cases and 25 Node
 cases. Three named Windows symlink-privilege skips remain explicit. Its source
 identity excludes evolving docs/generated receipts; the documentation receipt
-binds those separately. The proposed hosted workflow has not yet executed.
+binds those separately. Later hosted execution is recorded independently:
+[fixture CI at `f149e9c`](https://github.com/Thazg/ecommerce-recsys/actions/runs/40246851260)
+and its matching [publication run](https://github.com/Thazg/ecommerce-recsys/actions/runs/40246851248)
+both passed. Their success does not revise the preflight's original fields or
+establish Linux full-bundle load qualification.
 
 The [security policy](../SECURITY.md) describes reporting and the supported
 loopback boundary. RecoLens uses stored snapshot outputs; RecoMe uses a separate

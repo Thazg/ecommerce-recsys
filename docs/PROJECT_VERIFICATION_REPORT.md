@@ -1,8 +1,8 @@
 # Project verification report
 
-## Current verification scope
+## Verification scope
 
-The 2026-10-25 publication preflight checks the proposed public source in an
+The 2026-10-25 publication preflight checked its source snapshot in an
 independent checkout with a fresh Windows Conda Python 3.13.15 environment.
 Dependencies are installed from the hashed
 [Windows development lock](../requirements/development-windows.txt), including
@@ -54,9 +54,14 @@ claim of numerical compatibility with every fitted bundle.
 The [publication workflow](../.github/workflows/publication.yml) runs both demo
 suites, the source-bound documentation receipt and pinned secret scans. The
 existing hosted Python workflow enforces its policy and lints all three
-workflows. These new definitions have been checked locally; GitHub execution
-for this proposed source has not yet been observed. The private remote
-real-qualification lane remains unconfigured.
+workflows. Hosted [fixture CI at `f149e9c`](https://github.com/Thazg/ecommerce-recsys/actions/runs/40246851260)
+passed 1,416 Linux unit cases and 14 fitted integration cases, with one deliberate
+real-bundle deselection and no skips. Its matching
+[publication workflow](https://github.com/Thazg/ecommerce-recsys/actions/runs/40246851248)
+passed the demo, current documentation and secret-scanning gates. The preflight
+record's original unobserved-hosting field remains unchanged: it describes the
+earlier verification event. The private remote real-qualification lane remains
+unconfigured.
 
 The history scan covers all reachable refs. Scanner defaults remain enabled;
 a narrowly scoped exception permits only seven reviewed provenance-map keys
@@ -87,7 +92,7 @@ separate checks. This receipt is not produced by the documentation checker.
 
 Earlier Linux measurements used the original reader and exceeded the 2 GiB
 RSS target. The indexed reader has not received Linux load qualification.
-The last observed hosted [Linux CI at `30e685b`](https://github.com/Thazg/ecommerce-recsys/actions/runs/39766736448)
+An earlier hosted [Linux CI at `30e685b`](https://github.com/Thazg/ecommerce-recsys/actions/runs/39766736448)
 passed 1,213 unit and 11 fitted integration cases before the current additions.
 That run does not certify the proposed source or new reader on Linux.
 
@@ -124,10 +129,10 @@ are outside the verified release claims.
 ## Repeat documentation integrity
 
 ```sh
-python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_readme_hero_validation_v1.json
+python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_public_readiness_validation_v1.json
 ```
 
-The [inventory](../benchmarks/release/documentation_inventory_readme_hero_v1.json)
+The [inventory](../benchmarks/release/documentation_inventory_public_readiness_v1.json)
 and completed receipt pin current documentation/source, released assets and
 independent historical evidence. The checker uses no network, executes no
 Markdown commands and fits or loads no model. It counts external links without

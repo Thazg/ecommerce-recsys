@@ -1,6 +1,6 @@
 # Project status
 
-**Updated:** 2026-10-25
+**Updated:** 2026-10-26
 
 The current delivery is [local model inference plus a public static illustration](LOCAL_DEMONSTRATION.md).
 An explicit loopback launcher selects an opt-in indexed reader, retaining the
@@ -36,8 +36,12 @@ source-bound [receipt](../benchmarks/deployment/local_release_maintenance_valida
 A separate [publication workflow](../.github/workflows/publication.yml) defines
 both JavaScript suites, standard-library documentation verification and pinned
 secret scanning. Current local checks use an independent source export and a
-fresh Windows Conda installation with hashed dependencies. These local results
-do not imply that the new workflow has executed on GitHub; see the
+fresh Windows Conda installation with hashed dependencies. Hosted execution is
+also recorded: [fixture CI at `f149e9c`](https://github.com/Thazg/ecommerce-recsys/actions/runs/40246851260)
+passed 1,416 Linux unit and 14 fitted integration cases; the matching
+[publication run](https://github.com/Thazg/ecommerce-recsys/actions/runs/40246851248)
+passed demo, documentation and secret-scanning gates. These fixture results do
+not qualify the complete indexed model on Linux. See the
 [verification report](PROJECT_VERIFICATION_REPORT.md).
 
 The initial documentation CI checkout-byte mismatch was corrected with explicit
