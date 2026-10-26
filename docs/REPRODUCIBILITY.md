@@ -54,7 +54,7 @@ python scripts/verify_project_documentation.py
 ```
 
 It validates the explicit
-[documentation inventory](../benchmarks/release/documentation_inventory_public_readiness_v1.json),
+[documentation inventory](../benchmarks/release/documentation_inventory_dependency_controls_v1.json),
 local Markdown links and heading fragments, pinned historical JSON bytes and the
 seven released static assets. External links are counted, not fetched. The
 verifier never runs commands copied from Markdown. It rejects unknown static
@@ -69,7 +69,7 @@ fixed passing status.
 To compare against the completed documentation record:
 
 ```sh
-python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_public_readiness_validation_v1.json
+python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_dependency_controls_validation_v1.json
 ```
 
 After an intentional source or documentation change, write a new record using
@@ -86,6 +86,16 @@ The receipt records integrity only. Execution results belong in the separate
 verification report and original measured receipts.
 
 ## Install and test the Python project
+
+The pinned environments have a documented [dependency advisory assessment](../SECURITY.md#dependency-advisory-assessment).
+On UNIX, give pytest a fresh owner-only temporary parent before running tests:
+
+```sh
+export TMPDIR="$(mktemp -d)"
+```
+
+Remove that directory after its test processes finish. Hosted CI performs this
+isolation automatically under the runner's private temporary directory.
 
 The tested Windows baseline is a Conda Python 3.13.15 interpreter. Create a
 separate environment for current-source tests; keep the original bundle producer
