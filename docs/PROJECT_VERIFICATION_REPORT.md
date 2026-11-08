@@ -136,10 +136,10 @@ owner-only temporary parent; this mitigation does not upgrade the vulnerable
 package versions or certify a vulnerability-free environment.
 
 ```sh
-python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_dependency_controls_validation_v1.json
+python -I -S scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_ranking_badge_validation_v1.json
 ```
 
-The [inventory](../benchmarks/release/documentation_inventory_dependency_controls_v1.json)
+The [inventory](../benchmarks/release/documentation_inventory_ranking_badge_v1.json)
 and completed receipt pin current documentation/source, released assets and
 independent historical evidence. The checker uses no network, executes no
 Markdown commands and fits or loads no model. It counts external links without

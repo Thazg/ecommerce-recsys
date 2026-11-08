@@ -6,6 +6,7 @@
 
 <p align="center">
   <a href="https://www.python.org/"><img src="docs/assets/python.svg" alt="Python 3.13"></a>
+  <a href="docs/LEARNED_RANKING_REPORT.md"><img src="docs/assets/learned-ranking.svg" alt="Learned Ranking"></a>
   <a href="https://fastapi.tiangolo.com/"><img src="docs/assets/framework.svg" alt="FastAPI"></a>
   <a href="https://github.com/Thazg/ecommerce-recsys/actions/workflows/ci.yml"><img src="docs/assets/ci.svg" alt="CI on GitHub Actions"></a>
   <a href="LICENSE"><img src="docs/assets/license.svg" alt="MIT License"></a>
