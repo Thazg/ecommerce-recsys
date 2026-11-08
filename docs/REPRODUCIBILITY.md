@@ -54,7 +54,7 @@ python scripts/verify_project_documentation.py
 ```
 
 It validates the explicit
-[documentation inventory](../benchmarks/release/documentation_inventory_dependency_controls_v1.json),
+[documentation inventory](../benchmarks/release/documentation_inventory_ranking_badge_v1.json),
 local Markdown links and heading fragments, pinned historical JSON bytes and the
 seven released static assets. External links are counted, not fetched. The
 verifier never runs commands copied from Markdown. It rejects unknown static
@@ -69,7 +69,7 @@ fixed passing status.
 To compare against the completed documentation record:
 
 ```sh
-python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_dependency_controls_validation_v1.json
+python scripts/verify_project_documentation.py --check benchmarks/release/project_documentation_ranking_badge_validation_v1.json
 ```
 
 After an intentional source or documentation change, write a new record using
